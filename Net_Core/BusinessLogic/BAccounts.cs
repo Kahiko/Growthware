@@ -47,7 +47,7 @@ namespace GrowthWare.BusinessLogic
         /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
         /// <remarks></remarks>
         /// <example> This sample shows how to create an instance of the class.
-        /// <code language="VB.NET">
+        /// <code language="C#">
         /// <![CDATA[
         /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
         /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -56,10 +56,10 @@ namespace GrowthWare.BusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
         /// 
-        /// BAccounts mBAccount = BAccounts = New BAccounts(MSecurityEntity, ConfigSettings.CentralManagement);
+        /// BAccounts mBAccount = BAccounts = New BAccounts(MSecurityEntity);
         /// ]]>
         /// </code>
-        /// <code language="C#">
+        /// <code language="VB.NET">
         /// <![CDATA[
         /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
         /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID
@@ -68,7 +68,7 @@ namespace GrowthWare.BusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
         /// 
-        /// Dim mBAccount As BAccounts = New BAccounts(MSecurityEntity, ConfigSettings.CentralManagement)
+        /// Dim mBAccount As BAccounts = New BAccounts(MSecurityEntity)
         /// ]]>
         /// </code>
         /// </example>
