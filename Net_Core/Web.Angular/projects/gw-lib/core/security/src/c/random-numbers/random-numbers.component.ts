@@ -1,6 +1,8 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
 // Library
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
@@ -10,12 +12,13 @@ import { SecurityService } from '../../security.service';
 	selector: 'gw-core-random-numbers',
 	standalone: true,
 	imports: [
-		FormsModule
+		FormsModule,
+		MatButtonModule
 	],
 	templateUrl: './random-numbers.component.html',
 	styleUrls: ['./random-numbers.component.scss']
 })
-export class RandomNumbersComponent implements OnInit {
+export class RandomNumbersComponent {
 
 
 	results: string = '';
@@ -24,12 +27,10 @@ export class RandomNumbersComponent implements OnInit {
 	minNumber: number = 0;
 
 	constructor(
-    private _LoggingSvc: LoggingService,
-    private _SecuritySvc: SecurityService
-	) { }
-
-	ngOnInit(): void {
-		// do nothing atm
+		private _LoggingSvc: LoggingService,
+		private _SecuritySvc: SecurityService
+	) { 
+		// do nothing here
 	}
 
 	/**
