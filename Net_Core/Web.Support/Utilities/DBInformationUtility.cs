@@ -8,27 +8,43 @@ namespace GrowthWare.Web.Support.Utilities;
 /// DBInformationUtility serves as the focal point for any web application needing to utilize the GrowthWare framework.
 /// Web needs such as caching are handled here.
 /// </summary>
-public static class DBInformationUtility 
+public static class DBInformationUtility
 {
-        /// <summary>
-        /// New instance of the class
-        /// </summary>
-        /// <returns>MDBInformation</returns>
-        public static MDBInformation DBInformation()
+    private static BDBInformation m_BDBInformation = null;
+
+    /// <summary>
+    /// New instance of the class
+    /// </summary>
+    /// <returns>MDBInformation</returns>
+    public static MDBInformation DBInformation()
+    {
+        BDBInformation mBll = getBusinessLogic();
+        return mBll.GetProfile;
+    }
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BDBInformation getBusinessLogic()
+    {
+        if (m_BDBInformation == null || ConfigSettings.CentralManagement == true)
         {
-            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-            return mBll.GetProfile;
+            m_BDBInformation = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         }
-        /// <summary>
-        /// Updated the information in the data store
-        /// </summary>
-        /// <param name="profile">MDBInformation</param>
-        /// <returns>bool or exception</returns>
-        public static bool UpdateProfile(MDBInformation profile) 
-        {
-            bool mRetVal = false;
-            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-            mRetVal = mBll.UpdateProfile(profile);
-            return mRetVal;
-        }
+        return m_BDBInformation;
+    }
+
+    /// <summary>
+    /// Updated the information in the data store
+    /// </summary>
+    /// <param name="profile">MDBInformation</param>
+    /// <returns>bool or exception</returns>
+    public static bool UpdateProfile(MDBInformation profile)
+    {
+        bool mRetVal = false;
+        BDBInformation mBll = getBusinessLogic();
+        mRetVal = mBll.UpdateProfile(profile);
+        return mRetVal;
+    }
 }
