@@ -54,22 +54,11 @@ namespace GrowthWare.BusinessLogic
         /// ]]>
         /// </code>
         /// </example>
-        public BDBInformation(MSecurityEntity securityEntityProfile, bool centralManagement)
+        public BDBInformation(MSecurityEntity securityEntityProfile)
         {
             if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-            if (!centralManagement)
-            {
-                if (this.m_DDBInformation == null)
-                {
-                    this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
-                    this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
-                }
-            }
-            else
-            {
-                this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
-                this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
-            }
+            this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
+            this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
         }
 
         /// <summary>
