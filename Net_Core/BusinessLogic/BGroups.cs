@@ -45,7 +45,7 @@ public class BGroups : AbstractBusinessLogic
     /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
     /// <remarks></remarks>
     /// <example> This sample shows how to create an instance of the class.
-    /// <code language="VB.NET">
+    /// <code language="C#">
     /// <![CDATA[
     /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
     /// MSecurityEntity.Id = ConfigSettings.DefaultSecurityEntityID;
@@ -54,10 +54,10 @@ public class BGroups : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// BGroupss mBGroups = BGroupss = New BGroupss(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BGroupss mBGroups = BGroupss = New BGroupss(MSecurityEntity);
     /// ]]>
     /// </code>
-    /// <code language="C#">
+    /// <code language="VB.NET">
     /// <![CDATA[
     /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
     /// MSecurityEntity.Id = ConfigSettings.DefaultSecurityEntityID
@@ -66,28 +66,17 @@ public class BGroups : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// Dim mBGroups As BGroupss = New BGroupss(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBGroups As BGroupss = New BGroupss(MSecurityEntity)
     /// ]]>
     /// </code>
     /// </example>
-    public BGroups(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BGroups(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null)
         {
             throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
-        if (centralManagement)
-        {
-            if (m_DGroups == null)
-            {
-                m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
-            }
-        }
-        else
-        {
-            m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
-        }
-
+        m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
         m_DGroups.ConnectionString = securityEntityProfile.ConnectionString;
         m_DGroups.SecurityEntitySeqID = securityEntityProfile.Id;
     }
