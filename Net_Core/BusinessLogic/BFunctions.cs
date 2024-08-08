@@ -47,7 +47,7 @@ namespace GrowthWare.BusinessLogic
         /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
         /// <remarks></remarks>
         /// <example> This sample shows how to create an instance of the class.
-        /// <code language="VB.NET">
+        /// <code language="C#">
         /// <![CDATA[
         /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
         /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -56,10 +56,10 @@ namespace GrowthWare.BusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
         /// 
-        /// BFunctions mBFunction = New BFunctions(MSecurityEntity, ConfigSettings.CentralManagement);
+        /// BFunctions mBFunction = New BFunctions(MSecurityEntity);
         /// ]]>
         /// </code>
-        /// <code language="C#">
+        /// <code language="VB.NET">
         /// <![CDATA[
         /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
         /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID
@@ -68,28 +68,17 @@ namespace GrowthWare.BusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
         /// 
-        /// Dim mBFunction As BFunctions = New BFunctions(MSecurityEntity, ConfigSettings.CentralManagement)
+        /// Dim mBFunction As BFunctions = New BFunctions(MSecurityEntity)
         /// ]]>
         /// </code>
         /// </example>
-        public BFunctions(MSecurityEntity securityEntityProfile, bool centralManagement)
+        public BFunctions(MSecurityEntity securityEntityProfile)
         {
             if (securityEntityProfile == null)
             {
                 throw new ArgumentException("The securityEntityProfile can not be null!");
             }
-            if (centralManagement)
-            {
-                if (m_DFunctions == null)
-                {
-                    m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions");
-                }
-            }
-            else
-            {
-                m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions");
-            }
-
+            m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions");
             m_DFunctions.ConnectionString = securityEntityProfile.ConnectionString;
             m_DFunctions.SecurityEntitySeqId = securityEntityProfile.Id;
         }

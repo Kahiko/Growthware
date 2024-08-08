@@ -80,7 +80,7 @@ public static class FunctionUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
         }
         return m_BusinessLogic;
     }
