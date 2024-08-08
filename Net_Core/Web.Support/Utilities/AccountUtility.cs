@@ -382,7 +382,7 @@ public static class AccountUtility
 
     private static MAccountProfile getProfileByVerificationToken(string token)
     {
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile);
         MAccountProfile mRetVal = null;
         try
         {
@@ -403,7 +403,7 @@ public static class AccountUtility
     {
         if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
         {
-            m_BAccounts = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
         }
         return m_BAccounts;
     }
@@ -539,7 +539,7 @@ public static class AccountUtility
             mProfileToSave.AddedDate = DateTime.Now;
             mProfileToSave.PasswordLastSet = System.DateTime.Now;
             // Save the profile
-            BAccounts mBAccount = new(mTargetSecurityEntity, ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new(mTargetSecurityEntity);
             // Added for clarity
             Boolean mSaveRefreshTokens = false;
             Boolean mSaveRoles = true;

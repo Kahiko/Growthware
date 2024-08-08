@@ -72,21 +72,10 @@ namespace GrowthWare.BusinessLogic
         /// ]]>
         /// </code>
         /// </example>
-        public BAccounts(MSecurityEntity securityEntityProfile, bool centralManagement)
+        public BAccounts(MSecurityEntity securityEntityProfile)
         {
             if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-            if (!centralManagement)
-            {
-                if (m_DAccounts == null)
-                {
-                    m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts");
-                }
-            }
-            else
-            {
-                m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts");
-            }
-
+            m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts");
             m_DAccounts.ConnectionString = securityEntityProfile.ConnectionString;
             m_DAccounts.SecurityEntitySeqId = securityEntityProfile.Id;
         }
