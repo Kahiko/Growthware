@@ -12,8 +12,8 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class NameValuePairUtility
 {
+    private static BNameValuePairs m_BusinessLogic = null;
     // TODO: this will work for now but will need to be added to a caching sub system
-
     private static Dictionary<int, List<UIKeyValuePair>> m_NameValuePairCache = new Dictionary<int, List<UIKeyValuePair>>();
 
     /// <summary>
@@ -55,6 +55,19 @@ public static class NameValuePairUtility
     }
 
     /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BNameValuePairs getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+        }
+        return m_BusinessLogic;
+    }
+
+    /// <summary>
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behaviors
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
@@ -78,15 +91,13 @@ public static class NameValuePairUtility
 
     public static MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
     {
-        BNameValuePairs mBNameValuePair = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        MNameValuePairDetail mRetVal = mBNameValuePair.SaveNameValuePairDetail(nameValuePairDetail);        
+        MNameValuePairDetail mRetVal = getBusinessLogic().SaveNameValuePairDetail(nameValuePairDetail);        
         return mRetVal;
     }
 
     public static MNameValuePair SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
-        BNameValuePairs mBNameValuePair = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        mBNameValuePair.Save(nameValuePair);
+        getBusinessLogic().Save(nameValuePair);
         return nameValuePair;
     }
 
@@ -101,15 +112,13 @@ public static class NameValuePairUtility
 
     public static MNameValuePairDetail GetNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        MNameValuePairDetail mRetVal = mNameValuePairDetails.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
+        MNameValuePairDetail mRetVal = getBusinessLogic().GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
         return mRetVal;
     }
 
     private static void getNameValuePairs(ref DataTable yourDataTable)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        yourDataTable = mNameValuePairDetails.GetAllNameValuePair();
+        yourDataTable = getBusinessLogic().GetAllNameValuePair();
     }
 
     private static void getNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)
@@ -141,7 +150,6 @@ public static class NameValuePairUtility
 
     private static void getNameValuePairDetails(ref DataTable yourDataTable)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        yourDataTable = mNameValuePairDetails.GetAllNameValuePairDetail();
+        yourDataTable = getBusinessLogic().GetAllNameValuePairDetail();
     }
 }
