@@ -35,7 +35,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	private _Api_Nvp_Details_Search: string = '';
 	private _SearchCriteriaNVP!: SearchCriteriaNVP;
 	private _NameValuePairParentDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
-	private _nameValuePairWindowSize: WindowSize = new WindowSize(250, 400);
+	private _nameValuePairWindowSize: WindowSize = new WindowSize(350, 400);
 
 	activeParrentRowIndex: number = 0;
 	childConfigurationName: string = '';
