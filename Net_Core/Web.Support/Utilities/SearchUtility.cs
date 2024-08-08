@@ -19,8 +19,6 @@ public static class SearchUtility
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
             m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
-            // TODO: This should work like the below line will need to circle back around.
-            // m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         }
         return m_BusinessLogic;
     }
