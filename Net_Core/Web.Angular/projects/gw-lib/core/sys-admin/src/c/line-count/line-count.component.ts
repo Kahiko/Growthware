@@ -1,6 +1,8 @@
 
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
 // Library
 // Feature
 import { SysAdminService } from '../../sys-admin.service';
@@ -10,7 +12,8 @@ import { ILineCount, LineCount } from '../../line-count.model';
 	selector: 'gw-core-line-count',
 	standalone: true,
 	imports: [
-		FormsModule
+		FormsModule,
+		MatButtonModule
 	],
 	templateUrl: './line-count.component.html',
 	styleUrls: ['./line-count.component.scss']
