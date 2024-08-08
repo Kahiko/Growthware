@@ -10,16 +10,29 @@ using GrowthWare.Web.Support.Helpers;
 namespace GrowthWare.Web.Support.Utilities;
 public static class StateUtility
 {
+    private static BStates m_BusinessLogic = null;
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static string m_CacheName = "States";
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BStates getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
+    }
 
     private static Collection<MState> States()
     {
         Collection<MState> mRetVal = m_CacheHelper.GetFromCache<Collection<MState>>(m_CacheName);
         if(mRetVal == null)
         {
-            BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-            mRetVal = mBStates.GetStates();
+            mRetVal = getBusinessLogic().GetStates();
             m_CacheHelper.AddToCache(m_CacheName, mRetVal);
         }
         
@@ -49,8 +62,7 @@ public static class StateUtility
 
     public static void Save(MState state)
     {
-        BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        mBStates.Save(state);
+        getBusinessLogic().Save(state);
         m_CacheHelper.RemoveFromCache(m_CacheName);
     }
 
