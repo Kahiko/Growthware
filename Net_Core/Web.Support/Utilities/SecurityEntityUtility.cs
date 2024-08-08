@@ -14,6 +14,8 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class SecurityEntityUtility
 {
 
+    private static BSecurityEntities m_BusinessLogic = null;
+    private static BSecurityEntities m_DefaultBusinessLogic = null;
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static IHttpContextAccessor m_HttpContextAccessor = null;
     private static String s_CacheName = "Cached_SecurityEntities";
@@ -67,9 +69,32 @@ public static class SecurityEntityUtility
 
     public static void DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        mBSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
+        getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
+    }
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BSecurityEntities getBusinessLogic(bool useDefault = false)
+    {
+        if(!useDefault)
+        {
+            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+            {
+                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            }
+            return m_BusinessLogic;
+        }
+        else
+        {
+            if(m_DefaultBusinessLogic == null || ConfigSettings.CentralManagement == true)
+            {
+                m_DefaultBusinessLogic = new(DefaultProfile(), ConfigSettings.CentralManagement);
+            }
+            return m_DefaultBusinessLogic;
+        }
     }
 
     /// <summary>
@@ -156,25 +181,22 @@ public static class SecurityEntityUtility
     /// <returns>DataView.</returns>
     public static DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        return mBSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+        return getBusinessLogic().GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
     public static int SaveProfile(MSecurityEntity profile)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile, ConfigSettings.CentralManagement);
         string mEcryptedValue = string.Empty;
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
 
         m_CacheHelper.RemoveFromCache(s_CacheName);
-        return mBSecurityEntities.Save(profile);
+        return getBusinessLogic().Save(profile);
     }
 
     public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile, ConfigSettings.CentralManagement);
-        MRegistrationInformation mRetVal = mBSecurityEntities.SaveRegistrationInformation(profile);
+        MRegistrationInformation mRetVal = getBusinessLogic().SaveRegistrationInformation(profile);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
         return mRetVal;
     }
@@ -191,8 +213,7 @@ public static class SecurityEntityUtility
         if (mRegistrationInformations == null)
         {
             mRegistrationInformations = new Collection<MRegistrationInformation>();
-            BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
-            foreach (MRegistrationInformation mRegistrationInformation in mBSecurityEntities.GetRegistrationInformation())
+            foreach (MRegistrationInformation mRegistrationInformation in getBusinessLogic(true).GetRegistrationInformation())
             {
                 mRegistrationInformations.Add(mRegistrationInformation);
             }
@@ -207,8 +228,7 @@ public static class SecurityEntityUtility
         if (mSecurityEntities == null)
         {
             mSecurityEntities = new Collection<MSecurityEntity>();
-            BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
-            foreach (MSecurityEntity mSecurityEntity in mBSecurityEntities.SecurityEntities())
+            foreach (MSecurityEntity mSecurityEntity in getBusinessLogic(true).SecurityEntities())
             {
                 // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
                 string mDecryptedPassword;
