@@ -45,7 +45,7 @@ public class BCommunityCalendar : AbstractBusinessLogic
     /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
     /// <remarks></remarks>
     /// <example> This sample shows how to create an instance of the class.
-    /// <code language="VB.NET">
+    /// <code language="C#">
     /// <![CDATA[
     /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -54,10 +54,10 @@ public class BCommunityCalendar : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// BCommunityCalendar mBAccount = BCommunityCalendar = New BCommunityCalendar(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BCommunityCalendar mBAccount = BCommunityCalendar = New BCommunityCalendar(MSecurityEntity);
     /// ]]>
     /// </code>
-    /// <code language="C#">
+    /// <code language="VB.NET">
     /// <![CDATA[
     /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID
@@ -66,7 +66,7 @@ public class BCommunityCalendar : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// Dim mBAccount As BCommunityCalendar = New BCommunityCalendar(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBAccount As BCommunityCalendar = New BCommunityCalendar(MSecurityEntity)
     /// ]]>
     /// </code>
     /// </example>
