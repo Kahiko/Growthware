@@ -8,6 +8,22 @@ using System.Text;
 namespace GrowthWare.Web.Support.Utilities;
 public static class SearchUtility
 {
+    private static BSearch m_BusinessLogic = null;
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BSearch getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            // TODO: This should work like the below line will need to circle back around.
+            // m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
+    }
 
     public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] searchColumns, string[] sortColumnInfo, string searchText)
     {
@@ -56,9 +72,8 @@ public static class SearchUtility
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
-        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile);
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
-        mDataTable = mBSearch.GetSearchResults(searchCriteria);
+        mDataTable = getBusinessLogic().GetSearchResults(searchCriteria);
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }
