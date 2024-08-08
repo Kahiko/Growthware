@@ -12,6 +12,7 @@ using GrowthWare.Web.Support.Helpers;
 namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
 {
+    private static BGroups m_BusinessLogic = null;
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
@@ -22,7 +23,7 @@ public static class GroupUtility
     /// <returns>The saved UIGroupProfile.</returns>
     public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BGroups mBGroups = getBusinessLogic();
         // Save the profile
         int mSavedGroupSeqId = mBGroups.Save(profile);
         MGroupProfile mSavedGroupProfile = mBGroups.GetProfile(mSavedGroupSeqId);
@@ -43,7 +44,7 @@ public static class GroupUtility
     /// <returns>No return value.</returns>
     public static void UpdateGroupRoles(MGroupRoles groupRoles)
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BGroups mBGroups = getBusinessLogic();
         mBGroups.UpdateGroupRoles(groupRoles);
     }
 
@@ -62,7 +63,7 @@ public static class GroupUtility
         MGroupRoles mGroupRoles = new MGroupRoles();
         if(groupSeqId != -1)
         {
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            BGroups mBGroups = getBusinessLogic();
             mGroupProfile = mBGroups.GetProfile(groupSeqId);
         }
         // Populate mRetVal
@@ -104,7 +105,7 @@ public static class GroupUtility
         if(profile.Id != -1) 
         {
             bool success = false;
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            BGroups mBGroups = getBusinessLogic();
             success = mBGroups.DeleteGroup(profile);
         }
     }
@@ -116,7 +117,7 @@ public static class GroupUtility
     /// <returns>The group profile for the given group sequence ID.</returns>
     public static MGroupProfile GetGroupProfile(int groupSeqId) 
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BGroups mBGroups = getBusinessLogic();
         MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
         return mRetVal;
     }
@@ -129,7 +130,7 @@ public static class GroupUtility
     private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BGroups mBGroups = getBusinessLogic();
         mRetVal = mBGroups.GetSelectedRoles(groupRoles);
         return mRetVal;
     }
@@ -161,10 +162,23 @@ public static class GroupUtility
         DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
         {
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            BGroups mBGroups = getBusinessLogic();
             mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
+    }
+    
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BGroups getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
     }
 }
