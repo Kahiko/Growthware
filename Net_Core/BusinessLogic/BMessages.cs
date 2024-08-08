@@ -48,7 +48,7 @@ public class BMessages : AbstractBusinessLogic
     /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
     /// <remarks></remarks>
     /// <example> This sample shows how to create an instance of the class.
-    /// <code language="VB.NET">
+    /// <code language="C#">
     /// <![CDATA[
     /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -57,10 +57,10 @@ public class BMessages : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// BMessages mBMessages = BMessages = New BMessages(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BMessages mBMessages = BMessages = New BMessages(MSecurityEntity);
     /// ]]>
     /// </code>
-    /// <code language="C#">
+    /// <code language="VB.NET">
     /// <![CDATA[
     /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID
@@ -69,27 +69,17 @@ public class BMessages : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// Dim mBMessages As BMessages = New BMessages(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBMessages As BMessages = New BMessages(MSecurityEntity)
     /// ]]>
     /// </code>
     /// </example>
-    public BMessages(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BMessages(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null)
         {
             throw new ArgumentException("The securityEntityProfile and not be null!");
         }
-        if (centralManagement)
-        {
-            if (m_DMessages == null)
-            {
-                m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages");
-            }
-        }
-        else
-        {
-            m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages");
-        }
+        m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages");
         m_SecurityEntityProfile = securityEntityProfile;
         m_DMessages.ConnectionString = securityEntityProfile.ConnectionString;
         //m_DMessages.SecurityEntitySeqID = SecurityEntityProfile.Id;
