@@ -1,6 +1,6 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +22,7 @@ import { GWCommon } from '@growthware/common/services';
 	templateUrl: './encrypt-decrypt.component.html',
 	styleUrls: ['./encrypt-decrypt.component.scss']
 })
-export class EncryptDecryptComponent implements OnInit {
+export class EncryptDecryptComponent {
 
 	processedText: string = '';
 	selectedEncryptionType: number = 3;
@@ -40,9 +40,6 @@ export class EncryptDecryptComponent implements OnInit {
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
 	) { }
-
-	ngOnInit(): void {
-	}
 
 	encryptDecrypt(encrypt: boolean) {
 		const mQueryParameter = new HttpParams()
