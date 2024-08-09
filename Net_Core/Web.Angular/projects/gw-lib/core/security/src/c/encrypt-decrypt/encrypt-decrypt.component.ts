@@ -6,8 +6,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
-import { LoggingService } from '@growthware/core/logging';
+import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { GWCommon } from '@growthware/common/services';
 
 @Component({
@@ -17,7 +18,8 @@ import { GWCommon } from '@growthware/common/services';
 		FormsModule,
 		MatButtonModule,
 		MatFormFieldModule,
-		MatSelectModule
+		MatSelectModule,
+		MatTabsModule
 	],
 	templateUrl: './encrypt-decrypt.component.html',
 	styleUrls: ['./encrypt-decrypt.component.scss']
@@ -36,10 +38,22 @@ export class EncryptDecryptComponent {
 	];
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService,
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService,
 	) { }
+
+	copyInputMessage(inputElement: HTMLTextAreaElement) {
+		inputElement.select();
+		navigator.clipboard.writeText(inputElement.value).then(() => {
+			this._LoggingSvc.toast('Text copied to clipboard', 'Encrypt/Decrypt', LogLevel.Info);
+			console.log('Text copied to clipboard');
+		}, (err) => {
+			console.error('Could not copy text: ', err);
+			this._LoggingSvc.toast('Text copied to clipboard', 'Encrypt/Decrypt', LogLevel.Error);
+		});
+		inputElement.setSelectionRange(0, 0);
+	}
 
 	encryptDecrypt(encrypt: boolean) {
 		const mQueryParameter = new HttpParams()
@@ -60,4 +74,10 @@ export class EncryptDecryptComponent {
 		});
 	}
 
+	swap(): void {
+		// const mTextValue = this.textValue;
+		const mProcessedText = this.processedText;
+		this.textValue = mProcessedText;
+		this.processedText = '';
+	}
 }

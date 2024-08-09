@@ -37,7 +37,8 @@
 - Fixed Set Log Level UI
 - Fixed Random Numbers UI
 - Fixed Line Count UI
-- Fixed GUIS Helper UI
+- Fixed GUID Helper UI
+- Fixed Encrypt/Decrypt Component UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
