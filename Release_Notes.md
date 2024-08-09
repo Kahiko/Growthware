@@ -44,6 +44,7 @@
 - Fixed Change Password UI
 - Fixed Select Preferences UI
 - Fixed Copy Function Security UI
+- Removed update-anonymous-profile from the DB and accounts-routing.module.ts
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

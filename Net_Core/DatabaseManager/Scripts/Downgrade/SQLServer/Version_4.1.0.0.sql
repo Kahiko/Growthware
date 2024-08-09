@@ -411,7 +411,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity]
 --END IF
 /****** End: Procedure [ZGWSecurity].[Get_Account_By_Verification_Token] ******/
 
-DECLARE @V_MyAction VARCHAR(256) = 'UpdateAnonymousProfile';
+DECLARE @V_MyAction VARCHAR(256) = '/accounts/updateanonymousprofile';
 IF NOT EXISTS(SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction)
 BEGIN
 	DECLARE @V_FunctionTypeSeqId INT = (SELECT FunctionTypeSeqId FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')

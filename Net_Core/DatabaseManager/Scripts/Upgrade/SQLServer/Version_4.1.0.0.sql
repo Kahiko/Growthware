@@ -753,7 +753,7 @@ IF NOT EXISTS (SELECT TOP(1) NULL FROM [ZGWCoreWeb].[Messages] WHERE [Name] = 'R
     END
 --END IF
 
-DECLARE @V_MyAction VARCHAR(256) = 'UpdateAnonymousProfile';
+DECLARE @V_MyAction VARCHAR(256) = '/accounts/updateanonymousprofile';
 IF EXISTS(SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction)
 	BEGIN
 		DECLARE 

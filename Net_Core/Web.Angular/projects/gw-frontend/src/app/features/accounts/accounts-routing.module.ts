@@ -11,7 +11,7 @@ import { LoginComponent } from '@growthware/core/account';
 import { LogoutComponent } from '@growthware/core/account';
 import { SearchAccountsComponent } from '@growthware/core/account';
 import { SelectPreferencesComponent } from '@growthware/core/account';
-import { UpdateAnonymousProfileComponent } from '@growthware/core/account';
+// import { UpdateAnonymousProfileComponent } from '@growthware/core/account';
 import { VerifyAccountComponent } from '@growthware/core/account';
 
 const childRoutes: Routes = [
@@ -20,7 +20,7 @@ const childRoutes: Routes = [
 	{ path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'register', component: AccountDetailsComponent },
 	{ path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
-	{ path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
+	// { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'logon', component: LoginComponent},
 	{ path: 'change-password', component: ChangePasswordComponent },
 	{ path: 'reset-password', component: ChangePasswordComponent },
