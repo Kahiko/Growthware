@@ -455,7 +455,16 @@ public static class AccountUtility
     /// <returns>AuthenticationResponse or null</returns>
     public static AuthenticationResponse RefreshToken(string token, string ipAddress)
     {
-        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+        MAccountProfile mAccountProfile = null;
+        try
+        {
+            mAccountProfile = getAccountByRefreshToken(token);
+        }
+        catch (System.Exception)
+        {
+            mAccountProfile = GetAccount(AnonymousAccount);
+            // throw;
+        }
         if (mAccountProfile.RefreshTokens.Count > 0)
         {
             MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);

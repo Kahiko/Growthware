@@ -45,6 +45,7 @@
 - Fixed Select Preferences UI
 - Fixed Copy Function Security UI
 - Removed update-anonymous-profile from the DB and accounts-routing.module.ts
+- Fixed when the refresh token is not found in the DB and the UI looks like an account is logged in
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
