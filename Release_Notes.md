@@ -40,6 +40,7 @@
 - Fixed Line Count UI
 - Fixed GUID Helper UI
 - Fixed Encrypt/Decrypt Component UI
+- Fixed Change Password UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
