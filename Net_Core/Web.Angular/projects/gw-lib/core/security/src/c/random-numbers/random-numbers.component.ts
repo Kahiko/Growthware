@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
@@ -13,7 +14,8 @@ import { SecurityService } from '../../security.service';
 	standalone: true,
 	imports: [
 		FormsModule,
-		MatButtonModule
+		MatButtonModule,
+		MatTabsModule
 	],
 	templateUrl: './random-numbers.component.html',
 	styleUrls: ['./random-numbers.component.scss']

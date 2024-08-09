@@ -35,6 +35,7 @@
 - Added missing fields Parent, Skin, Encryption Type and Status to the UI
 - Fixed Fixed Height/Width of the modal for ManageNameValuePairsComponent
 - Fixed Set Log Level UI
+- Fixed Random Numbers UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
