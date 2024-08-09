@@ -77,7 +77,8 @@ export class CopyFunctionSecurityComponent implements OnInit {
 					this._LoggingSvc.toast('Function Security could not be copied!', 'Copy Function:', LogLevel.Error);
 				}
 			});
+		} else {
+			this._LoggingSvc.toast('The source can not be equal to the target!', 'Copy Function:', LogLevel.Error);
 		}
-		this._LoggingSvc.toast('The source can not be equal to the target!', 'Copy Function:', LogLevel.Error);
 	}
 }

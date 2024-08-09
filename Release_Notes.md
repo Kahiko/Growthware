@@ -1,6 +1,11 @@
 # Release Notes
 
-## Net_Core Version 4.1.0.x (2024-xx-xx)
+## Net_Core Version 4.1.0.x (2024-08-09)
+
+### Bug Fixes
+- Fixed Copy Function always showing "source can not be equal to the target"
+
+## Net_Core Version 4.1.0.x (2024-08-09)
 
 ### New Features
 - Added Register
