@@ -1,7 +1,8 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 // Feature
 import { SecurityService } from '../../security.service';
 import { LoggingService } from '@growthware/core/logging';
@@ -10,12 +11,13 @@ import { LoggingService } from '@growthware/core/logging';
 	selector: 'gw-core-guid-helper',
 	standalone: true,
 	imports: [
-		MatButtonModule
+		MatButtonModule,
+		MatTabsModule
 	],
 	templateUrl: './guid-helper.component.html',
 	styleUrls: ['./guid-helper.component.scss']
 })
-export class GuidHelperComponent implements OnInit {
+export class GuidHelperComponent {
 
 	guidText: string = '';
 
@@ -23,9 +25,6 @@ export class GuidHelperComponent implements OnInit {
     private _LoggingSvc: LoggingService,
     private _SecuritySvc: SecurityService
 	) { }
-
-	ngOnInit(): void {
-	}
 
 	onGuid(): void {
 		this._SecuritySvc.getGuid().catch((error)=>{
