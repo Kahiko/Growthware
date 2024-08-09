@@ -43,6 +43,7 @@
 - Fixed Encrypt/Decrypt Component UI
 - Fixed Change Password UI
 - Fixed Select Preferences UI
+- Fixed Copy Function Security UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

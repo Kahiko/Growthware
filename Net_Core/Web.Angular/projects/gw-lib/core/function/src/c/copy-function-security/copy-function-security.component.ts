@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // Angular Material
@@ -8,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
@@ -26,7 +26,8 @@ import { FunctionService } from '../../function.service';
 		MatFormFieldModule,
 		MatIconModule,
 		MatInputModule,
-		MatSelectModule
+		MatSelectModule,
+		MatTabsModule
 	],
 	templateUrl: './copy-function-security.component.html',
 	styleUrls: ['./copy-function-security.component.scss']
@@ -67,7 +68,7 @@ export class CopyFunctionSecurityComponent implements OnInit {
 		this.frmProfile = this._FormBuilder.group({});
 	}
 
-	onSubmit(form: FormGroup): void {
+	onSubmit(): void {
 		if(this.selectedSource != this.selectedTarget) {
 			this._FunctionSvc.copyFunctionSecurity(this.selectedSource, this.selectedTarget).then((response: boolean) => {
 				if (response) {

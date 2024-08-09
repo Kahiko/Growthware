@@ -1,4 +1,6 @@
 .containerSize {
-    min-height: 100px;
-    min-width: 400px;
+	max-height: calc(200px - 125px);
+	min-height: calc(200px - 125px);
+	max-width: calc(500px - 50px);  
+	min-width: calc(500px - 50px);  
 }
