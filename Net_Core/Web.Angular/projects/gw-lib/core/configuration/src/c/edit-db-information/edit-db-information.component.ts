@@ -77,6 +77,7 @@ export class EditDbInformationComponent extends BaseDetailComponent implements I
 	}
 
 	populateForm(): void {
+		this.version = this._Profile.version;
 		this.selectedInheritanceType = this._Profile.enableInheritance;
 	}
 
