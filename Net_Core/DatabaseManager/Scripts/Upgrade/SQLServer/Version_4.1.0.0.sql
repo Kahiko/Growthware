@@ -753,6 +753,17 @@ IF NOT EXISTS (SELECT TOP(1) NULL FROM [ZGWCoreWeb].[Messages] WHERE [Name] = 'R
     END
 --END IF
 
+DECLARE @V_MyAction VARCHAR(256) = 'UpdateAnonymousProfile';
+IF EXISTS(SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction)
+	BEGIN
+		DECLARE 
+			@V_FunctionSeqId int = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction),
+			@V_ErrorCode int;
+
+		EXEC [ZGWSecurity].[Delete_Function] @V_FunctionSeqId, @V_ErrorCode
+	END
+-- END IF
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '4.1.0.0'

@@ -411,6 +411,30 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity]
 --END IF
 /****** End: Procedure [ZGWSecurity].[Get_Account_By_Verification_Token] ******/
 
+DECLARE @V_MyAction VARCHAR(256) = 'UpdateAnonymousProfile';
+IF NOT EXISTS(SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction)
+BEGIN
+	DECLARE @V_FunctionTypeSeqId INT = (SELECT FunctionTypeSeqId FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
+			, @V_ParentID INT = (SELECT FunctionSeqId FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
+			, @V_ViewPermission INT = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View')
+			, @V_FunctionID INT
+			, @V_EnableViewStateFalse INT = 0		-- 0 = FALSE 1 = TRUE
+			, @V_EnableNotificationsFalse INT = 0	-- 0 = FALSE 1 = TRUE
+			, @V_Redirect_On_Timeout INT = 1		-- 0 = FALSE 1 = TRUE
+			, @V_IsNavTrue INT = 1					-- 0 = FALSE 1 = TRUE
+			, @V_LinkBehaviorInternal INT = (SELECT NVP_DetailSeqId FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'Internal')
+			, @V_NO_UIFalse INT = 0					-- 0 = FALSE 1 = TRUE
+			, @V_NAV_TYPE_Hierarchical INT = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Hierarchical')
+			, @V_META_KEY_WORDS VARCHAR(512) = ''
+			, @V_SystemID INT = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'System')
+			, @V_Debug INT = 0;
+	SET @V_Debug = 0;
+	SET @V_SystemID = (select AccountSeqId from ZGWSecurity.Accounts where Account = 'System');
+	PRINT 'Adding Update Anonymous Profile'
+	EXEC ZGWSecurity.Set_Function -1,'Update Anonymous Profile','Update Anonymous Profile',@V_FunctionTypeSeqId,'Functions/System/Administration/AnonymousAccount/UpdateAnonymousCache.aspx','UpdateAnonymousCacheController', NULL,@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Remove any cached information for the anonymous account.', @V_SystemID, @V_Debug
+	SET @V_FunctionID = (SELECT FunctionSeqId FROM ZGWSecurity.Functions WHERE [Action] = @V_MyAction);
+	EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID,@V_Debug
+END
 
 DELETE FROM [ZGWCoreWeb].[Messages] WHERE [SecurityEntitySeqId] = 1 AND [Name] IN('RegistrationSuccess', 'RegistrationError');
 
