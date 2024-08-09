@@ -44,7 +44,7 @@ export class EditDbInformationComponent extends BaseDetailComponent implements I
 		private _FormBuilder: FormBuilder,
 	) {
 		/** 
-		 * The component is use full when your a testing security aspects of the system.
+		 * The component is usefull when your a testing security aspects of the system.
 		 * Really this is over engineering and a simple T-SQL update statement
 		 * is all that is needed.
 		*/
