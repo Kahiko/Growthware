@@ -36,8 +36,8 @@ The following is a summary of the features available.
             <td>Registration - Internal</td>
             <td>X</td>
             <td>X</td>
-            <td> </td>
-            <td>ASPX, Angular JS</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
         </tr>
         <tr>
             <td>Registration - Google</td>
@@ -186,7 +186,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td></td>
+            <td>X</td>
             <td>N/A</td>
         </tr>
         <tr>
