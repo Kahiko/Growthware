@@ -83,7 +83,8 @@ export class ConfigurationService {
 		}
 	}
 
-	public async updateProfile(enableInheritance: number): Promise<boolean> {
+	public async save(enableInheritance: number): Promise<boolean> {
+		console.log('ConfigurationService.save', enableInheritance);
 		if (this._GWCommon.isNullOrUndefined(enableInheritance)) {
 			throw new Error('enableInheritance can not be blank!');
 		}
