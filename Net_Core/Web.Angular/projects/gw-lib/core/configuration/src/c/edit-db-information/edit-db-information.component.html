@@ -1,1 +1,39 @@
-<p>edit-db-information works!</p>
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" class="containerSize" novalidate>
+    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
+        <mat-tab label="Database Configuration">
+            <div class="mat-tab__container formSection">
+                <div class="mat-tab__content formSectionContents">
+                    <div class="table" style="padding: 5px">
+                        <div class="tr">
+                            <div class="td right">
+                                Version:
+                            </div>
+                            <div class="td left">
+                                {{version}}
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td right">
+                                Enable Inheritance:
+                            </div>
+                            <div class="td left">
+                                <mat-select [(value)]="selectedInheritanceType" class="rounded" style="width: 100px">
+                                @for (item of validInheritanceTypes; track item) {
+                                    <mat-option [value]="item.key">
+                                        {{ item.value }}
+                                    </mat-option>
+                                }
+                                </mat-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px" class="Form_Button_Icon material-icons">save</i>Save
+        </button>
+    </div>
+</form>

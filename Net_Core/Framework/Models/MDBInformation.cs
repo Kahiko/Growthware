@@ -21,9 +21,9 @@ namespace GrowthWare.Framework.Models
 
 #region "Public Properties"
         /// <summary>
-        /// The informatino Sequence Identifier
+        /// The database information Sequence Identifier
         /// </summary>
-        public int InformationSeqId
+        public int DatabaseInformationSeqId
         {
             get { return mInformationSeqId; }
             set { mInformationSeqId = value; }
