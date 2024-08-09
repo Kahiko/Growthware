@@ -1,16 +1,20 @@
-
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 // Feature
 import { SecurityService } from '../../security.service';
-import { LoggingService } from '@growthware/core/logging';
+import { LoggingService, LogLevel } from '@growthware/core/logging';
 
 @Component({
 	selector: 'gw-core-guid-helper',
 	standalone: true,
 	imports: [
+		CommonModule,
+		FormsModule,
+
 		MatButtonModule,
 		MatTabsModule
 	],
@@ -36,4 +40,15 @@ export class GuidHelperComponent {
 		});
 	}
 
+	copyInputMessage(inputElement: HTMLTextAreaElement) {
+		inputElement.select();
+		navigator.clipboard.writeText(inputElement.value).then(() => {
+			this._LoggingSvc.toast('Text copied to clipboard', 'Encrypt/Decrypt', LogLevel.Info);
+			console.log('Text copied to clipboard');
+		}, (err) => {
+			console.error('Could not copy text: ', err);
+			this._LoggingSvc.toast('Text copied to clipboard', 'Encrypt/Decrypt', LogLevel.Error);
+		});
+		inputElement.setSelectionRange(0, 0);
+	}
 }

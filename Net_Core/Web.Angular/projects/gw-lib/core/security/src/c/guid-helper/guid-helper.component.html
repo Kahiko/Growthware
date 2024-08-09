@@ -9,7 +9,8 @@
                                 Result:
                             </div>
                             <div class="td left" style="width: 500px;">
-                                <span style="margin-left: 5px;">{{guidText}}</span>
+                                <!-- <span style="margin-left: 5px;">{{guidText}}</span> -->
+                                <textarea id="txtProcessed" name="txtProcessed" rows="1" cols="40" [(ngModel)]="guidText" class="rounded" #txtProcessed></textarea>
                             </div>
                         </div>
                     </div>
@@ -20,6 +21,9 @@
     <div class="buttonRow">
         <button mat-button class="Form_Button" (click)="onGuid()" color="primary">
             <i style="padding-right: 3px" class="Form_Button_Icon material-icons">assignment</i>Generate
+        </button>
+        <button (click)="copyInputMessage(txtProcessed)" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px" class="Form_Button_Icon material-icons">file_copy</i>Copy Text
         </button>
     </div>
 </div>
