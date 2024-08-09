@@ -1,3 +1,9 @@
+li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .grid-list__ul {
   position: absolute;
   left: 295px;

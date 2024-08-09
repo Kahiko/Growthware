@@ -41,6 +41,7 @@
 - Fixed GUID Helper UI
 - Fixed Encrypt/Decrypt Component UI
 - Fixed Change Password UI
+- Added Icon to file list to help with a visual separation of the items
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
