@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
@@ -28,6 +29,7 @@ import { ISelectedableAction } from '../../selectedable-action.model';
 		MatIconModule,
 		MatRadioModule,
 		MatSelectModule,
+		MatTabsModule,
 	],
 	templateUrl: './select-preferences.component.html',
 	styleUrls: ['./select-preferences.component.scss']

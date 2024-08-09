@@ -1,3 +1,10 @@
+.containerSize {
+	max-height: calc(225px - 125px);
+	min-height: calc(225px - 125px);
+	max-width: calc(600px - 50px);  
+	min-width: calc(600px - 50px);  
+}
+
 .mat-mdc-radio-button ~ .mat-mdc-radio-button {
   border: solid 1px;
   width: 500px;
