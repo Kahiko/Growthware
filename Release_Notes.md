@@ -21,6 +21,7 @@
 - Moved check for ConfigSettings.CentralManagement from the BusinessLogic project to the Web.Support project, this reduces the number of times the business logic class is created resulting in better performance
 - Implemented Edit DB Information (Useful for the purpose of testing)
 - Added copy text to clipboard in GUID Helper
+- Added Icon to file list to help with a visual separation of the items
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
@@ -41,7 +42,7 @@
 - Fixed GUID Helper UI
 - Fixed Encrypt/Decrypt Component UI
 - Fixed Change Password UI
-- Added Icon to file list to help with a visual separation of the items
+- Fixed Select Preferences UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
