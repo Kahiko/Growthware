@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 // Feature
 import { SysAdminService } from '../../sys-admin.service';
@@ -13,7 +14,8 @@ import { ILineCount, LineCount } from '../../line-count.model';
 	standalone: true,
 	imports: [
 		FormsModule,
-		MatButtonModule
+		MatButtonModule,
+		MatTabsModule
 	],
 	templateUrl: './line-count.component.html',
 	styleUrls: ['./line-count.component.scss']

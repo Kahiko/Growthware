@@ -36,6 +36,7 @@
 - Fixed Fixed Height/Width of the modal for ManageNameValuePairsComponent
 - Fixed Set Log Level UI
 - Fixed Random Numbers UI
+- Fixed Line Count UI
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

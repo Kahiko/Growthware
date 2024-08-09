@@ -1,3 +1,10 @@
+.containerSize {
+	max-height: calc(625px - 125px);
+	min-height: calc(625px - 125px);
+	max-width: calc(850px - 50px);  
+	min-width: calc(850px - 50px);  
+}
+
 textarea {
     width: 500px;
 }
