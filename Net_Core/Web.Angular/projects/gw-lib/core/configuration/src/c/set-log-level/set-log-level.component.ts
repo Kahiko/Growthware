@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 // Feature
 import { LoggingService } from '@growthware/core/logging';
 
@@ -13,7 +13,8 @@ import { LoggingService } from '@growthware/core/logging';
 	imports: [
 		FormsModule,
 		MatButtonModule,
-		MatSelectModule
+		MatSelectModule,
+		MatTabsModule
 	],
 	templateUrl: './set-log-level.component.html',
 	styleUrls: ['./set-log-level.component.scss']

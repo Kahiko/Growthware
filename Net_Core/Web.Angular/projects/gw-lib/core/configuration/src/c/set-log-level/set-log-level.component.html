@@ -1,29 +1,36 @@
-<div class="table Form_Table" style="width: 300px;">
-  <div class="tr">
-    <div class="td left">
-      <label class="Form_Label">Log Level:</label>
-    </div>
-    <div class="td left" style="width: 120px;">
-      <mat-select [(ngModel)]="selectedLogLevel" class="Form_Field rounded">
-        @for (item of validLogLevels; track item) {
-          <mat-option [value]="item.id">
-            {{item.name}}
-          </mat-option>
-        }
-      </mat-select>
-    </div>
-  </div>
-  <div class="tr">
-    <div class="td"></div>
-    <div class="td right">
-      <button mat-button class="Form_Button" (click)="onbtnSave()" color="primary">
-        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
-      </button>
-    </div>
-  </div>
-</div>
 <h2>
   <p>
     Setting the log level is temporary and will revert to the configured value when the application is restarted.
   </p>
 </h2>
+<div class="containerSize" novalidate>
+  <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
+      <mat-tab label="Set Log Level">
+          <div class="mat-tab__container formSection">
+              <div class="mat-tab__content formSectionContents">
+                  <div class="table" style="padding: 5px">
+                      <div class="tr">
+                          <div class="td right">
+                              Select Level:
+                          </div>
+                          <div class="td left">
+                            <mat-select [(ngModel)]="selectedLogLevel" class="Form_Field rounded" style="width: 132px">
+                              @for (item of validLogLevels; track item) {
+                                <mat-option [value]="item.id">
+                                  {{item.name}}
+                                </mat-option>
+                              }
+                            </mat-select>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </mat-tab>
+  </mat-tab-group>
+  <div class="buttonRow">
+    <button mat-button class="Form_Button" (click)="onbtnSave()" color="primary">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+    </button>
+  </div>
+</div>
