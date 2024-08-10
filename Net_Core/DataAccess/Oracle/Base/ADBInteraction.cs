@@ -222,22 +222,22 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return mRetVal;
     }
 
-        /// <summary>
-        /// Ensures  ConnectionString has a value.
-        /// </summary>
-        /// <remarks>Throws ArgumentException</remarks>
-        protected virtual void IsValid()
-        {
-            this.isConnectionStringSet();
-        }
+    /// <summary>
+    /// Ensures  ConnectionString has a value.
+    /// </summary>
+    /// <remarks>Throws ArgumentException</remarks>
+    protected virtual void IsValid()
+    {
+        this.isConnectionStringSet();
+    }
 
-        private void isConnectionStringSet()
+    private void isConnectionStringSet()
+    {
+        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
         {
-            if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
-            {
-                throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
-            }
+            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
         }
+    }
     #endregion
 
     #region IDBInteraction Members
@@ -505,19 +505,22 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 
     internal void setDatabaseName()
     {
-        string[] mParameterParts = null;
-        string[] mConnectionStringParts = this.ConnectionString.Split(";");
-        string mRetVal = string.Empty;
-        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
         {
-            mParameterParts = mConnectionStringParts[i].Split("=");
-            if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = this.ConnectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
             {
-                mRetVal = mParameterParts[1];
-                break;
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mRetVal = mParameterParts[1];
+                    break;
+                }
             }
+            this.m_DatabaseName = mRetVal;
         }
-        this.m_DatabaseName = mRetVal;
     }
 
     /// <summary>
