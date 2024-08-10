@@ -1,4 +1,14 @@
 # Release Notes
+## Net_Core Version 5.0.0.x (xxxx-xx-xx)
+
+### New Features
+- Added full support for Oracle
+
+### Improvements
+- 
+
+### Bug Fixes
+-
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 
