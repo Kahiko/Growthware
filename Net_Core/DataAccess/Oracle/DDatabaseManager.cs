@@ -1,5 +1,5 @@
 using GrowthWare.DataAccess.Interfaces;
-using GrowthWare.DataAccess.SQLServer.Base;
+using GrowthWare.DataAccess.Oracle.Base;
 using GrowthWare.Framework;
 using System;
 using System.Collections.Generic;
