@@ -12,7 +12,13 @@ namespace GrowthWare.DataAccess.Oracle;
 
 public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
-    public string DatabaseName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    private string m_DatabaseName = string.Empty;
+    
+    public string DatabaseName
+    {
+        get { return this.m_DatabaseName; }
+        set { this.m_DatabaseName = value; }
+    }
 
     public void Create()
     {
@@ -52,6 +58,20 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
     public Version GetVersion()
     {
         throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Calls base method to ensure connection string is present then
+    /// ensures that the database name is set.
+    /// </summary>
+    /// <exception cref="DataAccessLayerException"></exception>
+    protected override void IsValid()
+    {
+        base.IsValid();
+        if (String.IsNullOrEmpty(this.m_DatabaseName) | String.IsNullOrWhiteSpace(this.m_DatabaseName))
+        {
+            throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
+        }
     }
 
     private bool replace_N_Run(string scriptFile, OracleConnection sqlConnection)
