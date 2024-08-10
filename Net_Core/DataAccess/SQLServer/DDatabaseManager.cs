@@ -306,6 +306,11 @@ namespace GrowthWare.DataAccess.SQLServer
             return mRetVal;
         }
 
+        /// <summary>
+        /// Calls base method to ensure connection string is present then
+        /// ensures that the database name is set.
+        /// </summary>
+        /// <exception cref="DataAccessLayerException"></exception>
         protected override void IsValid()
         {
             base.IsValid();
