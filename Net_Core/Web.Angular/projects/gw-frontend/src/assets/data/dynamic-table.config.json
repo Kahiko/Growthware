@@ -177,7 +177,7 @@
     "columns": [
       { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "SecurityEntitySeqId" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "Name"                , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"         , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:132", "isPrimaryKey": false, "label": "Description" , "name": "Description"         , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 200 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Skin"        , "name": "Skin"                , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
     ],
     "captionText": "",
