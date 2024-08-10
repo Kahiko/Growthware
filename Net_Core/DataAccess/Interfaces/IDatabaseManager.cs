@@ -6,7 +6,17 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IDatabaseManager : IDBInteraction
     {
+        /// <summary>
+        /// Gets or sets the name of the database.
+        /// </summary>
         string DatabaseName { get; set; }
+
+        /// <summary>
+        /// Returns the connection string without the database name.
+        /// </summary>
+        /// <returns></returns>
+        string ConnectionStringWithoutDatabaseName { get; }
+
         /// <summary>
         /// Executes the upgrade scripts Version_0.0.0.0.sql and Version_1.0.0.0.sql.
         /// </summary>
@@ -48,13 +58,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <returns>The version number of the database as a Version object.</returns>
         Version GetVersion();
-
-        /// <summary>
-        /// Replaces 'YourDatabaseName' in the given connection string with the actual database name.
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns></returns>
-        string SetDatabaseName(string connectionString);
 
         /// <summary>
         /// Updates the log path in the [ZGWOptional].[Directories] table based on the value of ConfigSettings.LogPath.

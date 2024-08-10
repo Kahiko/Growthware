@@ -14,6 +14,9 @@ namespace GrowthWare.DataAccess.Oracle.Base;
 public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 {
     #region Private Fields
+    private string m_ConnectionString = string.Empty;
+    internal string m_ConnectionWithoutDatabaseName = string.Empty;
+    private string m_DatabaseName = string.Empty;
     private bool m_DisposedValue;
     #endregion
 
@@ -21,7 +24,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     /// <summary>
     /// Used for all methods to connect to the database.
     /// </summary>
-    public string ConnectionString { get; set; }
+    public string ConnectionString
+    {
+        get { return m_ConnectionString; }
+        set
+        {
+            this.m_ConnectionString = value;
+            this.setConnectionWithoutDatabaseName();
+            this.setDatabaseName();
+        }
+    }
     #endregion
 
     #region Private Methods
@@ -105,7 +117,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                 }
                 mDataTable.Rows.Add(mRow);
             }
-            
+
             using var mOracleConnection = new OracleConnection(this.ConnectionString);
             mOracleConnection.Open();
             OracleTransaction mOracleTransaction = mOracleConnection.BeginTransaction();
@@ -138,7 +150,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                     mOracleCommand.ExecuteNonQuery();
                 }
             }
-            
+
             // 2.) Perform OracleBulkCopy of the data table in a temporary table
             using (var mOracleBulkCopy = new OracleBulkCopy(mOracleConnection, OracleBulkCopyOptions.Default))
             {
@@ -467,6 +479,41 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             throw new ArgumentNullException("parameters", "parameters cannot be a null reference (Nothing in Visual Basic)!");
         }
         return mRetVal;
+    }
+
+    internal void setConnectionWithoutDatabaseName()
+    {
+        this.IsValid();
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = ConnectionString.Split(";");
+        string mRetVal = string.Empty;
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (!mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal = mParameterParts[0] + "=" + mParameterParts[1];
+                break;
+            }
+        }
+        this.m_ConnectionWithoutDatabaseName = mRetVal;
+    }
+
+    internal void setDatabaseName()
+    {
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = this.ConnectionString.Split(";");
+        string mRetVal = string.Empty;
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal = mParameterParts[1];
+                break;
+            }
+        }
+        this.m_DatabaseName = mRetVal;
     }
 
     /// <summary>

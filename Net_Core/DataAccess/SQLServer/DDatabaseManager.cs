@@ -8,340 +8,319 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace GrowthWare.DataAccess.SQLServer
+namespace GrowthWare.DataAccess.SQLServer;
+
+public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
-    public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
+    private string m_ScriptPath = string.Empty;
+
+    public string ConnectionStringWithoutDatabaseName
     {
-        private string m_DatabaseName = string.Empty;
-        private string m_ScriptPath = string.Empty;
+        get{return base.m_ConnectionWithoutDatabaseName;}
+    }
 
-        public string DatabaseName
+    public void Create()
+    {
+        /**
+          * first checks if the database name is valid. If it is not valid, an exception is thrown.
+          * then opens a SQL connection to the server.
+          * It defines the DDL script and DML script file paths based on the database script path.
+          * runs the DDL script and checks if it was successful. If it was not successful, an exception is thrown.
+          * runs the DML script and checks if it was successful. If it was not successful, an exception is thrown.
+          * updates all of the just added security entities to the configured data access layer information.
+          * updates all of the just added accounts to the encrypted password.
+          */
+        this.IsValid();
+        string mCommandText = string.Empty;
+        string mScriptDirectory = this.GetScriptPath("Upgrade");
+        using (SqlConnection mSqlConnection = new(this.ConnectionString))
         {
-            get { return this.m_DatabaseName; }
-            set { this.m_DatabaseName = value; }
-        }
+            mSqlConnection.Open();
 
-        public void Create()
-        {
-            /**
-              * first checks if the database name is valid. If it is not valid, an exception is thrown.
-              * then opens a SQL connection to the server.
-              * It defines the DDL script and DML script file paths based on the database script path.
-              * runs the DDL script and checks if it was successful. If it was not successful, an exception is thrown.
-              * runs the DML script and checks if it was successful. If it was not successful, an exception is thrown.
-              * updates all of the just added security entities to the configured data access layer information.
-              * updates all of the just added accounts to the encrypted password.
-              */
-            this.IsValid();
-            string mCommandText = string.Empty;
-            string mScriptDirectory = this.GetScriptPath("Upgrade");
-            using (SqlConnection mSqlConnection = new(this.ConnectionString))
+            // Define the DDL scirpt
+            string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
+
+            // Define the DML scirpt
+            string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
+
+            Boolean mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
+            if (!mSuccess)
             {
-                mSqlConnection.Open();
+                string mError = "Was not able to create the '{0}' database file name {1}.";
+                mError = String.Format(mError, base.DatabaseName, mCreationFile);
+                throw new Exception(mError);
+            }
+            mSuccess = this.replace_N_Run(mInsertFile, mSqlConnection);
+            if (!mSuccess)
+            {
+                string mError = "Was not able to insert the data in into '{0}'.";
+                mError = String.Format(mError, mCreationFile);
+                throw new Exception(mError);
+            }
 
-                // Define the DDL scirpt
-                string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
-
-                // Define the DML scirpt
-                string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
-
-                Boolean mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
-                if (!mSuccess)
+            // Set db context to the database name given
+            mCommandText = "USE [{0}]";
+            mCommandText = String.Format(mCommandText, base.DatabaseName);
+            using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
+            mSqlCommand.CommandType = CommandType.Text;
+            mSqlCommand.ExecuteNonQuery();
+            // Update all of the just added security entites to the configured data access layer information
+            mSqlCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
+            using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
+            {
+                DataSet mDataSet = new DataSet();
+                mSqlDataAdapter.Fill(mDataSet);
+                if (mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
                 {
-                    string mError = "Was not able to create the '{0}' database file name {1}.";
-                    mError = String.Format(mError, this.DatabaseName, mCreationFile);
-                    throw new Exception(mError);
-                }
-                mSuccess = this.replace_N_Run(mInsertFile, mSqlConnection);
-                if (!mSuccess)
-                {
-                    string mError = "Was not able to insert the data in into '{0}'.";
-                    mError = String.Format(mError, mCreationFile);
-                    throw new Exception(mError);
-                }
-
-                // Set db context to the database name given
-                mCommandText = "USE [{0}]";
-                mCommandText = String.Format(mCommandText, this.DatabaseName);
-                using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.ExecuteNonQuery();
-                // Update all of the just added security entites to the configured data access layer information
-                mSqlCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
-                using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
-                {
-                    DataSet mDataSet = new DataSet();
-                    mSqlDataAdapter.Fill(mDataSet);
-                    if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+                    DataTable mDataTable = mDataSet.Tables[0];
+                    if (mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
                     {
-                        DataTable mDataTable = mDataSet.Tables[0];
-                        if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+                        foreach (DataRow mRow in mDataTable.Rows)
                         {
-                            foreach(DataRow mRow in mDataTable.Rows)
-                            {
-                                // Encrypt the connection string
-                                CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                                mCommandText = @"
+                            // Encrypt the connection string
+                            CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                            mCommandText = @"
                                 UPDATE [ZGWSecurity].[Security_Entities] SET 
                                     [DAL] = N'{0}'
                                     , [DAL_Name] = N'{1}'
                                     , [DAL_Name_Space] = N'{2}'
                                     , [DAL_String] = N'{3}'
                                 WHERE [SecurityEntitySeqId] = {4};";
-                                mCommandText = String.Format(
-                                    mCommandText,
-                                    "SQLServer",
-                                    ConfigSettings.DataAccessLayerAssemblyName,
-                                    ConfigSettings.DataAccessLayerNamespace,
-                                    mEncryptedConnectionString,
-                                    mRow["SecurityEntitySeqId"].ToString()
-                                );
-                                mSqlCommand.CommandText = mCommandText;
-                                mSqlCommand.ExecuteNonQuery();
-                            }
+                            mCommandText = String.Format(
+                                mCommandText,
+                                "SQLServer",
+                                ConfigSettings.DataAccessLayerAssemblyName,
+                                ConfigSettings.DataAccessLayerNamespace,
+                                mEncryptedConnectionString,
+                                mRow["SecurityEntitySeqId"].ToString()
+                            );
+                            mSqlCommand.CommandText = mCommandText;
+                            mSqlCommand.ExecuteNonQuery();
                         }
                     }
                 }
+            }
 
-                mSqlCommand.CommandText = @"SELECT [AccountSeqId] FROM [ZGWSecurity].[Accounts];";
-                using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
+            mSqlCommand.CommandText = @"SELECT [AccountSeqId] FROM [ZGWSecurity].[Accounts];";
+            using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
+            {
+                DataSet mDataSet = new DataSet();
+                mSqlDataAdapter.Fill(mDataSet);
+                if (mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
                 {
-                    DataSet mDataSet = new DataSet();
-                    mSqlDataAdapter.Fill(mDataSet);
-                    if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+                    DataTable mDataTable = mDataSet.Tables[0];
+                    if (mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
                     {
-                        DataTable mDataTable = mDataSet.Tables[0];
-                        if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+                        foreach (DataRow mRow in mDataTable.Rows)
                         {
-                            foreach(DataRow mRow in mDataTable.Rows)
-                            {
-                                // Encrypt the password
-                                CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                                mCommandText = @"
+                            // Encrypt the password
+                            CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                            mCommandText = @"
                                 UPDATE [ZGWSecurity].[Accounts] SET 
                                     [Password] = '{0}'
                                 WHERE [AccountSeqId] = {1};";
-                                mCommandText = String.Format(
-                                    mCommandText,
-                                    mEncryptedPassword,
-                                    mRow["AccountSeqId"].ToString()
-                                );
-                                mSqlCommand.CommandText = mCommandText;
-                                mSqlCommand.ExecuteNonQuery();
-                            }
+                            mCommandText = String.Format(
+                                mCommandText,
+                                mEncryptedPassword,
+                                mRow["AccountSeqId"].ToString()
+                            );
+                            mSqlCommand.CommandText = mCommandText;
+                            mSqlCommand.ExecuteNonQuery();
                         }
                     }
                 }
             }
         }
+    }
 
-        public void Delete()
+    public void Delete()
+    {
+        this.IsValid();
+        string mCommandText = string.Empty;
+        using (SqlConnection mSqlConnection = new(this.ConnectionString))
         {
-            this.IsValid();
-            string mCommandText = string.Empty;
-            using (SqlConnection mSqlConnection = new(this.ConnectionString))
+            string mCreationFile = string.Empty;
+            string mCurrentDirectory = this.GetScriptPath("Downgrade");
+            mCreationFile = mCurrentDirectory + "Version_1.0.0.0.sql";
+            mCreationFile = mCreationFile.Replace(@"\", @"/");
+            mCreationFile = mCreationFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+            string mCreationText = File.ReadAllText(mCreationFile);
+            mCreationText = mCreationText.Replace("YourDatabaseName", DatabaseName);
+            File.WriteAllText(mCreationFile, mCreationText);
+            mSqlConnection.Open();
+            // Create the database 
+            bool mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
+            if (!mSuccess)
             {
-                string mCreationFile = string.Empty;
-                string mCurrentDirectory = this.GetScriptPath("Downgrade");
-                mCreationFile = mCurrentDirectory + "Version_1.0.0.0.sql";
-                mCreationFile = mCreationFile.Replace(@"\", @"/");
-                mCreationFile = mCreationFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
-                string mCreationText = File.ReadAllText(mCreationFile);
-                mCreationText = mCreationText.Replace("YourDatabaseName", DatabaseName);
-                File.WriteAllText(mCreationFile, mCreationText);
-                mSqlConnection.Open();
-                // Create the database 
-                bool mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
-                if (!mSuccess)
-                {
-                    string mError = "Was not able to create the database using {0}";
-                    mError = String.Format(mError, mCreationFile);
-                    throw new Exception(mError);
-                }
-                mCreationText = File.ReadAllText(mCreationFile);
-                mCreationText = mCreationText.Replace(DatabaseName, "YourDatabaseName");
-                File.WriteAllText(mCreationFile, mCreationText);
+                string mError = "Was not able to create the database using {0}";
+                mError = String.Format(mError, mCreationFile);
+                throw new Exception(mError);
             }
+            mCreationText = File.ReadAllText(mCreationFile);
+            mCreationText = mCreationText.Replace(DatabaseName, "YourDatabaseName");
+            File.WriteAllText(mCreationFile, mCreationText);
         }
+    }
 
-        public bool Exists()
+    public bool Exists()
+    {
+        this.IsValid();
+        bool mRetVal = true;
+        string mSqlStatement = "SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
+        mSqlStatement = String.Format(mSqlStatement, base.DatabaseName);
+        try
         {
-            this.IsValid();
-            bool mRetVal = true;
-            string mSqlStatement = "SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
-            mSqlStatement = String.Format(mSqlStatement, this.m_DatabaseName);
-            try
+            DataRow mDataRow = this.GetDataRow(mSqlStatement);
+            if (mDataRow != null)
             {
-                DataRow mDataRow = this.GetDataRow(mSqlStatement);
-                if (mDataRow != null)
-                {
-                    if (mDataRow["name"] == null || mDataRow["name"].ToString().Length == 0)
-                    {
-                        mRetVal = false;
-                    }
-                }
-                else
+                if (mDataRow["name"] == null || mDataRow["name"].ToString().Length == 0)
                 {
                     mRetVal = false;
                 }
             }
-            catch (System.Exception)
+            else
             {
                 mRetVal = false;
             }
-            return mRetVal;
         }
-
-        /// <summary>
-        /// Replaces 'YourDatabaseName' in the given script file with the actual database name and executes the script.
-        /// </summary>
-        /// <param name="scriptFile">The path to the script file.</param>
-        /// <param name="sqlConnection">The SQL connection to execute the script on.</param>
-        /// <returns>True if the script execution was successful, false otherwise.</returns>
-        private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
+        catch (System.Exception ex)
         {
-            bool mSuccess = false;
-            // Replace 'YourDatabaseName' with the given database name
-            string mAllText = File.ReadAllText(scriptFile);
-            mAllText = mAllText.Replace("YourDatabaseName", DatabaseName);
+            mRetVal = false;
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Replaces 'YourDatabaseName' in the given script file with the actual database name and executes the script.
+    /// </summary>
+    /// <param name="scriptFile">The path to the script file.</param>
+    /// <param name="sqlConnection">The SQL connection to execute the script on.</param>
+    /// <returns>True if the script execution was successful, false otherwise.</returns>
+    private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
+    {
+        bool mSuccess = false;
+        // Replace 'YourDatabaseName' with the given database name
+        string mAllText = File.ReadAllText(scriptFile);
+        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName);
+        File.WriteAllText(scriptFile, mAllText);
+        try
+        {
+            // Create the database 
+            mSuccess = this.ExecuteScriptFile(scriptFile, sqlConnection);
+        }
+        catch (System.Exception)
+        {
+            // We do not want to throw anything that will be done by caller
+        }
+        finally
+        {
+            // Replace the given database name with 'YourDatabaseName'
+            mAllText = mAllText.Replace(DatabaseName, "YourDatabaseName");
             File.WriteAllText(scriptFile, mAllText);
-            try
-            {
-                // Create the database 
-                mSuccess = this.ExecuteScriptFile(scriptFile, sqlConnection);
-            }
-            catch (System.Exception)
-            {
-                // We do not want to throw anything that will be done by caller
-            }
-            finally
-            {
-                // Replace the given database name with 'YourDatabaseName'
-                mAllText = mAllText.Replace(DatabaseName, "YourDatabaseName");
-                File.WriteAllText(scriptFile, mAllText);
-            }
-            return mSuccess;
         }
+        return mSuccess;
+    }
 
-        public bool ExecuteScriptFile(string scriptWithPath)
+    public bool ExecuteScriptFile(string scriptWithPath)
+    {
+        using (SqlConnection mSqlConnection = new(this.ConnectionString))
         {
-            using (SqlConnection mSqlConnection = new(this.ConnectionString))
-            {
-                return this.replace_N_Run(scriptWithPath, mSqlConnection);
-            }
+            return this.replace_N_Run(scriptWithPath, mSqlConnection);
         }
+    }
 
-        private bool ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection)
+    private bool ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection)
+    {
+        this.IsValid();
+        try
         {
-            this.IsValid();
-            try
-            {
-                string mAllText = File.ReadAllText(scriptWithPath);
+            string mAllText = File.ReadAllText(scriptWithPath);
 
-                // split script on GO command
-                IEnumerable<string> mCommands = Regex.Split(
-                    mAllText,
-                    @"^\s*GO\s*$",
-                    RegexOptions.Multiline | RegexOptions.IgnoreCase
-                );
-                if (sqlConnection.State == ConnectionState.Closed)
+            // split script on GO command
+            IEnumerable<string> mCommands = Regex.Split(
+                mAllText,
+                @"^\s*GO\s*$",
+                RegexOptions.Multiline | RegexOptions.IgnoreCase
+            );
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+            foreach (string mCommandText in mCommands)
+            {
+                if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText))
                 {
-                    sqlConnection.Open();
-                }
-                foreach (string mCommandText in mCommands)
-                {
-                    if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText))
+                    try
                     {
-                        try
-                        {
-                            using SqlCommand mSqlCommand = new(mCommandText, sqlConnection);
-                            mSqlCommand.CommandType = CommandType.Text;
-                            mSqlCommand.ExecuteNonQuery();
-                        }
-                        catch (SqlException ex)
-                        {
-                            string spError = mCommandText.Length > 100 ? mCommandText.Substring(0, 100) + " ...\n..." : mCommandText;
-                            Console.WriteLine(string.Format("Please check the SqlServer script.\nFile: {0} \nLine: {1} \nError: {2} \nSQL Command: \n{3}", scriptWithPath, ex.LineNumber, ex.Message, spError));
-                            return false;
-                        }
+                        using SqlCommand mSqlCommand = new(mCommandText, sqlConnection);
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        string spError = mCommandText.Length > 100 ? mCommandText.Substring(0, 100) + " ...\n..." : mCommandText;
+                        Console.WriteLine(string.Format("Please check the SqlServer script.\nFile: {0} \nLine: {1} \nError: {2} \nSQL Command: \n{3}", scriptWithPath, ex.LineNumber, ex.Message, spError));
+                        return false;
                     }
                 }
+            }
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            return true;
         }
-
-        public string GetScriptPath(string theDirection)
+        catch (Exception ex)
         {
-            if (m_ScriptPath == string.Empty)
-            {
-                string mCurrentDirectory = Directory.GetCurrentDirectory();
-                if (!mCurrentDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                {
-                    mCurrentDirectory += Path.DirectorySeparatorChar.ToString();
-                }
-                mCurrentDirectory += "Scripts/TheDirection/" + ConfigSettings.DataAccessLayer + Path.DirectorySeparatorChar;
-                mCurrentDirectory = mCurrentDirectory.Replace(@"/", @"\");
-                mCurrentDirectory = mCurrentDirectory.Replace(@"\", Path.DirectorySeparatorChar.ToString());
-                this.m_ScriptPath = mCurrentDirectory;
-            }
-            return m_ScriptPath.Replace("TheDirection", theDirection);
+            Console.WriteLine(ex.Message);
+            return false;
         }
+    }
 
-        public Version GetVersion()
+    public string GetScriptPath(string theDirection)
+    {
+        if (m_ScriptPath == string.Empty)
         {
-            this.IsValid();
-            Version mRetVal = new Version("0.0.0.0");
-            if (this.Exists())
+            string mCurrentDirectory = Directory.GetCurrentDirectory();
+            if (!mCurrentDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
-                string mCommandText = "SELECT [Version] FROM [ZGWSystem].[Database_Information]";
-                DataRow mDataRow = this.GetDataRow(mCommandText);
-                mRetVal = new Version(mDataRow["Version"].ToString());
+                mCurrentDirectory += Path.DirectorySeparatorChar.ToString();
             }
-            return mRetVal;
+            mCurrentDirectory += "Scripts/TheDirection/" + ConfigSettings.DataAccessLayer + Path.DirectorySeparatorChar;
+            mCurrentDirectory = mCurrentDirectory.Replace(@"/", @"\");
+            mCurrentDirectory = mCurrentDirectory.Replace(@"\", Path.DirectorySeparatorChar.ToString());
+            this.m_ScriptPath = mCurrentDirectory;
         }
+        return m_ScriptPath.Replace("TheDirection", theDirection);
+    }
 
-        public string SetDatabaseName(string connectionString)
+    public Version GetVersion()
+    {
+        this.IsValid();
+        Version mRetVal = new Version("0.0.0.0");
+        if (this.Exists())
         {
-            string[] mParameterParts = null;
-            string[] mConnectionStringParts = connectionString.Split(";");
-            string mRetVal = string.Empty;
-            for (int i = 0; i < mConnectionStringParts.Length; i++)
-            {
-                mParameterParts = mConnectionStringParts[i].Split("=");
-                if (mParameterParts[0].ToLower() == "database")
-                {
-                    mRetVal = mParameterParts[1];
-                    break;
-                }
-            }
-            this.m_DatabaseName = mRetVal;
-            return mRetVal;
+            string mCommandText = "SELECT [Version] FROM [ZGWSystem].[Database_Information]";
+            DataRow mDataRow = this.GetDataRow(mCommandText);
+            mRetVal = new Version(mDataRow["Version"].ToString());
         }
+        return mRetVal;
+    }
 
-        /// <summary>
-        /// Calls base method to ensure connection string is present then
-        /// ensures that the database name is set.
-        /// </summary>
-        /// <exception cref="DataAccessLayerException"></exception>
-        protected override void IsValid()
+    /// <summary>
+    /// Calls base method to ensure connection string is present then
+    /// ensures that the database name is set.
+    /// </summary>
+    /// <exception cref="DataAccessLayerException"></exception>
+    protected override void IsValid()
+    {
+        base.IsValid();
+        if (String.IsNullOrEmpty(base.DatabaseName) | String.IsNullOrWhiteSpace(base.DatabaseName))
         {
-            base.IsValid();
-            if (String.IsNullOrEmpty(this.m_DatabaseName) | String.IsNullOrWhiteSpace(this.m_DatabaseName))
-            {
-                throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
-            }
+            throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
         }
+    }
 
-        public void UpdateLogPath()
-        {
-            string mCommandText = String.Format("UPDATE [ZGWOptional].[Directories] SET [Directory] = '{0}' WHERE [FunctionSeqId] = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'Manage_Logs')", ConfigSettings.LogPath);
-            this.ExecuteNonQuery(mCommandText);
-        }
+    public void UpdateLogPath()
+    {
+        string mCommandText = String.Format("UPDATE [ZGWOptional].[Directories] SET [Directory] = '{0}' WHERE [FunctionSeqId] = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'Manage_Logs')", ConfigSettings.LogPath);
+        this.ExecuteNonQuery(mCommandText);
     }
 }

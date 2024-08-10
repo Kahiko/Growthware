@@ -15,6 +15,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     {
         #region Private Fields
+        private string m_ConnectionString = string.Empty;
+        internal string m_ConnectionWithoutDatabaseName = string.Empty;
+        private string m_DatabaseName = string.Empty;
+
         private bool m_DisposedValue;
         private Logger m_Logger = Logger.Instance();
         #endregion
@@ -23,7 +27,25 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <summary>
         /// Used for all methods to connect to the database.
         /// </summary>
-        public string ConnectionString { get; set; }
+        public string ConnectionString
+        {
+            get
+            {
+                return m_ConnectionString;
+            }
+            set
+            {
+                this.m_ConnectionString = value;
+                this.setConnectionWithoutDatabaseName();
+                this.setDatabaseName();
+            }
+        }
+
+        public string DatabaseName
+        {
+            get { return this.m_DatabaseName; }
+            set { this.m_DatabaseName = value; }
+        }
         #endregion
 
         #region Private Methods
@@ -216,9 +238,52 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <remarks>Throws ArgumentException</remarks>
         protected virtual void IsValid()
         {
+            this.isConnectionStringSet();
+        }
+
+        private void isConnectionStringSet()
+        {
             if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
             {
                 throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
+            }
+        }
+
+        internal void setConnectionWithoutDatabaseName()
+        {
+            this.isConnectionStringSet();
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = ConnectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
+            {
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (!string.IsNullOrWhiteSpace(mParameterParts[0]) && !mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
+                }
+            }
+            // mRetVal = mRetVal.Substring(0, mRetVal.Length);
+            this.m_ConnectionWithoutDatabaseName = mRetVal;
+        }
+
+        internal void setDatabaseName()
+        {
+            if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
+            {
+                string[] mParameterParts = null;
+                string[] mConnectionStringParts = this.ConnectionString.Split(";");
+                string mRetVal = string.Empty;
+                for (int i = 0; i < mConnectionStringParts.Length; i++)
+                {
+                    mParameterParts = mConnectionStringParts[i].Split("=");
+                    if (mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        mRetVal = mParameterParts[1];
+                        break;
+                    }
+                }
+                this.m_DatabaseName = mRetVal;
             }
         }
         #endregion
@@ -332,7 +397,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     string mFormattedMsg = formatError(null, commandText, ex.ToString());
                     DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
                     this.m_Logger.Fatal(mDataAccessLayerException);
-                    throw mDataAccessLayerException;                    
+                    throw mDataAccessLayerException;
                 }
             }
             catch (Exception ex)
@@ -340,7 +405,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 string mFormattedMsg = formatError(null, commandText, ex.ToString());
                 DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
                 this.m_Logger.Fatal(mDataAccessLayerException);
-                throw mDataAccessLayerException; 
+                throw mDataAccessLayerException;
             }
         }
 
@@ -384,7 +449,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     catch (System.Exception ex)
                     {
                         // Log an Info message if the error message starts with "Invalid column name"
-                        if(ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             m_Logger.Info(ex);
                         }

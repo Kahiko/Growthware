@@ -13,12 +13,38 @@ namespace GrowthWare.DataAccess.Oracle;
 public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
     private string m_DatabaseName = string.Empty;
-    
+
     public string DatabaseName
     {
         get { return this.m_DatabaseName; }
         set { this.m_DatabaseName = value; }
     }
+
+    public string ConnectionStringWithoutDatabaseName
+    {
+        get{return base.m_ConnectionWithoutDatabaseName;}
+    }
+    
+    // public string ConnectionStringWithoutDatabaseName
+    // {
+    //     get
+    //     {
+    //         this.IsValid();
+    //         string[] mParameterParts = null;
+    //         string[] mConnectionStringParts = ConnectionString.Split(";");
+    //         string mRetVal = string.Empty;
+    //         for (int i = 0; i < mConnectionStringParts.Length; i++)
+    //         {
+    //             mParameterParts = mConnectionStringParts[i].Split("=");
+    //             if (!mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+    //             {
+    //                 mRetVal = mParameterParts[0] + "=" + mParameterParts[1];
+    //                 break;
+    //             }
+    //         }
+    //         return mRetVal;
+    //     }
+    // }
 
     public void Create()
     {
@@ -58,6 +84,23 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
     public Version GetVersion()
     {
         throw new NotImplementedException();
+    }
+
+    public string SetDatabaseName()
+    {
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = this.ConnectionString.Split(";");
+        string mRetVal = string.Empty;
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal = mParameterParts[1];
+                break;
+            }
+        }
+        return mRetVal;
     }
 
     /// <summary>

@@ -57,14 +57,13 @@ namespace GrowthWare.DatabaseManager
             string mConnectionString = ConfigSettings.ConnectionString;
             Boolean mDeleteDatabase = false;
             string mNameSpace = ConfigSettings.DataAccessLayerNamespace;
-            string mOriginalConnectionString = mConnectionString;
+            // string mOriginalConnectionString = mConnectionString;
             Stopwatch mWatch = new Stopwatch();
             mWatch.Start();
 
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
-            mDatabaseManager.SetDatabaseName(mConnectionString);
-            mConnectionString = mConnectionString.Replace("database=" + mDatabaseManager.DatabaseName + ";" , "");
             mDatabaseManager.ConnectionString = mConnectionString;
+            mDatabaseManager.ConnectionString = mDatabaseManager.ConnectionStringWithoutDatabaseName;
             if (m_DesiredVersion == new Version("0.0.0.0"))
             {
                 mDeleteDatabase = true;
@@ -96,7 +95,7 @@ namespace GrowthWare.DatabaseManager
                 {
                     Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
                 }
-                mDatabaseManager.ConnectionString = mOriginalConnectionString;
+                mDatabaseManager.ConnectionString = mConnectionString;
                 Console.WriteLine("Starting upgrade/downgrade process.");
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
