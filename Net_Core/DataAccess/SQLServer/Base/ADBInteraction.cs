@@ -263,7 +263,6 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
                 }
             }
-            // mRetVal = mRetVal.Substring(0, mRetVal.Length);
             this.m_ConnectionWithoutDatabaseName = mRetVal;
         }
 
