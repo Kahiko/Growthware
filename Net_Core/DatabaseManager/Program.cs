@@ -57,7 +57,6 @@ namespace GrowthWare.DatabaseManager
             string mConnectionString = ConfigSettings.ConnectionString;
             Boolean mDeleteDatabase = false;
             string mNameSpace = ConfigSettings.DataAccessLayerNamespace;
-            // string mOriginalConnectionString = mConnectionString;
             Stopwatch mWatch = new Stopwatch();
             mWatch.Start();
 
