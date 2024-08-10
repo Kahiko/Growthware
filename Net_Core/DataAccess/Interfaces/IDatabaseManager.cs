@@ -50,6 +50,13 @@ namespace GrowthWare.DataAccess.Interfaces
         Version GetVersion();
 
         /// <summary>
+        /// Replaces 'YourDatabaseName' in the given connection string with the actual database name.
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
+        string SetDatabaseName(string connectionString);
+
+        /// <summary>
         /// Updates the log path in the [ZGWOptional].[Directories] table based on the value of ConfigSettings.LogPath.
         /// </summary>
         void UpdateLogPath();

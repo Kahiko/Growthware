@@ -306,6 +306,24 @@ namespace GrowthWare.DataAccess.SQLServer
             return mRetVal;
         }
 
+        public string SetDatabaseName(string connectionString)
+        {
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = connectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
+            {
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (mParameterParts[0].ToLower() == "database")
+                {
+                    mRetVal = mParameterParts[1];
+                    break;
+                }
+            }
+            this.m_DatabaseName = mRetVal;
+            return mRetVal;
+        }
+
         /// <summary>
         /// Calls base method to ensure connection string is present then
         /// ensures that the database name is set.
