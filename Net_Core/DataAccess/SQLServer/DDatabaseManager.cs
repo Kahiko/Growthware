@@ -183,7 +183,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
                 mRetVal = false;
             }
         }
-        catch ()
+        catch (System.Exception)
         {
             mRetVal = false;
         }
