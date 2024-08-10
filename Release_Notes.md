@@ -8,7 +8,7 @@
 - ???
 
 ### Bug Fixes
-- ???
+- Fixed type-o in Change Password
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 
