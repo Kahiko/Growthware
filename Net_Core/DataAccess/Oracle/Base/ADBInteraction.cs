@@ -222,17 +222,22 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return mRetVal;
     }
 
-    /// <summary>
-    /// Ensures  ConnectionString has a value.
-    /// </summary>
-    /// <remarks>Throws ArgumentException</remarks>
-    protected virtual void IsValid()
-    {
-        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
+        /// <summary>
+        /// Ensures  ConnectionString has a value.
+        /// </summary>
+        /// <remarks>Throws ArgumentException</remarks>
+        protected virtual void IsValid()
         {
-            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
+            this.isConnectionStringSet();
         }
-    }
+
+        private void isConnectionStringSet()
+        {
+            if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
+            {
+                throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
+            }
+        }
     #endregion
 
     #region IDBInteraction Members
@@ -483,17 +488,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 
     internal void setConnectionWithoutDatabaseName()
     {
-        this.IsValid();
+        this.isConnectionStringSet();
         string[] mParameterParts = null;
         string[] mConnectionStringParts = ConnectionString.Split(";");
         string mRetVal = string.Empty;
         for (int i = 0; i < mConnectionStringParts.Length; i++)
         {
             mParameterParts = mConnectionStringParts[i].Split("=");
-            if (!mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(mParameterParts[0]) && !mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
             {
-                mRetVal = mParameterParts[0] + "=" + mParameterParts[1];
-                break;
+                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
             }
         }
         this.m_ConnectionWithoutDatabaseName = mRetVal;
