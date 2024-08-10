@@ -1,4 +1,5 @@
 using GrowthWare.DataAccess.Interfaces.Base;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
 using System;
 using System.Data;
@@ -9,24 +10,25 @@ using System.Reflection;
 namespace GrowthWare.DataAccess.Oracle.Base;
 
 /// <summary>
-/// Performs all data store interaction to Iracle Server.
+/// Performs all data store interaction to SQL Server.
 /// </summary>
 public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 {
-    #region Private Fields
     private string m_ConnectionString = string.Empty;
     internal string m_ConnectionWithoutDatabaseName = string.Empty;
     private string m_DatabaseName = string.Empty;
     private bool m_DisposedValue;
-    #endregion
+    private Logger m_Logger = Logger.Instance();
 
-    #region Public Properties
     /// <summary>
     /// Used for all methods to connect to the database.
     /// </summary>
     public string ConnectionString
     {
-        get { return m_ConnectionString; }
+        get
+        {
+            return m_ConnectionString;
+        }
         set
         {
             this.m_ConnectionString = value;
@@ -34,39 +36,14 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             this.setDatabaseName();
         }
     }
-    #endregion
 
-    #region Private Methods
     /// <summary>
-    /// Formats an error message containing the store procedure name and the parameters/values.
+    /// The database name derived from the connection string
     /// </summary>
-    /// <param name="parameters">The oracle parameters used when the error was created.</param>
-    /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
-    /// <param name="yourExMSG">The message for the exception object.</param>
-    /// <returns>A formatted string</returns>
-    /// <remarks></remarks>
-    private string formatError(OracleParameter[] parameters, string storedProcedure, string yourExMSG)
+    public string DatabaseName
     {
-        string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
-        OracleParameter testParameter = null;
-        mMessage += "Parameters are as follows:" + Environment.NewLine;
-        foreach (OracleParameter testParameter_loopVariable in parameters)
-        {
-            testParameter = testParameter_loopVariable;
-            mMessage += testParameter.ParameterName.ToString() + " = ";
-            if (testParameter.Value != null)
-            {
-                mMessage += testParameter.Value.ToString() + Environment.NewLine;
-            }
-            else
-            {
-                mMessage += Environment.NewLine;
-            }
-
-        }
-        mMessage += "Connection string : " + ConnectionString + Environment.NewLine;
-        mMessage += yourExMSG + Environment.NewLine;
-        return mMessage;
+        get { return this.m_DatabaseName; }
+        set { this.m_DatabaseName = value; }
     }
 
     /// <summary>
@@ -210,6 +187,11 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
     }
 
+    /// <summary>
+    /// Clean up the string
+    /// </summary>
+    /// <param name="stringValue"></param>
+    /// <returns></returns>
     protected virtual string Cleanup(string stringValue)
     {
         string mRetVal = stringValue;
@@ -223,26 +205,39 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Ensures  ConnectionString has a value.
+    /// Implements IDispose
     /// </summary>
-    /// <remarks>Throws ArgumentException</remarks>
-    protected virtual void IsValid()
+    /// <param name="disposing">Boolean</param>
+    /// <remarks></remarks>
+    protected virtual void Dispose(bool disposing)
     {
-        this.isConnectionStringSet();
-    }
-
-    private void isConnectionStringSet()
-    {
-        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
+        // Check to see if Dispose has already been called.
+        if (!m_DisposedValue)
         {
-            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
-        }
-    }
-    #endregion
+            if (disposing)
+            {
+                // // Dispose managed resources if you have any.
+            }
+            // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+            // TODO: set large fields to null.
 
-    #region IDBInteraction Members
+        }
+        m_DisposedValue = true;
+    }
+
     /// <summary>
-    /// Executes a non Query given the commandText and oracle parameters if any
+    /// Implements Dispose
+    /// </summary>
+    /// <remarks></remarks>
+    public void Dispose()
+    {
+        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Executes a non Query given the commandText and sql parameters if any
     /// </summary>
     /// <param name="commandText">String</param>
     /// <param name="OracleParameter">OracleParameter</param>
@@ -284,12 +279,18 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             }
             else
             {
-                throw new DataAccessLayerException(formatError(OracleParameters, commandText, ex.ToString()), ex);
+                string mFormattedMsg = formatError(OracleParameters, commandText, ex.ToString());
+                DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                this.m_Logger.Fatal(mDataAccessLayerException);
+                throw mDataAccessLayerException;
             }
         }
         catch (Exception ex)
         {
-            throw new DataAccessLayerException(formatError(OracleParameters, commandText, ex.ToString()), ex);
+            string mFormattedMsg = formatError(OracleParameters, commandText, ex.ToString());
+            DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+            this.m_Logger.Fatal(mDataAccessLayerException);
+            throw mDataAccessLayerException;
         }
     }
 
@@ -303,6 +304,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return this.ExecuteNonQuery(commandText, null);
     }
 
+    /// <summary>
+    /// Executes a scalar query against the database.
+    /// This function takes a command text and optional SQL parameters, and returns the result of the query.
+    /// If forceCommandText is set to false and SQL parameters are provided, the command type is set to StoredProcedure.
+    /// The function throws a DataAccessLayerException if an error occurs during execution.
+    /// </summary>
+    /// <param name="commandText">The command text to execute.</param>
+    /// <param name="OracleParameters">The SQL parameters to use with the command.</param>
+    /// <param name="forceCommandText">Whether to force the command type to Text, even if SQL parameters are provided.</param>
+    /// <returns></returns>
     protected object ExecuteScalar(string commandText, OracleParameter[] OracleParameters, bool forceCommandText = false)
     {
         this.IsValid();
@@ -340,92 +351,81 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             }
             else
             {
-                throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+                string mFormattedMsg = formatError(null, commandText, ex.ToString());
+                DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                this.m_Logger.Fatal(mDataAccessLayerException);
+                throw mDataAccessLayerException;
             }
         }
         catch (Exception ex)
         {
-            throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+            string mFormattedMsg = formatError(null, commandText, ex.ToString());
+            DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+            this.m_Logger.Fatal(mDataAccessLayerException);
+            throw mDataAccessLayerException;
         }
     }
 
     /// <summary>
-    /// Returns a DataSet given the store procedure and oracle parameters
+    /// Formats an error message containing the store procedure name and the parameters/values.
     /// </summary>
-    /// <param name="commandText">String</param>
-    /// <returns>DataSet</returns>
+    /// <param name="parameters">The sql parameters used when the error was created.</param>
+    /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
+    /// <param name="yourExMSG">The message for the exception object.</param>
+    /// <returns>A formatted string</returns>
     /// <remarks></remarks>
-    protected virtual DataSet GetDataSet(String commandText, OracleParameter[] OracleParameter, bool forceCommandText = false)
+    private string formatError(OracleParameter[] parameters, string storedProcedure, string yourExMSG)
     {
-        this.IsValid();
-        DataSet mRetVal = null;
-
-        using (OracleConnection mOracleConnection = new(this.ConnectionString))
+        string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
+        OracleParameter testParameter = null;
+        mMessage += "Parameters are as follows:" + Environment.NewLine;
+        foreach (OracleParameter testParameter_loopVariable in parameters)
         {
-            mOracleConnection.Open();
-            using (OracleCommand mOracleCommand = new OracleCommand(commandText, mOracleConnection))
+            testParameter = testParameter_loopVariable;
+            mMessage += testParameter.ParameterName.ToString() + " = ";
+            if (testParameter.Value != null)
             {
-                mOracleCommand.CommandType = CommandType.Text;
-                if (OracleParameter != null)
-                {
-                    if (OracleParameter.Length > 0)
-                    {
-                        if (forceCommandText != true)
-                        {
-                            mOracleCommand.CommandType = CommandType.StoredProcedure;
-                        }
-                        foreach (OracleParameter mOracleParameter in OracleParameter)
-                        {
-                            mOracleCommand.Parameters.Add(mOracleParameter);
-                        }
-                    }
-                }
-                using OracleDataAdapter mOracleDataAdapter = new(mOracleCommand);
-                mRetVal = new DataSet();
-                mOracleDataAdapter.Fill(mRetVal);
+                mMessage += testParameter.Value.ToString() + Environment.NewLine;
+            }
+            else
+            {
+                mMessage += Environment.NewLine;
+            }
+
+        }
+        mMessage += "Connection string : " + ConnectionString + Environment.NewLine;
+        mMessage += yourExMSG + Environment.NewLine;
+        return mMessage;
+    }
+
+    /// <summary>
+    /// Returns the correct integer for added or updated by
+    /// </summary>
+    /// <param name="profile">Object implementing IProfile</param>
+    /// <returns>int</returns>
+    protected static int GetAddedUpdatedBy(IBaseModel profile)
+    {
+        int mAdded_Updated_By = 0;
+        if (profile != null)
+        {
+            if (profile.Id == -1)
+            {
+                mAdded_Updated_By = profile.AddedBy;
+            }
+            else
+            {
+                mAdded_Updated_By = profile.UpdatedBy;
             }
         }
-        return mRetVal;
+        else
+        {
+            throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        }
+        return mAdded_Updated_By;
     }
 
     /// <summary>
-    /// Returns a DataSet given the stored procedure
-    /// </summary>
-    /// <param name="commandText">String</param>
-    /// <returns>DataSet</returns>
-    /// <remarks>Contains no logic</remarks>
-    protected virtual DataSet GetDataSet(String commandText)
-    {
-        return this.GetDataSet(commandText, null);
-    }
-
-    /// <summary>
-    /// Returns a DataTable given the command text, Oracle Connection and oracle parameters
-    /// </summary>
-    /// <param name="commandText">String</param>
-    /// <param name="OracleParameter">OracleParameter[]</param>
-    /// <returns>DataTable</returns>
-    /// <remarks></remarks>
-    protected virtual DataTable GetDataTable(String commandText, OracleParameter[] OracleParameter, bool forceCommandText = false)
-    {
-        DataSet mDataSet = this.GetDataSet(commandText, OracleParameter, forceCommandText);
-        DataTable mDataTable = mDataSet.Tables[0].Copy();
-        return mDataTable;
-    }
-
-    /// <summary>
-    /// Returns a DataTable given the command text and Oracle Connection
-    /// </summary>
-    /// <param name="commandText">String</param>
-    /// <returns>DataTable</returns>
-    /// <remarks>Contains no logic</remarks>
-    protected virtual DataTable GetDataTable(String commandText)
-    {
-        return this.GetDataTable(commandText, null);
-    }
-
-    /// <summary>
-    /// Returns a DataRow given the command text and oracle parameters
+    /// Returns a DataRow given the command text and sql parameters
     /// </summary>
     /// <param name="commandText">String</param>
     /// <param name="OracleParameter">OracleParameter[]</param>
@@ -457,6 +457,98 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
+    /// Returns a DataSet given the store procedure and sql parameters
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <returns>DataSet</returns>
+    /// <remarks></remarks>
+    protected virtual DataSet GetDataSet(String commandText, OracleParameter[] OracleParameter, bool forceCommandText = false)
+    {
+        this.IsValid();
+        DataSet mRetVal = null;
+
+        using (OracleConnection mOracleConnection = new(this.ConnectionString))
+        {
+            mOracleConnection.Open();
+            using (OracleCommand mOracleCommand = new OracleCommand(commandText, mOracleConnection))
+            {
+                mOracleCommand.CommandType = CommandType.Text;
+                if (OracleParameter != null)
+                {
+                    if (OracleParameter.Length > 0)
+                    {
+                        if (forceCommandText != true)
+                        {
+                            mOracleCommand.CommandType = CommandType.StoredProcedure;
+                        }
+                        foreach (OracleParameter mOracleParameter in OracleParameter)
+                        {
+                            mOracleCommand.Parameters.Add(mOracleParameter);
+                        }
+                    }
+                }
+                using OracleDataAdapter mOracleDataAdapter = new(mOracleCommand);
+                mRetVal = new DataSet();
+                try
+                {
+                    mOracleDataAdapter.Fill(mRetVal);
+                }
+                catch (System.Exception ex)
+                {
+                    // Log an Info message if the error message starts with "Invalid column name"
+                    if (ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        m_Logger.Info(ex);
+                    }
+                    else
+                    {
+                        m_Logger.Error(ex);
+                    }
+                    // Throw the exception
+                    throw;
+                }
+            }
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a DataSet given the stored procedure
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <returns>DataSet</returns>
+    /// <remarks>Contains no logic</remarks>
+    protected virtual DataSet GetDataSet(String commandText)
+    {
+        return this.GetDataSet(commandText, null);
+    }
+
+    /// <summary>
+    /// Returns a DataTable given the command text, Sql Connection and sql parameters
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <param name="OracleParameter">OracleParameter[]</param>
+    /// <returns>DataTable</returns>
+    /// <remarks></remarks>
+    protected virtual DataTable GetDataTable(String commandText, OracleParameter[] OracleParameter, bool forceCommandText = false)
+    {
+        DataSet mDataSet = this.GetDataSet(commandText, OracleParameter, forceCommandText);
+        DataTable mDataTable = mDataSet.Tables[0].Copy();
+        return mDataTable;
+    }
+
+    /// <summary>
+    /// Returns a DataTable given the command text and Sql Connection
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <returns>DataTable</returns>
+    /// <remarks>Contains no logic</remarks>
+    protected virtual DataTable GetDataTable(String commandText)
+    {
+        return this.GetDataTable(commandText, null);
+    }
+
+    /// <summary>
     /// Returns the value of an output parameter given the parameter name and an array of parameters
     /// </summary>
     /// <param name="parameterName">parameterName</param>
@@ -484,6 +576,54 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             throw new ArgumentNullException("parameters", "parameters cannot be a null reference (Nothing in Visual Basic)!");
         }
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a OracleParameter given the ParameterName, ParameterValue and Direction.
+    /// </summary>
+    /// <param name="parameterName">String</param>
+    /// <param name="parameterValue">Object</param>
+    /// <param name="direction">ParameterDirection</param>
+    /// <returns>OracleParameter</returns>
+    protected virtual OracleParameter GetOracleParameter(String parameterName, Object parameterValue, ParameterDirection direction)
+    {
+        OracleParameter mRetVal = new OracleParameter(parameterName, parameterValue);
+        switch (direction)
+        {
+            case ParameterDirection.Input:
+                mRetVal.Direction = ParameterDirection.Input;
+                break;
+            case ParameterDirection.InputOutput:
+                mRetVal.Direction = ParameterDirection.InputOutput;
+                break;
+            case ParameterDirection.Output:
+                mRetVal.Direction = ParameterDirection.Output;
+                break;
+            case ParameterDirection.ReturnValue:
+                mRetVal.Direction = ParameterDirection.ReturnValue;
+                break;
+            default:
+                mRetVal.Direction = ParameterDirection.Input;
+                break;
+        }
+        return mRetVal;
+    }
+
+    private void isConnectionStringSet()
+    {
+        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
+        {
+            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
+        }
+    }
+
+    /// <summary>
+    /// Ensures  ConnectionString has a value.
+    /// </summary>
+    /// <remarks>Throws ArgumentException</remarks>
+    protected virtual void IsValid()
+    {
+        this.isConnectionStringSet();
     }
 
     internal void setConnectionWithoutDatabaseName()
@@ -523,86 +663,6 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
     }
 
-    /// <summary>
-    /// Returns a OracleParameter given the ParameterName, ParameterValue and Direction.
-    /// </summary>
-    /// <param name="parameterName">String</param>
-    /// <param name="parameterValue">Object</param>
-    /// <param name="direction">ParameterDirection</param>
-    /// <returns>OracleParameter</returns>
-    protected virtual OracleParameter GetOracleParameter(String parameterName, Object parameterValue, ParameterDirection direction)
-    {
-        OracleParameter mRetVal = new OracleParameter(parameterName, parameterValue);
-        switch (direction)
-        {
-            case ParameterDirection.Input:
-                mRetVal.Direction = ParameterDirection.Input;
-                break;
-            case ParameterDirection.InputOutput:
-                mRetVal.Direction = ParameterDirection.InputOutput;
-                break;
-            case ParameterDirection.Output:
-                mRetVal.Direction = ParameterDirection.Output;
-                break;
-            case ParameterDirection.ReturnValue:
-                mRetVal.Direction = ParameterDirection.ReturnValue;
-                break;
-            default:
-                mRetVal.Direction = ParameterDirection.Input;
-                break;
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Returns the correct integer for added or updated by
-    /// </summary>
-    /// <param name="profile">Object implementing IProfile</param>
-    /// <returns>int</returns>
-    protected static int GetAddedUpdatedBy(IBaseModel profile)
-    {
-        int mAdded_Updated_By = 0;
-        if (profile != null)
-        {
-            if (profile.Id == -1)
-            {
-                mAdded_Updated_By = profile.AddedBy;
-            }
-            else
-            {
-                mAdded_Updated_By = profile.UpdatedBy;
-            }
-        }
-        else
-        {
-            throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        }
-        return mAdded_Updated_By;
-    }
-    #endregion
-
-    #region IDisposable Members
-    /// <summary>
-    /// Implements IDispose
-    /// </summary>
-    /// <param name="disposing">Boolean</param>
-    /// <remarks></remarks>
-    protected virtual void Dispose(bool disposing)
-    {
-        // Check to see if Dispose has already been called.
-        if (!m_DisposedValue)
-        {
-            if (disposing)
-            {
-                // // Dispose managed resources if you have any.
-            }
-            // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-            // TODO: set large fields to null.
-
-        }
-        m_DisposedValue = true;
-    }
-
     //// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
     //~DDBInteraction() 
     //{
@@ -610,16 +670,4 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     //    Dispose(false);
     //}
 
-    /// <summary>
-    /// Implements Dispose
-    /// </summary>
-    /// <remarks></remarks>
-    public void Dispose()
-    {
-        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-    #endregion
 }
-
