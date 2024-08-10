@@ -14,16 +14,12 @@ namespace GrowthWare.DataAccess.SQLServer.Base;
 /// </summary>
 public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 {
-    #region Private Fields
     private string m_ConnectionString = string.Empty;
     internal string m_ConnectionWithoutDatabaseName = string.Empty;
     private string m_DatabaseName = string.Empty;
-
     private bool m_DisposedValue;
     private Logger m_Logger = Logger.Instance();
-    #endregion
 
-    #region Public Properties
     /// <summary>
     /// Used for all methods to connect to the database.
     /// </summary>
@@ -41,44 +37,13 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
     }
 
+    /// <summary>
+    /// The database name derived from the connection string
+    /// </summary>
     public string DatabaseName
     {
         get { return this.m_DatabaseName; }
         set { this.m_DatabaseName = value; }
-    }
-    #endregion
-
-    #region Private Methods
-    /// <summary>
-    /// Formats an error message containing the store procedure name and the parameters/values.
-    /// </summary>
-    /// <param name="parameters">The sql parameters used when the error was created.</param>
-    /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
-    /// <param name="yourExMSG">The message for the exception object.</param>
-    /// <returns>A formatted string</returns>
-    /// <remarks></remarks>
-    private string formatError(SqlParameter[] parameters, string storedProcedure, string yourExMSG)
-    {
-        string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
-        SqlParameter testParameter = null;
-        mMessage += "Parameters are as follows:" + Environment.NewLine;
-        foreach (SqlParameter testParameter_loopVariable in parameters)
-        {
-            testParameter = testParameter_loopVariable;
-            mMessage += testParameter.ParameterName.ToString() + " = ";
-            if (testParameter.Value != null)
-            {
-                mMessage += testParameter.Value.ToString() + Environment.NewLine;
-            }
-            else
-            {
-                mMessage += Environment.NewLine;
-            }
-
-        }
-        mMessage += "Connection string : " + ConnectionString + Environment.NewLine;
-        mMessage += yourExMSG + Environment.NewLine;
-        return mMessage;
     }
 
     /// <summary>
@@ -220,6 +185,11 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
     }
 
+    /// <summary>
+    /// Clean up the string
+    /// </summary>
+    /// <param name="stringValue"></param>
+    /// <returns></returns>
     protected virtual string Cleanup(string stringValue)
     {
         string mRetVal = stringValue;
@@ -233,61 +203,37 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Ensures  ConnectionString has a value.
+    /// Implements IDispose
     /// </summary>
-    /// <remarks>Throws ArgumentException</remarks>
-    protected virtual void IsValid()
+    /// <param name="disposing">Boolean</param>
+    /// <remarks></remarks>
+    protected virtual void Dispose(bool disposing)
     {
-        this.isConnectionStringSet();
-    }
-
-    private void isConnectionStringSet()
-    {
-        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
+        // Check to see if Dispose has already been called.
+        if (!m_DisposedValue)
         {
-            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
-        }
-    }
-
-    internal void setConnectionWithoutDatabaseName()
-    {
-        this.isConnectionStringSet();
-        string[] mParameterParts = null;
-        string[] mConnectionStringParts = ConnectionString.Split(";");
-        string mRetVal = string.Empty;
-        for (int i = 0; i < mConnectionStringParts.Length; i++)
-        {
-            mParameterParts = mConnectionStringParts[i].Split("=");
-            if (!string.IsNullOrWhiteSpace(mParameterParts[0]) && !mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+            if (disposing)
             {
-                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
+                // // Dispose managed resources if you have any.
             }
+            // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+            // TODO: set large fields to null.
+
         }
-        this.m_ConnectionWithoutDatabaseName = mRetVal;
+        m_DisposedValue = true;
     }
 
-    internal void setDatabaseName()
+    /// <summary>
+    /// Implements Dispose
+    /// </summary>
+    /// <remarks></remarks>
+    public void Dispose()
     {
-        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
-        {
-            string[] mParameterParts = null;
-            string[] mConnectionStringParts = this.ConnectionString.Split(";");
-            string mRetVal = string.Empty;
-            for (int i = 0; i < mConnectionStringParts.Length; i++)
-            {
-                mParameterParts = mConnectionStringParts[i].Split("=");
-                if (mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    mRetVal = mParameterParts[1];
-                    break;
-                }
-            }
-            this.m_DatabaseName = mRetVal;
-        }
+        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
-    #endregion
 
-    #region IDBInteraction Members
     /// <summary>
     /// Executes a non Query given the commandText and sql parameters if any
     /// </summary>
@@ -356,6 +302,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return this.ExecuteNonQuery(commandText, null);
     }
 
+    /// <summary>
+    /// Executes a scalar query against the database.
+    /// This function takes a command text and optional SQL parameters, and returns the result of the query.
+    /// If forceCommandText is set to false and SQL parameters are provided, the command type is set to StoredProcedure.
+    /// The function throws a DataAccessLayerException if an error occurs during execution.
+    /// </summary>
+    /// <param name="commandText">The command text to execute.</param>
+    /// <param name="sqlParameters">The SQL parameters to use with the command.</param>
+    /// <param name="forceCommandText">Whether to force the command type to Text, even if SQL parameters are provided.</param>
+    /// <returns></returns>
     protected object ExecuteScalar(string commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
     {
         this.IsValid();
@@ -406,6 +362,96 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             this.m_Logger.Fatal(mDataAccessLayerException);
             throw mDataAccessLayerException;
         }
+    }
+
+    /// <summary>
+    /// Formats an error message containing the store procedure name and the parameters/values.
+    /// </summary>
+    /// <param name="parameters">The sql parameters used when the error was created.</param>
+    /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
+    /// <param name="yourExMSG">The message for the exception object.</param>
+    /// <returns>A formatted string</returns>
+    /// <remarks></remarks>
+    private string formatError(SqlParameter[] parameters, string storedProcedure, string yourExMSG)
+    {
+        string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
+        SqlParameter testParameter = null;
+        mMessage += "Parameters are as follows:" + Environment.NewLine;
+        foreach (SqlParameter testParameter_loopVariable in parameters)
+        {
+            testParameter = testParameter_loopVariable;
+            mMessage += testParameter.ParameterName.ToString() + " = ";
+            if (testParameter.Value != null)
+            {
+                mMessage += testParameter.Value.ToString() + Environment.NewLine;
+            }
+            else
+            {
+                mMessage += Environment.NewLine;
+            }
+
+        }
+        mMessage += "Connection string : " + ConnectionString + Environment.NewLine;
+        mMessage += yourExMSG + Environment.NewLine;
+        return mMessage;
+    }
+
+    /// <summary>
+    /// Returns the correct integer for added or updated by
+    /// </summary>
+    /// <param name="profile">Object implementing IProfile</param>
+    /// <returns>int</returns>
+    protected static int GetAddedUpdatedBy(IBaseModel profile)
+    {
+        int mAdded_Updated_By = 0;
+        if (profile != null)
+        {
+            if (profile.Id == -1)
+            {
+                mAdded_Updated_By = profile.AddedBy;
+            }
+            else
+            {
+                mAdded_Updated_By = profile.UpdatedBy;
+            }
+        }
+        else
+        {
+            throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        }
+        return mAdded_Updated_By;
+    }
+
+    /// <summary>
+    /// Returns a DataRow given the command text and sql parameters
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <param name="sqlParameter">SqlParameter[]</param>
+    /// <returns>DataRow</returns>
+    /// <remarks></remarks>
+    protected virtual DataRow GetDataRow(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
+    {
+        this.IsValid();
+        DataTable mDataTable = this.GetDataTable(commandText, sqlParameters, forceCommandText);
+        if (mDataTable.Rows.Count > 0)
+        {
+            return mDataTable.Rows[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Returns a DataRow given the command text
+    /// </summary>
+    /// <param name="commandText">String</param>
+    /// <returns>DataRow</returns>
+    /// <remarks>Contains no logic</remarks>
+    protected virtual DataRow GetDataRow(String commandText)
+    {
+        return this.GetDataRow(commandText, null);
     }
 
     /// <summary>
@@ -501,38 +547,6 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Returns a DataRow given the command text and sql parameters
-    /// </summary>
-    /// <param name="commandText">String</param>
-    /// <param name="sqlParameter">SqlParameter[]</param>
-    /// <returns>DataRow</returns>
-    /// <remarks></remarks>
-    protected virtual DataRow GetDataRow(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
-    {
-        this.IsValid();
-        DataTable mDataTable = this.GetDataTable(commandText, sqlParameters, forceCommandText);
-        if (mDataTable.Rows.Count > 0)
-        {
-            return mDataTable.Rows[0];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// Returns a DataRow given the command text
-    /// </summary>
-    /// <param name="commandText">String</param>
-    /// <returns>DataRow</returns>
-    /// <remarks>Contains no logic</remarks>
-    protected virtual DataRow GetDataRow(String commandText)
-    {
-        return this.GetDataRow(commandText, null);
-    }
-
-    /// <summary>
     /// Returns the value of an output parameter given the parameter name and an array of parameters
     /// </summary>
     /// <param name="parameterName">parameterName</param>
@@ -593,53 +607,58 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return mRetVal;
     }
 
-    /// <summary>
-    /// Returns the correct integer for added or updated by
-    /// </summary>
-    /// <param name="profile">Object implementing IProfile</param>
-    /// <returns>int</returns>
-    protected static int GetAddedUpdatedBy(IBaseModel profile)
+    private void isConnectionStringSet()
     {
-        int mAdded_Updated_By = 0;
-        if (profile != null)
+        if (String.IsNullOrEmpty(this.ConnectionString) | String.IsNullOrWhiteSpace(this.ConnectionString))
         {
-            if (profile.Id == -1)
-            {
-                mAdded_Updated_By = profile.AddedBy;
-            }
-            else
-            {
-                mAdded_Updated_By = profile.UpdatedBy;
-            }
+            throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
         }
-        else
-        {
-            throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        }
-        return mAdded_Updated_By;
     }
-    #endregion
 
-    #region IDisposable Members
     /// <summary>
-    /// Implements IDispose
+    /// Ensures  ConnectionString has a value.
     /// </summary>
-    /// <param name="disposing">Boolean</param>
-    /// <remarks></remarks>
-    protected virtual void Dispose(bool disposing)
+    /// <remarks>Throws ArgumentException</remarks>
+    protected virtual void IsValid()
     {
-        // Check to see if Dispose has already been called.
-        if (!m_DisposedValue)
-        {
-            if (disposing)
-            {
-                // // Dispose managed resources if you have any.
-            }
-            // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-            // TODO: set large fields to null.
+        this.isConnectionStringSet();
+    }
 
+    internal void setConnectionWithoutDatabaseName()
+    {
+        this.isConnectionStringSet();
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = ConnectionString.Split(";");
+        string mRetVal = string.Empty;
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (!string.IsNullOrWhiteSpace(mParameterParts[0]) && !mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
+            }
         }
-        m_DisposedValue = true;
+        this.m_ConnectionWithoutDatabaseName = mRetVal;
+    }
+
+    internal void setDatabaseName()
+    {
+        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
+        {
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = this.ConnectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
+            {
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mRetVal = mParameterParts[1];
+                    break;
+                }
+            }
+            this.m_DatabaseName = mRetVal;
+        }
     }
 
     //// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
@@ -649,15 +668,4 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     //    Dispose(false);
     //}
 
-    /// <summary>
-    /// Implements Dispose
-    /// </summary>
-    /// <remarks></remarks>
-    public void Dispose()
-    {
-        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-    #endregion
 }
