@@ -14,11 +14,6 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
     private string m_ScriptPath = string.Empty;
 
-    public string ConnectionStringWithoutDatabaseName
-    {
-        get{return base.m_ConnectionWithoutDatabaseName;}
-    }
-
     public void Create()
     {
         /**
