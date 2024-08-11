@@ -5,6 +5,7 @@ SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
+UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 11 WHERE [Action] = 'accounts'
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
