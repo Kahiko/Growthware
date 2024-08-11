@@ -14,12 +14,6 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
     private string m_DatabaseName = string.Empty;
 
-    public string DatabaseName
-    {
-        get { return this.m_DatabaseName; }
-        set { this.m_DatabaseName = value; }
-    }
-
     public string ConnectionStringWithoutDatabaseName
     {
         get{return base.m_ConnectionWithoutDatabaseName;}
