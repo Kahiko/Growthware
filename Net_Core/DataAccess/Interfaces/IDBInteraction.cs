@@ -1,13 +1,25 @@
 using System;
 
-namespace GrowthWare.DataAccess.Interfaces.Base
+namespace GrowthWare.DataAccess.Interfaces.Base;
+/// <summary>
+/// The base interface for Database interaction code
+/// </summary>
+public interface IDBInteraction
 {
     /// <summary>
-    /// The base interface for Database interaction code
+    /// Gets or sets the connection string.
     /// </summary>
-    public interface IDBInteraction
-    {
-        String ConnectionString { get; set; }
-    }
+    String ConnectionString { get; set; }
+
+    /// <summary>
+    /// Returns the connection string without the database name.
+    /// </summary>
+    /// <returns></returns>
+    string ConnectionStringWithoutDatabaseName { get; }
+
+    /// <summary>
+    /// Gets or sets the name of the database.
+    /// </summary>
+    string DatabaseName { get; set; }
 
 }

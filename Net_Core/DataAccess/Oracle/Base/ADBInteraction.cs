@@ -36,7 +36,11 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             this.setDatabaseName();
         }
     }
-
+    public string ConnectionStringWithoutDatabaseName
+    {
+        get{return this.m_ConnectionWithoutDatabaseName;}
+    }
+    
     /// <summary>
     /// The database name derived from the connection string
     /// </summary>

@@ -6,16 +6,6 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IDatabaseManager : IDBInteraction
     {
-        /// <summary>
-        /// Gets or sets the name of the database.
-        /// </summary>
-        string DatabaseName { get; set; }
-
-        /// <summary>
-        /// Returns the connection string without the database name.
-        /// </summary>
-        /// <returns></returns>
-        string ConnectionStringWithoutDatabaseName { get; }
 
         /// <summary>
         /// Executes the upgrade scripts Version_0.0.0.0.sql and Version_1.0.0.0.sql.
