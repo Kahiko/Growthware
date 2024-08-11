@@ -466,48 +466,56 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     {
         this.IsValid();
         DataSet mRetVal = null;
-
-        using (SqlConnection mSqlConnection = new(this.ConnectionString))
+        try
         {
-            mSqlConnection.Open();
-            using (SqlCommand mSqlCommand = new SqlCommand(commandText, mSqlConnection))
+            using (SqlConnection mSqlConnection = new(this.ConnectionString))
             {
-                mSqlCommand.CommandType = CommandType.Text;
-                if (sqlParameter != null)
+                mSqlConnection.Open();
+                using (SqlCommand mSqlCommand = new SqlCommand(commandText, mSqlConnection))
                 {
-                    if (sqlParameter.Length > 0)
+                    mSqlCommand.CommandType = CommandType.Text;
+                    if (sqlParameter != null)
                     {
-                        if (forceCommandText != true)
+                        if (sqlParameter.Length > 0)
                         {
-                            mSqlCommand.CommandType = CommandType.StoredProcedure;
+                            if (forceCommandText != true)
+                            {
+                                mSqlCommand.CommandType = CommandType.StoredProcedure;
+                            }
+                            foreach (SqlParameter mSqlParameter in sqlParameter)
+                            {
+                                mSqlCommand.Parameters.Add(mSqlParameter);
+                            }
                         }
-                        foreach (SqlParameter mSqlParameter in sqlParameter)
+                    }
+                    using SqlDataAdapter mSqlDataAdapter = new(mSqlCommand);
+                    mRetVal = new DataSet();
+                    try
+                    {
+                        mSqlDataAdapter.Fill(mRetVal);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        // Log an Info message if the error message starts with "Invalid column name"
+                        if (ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
                         {
-                            mSqlCommand.Parameters.Add(mSqlParameter);
+                            m_Logger.Info(ex);
                         }
+                        else
+                        {
+                            m_Logger.Error(ex);
+                        }
+                        // Throw the exception
+                        throw;
                     }
                 }
-                using SqlDataAdapter mSqlDataAdapter = new(mSqlCommand);
-                mRetVal = new DataSet();
-                try
-                {
-                    mSqlDataAdapter.Fill(mRetVal);
-                }
-                catch (System.Exception ex)
-                {
-                    // Log an Info message if the error message starts with "Invalid column name"
-                    if (ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        m_Logger.Info(ex);
-                    }
-                    else
-                    {
-                        m_Logger.Error(ex);
-                    }
-                    // Throw the exception
-                    throw;
-                }
-            }
+            }            
+        }
+        catch (System.Exception ex)
+        {
+            m_Logger.Error(ex);
+            // Throw the exception
+            throw;
         }
         return mRetVal;
     }
