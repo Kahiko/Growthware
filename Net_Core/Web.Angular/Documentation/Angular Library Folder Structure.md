@@ -7,48 +7,49 @@ Project structure
 
 Below you can see the basic structure of the project that the CLI has generated for us (I omitted the irrelevant files). In the root there is the angular.json that configures the workspace and the package.json that contains all dependencies.
 
+(Best viewed with a plain text editor)<br />
 <yourWorkSpace>
-├── projects/
-│   ├── <yourApplication>/
-│   └── <yourLibrary>/                               # (1)
-|       ├── Grouping1/                               # (2)
-|       │    ├─ SubEntry1/                           # (3) import { SubEntry1Service } from '@mycompany/Grouping1/SubEntry1;
-|       │    │   │ └─src/
-|       │    │   │    └─ subentry1.service.ts        # (4)
-|       |    │   ├─ index.ts                         # (5)
-|       |    │   ├─ ng-package.json                  # (6)
-|       |    │   ├─ public-api.ts                    # (7)
-|       │    ├─ SubEntry2/                          import { SubEntry2Service } from '@mycompany/Grouping1/SubEntry2;
-|       │    │   │ └─src/
-|       │    │   │    └─ subentry2.service.ts        # (4)
-|       |    │   ├─ index.ts                         # (5)
-|       |    │   ├─ ng-package.json                  # (6)
-|       |    │   └─ public-api.ts                    # (7)
-|       ├── Grouping2/                               # (2)
-|       │    ├─ SubEntry1/                          import { SubEntry1Service } from '@mycompany/Grouping2/SubEntry1;
-|       │    │   │ └─src/
-|       │    │   │    └─ subentry1.service.ts        # (4)
-|       |    │   ├─ index.ts                         # (5)
-|       |    │   ├─ ng-package.json                  # (6)
-|       |    │   └─ public-api.ts                    # (7)
-|       │    ├─ Grouping3/
-|       │    │   └─ SubEntry1/                      import { SubEntry1Service } from '@mycompany/Grouping2/Grouping3/SubEntry1;
-|       │    │       │ └─src/
-|       │    │       │    └─ subentry1.service.ts    # (4)
-|       |    │       ├─ index.ts                     # (5)
-|       |    │       ├─ ng-package.json              # (6)
-|       |    │       └─ public-api.ts                # (7)
-|       │    └─ SubEntry2/                          import { SubEntry2Service } from '@mycompany/Grouping2/SubEntry2;
-|       │        │ └─src/
-|       │        │    └─ *.ts                        # (4)
-|       |        ├─ index.ts                         # (5)
-|       |        ├─ ng-package.json                  # (6)
-|       |        └─ public-api.ts                    # (7)
-│       ├── ng-package.json                          # (8)
-│       ├── public-api.ts                            # (9)
+├── projects/<br />
+│   ├── <yourApplication>/<br />
+│   └── <yourLibrary>/                               # (1)<br />
+|       ├── Grouping1/                               # (2)<br />
+|       │    ├─ SubEntry1/                           # (3) import { SubEntry1Service } from '@mycompany/Grouping1/SubEntry1;<br />
+|       │    │   │ └─src/<br />
+|       │    │   │    └─ subentry1.service.ts        # (4)<br />
+|       |    │   ├─ index.ts                         # (5)<br />
+|       |    │   ├─ ng-package.json                  # (6)<br />
+|       |    │   ├─ public-api.ts                    # (7)<br />
+|       │    ├─ SubEntry2/                          import { SubEntry2Service } from '@mycompany/Grouping1/SubEntry2;<br />
+|       │    │   │ └─src/<br />
+|       │    │   │    └─ subentry2.service.ts        # (4)<br />
+|       |    │   ├─ index.ts                         # (5)<br />
+|       |    │   ├─ ng-package.json                  # (6)<br />
+|       |    │   └─ public-api.ts                    # (7)<br />
+|       ├── Grouping2/                               # (2)<br />
+|       │    ├─ SubEntry1/                          import { SubEntry1Service } from '@mycompany/Grouping2/SubEntry1;<br />
+|       │    │   │ └─src/<br />
+|       │    │   │    └─ subentry1.service.ts        # (4)<br />
+|       |    │   ├─ index.ts                         # (5)<br />
+|       |    │   ├─ ng-package.json                  # (6)<br />
+|       |    │   └─ public-api.ts                    # (7)<br />
+|       │    ├─ Grouping3/<br />
+|       │    │   └─ SubEntry1/                      import { SubEntry1Service } from '@mycompany/Grouping2/Grouping3/SubEntry1;<br />
+|       │    │       │ └─src/<br />
+|       │    │       │    └─ subentry1.service.ts    # (4)<br />
+|       |    │       ├─ index.ts                     # (5)<br />
+|       |    │       ├─ ng-package.json              # (6)<br />
+|       |    │       └─ public-api.ts                # (7)<br />
+|       │    └─ SubEntry2/                          import { SubEntry2Service } from '@mycompany/Grouping2/SubEntry2;<br />
+|       │        │ └─src/<br />
+|       │        │    └─ *.ts                        # (4)<br />
+|       |        ├─ index.ts                         # (5)<br />
+|       |        ├─ ng-package.json                  # (6)<br />
+|       |        └─ public-api.ts                    # (7)<br />
+│       ├── ng-package.json                          # (8)<br />
+│       ├── public-api.ts                            # (9)<br />
 │       └── package.json
-├── angular.json
-└── package.json
+├── angular.json<br />
+└── package.json<br />
 
 Now let's go into detail of some files:
 
