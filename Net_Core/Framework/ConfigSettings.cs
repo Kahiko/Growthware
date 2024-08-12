@@ -215,6 +215,19 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Returns the name of the database name as defined in the web.conf file by environment
+        /// </summary>
+        /// <value>Desired data access layer "Oracle" and default "SQLServer"</value>
+        /// <returns>String</returns>
+        /// <remarks>
+        ///    Currently only used in Oracle
+        /// </remarks>
+        public static string DataAccessLayerDatabaseName
+        {
+            get { return GetAppSettingValue("DAL_" + DataAccessLayer + "_Database_Name", true); }
+        }
+
+        /// <summary>
         /// Returns the DAL_SQLServer_Name_Space from the CONFIG file
         /// </summary>
         /// <param name="dataAccessLayer"></param>
