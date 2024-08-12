@@ -119,7 +119,8 @@ export class LoggingService {
           this._LogConsole(options);
           break;
         case 'DB':
-          this._LogDB(options);
+        case 'File':
+          this._LogToAPI(options);
           break;
         case 'Toast':
           this._LogToast(options);
@@ -228,10 +229,10 @@ export class LoggingService {
     mLogOptions.level = level;
     mLogOptions.methodName = methodName;
     mLogOptions.msg = msg;
-    this._LogDB(mLogOptions);
+    this._LogToAPI(mLogOptions);
   }
 
-  private _LogDB(options: ILogOptions): void {
+  private _LogToAPI(options: ILogOptions): void {
     // this.console(this._LoggingURL, LogLevel.Info);
     const mHttpOptions = {
       headers: new HttpHeaders({

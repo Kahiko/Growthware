@@ -73,6 +73,11 @@ namespace GrowthWare.Framework.Models
         public string ClassName { get; set; }
 
         /// <summary>
+        /// Indicates where the log event occurred.
+        /// </summary>
+        public LogDestination[] Destination { get; set; }
+
+        /// <summary>
         /// Indicates what component the log event occurred.
         /// </summary>
         public string Component { get; set; }

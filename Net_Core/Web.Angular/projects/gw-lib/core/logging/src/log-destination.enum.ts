@@ -1,5 +1,6 @@
 export enum LogDestination {
-  Console = 1,
-  DB = 2,
-  Toast = 3,
+  File = 0,     // Used by the API
+  Console = 1,  // Used by the Fronend
+  DB = 2,       // Used by the API
+  Toast = 3,    // Used by the Fronend
 }
