@@ -62,26 +62,12 @@ namespace GrowthWare.DatabaseManager
 
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
             mDatabaseManager.ConnectionString = mConnectionString;
-            mDatabaseManager.ConnectionString = mDatabaseManager.ConnectionStringWithoutDatabaseName;
+            mDatabaseManager.SetDatabaseName();
             if (m_DesiredVersion == new Version("0.0.0.0"))
             {
                 mDeleteDatabase = true;
             }
-            if (mDeleteDatabase)
-            {
-                if (mDatabaseManager.Exists())
-                {
-                    mDatabaseManager.Delete();
-                    Console.WriteLine(String.Format("The '{0}' database has been deleted.", mDatabaseManager.DatabaseName));
-                }
-                else
-                {
-                    Console.WriteLine(String.Format("The '{0}' database does not exist, nothing to delete.", mDatabaseManager.DatabaseName));
-                    mWatch.Stop();
-                    Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
-                }
-            }
-            else
+            if (!mDeleteDatabase)
             {
                 if (!mDatabaseManager.Exists())
                 {
@@ -94,7 +80,6 @@ namespace GrowthWare.DatabaseManager
                 {
                     Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
                 }
-                mDatabaseManager.ConnectionString = mConnectionString;
                 Console.WriteLine("Starting upgrade/downgrade process.");
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
@@ -162,6 +147,20 @@ namespace GrowthWare.DatabaseManager
                         mDatabaseManager.ExecuteScriptFile(mScriptWithPath);
                         Console.WriteLine("Elapsed time: {0} File: '{1}' ", mWatch.Elapsed, mFileName);
                     }
+                }
+            }
+            else
+            {
+                if (mDatabaseManager.Exists())
+                {
+                    mDatabaseManager.Delete();
+                    Console.WriteLine(String.Format("The '{0}' database has been deleted.", mDatabaseManager.DatabaseName));
+                }
+                else
+                {
+                    Console.WriteLine(String.Format("The '{0}' database does not exist, nothing to delete.", mDatabaseManager.DatabaseName));
+                    mWatch.Stop();
+                    Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
                 }
             }
             if(m_CreatedDatabase) 

@@ -12,23 +12,24 @@ namespace GrowthWare.DataAccess.SQLServer;
 
 public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
+
+    private string m_DatabaseName = string.Empty;
     private string m_ScriptPath = string.Empty;
+
+    public string DatabaseName { 
+        get
+        {
+            return this.m_DatabaseName;
+        }
+    }
 
     public void Create()
     {
-        /**
-          * first checks if the database name is valid. If it is not valid, an exception is thrown.
-          * then opens a SQL connection to the server.
-          * It defines the DDL script and DML script file paths based on the database script path.
-          * runs the DDL script and checks if it was successful. If it was not successful, an exception is thrown.
-          * runs the DML script and checks if it was successful. If it was not successful, an exception is thrown.
-          * updates all of the just added security entities to the configured data access layer information.
-          * updates all of the just added accounts to the encrypted password.
-          */
         this.IsValid();
         string mCommandText = string.Empty;
         string mScriptDirectory = this.GetScriptPath("Upgrade");
-        using (SqlConnection mSqlConnection = new(this.ConnectionString))
+        string mConnectionString = this.ConnectionString.Replace(this.DatabaseName, "master");
+        using (SqlConnection mSqlConnection = new(mConnectionString))
         {
             mSqlConnection.Open();
 
@@ -42,7 +43,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             if (!mSuccess)
             {
                 string mError = "Was not able to create the '{0}' database file name {1}.";
-                mError = String.Format(mError, base.DatabaseName, mCreationFile);
+                mError = String.Format(mError, this.DatabaseName, mCreationFile);
                 throw new Exception(mError);
             }
             mSuccess = this.replace_N_Run(mInsertFile, mSqlConnection);
@@ -55,7 +56,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
             // Set db context to the database name given
             mCommandText = "USE [{0}]";
-            mCommandText = String.Format(mCommandText, base.DatabaseName);
+            mCommandText = String.Format(mCommandText, this.DatabaseName);
             using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
             mSqlCommand.CommandType = CommandType.Text;
             mSqlCommand.ExecuteNonQuery();
@@ -157,73 +158,6 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         }
     }
 
-    public bool Exists()
-    {
-        this.IsValid();
-        bool mRetVal = true;
-        string mSqlStatement = "SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
-        mSqlStatement = String.Format(mSqlStatement, base.DatabaseName);
-        try
-        {
-            DataRow mDataRow = this.GetDataRow(mSqlStatement);
-            if (mDataRow != null)
-            {
-                if (mDataRow["name"] == null || mDataRow["name"].ToString().Length == 0)
-                {
-                    mRetVal = false;
-                }
-            }
-            else
-            {
-                mRetVal = false;
-            }
-        }
-        catch (System.Exception)
-        {
-            mRetVal = false;
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Replaces 'YourDatabaseName' in the given script file with the actual database name and executes the script.
-    /// </summary>
-    /// <param name="scriptFile">The path to the script file.</param>
-    /// <param name="sqlConnection">The SQL connection to execute the script on.</param>
-    /// <returns>True if the script execution was successful, false otherwise.</returns>
-    private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
-    {
-        bool mSuccess = false;
-        // Replace 'YourDatabaseName' with the given database name
-        string mAllText = File.ReadAllText(scriptFile);
-        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName);
-        File.WriteAllText(scriptFile, mAllText);
-        try
-        {
-            // Create the database 
-            mSuccess = this.ExecuteScriptFile(scriptFile, sqlConnection);
-        }
-        catch (System.Exception)
-        {
-            // We do not want to throw anything that will be done by caller
-        }
-        finally
-        {
-            // Replace the given database name with 'YourDatabaseName'
-            mAllText = mAllText.Replace(DatabaseName, "YourDatabaseName");
-            File.WriteAllText(scriptFile, mAllText);
-        }
-        return mSuccess;
-    }
-
-    public bool ExecuteScriptFile(string scriptWithPath)
-    {
-        using (SqlConnection mSqlConnection = new(this.ConnectionString))
-        {
-            return this.replace_N_Run(scriptWithPath, mSqlConnection);
-        }
-    }
-
     private bool ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection)
     {
         this.IsValid();
@@ -269,9 +203,37 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         }
     }
 
+    public bool ExecuteScriptFile(string scriptWithPath)
+    {
+        using (SqlConnection mSqlConnection = new(this.ConnectionString))
+        {
+            return this.replace_N_Run(scriptWithPath, mSqlConnection);
+        }
+    }
+
+    public bool Exists()
+    {
+        this.IsValid();
+        bool mRetVal = true;
+        string mSqlStatement = String.Format("SELECT COUNT(*) FROM [master].[sys].[databases] WHERE [name] = N'{0}'", this.m_DatabaseName);
+        try
+        {
+            int mCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
+            if(mCount > 0) 
+            {
+                mRetVal = true;
+            }
+        }
+        catch (System.Exception)
+        {
+            mRetVal = false;
+        }
+        return mRetVal;
+    }
+
     public string GetScriptPath(string theDirection)
     {
-        if (m_ScriptPath == string.Empty)
+        if (this.m_ScriptPath == string.Empty)
         {
             string mCurrentDirectory = Directory.GetCurrentDirectory();
             if (!mCurrentDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
@@ -294,22 +256,66 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         {
             string mCommandText = "SELECT [Version] FROM [ZGWSystem].[Database_Information]";
             DataRow mDataRow = this.GetDataRow(mCommandText);
-            mRetVal = new Version(mDataRow["Version"].ToString());
+            if(mDataRow != null && mDataRow.Table.Columns.Contains("Version") && !(Convert.IsDBNull(mDataRow["Version"])))
+            {
+                mRetVal = new Version(mDataRow["Version"].ToString());
+            }
         }
         return mRetVal;
     }
 
     /// <summary>
-    /// Calls base method to ensure connection string is present then
-    /// ensures that the database name is set.
+    /// Replaces 'YourDatabaseName' in the given script file with the actual database name and executes the script.
     /// </summary>
-    /// <exception cref="DataAccessLayerException"></exception>
-    protected override void IsValid()
+    /// <param name="scriptFile">The path to the script file.</param>
+    /// <param name="sqlConnection">The SQL connection to execute the script on.</param>
+    /// <returns>True if the script execution was successful, false otherwise.</returns>
+    private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
     {
-        base.IsValid();
-        if (String.IsNullOrEmpty(base.DatabaseName) | String.IsNullOrWhiteSpace(base.DatabaseName))
+        bool mSuccess = false;
+        // Replace 'YourDatabaseName' with the given database name
+        string mAllText = File.ReadAllText(scriptFile);
+        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName);
+        File.WriteAllText(scriptFile, mAllText);
+        try
         {
-            throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
+            // Create the database 
+            mSuccess = this.ExecuteScriptFile(scriptFile, sqlConnection);
+        }
+        catch (System.Exception)
+        {
+            // We do not want to throw anything that will be done by caller
+        }
+        finally
+        {
+            // Replace the given database name with 'YourDatabaseName'
+            mAllText = mAllText.Replace(DatabaseName, "YourDatabaseName");
+            File.WriteAllText(scriptFile, mAllText);
+        }
+        return mSuccess;
+    }
+
+    /// <summary>
+    /// Sets the name of the database based on the value of the ConnectionString.
+    /// </summary>
+    public void SetDatabaseName()
+    {
+        this.IsValid();
+        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
+        {
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = this.ConnectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
+            {
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mRetVal = mParameterParts[1];
+                    break;
+                }
+            }
+            this.m_DatabaseName = mRetVal;
         }
     }
 
@@ -318,4 +324,5 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         string mCommandText = String.Format("UPDATE [ZGWOptional].[Directories] SET [Directory] = '{0}' WHERE [FunctionSeqId] = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'Manage_Logs')", ConfigSettings.LogPath);
         this.ExecuteNonQuery(mCommandText);
     }
+
 }

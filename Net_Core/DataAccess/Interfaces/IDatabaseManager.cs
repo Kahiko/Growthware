@@ -18,6 +18,12 @@ namespace GrowthWare.DataAccess.Interfaces
         void Create();
 
         /// <summary>
+        /// Readonly property that returns the name of the database.
+        /// </summary>
+        /// <remarks>Use the SetDatabaseName method to set the name of the database.</remarks>
+        string DatabaseName {get;}
+
+        /// <summary>
         /// Executes downgrade script Version_1.0.0.0.sql.
         /// </summary>
         /// <exception cref="Exception">Thrown when the database creation fails.</exception>
@@ -48,6 +54,14 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <returns>The version number of the database as a Version object.</returns>
         Version GetVersion();
+
+        /// <summary>
+        /// Sets the name of the database. 
+        /// Each data store will set the database name based on the the implementations needs.
+        ///    SQLServer the value is set based on the ConnectionString.
+        ///    Oracle the value is set based on the ConfigSettings.DatabaseName.
+        /// </summary>
+        void SetDatabaseName();
 
         /// <summary>
         /// Updates the log path in the [ZGWOptional].[Directories] table based on the value of ConfigSettings.LogPath.
