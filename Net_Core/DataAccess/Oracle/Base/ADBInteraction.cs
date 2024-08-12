@@ -15,8 +15,6 @@ namespace GrowthWare.DataAccess.Oracle.Base;
 public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 {
     private string m_ConnectionString = string.Empty;
-    internal string m_ConnectionWithoutDatabaseName = string.Empty;
-    private string m_DatabaseName = string.Empty;
     private bool m_DisposedValue;
     private Logger m_Logger = Logger.Instance();
 
@@ -32,22 +30,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         set
         {
             this.m_ConnectionString = value;
-            this.setConnectionWithoutDatabaseName();
-            this.setDatabaseName();
         }
-    }
-    public string ConnectionStringWithoutDatabaseName
-    {
-        get{return this.m_ConnectionWithoutDatabaseName;}
-    }
-    
-    /// <summary>
-    /// The database name derived from the connection string
-    /// </summary>
-    public string DatabaseName
-    {
-        get { return this.m_DatabaseName; }
-        set { this.m_DatabaseName = value; }
     }
 
     /// <summary>
@@ -628,43 +611,6 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     protected virtual void IsValid()
     {
         this.isConnectionStringSet();
-    }
-
-    internal void setConnectionWithoutDatabaseName()
-    {
-        this.isConnectionStringSet();
-        string[] mParameterParts = null;
-        string[] mConnectionStringParts = ConnectionString.Split(";");
-        string mRetVal = string.Empty;
-        for (int i = 0; i < mConnectionStringParts.Length; i++)
-        {
-            mParameterParts = mConnectionStringParts[i].Split("=");
-            if (!string.IsNullOrWhiteSpace(mParameterParts[0]) && !mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
-            {
-                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
-            }
-        }
-        this.m_ConnectionWithoutDatabaseName = mRetVal;
-    }
-
-    internal void setDatabaseName()
-    {
-        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
-        {
-            string[] mParameterParts = null;
-            string[] mConnectionStringParts = this.ConnectionString.Split(";");
-            string mRetVal = string.Empty;
-            for (int i = 0; i < mConnectionStringParts.Length; i++)
-            {
-                mParameterParts = mConnectionStringParts[i].Split("=");
-                if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    mRetVal = mParameterParts[1];
-                    break;
-                }
-            }
-            this.m_DatabaseName = mRetVal;
-        }
     }
 
     //// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.

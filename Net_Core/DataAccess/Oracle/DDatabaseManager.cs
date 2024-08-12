@@ -12,11 +12,15 @@ namespace GrowthWare.DataAccess.Oracle;
 
 public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
+    internal string m_ConnectionWithoutDatabaseName = string.Empty;
     private string m_DatabaseName = string.Empty;
 
-    public string ConnectionStringWithoutDatabaseName
-    {
-        get{return base.m_ConnectionWithoutDatabaseName;}
+    public string DatabaseName 
+    { 
+        get
+        {
+            return this.m_DatabaseName;
+        }
     }
     
     // public string ConnectionStringWithoutDatabaseName
@@ -80,21 +84,9 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         throw new NotImplementedException();
     }
 
-    public string SetDatabaseName()
+    public void SetDatabaseName()
     {
-        string[] mParameterParts = null;
-        string[] mConnectionStringParts = this.ConnectionString.Split(";");
-        string mRetVal = string.Empty;
-        for (int i = 0; i < mConnectionStringParts.Length; i++)
-        {
-            mParameterParts = mConnectionStringParts[i].Split("=");
-            if (mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
-            {
-                mRetVal = mParameterParts[1];
-                break;
-            }
-        }
-        return mRetVal;
+        throw new NotImplementedException();
     }
 
     /// <summary>
