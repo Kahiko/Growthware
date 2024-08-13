@@ -171,23 +171,18 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             this.IsValid();
             this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
-            bool mRetVal = true;
-            string mSqlStatement = "SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
+            bool mRetVal = false;
+            string mSqlStatement = "SELECT COUNT(*) FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
             mSqlStatement = String.Format(mSqlStatement, this.m_DatabaseName);
             try
             {
-                DataRow mDataRow = this.GetDataRow(mSqlStatement);
-                if (mDataRow != null)
+                int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
+                if (mUserCount > 0)
                 {
-                    if (mDataRow["name"] == null || mDataRow["name"].ToString().Length == 0)
-                    {
-                        mRetVal = false;
-                    }
+                    // Console.WriteLine("User exists in the database.");
+                    mRetVal = true;
                 }
-                else
-                {
-                    mRetVal = false;
-                }
+
             }
             catch (System.Exception)
             {
