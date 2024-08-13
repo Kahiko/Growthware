@@ -1,10 +1,12 @@
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
+using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace GrowthWare.DataAccess.SQLServer.Base;
@@ -37,24 +39,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     /// Performs a bulk upload of IDatabaseFunctions objects into the
     /// database. Note: Requires an object with a primary key!
     /// </summary>
-    /// <param name="listOfProfiles">An array of IDatabaseFunctions</param>
-    /// <param name="doDelete"></param>
-    /// <param name="includePrimaryKey"></param>
-    internal void BulkInsert(IDatabaseFunctions[] listOfProfiles, bool doDelete, bool includePrimaryKey)
+    /// <param name="bulkInsertParameters">A DTO representing multiple parameters</param>
+    internal void BulkInsert(DTO_BulkInsert_Parameters bulkInsertParameters)
     {
-        if (listOfProfiles != null && listOfProfiles.Length > 0)
+        if (bulkInsertParameters.ListOfProfiles != null && bulkInsertParameters.ListOfProfiles.Any())
         {
-            string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
-            IDatabaseFunctions mFirstObj = listOfProfiles[0];
-            DataTable mDataTable = mFirstObj.GetEmptyTable(mTempTableName, includePrimaryKey);
-            string mDestinationTableName = mFirstObj.GetTableName();
-            string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
-            string mForeignKeyName = mFirstObj.GetForeignKeyName();
-            bool mForeignKeyIsNumber = mFirstObj.IsForeignKeyNumber();
+            DataTable mDataTable = bulkInsertParameters.EmptyTable.Clone();
             string mCommandText = string.Empty;
 
             // Populate mDataTable with the data from the listOfIDatabaseFunctions
-            foreach (var item in listOfProfiles)
+            foreach (var item in bulkInsertParameters.ListOfProfiles)
             {
                 DataRow mRow = mDataTable.NewRow();
                 PropertyInfo[] mProperties = item.GetType().GetProperties();
@@ -71,9 +65,9 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                     {
                         mValue = DBNull.Value;
                     }
-                    if (!includePrimaryKey)
+                    if (!bulkInsertParameters.IncludePrimaryKey)
                     {
-                        if (mPrimaryKeyName.Replace("[", "").Replace("]", "").ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
+                        if (bulkInsertParameters.PrimaryKeyName.Replace("[", "").Replace("]", "").ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
                         {
                             mRow[mPropertyItem.Name] = mValue;
                         }
@@ -87,7 +81,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
 
             // 1.) Create Destination Table
-            mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", mTempTableName, mDestinationTableName);
+            mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", bulkInsertParameters.TempTableName, bulkInsertParameters.DestinationTableName);
             using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
             {
                 mSqlCommand.Connection = mSqlConnection;
@@ -99,9 +93,9 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                 }
                 mSqlCommand.ExecuteNonQuery();
             }
-            if (!includePrimaryKey)
+            if (!bulkInsertParameters.IncludePrimaryKey)
             {
-                mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", mTempTableName, mFirstObj.GetPrimaryKeyName());
+                mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", bulkInsertParameters.TempTableName, bulkInsertParameters.PrimaryKeyName);
                 using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
                 {
                     mSqlCommand.Connection = mSqlConnection;
@@ -119,17 +113,17 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.Default, mSqlTransaction))
             {
                 mSqlBulkCopy.BatchSize = 5000;
-                mSqlBulkCopy.DestinationTableName = mTempTableName;
+                mSqlBulkCopy.DestinationTableName = bulkInsertParameters.TempTableName;
                 mSqlBulkCopy.WriteToServer(mDataTable);
             }
             // 3.) Delete all rows associated from the db if needed
-            if (doDelete)
+            if (bulkInsertParameters.DoDelete)
             {
                 // semi correct should account for the primary key or in other words join on all columns except the primary key
                 // b/c the primary key if one exists is always unique
                 // for now I'm going to insist that the Destination have a single foreign key
-                mCommandText = "DELETE {0} FROM {1} Destination INNER JOIN {2} TempTable ON Destination.{3} = TempTable.{4};";
-                mCommandText = string.Format(mCommandText, mDestinationTableName, mDestinationTableName, mTempTableName, mForeignKeyName, mForeignKeyName);
+                mCommandText = "DELETE {0} FROM {0} Destination INNER JOIN {1} TempTable ON Destination.{2} = TempTable.{2};";
+                mCommandText = string.Format(mCommandText, bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName, bulkInsertParameters.ForeignKeyName);
                 using SqlCommand mSqlCommand = new SqlCommand(mCommandText)
                 {
                     Connection = mSqlConnection,
@@ -143,7 +137,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                 mSqlCommand.ExecuteNonQuery();
             }
             // 4.) Insert all the rows from the temp table into Destination
-            mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", mDestinationTableName, mTempTableName);
+            mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName);
             using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
             {
                 mSqlCommand.Connection = mSqlConnection;
@@ -156,7 +150,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                 mSqlCommand.ExecuteNonQuery();
             }
             // 5.) finally delete the temporary table
-            mCommandText = string.Format("DROP TABLE {0}", mTempTableName);
+            mCommandText = string.Format("DROP TABLE {0}", bulkInsertParameters.TempTableName);
             using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
             {
                 mSqlCommand.Connection = mSqlConnection;
