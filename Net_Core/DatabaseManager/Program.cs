@@ -54,32 +54,17 @@ namespace GrowthWare.DatabaseManager
             string mAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
             DataTable mAvailbleFiles = null;
             List<Version> mAvailbleVersions = new List<Version>();
-            string mConnectionString = ConfigSettings.ConnectionString;
-            // string[] mConnectionStringParts = mConnectionString.Split(";");
-            // string mDataBaseName = string.Empty;
             Boolean mDeleteDatabase = false;
             string mNameSpace = ConfigSettings.DataAccessLayerNamespace;
-            string mOriginalConnectionString = mConnectionString;
-            // string[] mParameterParts = null;
             Stopwatch mWatch = new Stopwatch();
             mWatch.Start();
 
-            // for (int i = 0; i < mConnectionStringParts.Length; i++)
-            // {
-            //     mParameterParts = mConnectionStringParts[i].Split("=");
-            //     if (mParameterParts[0].ToLower() == "database")
-            //     {
-            //         mDataBaseName = mParameterParts[1];
-            //         break;
-            //     }
-            // }
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
-            // mDatabaseManager.DatabaseName = mDataBaseName;
-            mDatabaseManager.ConnectionString = mConnectionString;
+            mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
             mDatabaseManager.SetDatabaseName();
-            // This next line will remove the database name from the connection string but only works for SQL Server
-            mConnectionString = mConnectionString.Replace("database=" + mDatabaseManager.DatabaseName + ";", "");
-            mDatabaseManager.ConnectionString = mConnectionString;
+            // This next line will remove the database name from the connection string 
+            // but only works for SQL Server
+            mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + mDatabaseManager.DatabaseName + ";", "");
             if (m_DesiredVersion == new Version("0.0.0.0"))
             {
                 mDeleteDatabase = true;
@@ -111,7 +96,7 @@ namespace GrowthWare.DatabaseManager
                 {
                     Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
                 }
-                mDatabaseManager.ConnectionString = mOriginalConnectionString;
+                mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
                 Console.WriteLine("Starting upgrade/downgrade process.");
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
