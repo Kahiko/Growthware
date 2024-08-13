@@ -179,7 +179,6 @@ namespace GrowthWare.DataAccess.SQLServer
                 int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
                 if (mUserCount > 0)
                 {
-                    // Console.WriteLine("User exists in the database.");
                     mRetVal = true;
                 }
 
