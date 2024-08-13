@@ -1,9 +1,12 @@
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.DataAccess.Oracle.Base;
+using GrowthWare.Framework;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace GrowthWare.DataAccess.Oracle;
 
@@ -23,27 +26,6 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             this.m_DatabaseName = value;
         }
     }
-    
-    // public string ConnectionStringWithoutDatabaseName
-    // {
-    //     get
-    //     {
-    //         this.IsValid();
-    //         string[] mParameterParts = null;
-    //         string[] mConnectionStringParts = ConnectionString.Split(";");
-    //         string mRetVal = string.Empty;
-    //         for (int i = 0; i < mConnectionStringParts.Length; i++)
-    //         {
-    //             mParameterParts = mConnectionStringParts[i].Split("=");
-    //             if (!mParameterParts[0].Equals("Data Source", StringComparison.InvariantCultureIgnoreCase))
-    //             {
-    //                 mRetVal = mParameterParts[0] + "=" + mParameterParts[1];
-    //                 break;
-    //             }
-    //         }
-    //         return mRetVal;
-    //     }
-    // }
 
     public void Create()
     {
@@ -72,7 +54,26 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public bool Exists()
     {
-        throw new NotImplementedException();
+        this.IsValid();
+        bool mRetVal = false;
+        using (OracleConnection mOracleConnection = new OracleConnection(this.ConnectionString))
+        {
+            mOracleConnection.Open();
+            string mSqlStatement = "SELECT COUNT(*) FROM dba_users WHERE username = :username";
+            try
+            {
+                int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
+                if (mUserCount > 0)
+                {
+                    mRetVal = true;
+                }
+            }
+            catch (System.Exception)
+            {
+                mRetVal = false;
+            }
+        }
+        return mRetVal;
     }
 
     public string GetScriptPath(string theDirection)
@@ -87,7 +88,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void SetDatabaseName()
     {
-        throw new NotImplementedException();
+        this.m_DatabaseName = ConfigSettings.DataAccessLayerDatabaseName;
     }
 
     /// <summary>
@@ -106,7 +107,32 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void ProcessScriptFiles(bool isUpgrade, Version currentVersion, Version desiredVersion, IEnumerable<Version> availbleVersions)
     {
-        
+            IEnumerable<Version> mVersions = null;
+            string mTheDirection = isUpgrade ? "Upgrade" : "Downgrade";
+            if(isUpgrade)
+            {
+                mVersions = availbleVersions.Where(version => version > currentVersion && version <= desiredVersion);
+            }
+            else
+            {
+                mVersions = availbleVersions.Where(version => version <= currentVersion && version > desiredVersion && version != new Version("1.0.0.0"));
+            }            
+            if (mVersions == null || mVersions.Count() == 0)
+            {
+                string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
+                Console.WriteLine(string.Format(mMsg, mTheDirection, desiredVersion.ToString(), currentVersion.ToString()));
+                return;
+            }
+            this.ConnectionString = ConfigSettings.ConnectionString;
+            foreach (Version item in mVersions)
+            {
+                string mScriptWithPath = this.GetScriptPath(mTheDirection) + "Version_" + item.ToString() + ".sql";
+                string mFileName = "Version_" + item.ToString() + ".sql";
+                Stopwatch mScriptWatch = new();
+                mScriptWatch.Start();
+                this.ExecuteScriptFile(mScriptWithPath);
+                Console.WriteLine("Elapsed time: {0} File: '{1}' ", mScriptWatch.Elapsed, mFileName);
+            }
     }
 
     private bool replace_N_Run(string scriptFile, OracleConnection sqlConnection)
