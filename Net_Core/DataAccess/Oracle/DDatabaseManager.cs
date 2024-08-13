@@ -1,12 +1,9 @@
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.DataAccess.Oracle.Base;
-using GrowthWare.Framework;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using Oracle.ManagedDataAccess.Client;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace GrowthWare.DataAccess.Oracle;
 
@@ -105,6 +102,11 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         {
             throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
         }
+    }
+
+    public void ProcessScriptFiles(bool isUpgrade, Version currentVersion, Version desiredVersion, IEnumerable<Version> availbleVersions)
+    {
+        
     }
 
     private bool replace_N_Run(string scriptFile, OracleConnection sqlConnection)

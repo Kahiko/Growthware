@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace GrowthWare.DataAccess.SQLServer
@@ -192,6 +194,36 @@ namespace GrowthWare.DataAccess.SQLServer
                 mRetVal = false;
             }
             return mRetVal;
+        }
+
+        public void ProcessScriptFiles(bool isUpgrade, Version currentVersion, Version desiredVersion, IEnumerable<Version> availbleVersions)
+        {
+            IEnumerable<Version> mVersions = null;
+            string mTheDirection = isUpgrade ? "Upgrade" : "Downgrade";
+            if(isUpgrade)
+            {
+                mVersions = availbleVersions.Where(version => version > currentVersion && version <= desiredVersion);
+            }
+            else
+            {
+                mVersions = availbleVersions.Where(version => version <= currentVersion && version > desiredVersion && version != new Version("1.0.0.0"));
+            }            
+            if (mVersions == null || mVersions.Count() == 0)
+            {
+                string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
+                Console.WriteLine(string.Format(mMsg, mTheDirection, desiredVersion.ToString(), currentVersion.ToString()));
+                return;
+            }
+            this.ConnectionString = ConfigSettings.ConnectionString;
+            foreach (Version item in mVersions)
+            {
+                string mScriptWithPath = this.GetScriptPath(mTheDirection) + "Version_" + item.ToString() + ".sql";
+                string mFileName = "Version_" + item.ToString() + ".sql";
+                Stopwatch mScriptWatch = new Stopwatch();
+                mScriptWatch.Start();
+                this.ExecuteScriptFile(mScriptWithPath);
+                Console.WriteLine("Elapsed time: {0} File: '{1}' ", mScriptWatch.Elapsed, mFileName);
+            }
         }
 
         /// <summary>

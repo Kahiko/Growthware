@@ -1,9 +1,9 @@
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data;
-using Oracle.ManagedDataAccess.Client;
 using System.Globalization;
 using System.Reflection;
 

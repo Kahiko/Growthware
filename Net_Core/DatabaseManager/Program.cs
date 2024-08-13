@@ -4,7 +4,6 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GrowthWare.DatabaseManager
 {
@@ -96,6 +95,7 @@ namespace GrowthWare.DatabaseManager
                 Console.WriteLine("Starting upgrade/downgrade process.");
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
+                bool mIsUpgrade = true;
                 if (m_DesiredVersion == mCurrentVersion)
                 {
                     Console.WriteLine("Database version matches requested version no work done.");
@@ -105,12 +105,12 @@ namespace GrowthWare.DatabaseManager
                 }
                 if (m_DesiredVersion < mCurrentVersion)
                 {
+                    mIsUpgrade = false;
                     mUpOrDown = "Downgrade";
                 }
                 string mScriptPath = mDatabaseManager.GetScriptPath(mUpOrDown);
-                if (mUpOrDown == "Upgrade")
+                if (mIsUpgrade)
                 {
-                    Console.WriteLine("Attempting to Upgrade the database.");
                     mAvailbleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "ASC");
                 }
                 else
@@ -125,43 +125,7 @@ namespace GrowthWare.DatabaseManager
                     Version mVersion = new Version(mVersionString);
                     mAvailbleVersions.Add(mVersion);
                 }
-                if (mUpOrDown == "Upgrade")
-                {
-                    var mVersions = mAvailbleVersions.Where(version => version > mCurrentVersion && version <= m_DesiredVersion);
-                    if (mVersions == null || mVersions.Count() == 0)
-                    {
-                        string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
-                        Console.WriteLine(string.Format(mMsg, mUpOrDown, m_DesiredVersion.ToString(), mCurrentVersion.ToString()));
-                    }
-                    mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
-                    foreach (Version item in mVersions)
-                    {
-                        string mScriptWithPath = mDatabaseManager.GetScriptPath("Upgrade") + "Version_" + item.ToString() + ".sql";
-                        string mFileName = "Version_" + item.ToString() + ".sql";
-                        Stopwatch mScriptWatch = new Stopwatch();
-                        mScriptWatch.Start();
-                        mDatabaseManager.ExecuteScriptFile(mScriptWithPath);
-                        Console.WriteLine("Elapsed time: {0} File: '{1}' ", mWatch.Elapsed, mFileName);
-                    }
-                }
-                else
-                {
-                    var mVersions = mAvailbleVersions.Where(version => version <= mCurrentVersion && version > m_DesiredVersion && version != new Version("1.0.0.0"));
-                    if (mVersions == null || mVersions.Count() == 0)
-                    {
-                        string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
-                        Console.WriteLine(string.Format(mMsg, mUpOrDown, m_DesiredVersion.ToString(), mCurrentVersion.ToString()));
-                    }
-                    foreach (Version item in mVersions)
-                    {
-                        string mScriptWithPath = mDatabaseManager.GetScriptPath("Downgrade") + "Version_" + item.ToString() + ".sql";
-                        string mFileName = "Version_" + item.ToString() + ".sql";
-                        Stopwatch mScriptWatch = new Stopwatch();
-                        mScriptWatch.Start();
-                        mDatabaseManager.ExecuteScriptFile(mScriptWithPath);
-                        Console.WriteLine("Elapsed time: {0} File: '{1}' ", mWatch.Elapsed, mFileName);
-                    }
-                }
+                mDatabaseManager.ProcessScriptFiles(mIsUpgrade, mCurrentVersion, m_DesiredVersion, mAvailbleVersions);
             }
             if(m_CreatedDatabase) 
             {

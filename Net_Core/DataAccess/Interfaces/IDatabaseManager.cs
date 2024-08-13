@@ -1,6 +1,6 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using System;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -11,8 +11,9 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Executes the upgrade scripts Version_0.0.0.0.sql and Version_1.0.0.0.sql.
         /// </summary>
         /// <remarks>
-        /// Version_0.0.0.0.sql will create the database if it is needed as well as any of the DDL and DML.
-        /// Version_1.0.0.0.sql will populate the database with the very first version of data.
+        /// Version_0.0.0.0.sql will create the database if it is needed as well as any of the DDL and DML.<br />
+        /// Version_1.0.0.0.sql will populate the database with the very first version of data.<br />
+        /// NOTE: Changes the underlying ConnectionString<br />
         /// </remarks>
         /// <exception cref="Exception">Thrown when the database name is not valid or when the DDL/DML scripts fail to run.</exception>        
         void Create();
@@ -20,12 +21,18 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Executes downgrade script Version_1.0.0.0.sql.
         /// </summary>
+        /// <remarks>
+        /// NOTE: Changes the underlying ConnectionString<br />
+        /// </remarks>
         /// <exception cref="Exception">Thrown when the database creation fails.</exception>
         void Delete();
 
         /// <summary>
         /// Determines if the database exists.
         /// </summary>
+        /// <remarks>
+        /// NOTE: Changes the underlying ConnectionString<br />
+        /// </remarks>
         /// <returns>True if the database exists, false otherwise.</returns>
         Boolean Exists();
 
@@ -48,6 +55,18 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <returns>The version number of the database as a Version object.</returns>
         Version GetVersion();
+
+        /// <summary>
+        /// Process the script files for the specified direction.
+        /// </summary>
+        /// <param name="isUpgrade"></param>
+        /// <param name="currentVersion"></param>
+        /// <param name="desiredVersion"></param>
+        /// <param name="availbleVersions"></param>
+        /// <remarks>
+        /// NOTE: Changes the underlying ConnectionString<br />
+        /// </remarks>
+        void ProcessScriptFiles(bool isUpgrade, Version currentVersion, Version desiredVersion, IEnumerable<Version> availbleVersions);
 
         void SetDatabaseName();
 
