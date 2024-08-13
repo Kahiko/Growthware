@@ -18,7 +18,6 @@ namespace GrowthWare.DataAccess.SQLServer
         public string DatabaseName
         {
             get { return this.m_DatabaseName; }
-            set { this.m_DatabaseName = value; }
         }
 
         public void Create()
@@ -313,6 +312,27 @@ namespace GrowthWare.DataAccess.SQLServer
             {
                 throw new DataAccessLayerException("The DatabaseName property cannot be null or blank!");
             }
+        }
+
+        public void SetDatabaseName()
+        {
+        if (string.IsNullOrWhiteSpace(this.m_DatabaseName))
+        {
+            base.IsValid();
+            string[] mParameterParts = null;
+            string[] mConnectionStringParts = this.ConnectionString.Split(";");
+            string mRetVal = string.Empty;
+            for (int i = 0; i < mConnectionStringParts.Length; i++)
+            {
+                mParameterParts = mConnectionStringParts[i].Split("=");
+                if (mParameterParts[0].Equals("Database", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mRetVal = mParameterParts[1];
+                    break;
+                }
+            }
+            this.m_DatabaseName = mRetVal;
+        }
         }
 
         public void UpdateLogPath()

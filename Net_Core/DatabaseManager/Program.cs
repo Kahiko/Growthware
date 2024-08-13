@@ -74,7 +74,9 @@ namespace GrowthWare.DatabaseManager
                 }
             }
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
-            mDatabaseManager.DatabaseName = mDataBaseName;
+            // mDatabaseManager.DatabaseName = mDataBaseName;
+            mDatabaseManager.ConnectionString = mConnectionString;
+            mDatabaseManager.SetDatabaseName();
             mConnectionString = mConnectionString.Replace("database=" + mDataBaseName, "");
             mDatabaseManager.ConnectionString = mConnectionString;
             if (m_DesiredVersion == new Version("0.0.0.0"))
