@@ -172,8 +172,7 @@ namespace GrowthWare.DataAccess.SQLServer
             this.IsValid();
             this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
             bool mRetVal = false;
-            string mSqlStatement = "SELECT COUNT(*) FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
-            mSqlStatement = String.Format(mSqlStatement, this.m_DatabaseName);
+            string mSqlStatement = String.Format("SELECT COUNT(*) FROM [master].[sys].[databases] WHERE [name] = N'{0}'", this.m_DatabaseName);
             try
             {
                 int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
@@ -181,7 +180,6 @@ namespace GrowthWare.DataAccess.SQLServer
                 {
                     mRetVal = true;
                 }
-
             }
             catch (System.Exception)
             {
