@@ -2,7 +2,7 @@ import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -16,7 +16,9 @@ import { NavigationService } from '../../navigation.service';
 	imports: [
 		CommonModule,
 		MatIconModule,
-		MatListModule
+		MatListModule,
+
+		RouterModule
 	],
 	templateUrl: './vertical-list-item.component.html',
 	styleUrls: ['./vertical-list-item.component.scss'],

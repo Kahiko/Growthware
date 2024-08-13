@@ -7,6 +7,7 @@
 ### Improvements
 - Connection strings are now handled in DDatabaseManager
 - AbstractDBInteraction.BulkInsert now uses a DTO for the parameter making it generic
+- Vertical menu items now hightlight when clicked on
 
 ### Bug Fixes
 - Fixed type-o in Change Password
