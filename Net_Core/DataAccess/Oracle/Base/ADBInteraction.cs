@@ -350,6 +350,16 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
+    /// Executes a scalar query against the database.
+    /// </summary>
+    /// <param name="commandText">The command text to execute.</param>
+    /// <returns>this.ExecuteScalar(commandText, null, true)</returns>
+    protected object ExecuteScalar(string commandText)
+    {
+        return this.ExecuteScalar(commandText, null, true);
+    }
+    
+    /// <summary>
     /// Formats an error message containing the store procedure name and the parameters/values.
     /// </summary>
     /// <param name="parameters">The sql parameters used when the error was created.</param>
