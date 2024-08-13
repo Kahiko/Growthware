@@ -62,9 +62,6 @@ namespace GrowthWare.DatabaseManager
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
             mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
             mDatabaseManager.SetDatabaseName();
-            // This next line will remove the database name from the connection string 
-            // but only works for SQL Server
-            mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + mDatabaseManager.DatabaseName + ";", "");
             if (m_DesiredVersion == new Version("0.0.0.0"))
             {
                 mDeleteDatabase = true;
@@ -96,7 +93,6 @@ namespace GrowthWare.DatabaseManager
                 {
                     Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
                 }
-                mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
                 Console.WriteLine("Starting upgrade/downgrade process.");
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
@@ -137,6 +133,7 @@ namespace GrowthWare.DatabaseManager
                         string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
                         Console.WriteLine(string.Format(mMsg, mUpOrDown, m_DesiredVersion.ToString(), mCurrentVersion.ToString()));
                     }
+                    mDatabaseManager.ConnectionString = ConfigSettings.ConnectionString;
                     foreach (Version item in mVersions)
                     {
                         string mScriptWithPath = mDatabaseManager.GetScriptPath("Upgrade") + "Version_" + item.ToString() + ".sql";

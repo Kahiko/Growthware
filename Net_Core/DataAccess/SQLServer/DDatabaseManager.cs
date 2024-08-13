@@ -34,6 +34,7 @@ namespace GrowthWare.DataAccess.SQLServer
             this.IsValid();
             string mCommandText = string.Empty;
             string mScriptDirectory = this.GetScriptPath("Upgrade");
+            this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
             using (SqlConnection mSqlConnection = new(this.ConnectionString))
             {
                 mSqlConnection.Open();
@@ -138,6 +139,7 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             this.IsValid();
             string mCommandText = string.Empty;
+            this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
             using (SqlConnection mSqlConnection = new(this.ConnectionString))
             {
                 string mCreationFile = string.Empty;
@@ -166,6 +168,7 @@ namespace GrowthWare.DataAccess.SQLServer
         public bool Exists()
         {
             this.IsValid();
+            this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
             bool mRetVal = true;
             string mSqlStatement = "SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'{0}'";
             mSqlStatement = String.Format(mSqlStatement, this.m_DatabaseName);
@@ -298,6 +301,7 @@ namespace GrowthWare.DataAccess.SQLServer
             Version mRetVal = new Version("0.0.0.0");
             if (this.Exists())
             {
+                this.ConnectionString = ConfigSettings.ConnectionString;
                 string mCommandText = "SELECT [Version] FROM [ZGWSystem].[Database_Information]";
                 DataRow mDataRow = this.GetDataRow(mCommandText);
                 mRetVal = new Version(mDataRow["Version"].ToString());
