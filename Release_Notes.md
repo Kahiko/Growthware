@@ -5,7 +5,7 @@
 - Added full support for Oracle
 
 ### Improvements
-- ???
+- Connection strings are now handled in DDatabaseManager
 
 ### Bug Fixes
 - Fixed type-o in Change Password
