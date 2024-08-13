@@ -365,20 +365,23 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     {
         string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
         OracleParameter testParameter = null;
-        mMessage += "Parameters are as follows:" + Environment.NewLine;
-        foreach (OracleParameter testParameter_loopVariable in parameters)
+        if (parameters != null)
         {
-            testParameter = testParameter_loopVariable;
-            mMessage += testParameter.ParameterName.ToString() + " = ";
-            if (testParameter.Value != null)
+            mMessage += "Parameters are as follows:" + Environment.NewLine;
+            foreach (OracleParameter testParameter_loopVariable in parameters)
             {
-                mMessage += testParameter.Value.ToString() + Environment.NewLine;
-            }
-            else
-            {
-                mMessage += Environment.NewLine;
-            }
+                testParameter = testParameter_loopVariable;
+                mMessage += testParameter.ParameterName.ToString() + " = ";
+                if (testParameter.Value != null)
+                {
+                    mMessage += testParameter.Value.ToString() + Environment.NewLine;
+                }
+                else
+                {
+                    mMessage += Environment.NewLine;
+                }
 
+            }
         }
         mMessage += "Connection string : " + ConnectionString + Environment.NewLine;
         mMessage += yourExMSG + Environment.NewLine;
