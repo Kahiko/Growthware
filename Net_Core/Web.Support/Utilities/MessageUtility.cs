@@ -3,15 +3,16 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.IO;
+using System.Net.Mime;
+using System.Net.Mail;
+using System.Net;
+using System.Threading;
 using GrowthWare.Framework;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Interfaces;
 using GrowthWare.Web.Support.Helpers;
-using System.IO;
-using System.Net.Mime;
-using System.Net.Mail;
-using System.Net;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -23,6 +24,8 @@ public static class MessageUtility
     private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
 
     private static Logger m_Logger = Logger.Instance();
+
+    private static int m_WaitFor = 250;
 
     /// <summary>
     /// Messages the name of the unit cached collection.
@@ -243,6 +246,7 @@ public static class MessageUtility
             }
             catch (System.Exception ex)
             {
+                Thread.Sleep(m_WaitFor);
                 m_Logger.Error(ex);
             }
         }
@@ -294,6 +298,7 @@ public static class MessageUtility
             }
             catch (System.Exception ex)
             {
+                Thread.Sleep(m_WaitFor);
                 m_Logger.Error(ex);
             }
         }
