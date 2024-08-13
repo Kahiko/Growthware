@@ -55,29 +55,30 @@ namespace GrowthWare.DatabaseManager
             DataTable mAvailbleFiles = null;
             List<Version> mAvailbleVersions = new List<Version>();
             string mConnectionString = ConfigSettings.ConnectionString;
-            string[] mConnectionStringParts = mConnectionString.Split(";");
-            string mDataBaseName = string.Empty;
+            // string[] mConnectionStringParts = mConnectionString.Split(";");
+            // string mDataBaseName = string.Empty;
             Boolean mDeleteDatabase = false;
             string mNameSpace = ConfigSettings.DataAccessLayerNamespace;
             string mOriginalConnectionString = mConnectionString;
-            string[] mParameterParts = null;
+            // string[] mParameterParts = null;
             Stopwatch mWatch = new Stopwatch();
             mWatch.Start();
 
-            for (int i = 0; i < mConnectionStringParts.Length; i++)
-            {
-                mParameterParts = mConnectionStringParts[i].Split("=");
-                if (mParameterParts[0].ToLower() == "database")
-                {
-                    mDataBaseName = mParameterParts[1];
-                    break;
-                }
-            }
+            // for (int i = 0; i < mConnectionStringParts.Length; i++)
+            // {
+            //     mParameterParts = mConnectionStringParts[i].Split("=");
+            //     if (mParameterParts[0].ToLower() == "database")
+            //     {
+            //         mDataBaseName = mParameterParts[1];
+            //         break;
+            //     }
+            // }
             IDatabaseManager mDatabaseManager = (IDatabaseManager)ObjectFactory.Create(mAssemblyName, mNameSpace, "DDatabaseManager");
             // mDatabaseManager.DatabaseName = mDataBaseName;
             mDatabaseManager.ConnectionString = mConnectionString;
             mDatabaseManager.SetDatabaseName();
-            mConnectionString = mConnectionString.Replace("database=" + mDataBaseName, "");
+            // This next line will remove the database name from the connection string but only works for SQL Server
+            mConnectionString = mConnectionString.Replace("database=" + mDatabaseManager.DatabaseName + ";", "");
             mDatabaseManager.ConnectionString = mConnectionString;
             if (m_DesiredVersion == new Version("0.0.0.0"))
             {
@@ -88,11 +89,11 @@ namespace GrowthWare.DatabaseManager
                 if (mDatabaseManager.Exists())
                 {
                     mDatabaseManager.Delete();
-                    Console.WriteLine(String.Format("The '{0}' database has been deleted.", mDataBaseName));
+                    Console.WriteLine(String.Format("The '{0}' database has been deleted.", mDatabaseManager.DatabaseName));
                 }
                 else
                 {
-                    Console.WriteLine(String.Format("The '{0}' database does not exist, nothing to delete.", mDataBaseName));
+                    Console.WriteLine(String.Format("The '{0}' database does not exist, nothing to delete.", mDatabaseManager.DatabaseName));
                     mWatch.Stop();
                     Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
                 }
@@ -102,13 +103,13 @@ namespace GrowthWare.DatabaseManager
                 if (!mDatabaseManager.Exists())
                 {
                     m_CreatedDatabase = true;
-                    Console.WriteLine(String.Format("Attempting to create the '{0}' database.", mDataBaseName));
+                    Console.WriteLine(String.Format("Attempting to create the '{0}' database.", mDatabaseManager.DatabaseName));
                     mDatabaseManager.Create();
-                    Console.WriteLine(String.Format("The '{0}' database has been created.", mDataBaseName));
+                    Console.WriteLine(String.Format("The '{0}' database has been created.", mDatabaseManager.DatabaseName));
                 }
                 else
                 {
-                    Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDataBaseName));
+                    Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
                 }
                 mDatabaseManager.ConnectionString = mOriginalConnectionString;
                 Console.WriteLine("Starting upgrade/downgrade process.");
