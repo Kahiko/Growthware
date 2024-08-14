@@ -12,6 +12,7 @@
 ### Bug Fixes
 - Fixed type-o in Change Password
 - Fixed "Old Password" not showing in Change Password when it should
+- Prevent "update" link from being displayed, not needed
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 
