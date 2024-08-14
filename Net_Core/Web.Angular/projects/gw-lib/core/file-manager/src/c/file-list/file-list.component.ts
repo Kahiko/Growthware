@@ -6,8 +6,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
@@ -27,8 +30,11 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 		FormsModule,
 		ReactiveFormsModule,
 
+		MatButtonModule,
+		MatIconModule,
 		MatMenuModule,
 		MatMenuTrigger,
+		MatTabsModule,
 	],
 	templateUrl: './file-list.component.html',
 	styleUrls: ['./file-list.component.scss']
@@ -191,7 +197,7 @@ export class FileListComponent implements OnDestroy, OnInit {
   	// console.log('item', item);
   	this.selectedFile = item;
   	this.populateRenameFileForm(this.selectedFile.name);
-  	const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameFile, new WindowSize(84, 300));
+  	const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameFile, new WindowSize(125, 400));
   	this._ModalSvc.open(mModalOptions);
   }
 

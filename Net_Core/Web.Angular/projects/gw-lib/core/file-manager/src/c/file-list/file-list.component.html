@@ -37,16 +37,16 @@
 </ng-template>
 
 <ng-template #renameFile>
-  <div class="formSection">
-    <div class="formSectionContents">
-      <form [formGroup]="frmRenameFile" (ngSubmit)="onRenameSubmit(frmRenameFile)">
+  <form [formGroup]="frmRenameFile" (ngSubmit)="onRenameSubmit(frmRenameFile)" style="width: 95%;">
+    <div class="mat-tab__container formSection">
+      <div class="mat-tab__content formSectionContents" style="width: 95%;">
         <div class="table">
           <div class="tr">
             <div class="td left">
               <span class="Form_LabelText">New name&nbsp;:</span>
             </div>
             <div class="td right">
-              <input formControlName="newFileName" class="Form_Field rounded" id="newFileName" />&nbsp;
+              <textarea matInput id="txtDescription" formControlName="newFileName" #description class="rounded" TextMode="MultiLine" Rows="3" style="width: 95%"></textarea>
             </div>
             <div class="td">
               @if (getControls['newFileName'].hasError('required')) {
@@ -54,19 +54,16 @@
               }
             </div>
           </div>
-          <div class="tr">
-            <div class="td"></div>
-            <div class="td right">
-              <button type="submit" [disabled]="frmRenameFile.invalid" mat-button class="Form_Button" color="primary">
-                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
-              </button>
-            </div>
-            <div class="td"></div>
-          </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
+
+    <div class="buttonRow">
+      <button type="submit" [disabled]="frmRenameFile.invalid" mat-button class="Form_Button" color="primary">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+      </button>
+    </div>
+  </form>
 </ng-template>
 
 <ng-template #fileProperties>
