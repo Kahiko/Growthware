@@ -326,6 +326,8 @@ export class AccountService extends BaseService {
 	private afterLogin(accountInformation: IAccountInformation) {
 		this._AuthenticationResponse = accountInformation.authenticationResponse;
 		this._ClientChoices = accountInformation.clientChoices;
+		const mClientChoices: string = JSON.stringify(this._ClientChoices);
+		sessionStorage.setItem('clientChoices', mClientChoices);
 		this._AccountInformationSubject.next(accountInformation);
 		this.triggerMenuUpdate();
 		this.startRefreshTokenTimer();
