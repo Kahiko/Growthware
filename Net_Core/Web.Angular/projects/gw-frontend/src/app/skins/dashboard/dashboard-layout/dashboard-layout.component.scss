@@ -240,3 +240,7 @@ $altTheme: mat.define-dark-theme((
   @include mat.all-component-colors($altTheme);
 }
 // Done Theme
+
+.sidenav-container{
+  height: calc(100vh - 84px);
+}

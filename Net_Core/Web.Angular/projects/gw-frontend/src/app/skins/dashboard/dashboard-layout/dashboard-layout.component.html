@@ -1,16 +1,16 @@
-<gw-frontend-dashboard-header [sidenav]="drawer"></gw-frontend-dashboard-header>
-<mat-drawer-container class="drawer-container" color="primary" autosize>
-  <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+<gw-frontend-dashboard-header [sidenav]="sidenav"></gw-frontend-dashboard-header>
+<mat-sidenav-container class="sidenav-container" color="primary" autosize>
+  <mat-sidenav #sidenav class="sidenav" opened="true" mode="side">
     <mat-divider></mat-divider>
       <gw-core-vertical name="vertical"></gw-core-vertical>
     <mat-divider></mat-divider>
     <mat-nav-list>
       <gw-core-hierarchical-vertical name="hierarchicalVertical"></gw-core-hierarchical-vertical>
     </mat-nav-list>
-  </mat-drawer>
+  </mat-sidenav>
   <div class="router-outlet__div page">
     <gw-core-loader></gw-core-loader>
     <router-outlet></router-outlet>
   </div>
-</mat-drawer-container>
+</mat-sidenav-container>
 <gw-frontend-dashboard-footer></gw-frontend-dashboard-footer>

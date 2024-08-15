@@ -263,9 +263,17 @@ $altTheme: mat.define-dark-theme((
 .Form_List {font-size: 12px;}
 .Form_Message {font-size: 12px; color: #CC0000}
 
-.drawer-container {
+.sidenav-container {
     width: 100%;
     min-height: calc(100vh - 170px);
     height: calc(100vh - 170px);
     border: 1px solid rgba(0, 0, 0, 0.5);
-  }
+}
+
+.sidenav {
+  height: calc(100vh - 170px);
+}
+
+.router-outlet__div {
+  padding: 5px;
+}

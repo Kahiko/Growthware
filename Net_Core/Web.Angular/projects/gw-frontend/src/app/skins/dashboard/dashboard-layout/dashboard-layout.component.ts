@@ -28,6 +28,7 @@ export class DashboardLayoutComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._Subscriptions.add(
 			this._MenuListSvc.showNavText$.subscribe((value)=>{
+				console.log('DashboardLayoutComponent.ngOnInit', value);
 			})
 		);
 	}

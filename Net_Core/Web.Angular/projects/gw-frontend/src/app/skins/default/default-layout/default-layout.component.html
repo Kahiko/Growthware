@@ -1,6 +1,6 @@
-<gw-frontend-default-header [sidenav]="drawer"></gw-frontend-default-header>
-<mat-drawer-container class="drawer-container" color="primary" autosize>
-  <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+<gw-frontend-default-header [sidenav]="sidenav"></gw-frontend-default-header>
+<mat-sidenav-container class="sidenav-container" color="primary" autosize>
+  <mat-sidenav #sidenav class="sidenav" opened="true" mode="side">
     <button style="outline: none;" color="primary" mat-icon-button (click)="onShowSideNavLinkText();">
       @if (showSideNavLinkText) {
         <span class="material-icons">arrow_left</span>
@@ -15,10 +15,10 @@
     <mat-nav-list>
       <gw-core-hierarchical-vertical name="hierarchicalVertical"></gw-core-hierarchical-vertical>
     </mat-nav-list>
-  </mat-drawer>
+  </mat-sidenav>
   <div class="router-outlet__div page">
     <gw-core-loader></gw-core-loader>
     <router-outlet></router-outlet>
   </div>
-</mat-drawer-container>
+</mat-sidenav-container>
 <gw-frontend-default-footer></gw-frontend-default-footer>

@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-
+// Angular Material
+import { MatSidenav } from '@angular/material/sidenav';
 // Library
 import { AccountService, IAccountInformation } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
@@ -22,7 +23,7 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
 	isAuthenticated: boolean = false;
 	version: string = '';
 
-  @Input() sidenav: any;
+  @Input() sidenav!: MatSidenav;
 
   constructor(
     private _AccountSvc: AccountService,

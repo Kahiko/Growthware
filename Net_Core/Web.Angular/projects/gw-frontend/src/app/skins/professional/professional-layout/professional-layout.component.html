@@ -1,15 +1,15 @@
 <gw-frontend-professional-header></gw-frontend-professional-header>
-<mat-drawer-container class="drawer-container" color="primary" autosize>
-    <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+<mat-sidenav-container class="sidenav-container" color="primary" autosize>
+    <mat-sidenav class="sidenav" #sidenav opened="true" mode="side">
         <mat-nav-list>
             <gw-core-hierarchical-vertical name="hierarchicalVertical"></gw-core-hierarchical-vertical>
         </mat-nav-list>
         <mat-divider></mat-divider>
         <gw-core-vertical name="vertical"></gw-core-vertical>
-    </mat-drawer>
+    </mat-sidenav>
     <div class="router-outlet__div page">
         <gw-core-loader></gw-core-loader>
         <router-outlet></router-outlet>
     </div>
-</mat-drawer-container>
+</mat-sidenav-container>
 <gw-frontend-professional-footer></gw-frontend-professional-footer>

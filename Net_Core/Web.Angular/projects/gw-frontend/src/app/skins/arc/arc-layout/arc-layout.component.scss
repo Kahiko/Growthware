@@ -262,12 +262,21 @@ $altTheme: mat.define-dark-theme((
     font-family: 'Roboto';
   }
 }
+
 // Done Theme
-.drawer-sidenav {
+.router-outlet__div {
+  padding: 5px;
+}
+
+.sidenav-container {
+  height: calc(100vh - 95px);
+}
+.sidenav {
     padding: 0px; 
     margin: 0px;
     // background-image: url('/assets/arc/images/menubg.gif');
     background-image: url('/assets/arc/images/thick_gray_line.gif');
+    height: calc(100vh - 95px);
 }
 
 /* Search */
