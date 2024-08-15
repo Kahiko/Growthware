@@ -29,16 +29,22 @@ public class UIAccountChoices : AbstractBaseModel
         }
         if (clientChoicesState[MClientChoices.Action] != null)
             Action = clientChoicesState[MClientChoices.Action].ToString(CultureInfo.InvariantCulture);
+        if (clientChoicesState[MClientChoices.AlternatingRowBackColor] != null)
+            AlternatingRowBackColor = clientChoicesState[MClientChoices.AlternatingRowBackColor].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.BackColor] != null)
             BackColor = clientChoicesState[MClientChoices.BackColor].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.ColorScheme] != null)
             ColorScheme = clientChoicesState[MClientChoices.ColorScheme].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.HeadColor] != null)
             HeadColor = clientChoicesState[MClientChoices.HeadColor].ToString(CultureInfo.InvariantCulture);
+        if (clientChoicesState[MClientChoices.HeaderForeColor] != null)
+            HeaderForeColor = clientChoicesState[MClientChoices.HeaderForeColor].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.LeftColor] != null)
             LeftColor = clientChoicesState[MClientChoices.LeftColor].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.RecordsPerPage] != null)
             RecordsPerPage = int.Parse(clientChoicesState[MClientChoices.RecordsPerPage].ToString(CultureInfo.InvariantCulture));
+        if (clientChoicesState[MClientChoices.RowBackColor] != null)
+            RowBackColor = clientChoicesState[MClientChoices.RowBackColor].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.SecurityEntityID] != null)
             SecurityEntityID = int.Parse(clientChoicesState[MClientChoices.SecurityEntityID].ToString(CultureInfo.InvariantCulture));
         if (clientChoicesState[MClientChoices.SecurityEntityName] != null)
