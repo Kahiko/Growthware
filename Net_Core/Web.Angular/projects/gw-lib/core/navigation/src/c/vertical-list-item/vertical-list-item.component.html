@@ -1,6 +1,5 @@
 @if (item.isRouterLink || item.children.length > 0) {
 <a mat-list-item 
-    [routerLink]="item.action"
     [activated]="item.isActive"
     class="drawer-nav-list__list-item" 
     [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
