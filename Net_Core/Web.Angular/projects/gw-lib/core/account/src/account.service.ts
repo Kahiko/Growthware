@@ -498,6 +498,7 @@ export class AccountService extends BaseService {
 				next: (response: IClientChoices) => {
 					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: response };
 					this._ClientChoices = response;
+					sessionStorage.setItem('clientChoices', JSON.stringify(response));
 					this._AccountInformationSubject.next(mAccountInformation);
 					this.triggerMenuUpdate();
 					resolve(true);
