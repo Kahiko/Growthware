@@ -15,6 +15,7 @@
 - Fixed "Old Password" not showing in Change Password when it should
 - Prevent "update" link from being displayed, not needed
 - Fixed when using mat-drawer to using mat-sidenav, though functionally the same the two could change in the future and Angular recommends to use mat-sidenav instead
+- Fixed being able to select multiple radio buttons in Select Preferences Component
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 
