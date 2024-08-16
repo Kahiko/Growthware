@@ -1,6 +1,6 @@
 <div class="table" style="height: calc(75vh);">
   <div class="tr">
-    <div class="td center blue LogoCell" style="width: 150px; height: 70px; border: solid 1px;">
+    <div class="td center blue leftColumnCell" style="height: 70px; border: solid 1px;">
       <img src='assets\bluearrow\images\CompanyLogo.gif' style="height: 65px;" />
     </div>
     <div class="td grey center">
@@ -12,20 +12,20 @@
       </div>
     </div>
     <div class="tr separatorRow">
-      <div class="td grey"></div>
+      <div class="td grey leftColumnCell"></div>
       <div class="td blue"></div>
     </div>
     <div class="tr">
-      <div class="td"></div>
+      <div class="td leftColumnCell"></div>
       <div class="td top">
         <gw-core-horizontal name="horizontal"></gw-core-horizontal>
       </div>
     </div>
     <div class="tr">
-      <div class="td">
+      <div class="td leftColumnCell">
         <gw-core-vertical name="vertical"></gw-core-vertical>
         <mat-divider></mat-divider>
-        <gw-core-hierarchical-vertical name="hierarchicalVertical"></gw-core-hierarchical-vertical>
+        <gw-core-hierarchical-vertical-flyout name="hierarchicalVertical" fontColor="black"></gw-core-hierarchical-vertical-flyout>
       </div>
       <div class="td router-outlet__div page">
         <gw-core-loader></gw-core-loader>
