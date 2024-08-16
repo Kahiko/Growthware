@@ -31,7 +31,7 @@
                       </mat-select>
                     </div>
                   </div>
-                  <div class="tr" [ngStyle]="{'visibility': isRegistration == true ? 'hidden' : 'visible'}">
+                  <div class="tr" [ngStyle]="{'visibility': isSysAdmin == false || isRegistration == true ? 'hidden' : 'visible'}">
                     <!--SysAdmin/Failed-->
                     <div class="td left">
                       <span class="Form_LabelText">System Administrator: </span>

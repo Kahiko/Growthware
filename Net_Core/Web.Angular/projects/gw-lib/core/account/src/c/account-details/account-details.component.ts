@@ -70,6 +70,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   groupsSelected: Array<string> = [];
 
   isRegistration: boolean = false;
+  isSysAdmin: boolean = false;
 
   litAccountWarning: string = '';
   litEMailWarning: string = '';
@@ -206,6 +207,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this._AccountProfile = accountProfile;
         let mRoles: string[] = [];
         let mGroups: string[] = [];
+        this.isSysAdmin = this._AccountProfile.isSystemAdmin;
         if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.assignedRoles)) {
           mRoles = this._AccountProfile.assignedRoles!;
           setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
