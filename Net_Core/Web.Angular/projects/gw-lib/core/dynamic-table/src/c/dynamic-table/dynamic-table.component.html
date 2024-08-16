@@ -61,13 +61,13 @@
           </span>
         </div>
       }
-      <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +23, 'max-width.px': tableWidth +23}">
+      <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +23, 'max-width.px': tableWidth +23}">
         <table [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth, 'margin-left.px': 5 }">
           @if (tableConfiguration.captionText.length > 0) {
             <caption id="caption_{{tableConfiguration.name}}"style="padding-top: 3px">{{tableConfiguration.captionText}}</caption>
           }
           <thead>
-            <tr>
+            <tr [style.background-color]="clientChoices.headColor">
               @for (column of tableConfiguration.columns; track column) {
                 <th [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
                   <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight }">
@@ -118,8 +118,8 @@
             </tr>
           </thead>
           <tbody>
-            @for (row of tableData$ | async; track row; let rowIndex = $index) {
-              <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight }" [class.active-row]="rowIndex == activeRow">
+            @for (row of tableData$ | async; track row; let rowIndex = $index, isEven = $even) {
+              <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight, 'color': clientChoices.headerForeColor, 'background-color': isEven ? clientChoices.alternatingRowBackColor : (!isEven ? clientChoices.rowBackColor : null) }" [class.active-row]="rowIndex == activeRow">
                 @for (column of tableConfiguration.columns; track column) {
                   <td>
                     <div>

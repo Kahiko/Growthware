@@ -53,6 +53,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
 
 	activeRow: number = -1;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	clientChoices: any;
 	maxHeadHeight: number = 32;
 	recordsPerPageSubject: Subject<number> = new Subject<number>();
 	recordsPerPageMsg: string = '';
@@ -190,6 +192,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
 	ngOnInit(): void {
 		this.configurationName = this.configurationName.trim();
+		const mClientChoicesString = sessionStorage.getItem('clientChoices') ?? '';
+		if(!this._GWCommon.isNullOrEmpty(mClientChoicesString)) {
+			this.clientChoices = JSON.parse(mClientChoicesString);
+		}
 		if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
 			this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
 			if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {

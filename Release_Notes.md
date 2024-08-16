@@ -9,6 +9,7 @@
 - AbstractDBInteraction.BulkInsert now uses a DTO for the parameter making it generic
 - Vertical menu items now hightlight when clicked on
 - Select Preferences Component html builds from typescript data
+- Dynamic Table now uses ClientChoices colors
 
 ### Bug Fixes
 - Fixed type-o in Change Password
