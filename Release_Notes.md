@@ -10,6 +10,7 @@
 - Vertical menu items now hightlight when clicked on
 - Select Preferences Component html builds from typescript data
 - Dynamic Table now uses ClientChoices colors
+- Added dividers to the Horizontal Component
 
 ### Bug Fixes
 - Fixed type-o in Change Password
