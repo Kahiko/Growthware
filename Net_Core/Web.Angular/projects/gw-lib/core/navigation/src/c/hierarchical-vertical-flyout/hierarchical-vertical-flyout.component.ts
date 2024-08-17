@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Router, RouterModule } from '@angular/router';
 // Library
@@ -19,7 +19,8 @@ import { MenuTypes } from '../../menu-types.enum';
 		RouterModule
 	],
 	templateUrl: './hierarchical-vertical-flyout.component.html',
-	styleUrls: ['./hierarchical-vertical-flyout.component.scss']
+	styleUrls: ['./hierarchical-vertical-flyout.component.scss'],
+	encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class HierarchicalVerticalFlyoutComponent extends BaseNavigationFlyoutComponent implements OnInit {
 
@@ -28,6 +29,8 @@ export class HierarchicalVerticalFlyoutComponent extends BaseNavigationFlyoutCom
   @Input() fontColor: string = 'white'; // #fff
   @Input() override name: string = '';
   @Input() height: string = '32px';
+
+  @ViewChild('firstLevel', {static: false}) override firstLevel!: ElementRef<HTMLUListElement>;
 
   constructor(
   	accountSvc: AccountService,
@@ -56,4 +59,5 @@ export class HierarchicalVerticalFlyoutComponent extends BaseNavigationFlyoutCom
   	document.documentElement.style.setProperty('--ulBackgroundColor', this.backgroundColor);
   	document.documentElement.style.setProperty('--ulLiBackgroundColor', this.backgroundColor);
   }
+
 }
