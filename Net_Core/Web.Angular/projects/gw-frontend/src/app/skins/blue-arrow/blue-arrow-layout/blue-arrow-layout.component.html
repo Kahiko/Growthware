@@ -1,46 +1,47 @@
-<div class="table" style="height: calc(75vh);">
+<div class="table">
   <div class="tr">
-    <div class="td center blue leftColumnCell" style="height: 70px; border: solid 1px;">
+    <div class="td center blue leftColumnCell">
       <img src='assets\bluearrow\images\CompanyLogo.gif' style="height: 65px;" />
     </div>
-    <div class="td grey center">
+    <div class="td grey top center">
       @if (environment !== 'Production') {
-        <span id="spEnvironment" style="color: Black;">Environment: {{environment}}</span>
-        }&nbsp;&nbsp;
-        <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntity}}</span>&nbsp;&nbsp;
-        <span id="spVersion" style="color: Black;">{{version}}</span>
-      </div>
+      <span id="spEnvironment" style="color: Black;">Environment: {{environment}}</span><br />
+      }
+      <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntity}}</span><br />
+      Version: <span id="spVersion" style="color: Black;">{{version}}</span>
     </div>
-    <div class="tr separatorRow">
-      <div class="td grey leftColumnCell"></div>
-      <div class="td blue"></div>
-    </div>
-    <div class="tr">
-      <div class="td leftColumnCell"></div>
-      <div class="td top">
-        <gw-core-horizontal name="horizontal"></gw-core-horizontal>
-      </div>
-    </div>
-    <div class="tr">
-      <div class="td leftColumnCell">
-        <gw-core-vertical name="vertical"></gw-core-vertical>
-        <mat-divider></mat-divider>
-        <gw-core-hierarchical-vertical-flyout name="hierarchicalVertical" fontColor="black"></gw-core-hierarchical-vertical-flyout>
-      </div>
-      <div class="td router-outlet__div page">
-        <gw-core-loader></gw-core-loader>
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-    <div class="tr separatorRow">
-      <div class="td"></div>
-      <div class="td"></div>
-    </div>
-    <div class="tr separatorRow">
-      <div class="td blue"></div>
-      <div class="td grey center">
-        <gw-frontend-blue-arrow-footer></gw-frontend-blue-arrow-footer>
-      </div>
-    </div>
-
   </div>
+  <div class="tr separatorRow">
+    <div class="td leftColumnCell"></div>
+    <div class="td"></div>
+  </div>
+  <div class="tr separatorRow">
+    <div class="td grey leftColumnCell"></div>
+    <div class="td blue"></div>
+  </div>
+  <div class="tr">
+    <div class="td leftColumnCell"></div>
+    <div class="td">
+      <gw-core-horizontal name="horizontal" fontColor="black"></gw-core-horizontal>
+    </div>
+  </div>
+  <div class="tr">
+    <div class="td leftColumnCell top">
+      <gw-core-vertical name="vertical"></gw-core-vertical>
+      <mat-divider></mat-divider>
+      <gw-core-hierarchical-vertical-flyout name="hierarchicalVertical" fontColor="black"></gw-core-hierarchical-vertical-flyout>
+    </div>
+    <div class="td">
+      <div class="router-outlet__div page">
+        <gw-core-loader></gw-core-loader>
+        <router-outlet></router-outlet>  
+      </div>
+    </div>
+  </div>
+  <div class="tr separatorRow">
+    <div class="td blue leftColumnCell"></div>
+    <div class="td grey center">
+      <gw-frontend-blue-arrow-footer></gw-frontend-blue-arrow-footer>
+    </div>
+  </div>
+</div>

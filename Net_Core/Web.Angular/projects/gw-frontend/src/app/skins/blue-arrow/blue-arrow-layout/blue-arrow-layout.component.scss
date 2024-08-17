@@ -324,11 +324,13 @@ a:hover {
 
 .router-outlet__div {
     padding: 5px;
+    min-height: calc(75vh - 5px);
+    height: calc(75vh - 5px);
+    overflow-y: scroll;
 }
 
 .page {
     width: 98%;
-    min-height: 550px;
     background-color: #fff;
     margin: 5px auto 0px auto;
 
