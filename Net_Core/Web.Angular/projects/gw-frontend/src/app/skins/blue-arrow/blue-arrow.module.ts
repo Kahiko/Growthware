@@ -8,9 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { LoaderComponent } from '@growthware/core/loader';
 // Library Standalone
 import { HorizontalComponent } from '@growthware/core/navigation';
-// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
-import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
-// import { HierarchicalVerticalFlyoutComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalFlyoutComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { BlueArrowRoutingModule } from './blue-arrow-routing.module';
@@ -28,10 +26,9 @@ import { BlueArrowLayoutComponent } from './blue-arrow-layout/blue-arrow-layout.
 		MatDividerModule,
 		MatListModule,
 		MatSidenavModule,
-    
+		// Library Standalone Menu Components
 		HorizontalComponent,
-		HierarchicalVerticalComponent,
-		// HierarchicalVerticalFlyoutComponent,
+		HierarchicalVerticalFlyoutComponent,
 		VerticalComponent,
 
 		CommonModule,
