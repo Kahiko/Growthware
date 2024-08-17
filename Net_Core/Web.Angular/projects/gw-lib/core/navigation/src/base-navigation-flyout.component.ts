@@ -55,7 +55,7 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
 			this._Subscription.add(
 				this._DataSvc.dataChanged$.subscribe((data) => {
 					if(data.name.toLowerCase() === this.name.toLowerCase()) {
-						console.log('BaseNavigationFlyoutComponent.ngAfterContentInit.data', data);
+						// console.log('BaseNavigationFlyoutComponent.ngAfterContentInit.data', data);
 						this._GWCommon.buildNavItems(data.value).forEach((item) => {
 							this.menuData.push(item);
 						});
