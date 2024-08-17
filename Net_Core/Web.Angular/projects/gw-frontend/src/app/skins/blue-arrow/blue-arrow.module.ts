@@ -9,8 +9,8 @@ import { LoaderComponent } from '@growthware/core/loader';
 // Library Standalone
 import { HorizontalComponent } from '@growthware/core/navigation';
 // import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
-// import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
-import { HierarchicalVerticalFlyoutComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+// import { HierarchicalVerticalFlyoutComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { BlueArrowRoutingModule } from './blue-arrow-routing.module';
@@ -30,7 +30,8 @@ import { BlueArrowLayoutComponent } from './blue-arrow-layout/blue-arrow-layout.
 		MatSidenavModule,
     
 		HorizontalComponent,
-		HierarchicalVerticalFlyoutComponent,
+		HierarchicalVerticalComponent,
+		// HierarchicalVerticalFlyoutComponent,
 		VerticalComponent,
 
 		CommonModule,
