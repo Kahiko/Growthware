@@ -381,13 +381,7 @@ export class AccountService extends BaseService {
 				// 2.) update information from the response
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
 				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
-				this._AuthenticationResponse = mAccountInformation.authenticationResponse;
-				this._ClientChoices = mAccountInformation.clientChoices;
-				this._AccountInformationSubject.next(mAccountInformation);
-				this.triggerMenuUpdate();
-				// 3.) start the refresh token timer
-				this.startRefreshTokenTimer();
-				// 4.) return the authentication response
+				this.afterLogin(mAccountInformation);
 				return mAccountInformation.authenticationResponse;
 			}));
 	}
