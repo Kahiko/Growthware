@@ -19,7 +19,7 @@
 - Fixed when using mat-drawer to using mat-sidenav, though functionally the same the two could change in the future and Angular recommends to use mat-sidenav instead
 - Fixed being able to select multiple radio buttons in Select Preferences Component
 - Fixed Account Details Component showing the "System Administrator" and "Failed Logon Attempts" when it should not be displayed
-- Fixed Hierarchical Vertical Flyout now working
+- Fixed Hierarchical Vertical Flyout not working
 - Fixed fore color not being set in the HorizontalComponent
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
