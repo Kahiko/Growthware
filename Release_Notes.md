@@ -11,6 +11,7 @@
 - Select Preferences Component html builds from typescript data
 - Dynamic Table now uses ClientChoices colors
 - Added dividers to the Horizontal Component
+- Added fontColor to the VerticalComponent
 
 ### Bug Fixes
 - Fixed type-o in Change Password
