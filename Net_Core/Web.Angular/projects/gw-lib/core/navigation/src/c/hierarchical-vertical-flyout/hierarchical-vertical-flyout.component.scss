@@ -1,11 +1,11 @@
 .flyout-nav {
-  border: solid 1px;
-  height: var(--height);
-  display: inline-block;
+	border: solid 1px;
+	height: var(--height);
+	display: inline-block;
 }
 
-.main-navigation li ul li {
-  border-top: 0;
+.cssMenuVHMenu li ul li {
+	border-top: 0;
 }
 
 ul {
@@ -21,7 +21,7 @@ ul {
 	display: block;
 	position: relative;
 	width: 150px;
-  z-index: 9999;
+	z-index: 9999;
 }
 
 /* The list elements which contain the links */
@@ -30,7 +30,7 @@ ul li {
 	position: relative;
 	margin: 0;
 	padding: 0;
-	width: 150px;	
+	width: 150px;
 }
 
 /* General link styling */
@@ -51,7 +51,7 @@ ul li a {
 	text-transform: uppercase;
 	text-shadow: 0 1px 1px #000;
 	font-size: 13px;
-	font-weight: 300;			
+	font-weight: 300;
 
 	/* Background & effects */
 	background: #282828;
@@ -73,18 +73,19 @@ ul li:last-child>a {
 
 
 /* The hover state of the menu/submenu links */
-ul li>a:hover, ul li:hover>a {
+ul li>a:hover,
+ul li:hover>a {
 	color: #fff;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
 	background: #54cdf1;
 	background: -webkit-linear-gradient(bottom, #54cdf1, #74d7f3);
-	background: -ms-linear-gradient(bottom, #54cdf1, #74d7f3); 
+	background: -ms-linear-gradient(bottom, #54cdf1, #74d7f3);
 	background: -moz-linear-gradient(bottom, #54cdf1, #74d7f3);
 	background: -o-linear-gradient(bottom, #54cdf1, #74d7f3);
 	border-color: transparent;
 }
 
-#cssMenuVHMenu .has-sub {
+.has-sub {
 	z-index: 1;
 }
 
@@ -99,7 +100,7 @@ ul .has-sub>a::after {
 
 	/* Creating the arrow using borders */
 	border: 4px solid transparent;
-	border-left: 4px solid #d8d8d8; 
+	border-left: 4px solid #d8d8d8;
 }
 
 /* The same arrow, but with a darker color, to create the shadow effect */
@@ -117,15 +118,17 @@ ul .has-sub>a::before {
 }
 
 /* Changing the color of the arrow on hover */
-ul li>a:hover::after, ul li:hover>a::after {
+ul li>a:hover::after,
+ul li:hover>a::after {
 	border-left: 4px solid #fff;
 }
 
-ul li>a:hover::before, ul li:hover>a::before {
+ul li>a:hover::before,
+ul li:hover>a::before {
 	border-left: 4px solid rgba(0, 0, 0, .3);
 }
 
-	
+
 /* THE SUBMENUS */
 ul ul {
 	position: absolute;
