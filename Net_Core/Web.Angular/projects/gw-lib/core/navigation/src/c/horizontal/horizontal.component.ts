@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +19,7 @@ import { INavLink } from '../../nav-link.model';
 	selector: 'gw-core-horizontal',
 	standalone: true,
 	imports: [
+		CommonModule,
 		RouterModule,
 		MatIconModule,
 		MatListModule
@@ -50,7 +51,6 @@ export class HorizontalComponent extends BaseNavigationComponent implements OnIn
 
   ngOnInit(): void {
   	this._MenuType = MenuTypes.Horizontal;
-  	document.documentElement.style.setProperty('--fontColor', this.fontColor);
   }
 
   override onItemSelected(item: INavLink) {
