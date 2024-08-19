@@ -12,6 +12,7 @@
 - Dynamic Table now uses ClientChoices colors
 - Added dividers to the Horizontal Component
 - Added fontColor to the VerticalComponent
+- Added anchor styles to dev-ops-layout.component.scss
 
 ### Bug Fixes
 - Fixed type-o in Change Password
