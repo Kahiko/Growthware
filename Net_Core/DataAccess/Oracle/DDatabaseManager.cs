@@ -29,11 +29,19 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void Create()
     {
-        /**
-         * A database can not be created outside of the installation process in Oracle.
-         * So, we only need to check if we can connect to the database.
-         * If we can, return true if not throw an exception there is nothing to do.
-         */
+        string mDataBaseName = this.m_DatabaseName;
+        string mDBNameUpper = this.m_DatabaseName.ToUpper();
+        string mDBNameLower = this.m_DatabaseName.ToLower();
+        string mFilePath = ConfigSettings.PathToPDBFiles;
+        string mCreateDBSQLStatement = @"create pluggable database {0} admin user {1} identified by '{3}'
+default tablespace {0}_USERS
+datafile '{2}\PDBSEED\GROWTHWARE\growthware_users01.dbf' size 250m autoextend on
+storage (maxsize 1g max_shared_temp_size 1g)
+file_name_convert=('{2}\PDBSEED\','{2}\{3}\');";
+        mCreateDBSQLStatement = mCreateDBSQLStatement.Replace(@"\", Path.DirectorySeparatorChar.ToString());
+        mCreateDBSQLStatement = mCreateDBSQLStatement.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        mCreateDBSQLStatement = string.Format(mCreateDBSQLStatement, mDBNameUpper, mDBNameLower, mFilePath, mDataBaseName);
+        string mike = string.Empty;
     }
 
     public void Delete()
@@ -54,24 +62,26 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public bool Exists()
     {
-        this.IsValid();
+        this.ConnectionString = ConfigSettings.ContainerConnectionString;
         bool mRetVal = false;
-        using (OracleConnection mOracleConnection = new OracleConnection(this.ConnectionString))
+        // string mSqlStatement = string.Format("SELECT COUNT(*) FROM v$pdbs vp WHERE vp.name = '{0}'", ConfigSettings.DataAccessLayerDatabaseName.ToUpper());
+        string mSqlStatement = "SELECT COUNT(*) FROM v$pdbs vp WHERE vp.name = :databaseName";
+        try
         {
-            mOracleConnection.Open();
-            string mSqlStatement = "SELECT COUNT(*) FROM dba_users WHERE username = :username";
-            try
+            OracleParameter[] mOracleParameters = {
+                new("databaseName", ConfigSettings.DataAccessLayerDatabaseName.ToUpper())
+            };
+            
+            int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement, mOracleParameters, true));
+            if (mUserCount > 0)
             {
-                int mUserCount = Convert.ToInt32(this.ExecuteScalar(mSqlStatement));
-                if (mUserCount > 0)
-                {
-                    mRetVal = true;
-                }
+                mRetVal = true;
             }
-            catch (System.Exception)
-            {
-                mRetVal = false;
-            }
+        }
+        catch (System.Exception ex)
+        {
+            DataAccessLayerException mException = new("DDatabaseManager.Exists", ex);
+            mRetVal = false;
         }
         return mRetVal;
     }
