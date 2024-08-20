@@ -23,6 +23,7 @@
 - Fixed Account Details Component showing the "System Administrator" and "Failed Logon Attempts" when it should not be displayed
 - Fixed Hierarchical Vertical Flyout not working
 - Fixed fore color not being set in the HorizontalComponent
+- Fixed GrowthWare.DatabaseManager - Changed if conditions to hand the most common condition first
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 
