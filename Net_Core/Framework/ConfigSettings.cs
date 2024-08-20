@@ -10,6 +10,7 @@ namespace GrowthWare.Framework
     {
         private static readonly IConfiguration m_Configuration;
         private static readonly string m_ConnectionString = string.Empty;
+        private static readonly string m_ContainerConnectionString = string.Empty;
         private static readonly string m_SettingsDirectory = string.Empty;
         private static string s_CentralManagement = string.Empty;
         private static bool m_CentralManagement;
@@ -37,6 +38,13 @@ namespace GrowthWare.Framework
                 string mDecryptedValue = string.Empty;
                 CryptoUtility.TryDecrypt(m_ConnectionString, out mDecryptedValue, EncryptionType);
                 m_ConnectionString = mDecryptedValue;
+            }
+            if(m_ContainerConnectionString == null || (string.IsNullOrEmpty(m_ContainerConnectionString) || string.IsNullOrWhiteSpace(m_ContainerConnectionString)))
+            {
+                m_ContainerConnectionString = GetAppSettingValue("DAL_" + mDal + "_Container_ConnectionString", true);
+                string mDecryptedValue = string.Empty;
+                CryptoUtility.TryDecrypt(m_ContainerConnectionString, out mDecryptedValue, EncryptionType);
+                m_ContainerConnectionString = mDecryptedValue;
             }
         }        
 
@@ -178,6 +186,11 @@ namespace GrowthWare.Framework
         public static string ConnectionString
         {
             get { return m_ConnectionString; }
+        }
+
+        public static string ContainerConnectionString
+        {
+            get { return m_ContainerConnectionString; }
         }
 
         /// <summary>
@@ -442,6 +455,11 @@ namespace GrowthWare.Framework
         public static string DBStatus
         {
             get { return GetAppSettingValue("DB_Status"); }
+        }
+
+        public static string PathToPDBFiles
+        {
+            get { return GetAppSettingValue("DAL_" + DataAccessLayer + "_Path_To_DB_Files", true); }
         }
 
         /// <summary>
