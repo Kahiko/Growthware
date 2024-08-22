@@ -178,7 +178,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Returns the connection string as defined in the GrowthWare.json file by environment/DAL
+        /// Returns the Decrypted connection string as defined in the GrowthWare.json file by environment/DAL
         /// </summary>
         /// <value>Desired data access layer "Oracle" and default "SQLServer" connection string information</value>
         /// <returns>String</returns>
