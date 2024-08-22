@@ -31,6 +31,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void Create()
     {
+        string mCommandText = string.Empty;
         this.ConnectionString = ConfigSettings.ContainerConnectionString;
         // Get the file location for the new PDB
         string mDatabaseName = ConfigSettings.DataAccessLayerDatabaseName;
@@ -45,18 +46,18 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         string mUpper = mDatabaseName.ToUpper();
         string mLower = mDatabaseName.ToLower();
         // Create the pluggable database
-        string mCreationText = $@"CREATE PLUGGABLE DATABASE {mDatabaseName}
+        mCommandText = $@"CREATE PLUGGABLE DATABASE {mDatabaseName}
   ADMIN USER {mLower} IDENTIFIED BY ""{mDatabasePassword}""
   ROLES = (dba)
   DEFAULT TABLESPACE {mUpper}_USERS
     DATAFILE '{mDataFile}' SIZE 250M AUTOEXTEND ON
   FILE_NAME_CONVERT = ('{mSeedFileLocation + Path.DirectorySeparatorChar}',
                        '{mDataPath + Path.DirectorySeparatorChar}')
-  STORAGE (MAXSIZE 1G)
+  STORAGE (MAXSIZE 2G)
   PATH_PREFIX = '{mDataPath + Path.DirectorySeparatorChar}'";
         try
         {
-            this.ExecuteNonQuery(mCreationText);
+            this.ExecuteNonQuery(mCommandText);
             // Open the pluggable database
             string mOpenPdbQuery = $"ALTER PLUGGABLE DATABASE {mUpper} OPEN READ WRITE";
             this.ExecuteNonQuery(mOpenPdbQuery);
@@ -65,6 +66,98 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         {
             Logger.Instance().Error(ex);
             throw;
+        }
+        string mScriptDirectory = this.GetScriptPath("Upgrade");
+        // Define the DDL scirpt
+        string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
+
+        // Define the DML scirpt
+        string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
+        using (OracleConnection mOracleConnection = new(this.ConnectionString))
+        {
+            mOracleConnection.Open();
+            Boolean mSuccess = this.ExecuteScriptFile(mCreationFile, mOracleConnection);
+            if (!mSuccess)
+            {
+                string mError = "Was not able to create the '{0}' database file name {1}.";
+                mError = String.Format(mError, this.DatabaseName, mCreationFile);
+                throw new Exception(mError);
+            }
+            mSuccess = this.ExecuteScriptFile(mInsertFile, mOracleConnection);
+            if (!mSuccess)
+            {
+                string mError = "Was not able to insert the data in into '{0}'.";
+                mError = String.Format(mError, mCreationFile);
+                throw new Exception(mError);
+            }
+
+            // // Update all of the just added security entites to the configured data access layer information
+            // using OracleCommand mOracleCommand = new(mCommandText, mOracleConnection);
+            // mOracleCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
+            // using (OracleDataAdapter mOracleDataAdapter = new OracleDataAdapter(mOracleCommand))
+            // {
+            //     DataSet mDataSet = new DataSet();
+            //     mOracleDataAdapter.Fill(mDataSet);
+            //     if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+            //     {
+            //         DataTable mDataTable = mDataSet.Tables[0];
+            //         if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+            //         {
+            //             foreach(DataRow mRow in mDataTable.Rows)
+            //             {
+            //                 // Encrypt the connection string
+            //                 CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+            //                 mCommandText = @"
+            //                 UPDATE [ZGWSecurity].[Security_Entities] SET 
+            //                     [DAL] = N'{0}'
+            //                     , [DAL_Name] = N'{1}'
+            //                     , [DAL_Name_Space] = N'{2}'
+            //                     , [DAL_String] = N'{3}'
+            //                 WHERE [SecurityEntitySeqId] = {4};";
+            //                 mCommandText = String.Format(
+            //                     mCommandText,
+            //                     "SQLServer",
+            //                     ConfigSettings.DataAccessLayerAssemblyName,
+            //                     ConfigSettings.DataAccessLayerNamespace,
+            //                     mEncryptedConnectionString,
+            //                     mRow["SecurityEntitySeqId"].ToString()
+            //                 );
+            //                 mOracleCommand.CommandText = mCommandText;
+            //                 mOracleCommand.ExecuteNonQuery();
+            //             }
+            //         }
+            //     }
+            // }
+
+            // mOracleCommand.CommandText = @"SELECT [AccountSeqId] FROM [ZGWSecurity].[Accounts];";
+            // using (OracleDataAdapter mOracleDataAdapter = new OracleDataAdapter(mOracleCommand))
+            // {
+            //     DataSet mDataSet = new DataSet();
+            //     mOracleDataAdapter.Fill(mDataSet);
+            //     if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+            //     {
+            //         DataTable mDataTable = mDataSet.Tables[0];
+            //         if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+            //         {
+            //             foreach(DataRow mRow in mDataTable.Rows)
+            //             {
+            //                 // Encrypt the password
+            //                 CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+            //                 mCommandText = @"
+            //                 UPDATE [ZGWSecurity].[Accounts] SET 
+            //                     [Password] = '{0}'
+            //                 WHERE [AccountSeqId] = {1};";
+            //                 mCommandText = String.Format(
+            //                     mCommandText,
+            //                     mEncryptedPassword,
+            //                     mRow["AccountSeqId"].ToString()
+            //                 );
+            //                 mOracleCommand.CommandText = mCommandText;
+            //                 mOracleCommand.ExecuteNonQuery();
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -103,16 +196,15 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         try
         {
             string mAllText = File.ReadAllText(scriptWithPath);
-
             // split script on semi-colon
-            IEnumerable<string> mCommands = Regex.Split(mAllText, @"^\s*;\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            IEnumerable<string> mCommands = mAllText.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
             if (oracleConnection.State == ConnectionState.Closed)
             {
                 oracleConnection.Open();
             }
             foreach (string mCommandText in mCommands)
             {
-                if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText))
+                if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText) && !mCommandText.Trim().StartsWith("--"))
                 {
                     try
                     {
@@ -130,7 +222,6 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
                     }
                 }
             }
-
             return true;
         }
         catch (Exception ex)
