@@ -180,7 +180,7 @@ namespace GrowthWare.Framework
         /// <summary>
         /// Returns the connection string as defined in the GrowthWare.json file by environment/DAL
         /// </summary>
-        /// <value>Desired data access layer "Oracle" and defaul "SQLServer" connection string information</value>
+        /// <value>Desired data access layer "Oracle" and default "SQLServer" connection string information</value>
         /// <returns>String</returns>
         /// <remarks>The GrowthWare.json value can be encrypted or clear text</remarks>
         public static string ConnectionString
