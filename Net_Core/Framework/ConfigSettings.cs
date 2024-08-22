@@ -78,7 +78,7 @@ namespace GrowthWare.Framework
             }
         }
         /// <summary>
-        /// Returns App_Displayed_Name from the WEB.CONFIG file
+        /// Returns App_Displayed_Name from the GrowthWare.jsonIG file
         /// </summary>
         /// <value></value>
         /// <returns>String</returns>
@@ -89,7 +89,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Retruns Append_To_File from the WEB.CONFIG file
+        /// Retruns Append_To_File from the GrowthWare.jsonIG file
         /// </summary>
         /// <value></value>
         /// <returns>String</returns>
@@ -178,11 +178,11 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Returns the connection string as defined in the web.conf file by environment/DAL
+        /// Returns the connection string as defined in the GrowthWare.json file by environment/DAL
         /// </summary>
         /// <value>Desired data access layer "Oracle" and defaul "SQLServer" connection string information</value>
         /// <returns>String</returns>
-        /// <remarks>The web.conf value can be encrypted or clear text</remarks>
+        /// <remarks>The GrowthWare.json value can be encrypted or clear text</remarks>
         public static string ConnectionString
         {
             get { return m_ConnectionString; }
@@ -217,7 +217,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Returns the name of the data access layer assembly name as defined in the web.conf file by environment
+        /// Returns the name of the data access layer assembly name as defined in the GrowthWare.json file by environment
         /// </summary>
         /// <value>Desired data access layer "Oracle" and default "SQLServer"</value>
         /// <returns>String</returns>
@@ -228,7 +228,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Returns the name of the database name as defined in the web.conf file by environment
+        /// Returns the name of the database name as defined in the GrowthWare.json file by environment
         /// </summary>
         /// <value>Desired data access layer "Oracle" and default "SQLServer"</value>
         /// <returns>String</returns>
