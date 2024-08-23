@@ -5,6 +5,13 @@ SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWCoreWebApplication')
+	BEGIN
+		DROP SCHEMA [ZGWCoreWebApplication]
+	END
+--END IF
+GO
+
 UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [Action] = 'accounts'
 UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 0 WHERE [FunctionSeqId] = 76
 
