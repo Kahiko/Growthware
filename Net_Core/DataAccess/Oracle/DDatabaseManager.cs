@@ -53,7 +53,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
     DATAFILE '{mDataFile}' SIZE 250M AUTOEXTEND ON
   FILE_NAME_CONVERT = ('{mSeedFileLocation + Path.DirectorySeparatorChar}',
                        '{mDataPath + Path.DirectorySeparatorChar}')
-  STORAGE (MAXSIZE 2G)
+  STORAGE (MAXSIZE 1G)
   PATH_PREFIX = '{mDataPath + Path.DirectorySeparatorChar}'";
         try
         {
