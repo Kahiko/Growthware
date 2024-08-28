@@ -33,6 +33,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
     {
         string mCommandText = string.Empty;
         this.ConnectionString = ConfigSettings.ContainerConnectionString;
+
         // Get the file location for the new PDB
         string mDatabaseName = ConfigSettings.DataAccessLayerDatabaseName;
         string mDatabasePassword = getPassword();
@@ -67,6 +68,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             Logger.Instance().Error(ex);
             throw;
         }
+        this.ConnectionString = ConfigSettings.ConnectionString;
         string mScriptDirectory = this.GetScriptPath("Upgrade");
         // Define the DDL scirpt
         string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
@@ -76,14 +78,16 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         using (OracleConnection mOracleConnection = new(this.ConnectionString))
         {
             mOracleConnection.Open();
-            Boolean mSuccess = this.ExecuteScriptFile(mCreationFile, mOracleConnection);
+            // Boolean mSuccess = this.ExecuteScriptFile(mCreationFile, mOracleConnection);
+            Boolean mSuccess = this.replace_N_Run(mCreationFile, mOracleConnection);
             if (!mSuccess)
             {
                 string mError = "Was not able to create the '{0}' database file name {1}.";
                 mError = String.Format(mError, this.DatabaseName, mCreationFile);
                 throw new Exception(mError);
             }
-            mSuccess = this.ExecuteScriptFile(mInsertFile, mOracleConnection);
+            // mSuccess = this.ExecuteScriptFile(mInsertFile, mOracleConnection);
+            mSuccess = this.replace_N_Run(mInsertFile, mOracleConnection);
             if (!mSuccess)
             {
                 string mError = "Was not able to insert the data in into '{0}'.";
@@ -299,7 +303,16 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public Version GetVersion()
     {
-        throw new NotImplementedException();
+            this.IsValid();
+            Version mRetVal = new Version("0.0.0.0");
+            if (this.Exists())
+            {
+                this.ConnectionString = ConfigSettings.ConnectionString;
+                string mCommandText = "SELECT Version FROM ZGWSystem.Database_Information";
+                DataRow mDataRow = this.GetDataRow(mCommandText);
+                mRetVal = new Version(mDataRow["Version"].ToString());
+            }
+            return mRetVal;
     }
 
     public void SetDatabaseName()
@@ -356,7 +369,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         bool mSuccess = false;
         // Replace 'YourDatabaseName' with the given database name
         string mAllText = File.ReadAllText(scriptFile);
-        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName);
+        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName.ToUpper());
         File.WriteAllText(scriptFile, mAllText);
         try
         {
@@ -370,7 +383,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         finally
         {
             // Replace the given database name with 'YourDatabaseName'
-            mAllText = mAllText.Replace(DatabaseName, "YourDatabaseName");
+            mAllText = mAllText.Replace(DatabaseName.ToUpper(), "YourDatabaseName");
             File.WriteAllText(scriptFile, mAllText);
         }
         return mSuccess;
@@ -378,6 +391,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void UpdateLogPath()
     {
-        throw new NotImplementedException();
+            // string mCommandText = String.Format("UPDATE ZGWOptional.Directories SET Directory = '{0}' WHERE [FunctionSeqId] = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'Manage_Logs')", ConfigSettings.LogPath);
+            // this.ExecuteNonQuery(mCommandText);
     }
 }
