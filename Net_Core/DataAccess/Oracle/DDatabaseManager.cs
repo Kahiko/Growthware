@@ -389,6 +389,10 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         return mSuccess;
     }
 
+    /// <summary>
+    /// Updates the [Directory] column in the ZGWOptional.Directories table
+    /// for the function Manage_Logs
+    /// </summary>
     public void UpdateLogPath()
     {
             // string mCommandText = String.Format("UPDATE ZGWOptional.Directories SET Directory = '{0}' WHERE [FunctionSeqId] = (SELECT [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'Manage_Logs')", ConfigSettings.LogPath);
