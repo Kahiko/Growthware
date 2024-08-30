@@ -44,4 +44,5 @@ ENABLE;
 
 COMMIT;
 
-GRANT ALL ON Database_Information TO ZGWCoreWeb,ZGWOptional,ZGWSecurity;
+GRANT ALL ON Database_Information TO ZGWSystem, ZGWOptional, ZGWSecurity, ZGWCoreWeb;
+COMMIT;
