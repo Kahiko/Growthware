@@ -5,21 +5,21 @@
 -- SET FEEDBACK ON;
 -- SET DEFINE ON;
 -- CLEAR SCREEN;
--- set serveroutput on
+-- set serveroutput on;
 
 ALTER SESSION SET CONTAINER = YourDatabaseName;
 
--- Create users (schemas) and grant necessary privileges
+-- Create users (schemas) and grant necessary privileges;
 CREATE USER ZGWSystem IDENTIFIED BY realyitsMe;
 CREATE USER ZGWOptional IDENTIFIED BY realyitsMe;
 CREATE USER ZGWSecurity IDENTIFIED BY realyitsMe;
-CREATE USER ZGWCOREWEB IDENTIFIED BY ZGWCOREWEB;
+CREATE USER ZGWCoreWeb IDENTIFIED BY realyitsMe;
 COMMIT;
 
 GRANT ALL PRIVILEGES TO ZGWSystem;
 GRANT ALL PRIVILEGES to ZGWOptional;
 GRANT ALL PRIVILEGES to ZGWSecurity;
-GRANT ALL PRIVILEGES to ZGWCOREWEB;
+GRANT ALL PRIVILEGES to ZGWCoreWeb;
 COMMIT;
 
 ALTER SESSION SET current_schema=ZGWSystem;
