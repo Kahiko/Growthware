@@ -10,10 +10,10 @@
 ALTER SESSION SET CONTAINER = YourDatabaseName;
 
 -- Create users (schemas) and grant necessary privileges;
-CREATE USER ZGWSystem IDENTIFIED BY realyitsMe;
-CREATE USER ZGWOptional IDENTIFIED BY realyitsMe;
-CREATE USER ZGWSecurity IDENTIFIED BY realyitsMe;
-CREATE USER ZGWCoreWeb IDENTIFIED BY realyitsMe;
+CREATE USER ZGWSystem IDENTIFIED BY YourPasswordHere;
+CREATE USER ZGWOptional IDENTIFIED BY YourPasswordHere;
+CREATE USER ZGWSecurity IDENTIFIED BY YourPasswordHere;
+CREATE USER ZGWCoreWeb IDENTIFIED BY YourPasswordHere;
 COMMIT;
 
 GRANT ALL PRIVILEGES TO ZGWSystem;

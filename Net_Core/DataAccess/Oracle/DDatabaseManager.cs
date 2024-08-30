@@ -278,6 +278,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
                 if(mNameValuePair[0].Equals("password", StringComparison.OrdinalIgnoreCase))
                 {
                     mRetVal = mNameValuePair[1];
+                    break;
                 }
             }
         }
@@ -370,6 +371,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         // Replace 'YourDatabaseName' with the given database name
         string mAllText = File.ReadAllText(scriptFile);
         mAllText = mAllText.Replace("YourDatabaseName", DatabaseName.ToUpper());
+        mAllText = mAllText.Replace("YourPasswordHere", this.getPassword());
         File.WriteAllText(scriptFile, mAllText);
         try
         {
@@ -384,6 +386,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         {
             // Replace the given database name with 'YourDatabaseName'
             mAllText = mAllText.Replace(DatabaseName.ToUpper(), "YourDatabaseName");
+            mAllText = mAllText.Replace(this.getPassword(), "YourPasswordHere");
             File.WriteAllText(scriptFile, mAllText);
         }
         return mSuccess;
