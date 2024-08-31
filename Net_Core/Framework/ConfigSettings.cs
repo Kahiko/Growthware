@@ -10,6 +10,7 @@ namespace GrowthWare.Framework
     {
         private static readonly IConfiguration m_Configuration;
         private static readonly string m_ConnectionString = string.Empty;
+        private static readonly string m_ContainerConnectionString = string.Empty;
         private static readonly string m_SettingsDirectory = string.Empty;
         private static string s_CentralManagement = string.Empty;
         private static bool m_CentralManagement;
@@ -37,6 +38,13 @@ namespace GrowthWare.Framework
                 string mDecryptedValue = string.Empty;
                 CryptoUtility.TryDecrypt(m_ConnectionString, out mDecryptedValue, EncryptionType);
                 m_ConnectionString = mDecryptedValue;
+            }
+            if(m_ContainerConnectionString == null || (string.IsNullOrEmpty(m_ContainerConnectionString) || string.IsNullOrWhiteSpace(m_ContainerConnectionString)))
+            {
+                m_ContainerConnectionString = GetAppSettingValue("DAL_" + mDal + "_Container_ConnectionString", true);
+                string mDecryptedValue = string.Empty;
+                CryptoUtility.TryDecrypt(m_ContainerConnectionString, out mDecryptedValue, EncryptionType);
+                m_ContainerConnectionString = mDecryptedValue;
             }
         }        
 
@@ -180,6 +188,11 @@ namespace GrowthWare.Framework
             get { return m_ConnectionString; }
         }
 
+        public static string ContainerConnectionString
+        {
+            get { return m_ContainerConnectionString; }
+        }
+
         /// <summary>
         /// Returns the Conversion_Pattern from the CONFIG file
         /// </summary>
@@ -212,6 +225,19 @@ namespace GrowthWare.Framework
         public static string DataAccessLayerAssemblyName
         {
             get { return GetAppSettingValue("DAL_" + DataAccessLayer + "_Assembly_Name", true); }
+        }
+
+        /// <summary>
+        /// Returns the name of the database name as defined in the GrowthWare.json file by environment
+        /// </summary>
+        /// <value>Desired data access layer "Oracle" and default "SQLServer"</value>
+        /// <returns>String</returns>
+        /// <remarks>
+        ///    Currently only used in Oracle
+        /// </remarks>
+        public static string DataAccessLayerDatabaseName
+        {
+            get { return GetAppSettingValue("DAL_" + DataAccessLayer + "_Database_Name", true); }
         }
 
         /// <summary>

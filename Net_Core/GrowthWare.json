@@ -39,14 +39,18 @@
     "Development_Authentication_Type": "Internal",
     "Development_Auto_Create_Account": "True",
     "Development_Auto_Create_Account_StatusId": "4",
-    "Development_DAL": "SQLServer",
+    "Development_DAL": "Oracle",
 
     "Development_DAL_SQLServer_Assembly_Name": "GrowthWare.DataAccess",
+    "Development_DAL_SQLServer_Database_Name": "Not used by code",
     "Development_DAL_SQLServer_ConnectionString": "hx6Xts7znWDbVzFRed79U8+nL4tEKA6ZNJo3QSNVC9BxtXyax2xOmMr4Gw/9Af7sz5KHGGh89prS17Lkx0oGS4hXh73DhaxxzZzKvtSs7rKArjNZu4q/JmczEDn6IvvxdId7sL9sLq7TgIUFhoM2n1buSTWubkuN5cqr186W7YRlkjJRpTI8m8dq4teSN0wk",
+    "Development_DAL_SQLServer_Container_ConnectionString": "Not used by code",
     "Development_DAL_SQLServer_Name_Space": "GrowthWare.DataAccess.SQLServer",
 
     "Development_DAL_Oracle_Assembly_Name": "GrowthWare.DataAccess",
+    "Development_DAL_Oracle_Database_Name": "GrowthWare",
     "Development_DAL_Oracle_ConnectionString": "Data Source=localhost:1521/GROWTHWARE;User Id=growthware;Password=realyitsMe",
+    "Development_DAL_Oracle_Container_ConnectionString": "Data Source=localhost:1521/XE;User Id=sys;Password=realyitsMe;DBA Privilege=SYSDBA",
     "Development_DAL_Oracle_Name_Space": "GrowthWare.DataAccess.Oracle",
 
     "Development_Default_Security_Entity_ID": "1",
@@ -115,11 +119,15 @@
     "QA_DAL": "SQLServer",
 
     "QA_DAL_SQLServer_Assembly_Name": "GrowthWare.DataAccess",
+    "QA_DAL_SQLServer_Database_Name": "Not used by code",
     "QA_DAL_SQLServer_ConnectionString": "hx6Xts7znWDbVzFRed79U8+nL4tEKA6ZNJo3QSNVC9BxtXyax2xOmMr4Gw/9Af7sz5KHGGh89prS17Lkx0oGS4hXh73DhaxxzZzKvtSs7rKArjNZu4q/JmczEDn6IvvxdId7sL9sLq7TgIUFhoM2n1buSTWubkuN5cqr186W7YRlkjJRpTI8m8dq4teSN0wk",
+    "QA_DAL_SQLServer_Container_ConnectionString": "Not used by code",
     "QA_DAL_SQLServer_Name_Space": "GrowthWare.DataAccess.SQLServer",
 
     "QA_DAL_Oracle_Assembly_Name": "GrowthWare.DataAccess",
+    "QA_DAL_Oracle_Database_Name": "GrowthWare",
     "QA_DAL_Oracle_ConnectionString": "Data Source=localhost:1521/GROWTHWARE;User Id=growthware;Password=realyitsMe",
+    "QA_DAL_Oracle_Container_ConnectionString": "Data Source=localhost:1521/XE;User Id=sys;Password=realyitsMe;DBA Privilege=SYSDBA",
     "QA_DAL_Oracle_Name_Space": "GrowthWare.DataAccess.Oracle",
 
     "QA_Default_Security_Entity_ID": "1",
@@ -188,11 +196,15 @@
     "Production_DAL": "SQLServer",
 
     "Production_DAL_SQLServer_Assembly_Name": "GrowthWare.DataAccess",
+    "Production_DAL_SQLServer_Database_Name": "Not used by code",
     "Production_DAL_SQLServer_ConnectionString": "hx6Xts7znWDbVzFRed79U8+nL4tEKA6ZNJo3QSNVC9BxtXyax2xOmMr4Gw/9Af7sz5KHGGh89prS17Lkx0oGS4hXh73DhaxxzZzKvtSs7rKArjNZu4q/JmczEDn6IvvxdId7sL9sLq7TgIUFhoM2n1buSTWubkuN5cqr186W7YRlkjJRpTI8m8dq4teSN0wk",
+    "Production_DAL_SQLServer_Container_ConnectionString": "Not used by code",
     "Production_DAL_SQLServer_Name_Space": "GrowthWare.DataAccess.SQLServer",
 
     "Production_DAL_Oracle_Assembly_Name": "GrowthWare.DataAccess",
+    "Production_DAL_Oracle_Database_Name": "GrowthWare",
     "Production_DAL_Oracle_ConnectionString": "Data Source=localhost:1521/GROWTHWARE;User Id=growthware;Password=realyitsMe",
+    "Production_DAL_Oracle_Container_ConnectionString": "Data Source=localhost:1521/XE;User Id=sys;Password=realyitsMe;DBA Privilege=SYSDBA",
     "Production_DAL_Oracle_Name_Space": "GrowthWare.DataAccess.Oracle",
 
     "Production_Default_Security_Entity_ID": "1",
