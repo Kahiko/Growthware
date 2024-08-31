@@ -1,4 +1,15 @@
 # Release Notes
+## Net_Core Version 5.0.1.x (YYYY-MM-DD)
+
+### New Features
+- No new features added
+
+### Improvements
+- Changed SQL Server database manager to remove the database property from the connection in a more robust way
+
+### Bug Fixes
+- No bug fixes
+
 ## Net_Core Version 5.0.0.x (2024-08-31)
 
 ### New Features

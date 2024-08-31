@@ -35,7 +35,8 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         this.IsValid();
         string mCommandText = string.Empty;
         string mScriptDirectory = this.GetScriptPath("Upgrade");
-        this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
+        string mOrigConnectionString = this.ConnectionString;
+        this.ConnectionString = this.removeProperty(ConfigSettings.ConnectionString, "Database");
         using (SqlConnection mSqlConnection = new(this.ConnectionString))
         {
             mSqlConnection.Open();
@@ -134,42 +135,59 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
                 }
             }
         }
+        this.ConnectionString = mOrigConnectionString;
     }
 
     public void Delete()
     {
         this.IsValid();
         string mCommandText = string.Empty;
-        this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
+        string mOrigConnectionString = this.ConnectionString;
+        this.ConnectionString = this.removeProperty(ConfigSettings.ConnectionString, "Database");
+        string mVersionOneFile = string.Empty;
+        string mCurrentDirectory = this.GetScriptPath("Downgrade");
+        mVersionOneFile = mCurrentDirectory + "Version_1.0.0.0.sql";
+        mVersionOneFile = mVersionOneFile.Replace(@"\", @"/");
+        mVersionOneFile = mVersionOneFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        string mError = "Was not able to create the database using {0}";
+        mError = String.Format(mError, mVersionOneFile);
+        string mVersionOneText = File.ReadAllText(mVersionOneFile);
         using (SqlConnection mSqlConnection = new(this.ConnectionString))
         {
-            string mCreationFile = string.Empty;
-            string mCurrentDirectory = this.GetScriptPath("Downgrade");
-            mCreationFile = mCurrentDirectory + "Version_1.0.0.0.sql";
-            mCreationFile = mCreationFile.Replace(@"\", @"/");
-            mCreationFile = mCreationFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
-            string mCreationText = File.ReadAllText(mCreationFile);
-            mCreationText = mCreationText.Replace("YourDatabaseName", DatabaseName);
-            File.WriteAllText(mCreationFile, mCreationText);
-            mSqlConnection.Open();
-            // Create the database 
-            bool mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
-            if (!mSuccess)
+            try
             {
-                string mError = "Was not able to create the database using {0}";
-                mError = String.Format(mError, mCreationFile);
-                throw new Exception(mError);
+                mVersionOneText = mVersionOneText.Replace("YourDatabaseName", DatabaseName);
+                File.WriteAllText(mVersionOneFile, mVersionOneText);
+                mSqlConnection.Open();
+                // Delete the database
+                bool mSuccess = this.replace_N_Run(mVersionOneFile, mSqlConnection);
+                if (!mSuccess)
+                {
+                    throw new Exception(mError);
+                }                
             }
-            mCreationText = File.ReadAllText(mCreationFile);
-            mCreationText = mCreationText.Replace(DatabaseName, "YourDatabaseName");
-            File.WriteAllText(mCreationFile, mCreationText);
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(mError);
+                DataAccessLayerException mException = new(mError, ex);
+                this.m_Logger.Error(mException);
+                throw;
+            }
+            finally
+            {
+                mVersionOneText = File.ReadAllText(mVersionOneFile);
+                mVersionOneText = mVersionOneText.Replace(DatabaseName, "YourDatabaseName");
+                File.WriteAllText(mVersionOneFile, mVersionOneText);
+                this.ConnectionString = mOrigConnectionString;
+            }
         }
     }
 
     public bool Exists()
     {
         this.IsValid();
-        this.ConnectionString = ConfigSettings.ConnectionString.Replace("database=" + this.DatabaseName + ";", "");
+        string mOrigConnectionString = this.ConnectionString;
+        this.ConnectionString = this.removeProperty(ConfigSettings.ConnectionString, "Database");
         bool mRetVal = false;
         string mSqlStatement = String.Format("SELECT COUNT(*) FROM [master].[sys].[databases] WHERE [name] = N'{0}'", this.m_DatabaseName);
         try
@@ -183,6 +201,10 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         catch (System.Exception)
         {
             mRetVal = false;
+        }
+        finally
+        {
+            this.ConnectionString = mOrigConnectionString;
         }
         return mRetVal;
     }
@@ -215,6 +237,28 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             this.ExecuteScriptFile(mScriptWithPath);
             Console.WriteLine("Elapsed time: {0} File: '{1}' ", mScriptWatch.Elapsed, mFileName);
         }
+    }
+
+    /// <summary>
+    /// Removes the given property from the connection string
+    /// </summary>
+    /// <param name="connectionString"></param>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
+    private string removeProperty(string connectionString, string propertyName)
+    {
+        string mRetVal = string.Empty;
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = this.ConnectionString.Split(";");
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (!mParameterParts[0].Equals(propertyName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
+            }
+        }
+        return mRetVal;
     }
 
     /// <summary>
