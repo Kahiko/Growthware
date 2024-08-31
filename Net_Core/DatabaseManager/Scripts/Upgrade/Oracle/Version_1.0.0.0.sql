@@ -3,7 +3,7 @@
 
 -- Insert the version
 ALTER SESSION SET current_schema=ZGWSystem;
-INSERT INTO ZGWSystem.Database_Information( 
+INSERT INTO Database_Information( 
     Version, 
     Enable_Inheritance, 
     Added_By, 
