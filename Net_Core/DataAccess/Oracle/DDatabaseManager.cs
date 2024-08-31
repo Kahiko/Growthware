@@ -170,7 +170,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         this.ConnectionString = ConfigSettings.ContainerConnectionString;
         string mUpper = ConfigSettings.DataAccessLayerDatabaseName.ToUpper();
         // Close the pluggable database account for the database being closed already.
-        string mSqlStatement = $@"ALTER PLUGGABLE DATABASE {mUpper} CLOSE";
+        string mSqlStatement = $@"ALTER PLUGGABLE DATABASE {mUpper} CLOSE IMMEDIATE INSTANCES=all";
         try
         {
             this.ExecuteNonQuery(mSqlStatement);

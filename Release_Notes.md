@@ -1,4 +1,15 @@
 # Release Notes
+## Net_Core Version x.x.x.x (yyyy-mm-dd)
+
+### New Features
+- Added Oracle support to the Database Manager
+
+### Improvements
+- No improvements
+
+### Bug Fixes
+- No bug fixes
+
 ## Net_Core Version 5.0.0.x (2024-08-31)
 
 ### New Features
