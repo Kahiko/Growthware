@@ -1,8 +1,8 @@
 # Release Notes
-## Net_Core Version 5.0.0.x (xxxx-xx-xx)
+## Net_Core Version 5.0.0.x (2024-08-31)
 
 ### New Features
-- Added full support for Oracle
+- No new features added
 
 ### Improvements
 - Connection strings are now handled in DDatabaseManager
@@ -24,6 +24,9 @@
 - Fixed Hierarchical Vertical Flyout not working
 - Fixed fore color not being set in the HorizontalComponent
 - Fixed GrowthWare.DatabaseManager - Changed if conditions to hand the most common condition first
+
+### Notes:
+- Removed any code pertaining to Oracle in the Database Manager, this is being moved to it's own development branch due to it's size and complexity
 
 ## Net_Core Version 4.1.0.x (2024-08-09)
 

@@ -1,2 +1,0 @@
-From Net_Core\DataAccess:
-    dotnet add package Oracle.ManagedDataAccess.Core --version 23.5.0
