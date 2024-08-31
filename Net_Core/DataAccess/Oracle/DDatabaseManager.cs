@@ -167,25 +167,46 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 
     public void Delete()
     {
-        this.ConnectionString = ConfigSettings.ContainerConnectionString;
-        string mUpper = ConfigSettings.DataAccessLayerDatabaseName.ToUpper();
-        // Close the pluggable database account for the database being closed already.
-        string mSqlStatement = $@"ALTER PLUGGABLE DATABASE {mUpper} CLOSE IMMEDIATE INSTANCES=all";
-        try
+        string mCommandText = string.Empty;
+        string mOrigConnectionString = this.ConnectionString;
+        this.ConnectionString = this.removeProperty(ConfigSettings.ConnectionString, "Database");
+        string mVersionOneFile = string.Empty;
+        string mCurrentDirectory = this.GetScriptPath("Downgrade");
+        mVersionOneFile = mCurrentDirectory + "Version_1.0.0.0.sql";
+        mVersionOneFile = mVersionOneFile.Replace(@"\", @"/");
+        mVersionOneFile = mVersionOneFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        string mError = "Was not able to create the database using {0}";
+        mError = String.Format(mError, mVersionOneFile);
+        string mVersionOneText = File.ReadAllText(mVersionOneFile);
+        using (OracleConnection mOracleConnection = new(this.ConnectionString))
         {
-            this.ExecuteNonQuery(mSqlStatement);
-        }
-        catch (DataAccessLayerException ex)
-        {
-            // If it's not an ORA-65020 error, rethrow the exception
-            if(!ex.InnerException.Message.Contains("ORA-65020", StringComparison.OrdinalIgnoreCase))
+            try
             {
+                mVersionOneText = mVersionOneText.Replace("YourDatabaseName", DatabaseName);
+                File.WriteAllText(mVersionOneFile, mVersionOneText);
+                mOracleConnection.Open();
+                // Delete the database
+                bool mSuccess = this.replace_N_Run(mVersionOneFile, mOracleConnection);
+                if (!mSuccess)
+                {
+                    throw new Exception(mError);
+                }                
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(mError);
+                DataAccessLayerException mException = new(mError, ex);
+                base.m_Logger.Error(mException);
                 throw;
             }
+            finally
+            {
+                mVersionOneText = File.ReadAllText(mVersionOneFile);
+                mVersionOneText = mVersionOneText.Replace(DatabaseName, "YourDatabaseName");
+                File.WriteAllText(mVersionOneFile, mVersionOneText);
+                this.ConnectionString = mOrigConnectionString;
+            }
         }
-        // Drop the database
-        mSqlStatement = $@"DROP PLUGGABLE DATABASE {mUpper} INCLUDING DATAFILES";
-        this.ExecuteNonQuery(mSqlStatement);
     }
 
     public bool ExecuteScriptFile(string scriptWithPath)
@@ -363,6 +384,28 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             this.ExecuteScriptFile(mScriptWithPath);
             Console.WriteLine("Elapsed time: {0} File: '{1}' ", mScriptWatch.Elapsed, mFileName);
         }
+    }
+
+    /// <summary>
+    /// Removes the given property from the connection string
+    /// </summary>
+    /// <param name="connectionString"></param>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
+    private string removeProperty(string connectionString, string propertyName)
+    {
+        string mRetVal = string.Empty;
+        string[] mParameterParts = null;
+        string[] mConnectionStringParts = this.ConnectionString.Split(";");
+        for (int i = 0; i < mConnectionStringParts.Length; i++)
+        {
+            mParameterParts = mConnectionStringParts[i].Split("=");
+            if (!mParameterParts[0].Equals(propertyName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                mRetVal += mParameterParts[0] + "=" + mParameterParts[1] + ";";
+            }
+        }
+        return mRetVal;
     }
 
     private bool replace_N_Run(string scriptFile, OracleConnection sqlConnection)

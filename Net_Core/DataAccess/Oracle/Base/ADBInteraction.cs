@@ -18,7 +18,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 {
     private string m_ConnectionString = string.Empty;
     private bool m_DisposedValue;
-    private Logger m_Logger = Logger.Instance();
+    internal Logger m_Logger = Logger.Instance();
 
     /// <summary>
     /// Used for all methods to connect to the database.
