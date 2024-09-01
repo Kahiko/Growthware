@@ -221,8 +221,9 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         try
         {
             string mAllText = File.ReadAllText(scriptWithPath);
-            // split script on semi-colon
-            IEnumerable<string> mCommands = mAllText.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            // split script on forward slash
+            mAllText = removeCRLF(mAllText);
+            IEnumerable<string> mCommands = mAllText.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             if (oracleConnection.State == ConnectionState.Closed)
             {
                 oracleConnection.Open();
@@ -254,6 +255,22 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             Console.WriteLine(ex.Message);
             return false;
         }
+    }
+
+    /// <summary>
+    /// Removes the CRLF and Trims the returned string
+    /// </summary>
+    /// <param name="mAllText"></param>
+    /// <returns></returns>
+    private static string removeCRLF(string theText)
+    {
+        string mRetVal = theText;
+        mRetVal = mRetVal.Replace("\r\n", " ");
+        mRetVal = mRetVal.Replace("\n", " ");
+        mRetVal = mRetVal.Replace("\r", " ");
+        mRetVal = mRetVal.Replace("\t", " ");
+        mRetVal = mRetVal.Trim();
+        return mRetVal;
     }
 
     public bool Exists()

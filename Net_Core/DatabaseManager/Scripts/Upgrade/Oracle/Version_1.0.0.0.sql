@@ -1,8 +1,8 @@
--- Upgrade Populate all the tables (DML);
--- All command must end in a semicolon, the semicolon will be removed before being executed.;
+-- Upgrade Populate all the tables (DML)/
+-- All command must end in a forward slash, the forward slash will be removed before being executed./
 
--- Insert the version
-ALTER SESSION SET current_schema=ZGWSystem;
+-- Insert the version/
+ALTER SESSION SET current_schema=ZGWSystem/
 INSERT INTO Database_Information( 
     Version, 
     Enable_Inheritance, 
@@ -13,5 +13,7 @@ INSERT INTO Database_Information(
     1, 
     2, 
     SYSDATE
-);
-COMMIT;
+)
+/
+COMMIT
+/
