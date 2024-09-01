@@ -87,7 +87,7 @@ AS
 BEGIN
 
    DECLARE
-      v_V_Now DATE := SYSDATE;
+      v_Now DATE := SYSDATE;
       v_temp NUMBER(1, 0) := 0;
    
    BEGIN
@@ -107,7 +107,7 @@ BEGIN
          -- INSERT
          INSERT INTO ZGWSystem.Database_Information
            ( Version, Enable_Inheritance, Added_By, Added_Date )
-           VALUES ( p_Version, p_Enable_Inheritance, p_Added_Updated_By, v_V_Now );
+           VALUES ( p_Version, p_Enable_Inheritance, p_Added_Updated_By, v_Now );
          p_Primary_Key := utils.getidentity ;-- Get the IDENTITY value for the row just inserted.
       
       END;
@@ -117,7 +117,7 @@ BEGIN
             SET Version = p_Version,
                 Enable_Inheritance = p_Enable_Inheritance,
                 Updated_By = p_Added_Updated_By,
-                Updated_Date = v_V_Now
+                Updated_Date = v_Now
           WHERE  Database_InformationSeqId = p_Database_InformationSeqId;
          p_Primary_Key := p_Database_InformationSeqId ;
       
