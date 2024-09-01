@@ -1,7 +1,7 @@
 -- Upgrade Create all the tables-views, Stored procedures, Functions, etc. (DDL)/
 -- All command must end in a forward slash, the forward slash will be removed before being executed./
 -- SET ECHO ON/
--- SET VERIFY ON;
+-- SET VERIFY ON/
 -- SET FEEDBACK ON/
 -- SET DEFINE ON/
 -- CLEAR SCREEN/
