@@ -5,7 +5,7 @@
 - Added Oracle support to the Database Manager
 
 ### Improvements
-- No improvements
+- Added removeProperty to the Oracle Database Manager to remove a property
 
 ### Bug Fixes
 - No bug fixes
