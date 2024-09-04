@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RandomNumbersComponent } from './random-numbers.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RandomNumbersComponent', () => {
 	let component: RandomNumbersComponent;
@@ -10,14 +11,11 @@ describe('RandomNumbersComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				RandomNumbersComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			],
-			declarations: [],
-			providers: [ ]
-		}).compileComponents();
+    declarations: [],
+    imports: [RandomNumbersComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(RandomNumbersComponent);
 		component = fixture.componentInstance;

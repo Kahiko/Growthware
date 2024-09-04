@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SearchRolesComponent } from './search-roles.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SearchRolesComponent', () => {
 	let component: SearchRolesComponent;
@@ -10,12 +11,10 @@ describe('SearchRolesComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				SearchRolesComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		}).compileComponents();
+    imports: [SearchRolesComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(SearchRolesComponent);
 		component = fixture.componentInstance;

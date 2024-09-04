@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HierarchicalVerticalFlyoutComponent } from './hierarchical-vertical-flyout.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HierarchicalVerticalFlyoutComponent', () => {
 	let component: HierarchicalVerticalFlyoutComponent;
@@ -10,12 +11,10 @@ describe('HierarchicalVerticalFlyoutComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				HierarchicalVerticalFlyoutComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		}).compileComponents();
+    imports: [HierarchicalVerticalFlyoutComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(HierarchicalVerticalFlyoutComponent);
 		component = fixture.componentInstance;

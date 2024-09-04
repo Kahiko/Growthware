@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { VerticalComponent } from './vertical.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('VerticalComponent', () => {
 	let component: VerticalComponent;
@@ -10,12 +11,10 @@ describe('VerticalComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				VerticalComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		})
+    imports: [VerticalComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
 			.compileComponents();
     
 		fixture = TestBed.createComponent(VerticalComponent);

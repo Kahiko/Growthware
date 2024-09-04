@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GenericHomeComponent } from './generic-home.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 class FakeConfigurationService {
 	private _ApplicationNameSubject = new BehaviorSubject<string>('Test');
@@ -19,14 +20,14 @@ describe('GenericHomeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				HttpClientTestingModule,
-			],
-			declarations: [ GenericHomeComponent ],
-			providers: [
-				{ provide: 'ConfigurationService', useClass: FakeConfigurationService }
-			]
-		}).compileComponents();
+    declarations: [GenericHomeComponent],
+    imports: [],
+    providers: [
+        { provide: 'ConfigurationService', useClass: FakeConfigurationService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
 		fixture = TestBed.createComponent(GenericHomeComponent);
 		component = fixture.componentInstance;

@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ManageNameValuePairsComponent } from './manage-name-value-pairs.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManageNameValuePairsComponent', () => {
 	let component: ManageNameValuePairsComponent;
@@ -10,12 +11,10 @@ describe('ManageNameValuePairsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				ManageNameValuePairsComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		}).compileComponents();
+    imports: [ManageNameValuePairsComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(ManageNameValuePairsComponent);
 		component = fixture.componentInstance;

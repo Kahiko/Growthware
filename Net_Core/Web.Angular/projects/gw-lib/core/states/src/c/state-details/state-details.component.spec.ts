@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StateDetailsComponent } from './state-details.component';
 import { StatesService } from '../../states.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 class MockStatesService {
 	modalReason = '';
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,16 +23,15 @@ describe('StateDetailsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				StateDetailsComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			],
-			declarations: [],
-			providers: [ 
-				{provide: 'StatesService', useValue: dependencies.StatesService},
-			]
-		}).compileComponents();
+    declarations: [],
+    imports: [StateDetailsComponent,
+        NoopAnimationsModule],
+    providers: [
+        { provide: 'StatesService', useValue: dependencies.StatesService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(StateDetailsComponent);
 		component = fixture.componentInstance;

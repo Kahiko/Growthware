@@ -1,0 +1,22 @@
+npm outdated
+npm uninstall -g @angular/cli
+npm uninstall typescript -g
+npm cache clean --force
+npm install typescript@latest -g
+npm install -g @angular/cli@latest
+
+del package-lock.json
+rmdir /s/q node_modules
+npm install
+ng update @angular-eslint/schematics@18.3.0 --allow-dirty
+-- Change the typescript version in package.json (5.5.4)
+ng update @angular-devkit/build-angular@18.2.2 --allow-dirty
+ng update @angular/material@18.2.2 @angular/cdk@18.2.2 --allow-dirty
+ng update @angular/cli@18.2.2 --allow-dirty
+ng update @types/jasmine@latest --allow-dirty
+ng update @typescript-eslint/eslint-plugin@8.4.0 --allow-dirty
+ng update eslint@9.9.1 --allow-dirty
+ng update jasmine-core@5.2.0 --allow-dirty
+
+rmdir /s/q node_modules
+npm install

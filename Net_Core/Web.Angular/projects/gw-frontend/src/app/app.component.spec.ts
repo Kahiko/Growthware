@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AccountInformation, IAccountInformation } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 import { ConfigurationService } from '@growthware/core/configuration';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 class MockAccountService {
 	private _AccountInformationChangedSubject = new BehaviorSubject<IAccountInformation>(new AccountInformation);
@@ -56,19 +57,18 @@ describe('AppComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				AppComponent,
-				RouterTestingModule,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			],
-			declarations: [],
-			providers: [
-				{provide: 'AccountService', useValue: dependencies.accountSvcMock},
-				{provide: ConfigurationService, useValue: dependencies.configurationSvcMock},
-				{provide: SecurityEntityService, useValue: dependencies.securityEntitySvcMock},
-			]
-		}).compileComponents();
+    declarations: [],
+    imports: [AppComponent,
+        RouterTestingModule,
+        NoopAnimationsModule],
+    providers: [
+        { provide: 'AccountService', useValue: dependencies.accountSvcMock },
+        { provide: ConfigurationService, useValue: dependencies.configurationSvcMock },
+        { provide: SecurityEntityService, useValue: dependencies.securityEntitySvcMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
 	});
 
 	beforeEach(() => {
