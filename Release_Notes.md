@@ -6,6 +6,7 @@
 
 ### Improvements
 - Changed SQL Server database manager to remove the database property from the connection in a more robust way
+- Updated Angular to 18.2
 
 ### Bug Fixes
 - No bug fixes
