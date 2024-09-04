@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LineCountComponent } from './line-count.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LineCountComponent', () => {
 	let component: LineCountComponent;
@@ -10,14 +11,11 @@ describe('LineCountComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				LineCountComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			],
-			declarations: [],
-			providers: [ ]
-		}).compileComponents();
+    declarations: [],
+    imports: [LineCountComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(LineCountComponent);
 		component = fixture.componentInstance;

@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // Feature
 import { NavLink } from '../../nav-link.model';
 import { VerticalListItemComponent } from './vertical-list-item.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('VerticalListItemComponent', () => {
 	let component: VerticalListItemComponent;
@@ -11,14 +12,11 @@ describe('VerticalListItemComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				VerticalListItemComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			],
-			declarations: [],
-			providers: [ ]
-		}).compileComponents();
+    declarations: [],
+    imports: [VerticalListItemComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
 		
 		fixture = TestBed.createComponent(VerticalListItemComponent);
 		component = fixture.componentInstance;

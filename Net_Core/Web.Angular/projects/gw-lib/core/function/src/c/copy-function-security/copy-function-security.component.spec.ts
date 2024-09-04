@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CopyFunctionSecurityComponent } from './copy-function-security.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CopyFunctionSecurityComponent', () => {
 	let component: CopyFunctionSecurityComponent;
@@ -10,12 +11,10 @@ describe('CopyFunctionSecurityComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				CopyFunctionSecurityComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		}).compileComponents();
+    imports: [CopyFunctionSecurityComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(CopyFunctionSecurityComponent);
 		component = fixture.componentInstance;

@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FunctionDetailsComponent } from './function-details.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FunctionDetailsComponent', () => {
 	let component: FunctionDetailsComponent;
@@ -10,12 +11,10 @@ describe('FunctionDetailsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				FunctionDetailsComponent,
-				HttpClientTestingModule,
-				NoopAnimationsModule,
-			]
-		}).compileComponents();
+    imports: [FunctionDetailsComponent,
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     
 		fixture = TestBed.createComponent(FunctionDetailsComponent);
 		component = fixture.componentInstance;
