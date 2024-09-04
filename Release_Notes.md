@@ -7,6 +7,14 @@
 ### Improvements
 - Added removeProperty to the Oracle Database Manager to remove a property
 
+## Net_Core Version 5.0.1.x (YYYY-MM-DD)
+
+### New Features
+- No new features added
+
+### Improvements
+- Changed SQL Server database manager to remove the database property from the connection in a more robust way
+
 ### Bug Fixes
 - No bug fixes
 
