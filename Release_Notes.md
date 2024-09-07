@@ -10,7 +10,7 @@
 - appInitializer now navigates to the clientChoices.action
 
 ### Bug Fixes
-- No bug fixes
+- Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
 
 ## Net_Core Version 5.0.0.x (2024-08-31)
 
