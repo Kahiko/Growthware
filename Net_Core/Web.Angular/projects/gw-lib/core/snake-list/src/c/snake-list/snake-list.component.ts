@@ -23,25 +23,25 @@ export class SnakeListComponent implements OnDestroy, OnInit {
 	readonly data$ = this._DataSubject.asObservable();
 	@Input() iconName: string = '';
 
-  @Input() id: string = '';
+	@Input() id: string = '';
 
-  constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
+	constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
 
-  ngOnDestroy(): void {
-  	this._Subscriptions.unsubscribe();
-  }
+	ngOnDestroy(): void {
+		this._Subscriptions.unsubscribe();
+	}
 
-  ngOnInit(): void {
-  	this.id = this.id.trim();
-  	if(this._GWCommon.isNullOrUndefined(this.id)) {
-  		this._LoggingSvc.toast('The is can not be blank!', 'Snake List Component', LogLevel.Error);
-  	} else {
-  		this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
-  			if(data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
-  				this._DataSubject.next(data.value);
-  			}
-  		}));
-  	}
-  }
+	ngOnInit(): void {
+		this.id = this.id.trim();
+		if (this._GWCommon.isNullOrUndefined(this.id)) {
+			this._LoggingSvc.toast('The is can not be blank!', 'Snake List Component', LogLevel.Error);
+		} else {
+			this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
+				if (data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
+					this._DataSubject.next(data.value);
+				}
+			}));
+		}
+	}
 
 }
