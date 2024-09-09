@@ -151,9 +151,7 @@
             <hr />
             <div class="tr">
               <div class="td">
-                <span class="Form_SubSectionText"
-                  ><b>Optional Information </b></span
-                >
+                <span class="Form_SubSectionText"><b>Optional Information </b></span>
               </div>
             </div>
             <div class="tr">
@@ -183,11 +181,9 @@
                         id="chkEnableNotifications"
                         class="Form_Field"
                         checked="true"
-                        text="Receive Email Notifications"
-                      />
+                        text="Receive Email Notifications"/>
                       <br />
-                      <span class="Form_Field"
-                        >(This option controls Email Notification. If this
+                      <span class="Form_Field">(This option controls Email Notification. If this
                         option is enabled, you will see Email Notification.)
                       </span>
                     </div>
@@ -212,8 +208,8 @@
             pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
             selectedItemsText="Selected Roles"
             size="8"
-            width="120"
-          ></gw-core-pick-list>
+            width="120">
+          </gw-core-pick-list>
         </div>
       </div>
     </mat-tab>
@@ -230,8 +226,8 @@
             pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
             selectedItemsText="Selected Groups"
             size="8"
-            width="120"
-          ></gw-core-pick-list>
+            width="120">
+          </gw-core-pick-list>
         </div>
       </div>
     </mat-tab>
@@ -248,40 +244,16 @@
     }
   </mat-tab-group>
   <div class="buttonRow">
-    <button
-      type="submit"
-      [disabled]="frmAccount.invalid"
-      mat-button
-      class="Form_Button"
-      color="primary"
-    >
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons"
-        >save</i
-      >Save
+    <button type="submit" [disabled]="frmAccount.invalid" mat-button class="Form_Button" color="primary">
+      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">save</i>Save
     </button>
     @if (canDelete) {
-    <button
-      type="button"
-      (click)="onDelete()"
-      mat-button
-      class="Form_Button"
-      color="warn"
-    >
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons"
-        >delete</i
-      >Delete
+    <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete
     </button>
     } @if (canCancel) {
-    <button
-      type="button"
-      (click)="onCancel()"
-      mat-button
-      class="Form_Button"
-      color="accent"
-    >
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons"
-        >cancel</i
-      >Cancel
+    <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">cancel</i>Cancel
     </button>
     }
   </div>
