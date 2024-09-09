@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+// Angular Material
+import { MatIconModule } from '@angular/material/icon';
 // Library
 import { INameDataPair } from '@growthware/common/interfaces';
 import { DataService, GWCommon } from '@growthware/common/services';
@@ -10,7 +12,9 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 	selector: 'gw-core-snake-list',
 	standalone: true,
 	imports: [
-		CommonModule
+		CommonModule,
+
+		MatIconModule,
 	],
 	templateUrl: './snake-list.component.html',
 	styleUrls: ['./snake-list.component.scss']
