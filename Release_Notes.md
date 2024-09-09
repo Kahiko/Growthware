@@ -8,6 +8,7 @@
 - Changed SQL Server database manager to remove the database property from the connection in a more robust way
 - Updated Angular to 18.2
 - appInitializer now navigates to the clientChoices.action
+- Added iconName property to SnakeListComponent
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
