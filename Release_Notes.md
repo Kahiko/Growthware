@@ -9,6 +9,7 @@
 - Updated Angular to 18.2
 - appInitializer now navigates to the clientChoices.action
 - Added iconName property to SnakeListComponent
+- Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html

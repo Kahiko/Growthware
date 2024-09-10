@@ -79,7 +79,7 @@ export class FunctionService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.post<boolean>(this._Api_CopyFunctionSecurity, null, mHttpOptions).subscribe({
 				next: (response: boolean) => {
-					this._AccountSvc.triggerMenuUpdate();
+					this._AccountSvc.triggerMenuUpdates();
 					resolve(response);
 				},
 				error: (error) => {
@@ -102,7 +102,7 @@ export class FunctionService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.delete<boolean>(this._Api_Delete, mHttpOptions).subscribe({
 				next: (response: boolean) => {
-					this._AccountSvc.triggerMenuUpdate();
+					this._AccountSvc.triggerMenuUpdates();
 					resolve(response);
 				},
 				error: (error) => {
@@ -243,7 +243,7 @@ export class FunctionService extends BaseService {
 					if(mSearchCriteria != null) {
 						this._SearchSvc.setSearchCriteria('Functions', mSearchCriteria);
 					}
-					this._AccountSvc.triggerMenuUpdate();
+					this._AccountSvc.triggerMenuUpdates();
 					resolve(true);
 				},
 				error: (error) => {

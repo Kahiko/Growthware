@@ -164,7 +164,7 @@ export class SecurityEntityService extends BaseService {
 					if(mSearchCriteria != null) {
 						this._SearchSvc.setSearchCriteria('Security_Entities', mSearchCriteria);
 					}
-					this._AccountSvc.triggerMenuUpdate();
+					this._AccountSvc.triggerMenuUpdates();
 					resolve(response);
 				},
 				error: (error) => {

@@ -19,39 +19,32 @@ import { SelectedRow } from './selected-row.model';
 	providedIn: 'root'
 })
 export class AccountService extends BaseService {
+	public accountInformationChanged$: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
+	override addEditModalId: string = 'addEditAccountModal';
+	public authenticationResponse: IAuthenticationResponse = new AuthenticationResponse();
+	readonly anonymous = 'anonymous';
+	public clientChoices: IClientChoices = new ClientChoices();
+	readonly forgotPasswordModalId = 'forgotPasswordModal';
+	readonly logInModalId = 'logInModal';
+	override modalReason: string = '';
+	override selectedRow: SelectedRow = new SelectedRow();
+	public updateMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-	private _AccountInformationSubject: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
+	private _AccountInformation = new AccountInformation;
 	private _ApiName: string = 'GrowthwareAccount/';
-	private _Api_GetAccountForEdit: string = '';
-	private _Api_Authenticate: string = '';
 	private _Api_ChangePassword = '';
-	private _Api_ClientChoices: string = '';
+	private _Api_Authenticate: string = '';
 	private _Api_ForgotPassword: string = '';
+	private _Api_GetAccountForEdit: string = '';
 	private _Api_Logoff: string = '';
 	private _Api_RefreshToken: string = '';
 	private _Api_RegisterAccount: string = '';
 	private _Api_ResetPassword: string = '';
 	private _Api_SaveAccount: string = '';
 	private _Api_SaveClientChoices: string = '';
-	private _Api_SelectableActions: string = '';
+	private _Api_SelectableActions = '';
 	private _Api_VerifyAccount: string = '';
-	private _AuthenticationResponse = new AuthenticationResponse;
-	private _BaseURL: string = '';
-	private _ClientChoices: IClientChoices = new ClientChoices();
 	private _TimerId!: ReturnType<typeof setTimeout>;
-	private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-
-	readonly accountInformation = new AccountInformation();
-	readonly accountInformationChanged$ = this._AccountInformationSubject.asObservable();
-	readonly addEditModalId: string = 'addEditAccountModal';
-	get authenticationResponse() { return this._AuthenticationResponse; }
-	readonly anonymous: string = 'Anonymous';
-	get clientChoices() { return this._ClientChoices; }
-	readonly forgotPasswordModalId = 'forgotPasswordModal';
-	readonly logInModalId = 'logInModal';
-	public modalReason: string = '';
-	public selectedRow: SelectedRow = new SelectedRow();
-	readonly triggerMenuUpdate$ = this._TriggerMenuUpdateSubject.asObservable();
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -61,30 +54,64 @@ export class AccountService extends BaseService {
 		private _SearchSvc: SearchService,
 	) {
 		super();
-		this._BaseURL = this._GWCommon.baseURL;
-		this._Api_GetAccountForEdit = this._BaseURL + this._ApiName + 'EditAccount';
-		this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
-		this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
-		this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
-		this._Api_ForgotPassword = this._BaseURL + this._ApiName + 'ForgotPassword';
-		this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
-		this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
-		this._Api_RegisterAccount = this._BaseURL + this._ApiName + 'Register';
-		this._Api_ResetPassword = this._BaseURL + this._ApiName + 'ResetPassword';
-		this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
-		this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
-		this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
-		this._Api_VerifyAccount = this._BaseURL + this._ApiName + 'VerifyAccount';
+		const mBaseUrl = this._GWCommon.baseURL;
+		this._Api_Authenticate = mBaseUrl + this._ApiName + 'Authenticate';
+		this._Api_ChangePassword = mBaseUrl + this._ApiName + 'ChangePassword';
+		this._Api_ForgotPassword = mBaseUrl + this._ApiName + 'ForgotPassword';
+		this._Api_GetAccountForEdit = mBaseUrl + this._ApiName + 'EditAccount';
+		this._Api_Logoff = mBaseUrl + this._ApiName + 'Logoff';
+		this._Api_RefreshToken = mBaseUrl + this._ApiName + 'RefreshToken';
+		this._Api_RegisterAccount = mBaseUrl + this._ApiName + 'Register';
+		this._Api_ResetPassword = mBaseUrl + this._ApiName + 'ResetPassword';
+		this._Api_SaveAccount = mBaseUrl + this._ApiName + 'SaveAccount';
+		this._Api_SaveClientChoices = mBaseUrl + this._ApiName + 'SaveClientChoices';
+		this._Api_SelectableActions = mBaseUrl + this._ApiName + 'GetSelectableActions';
+		this._Api_VerifyAccount = mBaseUrl + this._ApiName + 'VerifyAccount';
 	}
 
 	/**
-	 * Authenticates the client with the provided account and password.
+	 * @description Performs any necessary actions once an account has been authenticated
+	 * @param authenticationResponse 
+	 */
+	private afterAuthentication(accountInformation: IAccountInformation, forceMenuUpdate: boolean = false): void {
+		// if the account is not anonymous and the account information is not null
+		// 	1.) Set _AuthenticationResponse
+		// 	2.) Make client choices avalible VIA sessionStorage to avoid injecting the AccountService
+		// 	3.) Trigger menu update subject
+		// 	4.) Start refresh token timer
+		// if account information is not null
+		// 	1.) Make the JWT token available VIA sessionStorage to avoid injecting the AccountService
+		let mTriggerMenuUpdates = false;
+		if(this._AccountInformation.authenticationResponse.account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
+			mTriggerMenuUpdates = true;
+		}
+		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
+		this.authenticationResponse = this._AccountInformation.authenticationResponse;
+		this.clientChoices = JSON.parse(JSON.stringify(this._AccountInformation.clientChoices));
+		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
+		sessionStorage.setItem('clientChoices', mClientChoicesString);
+		this.accountInformationChanged$.next(this._AccountInformation);
+		if(mTriggerMenuUpdates || forceMenuUpdate) {
+			this.triggerMenuUpdates();			
+		}
+		if(this._AccountInformation.authenticationResponse.jwtToken !== null) {
+			sessionStorage.setItem('jwt', this._AccountInformation.authenticationResponse.jwtToken);
+		}
+		if(this._AccountInformation !== null && this._AccountInformation.authenticationResponse.account.toLowerCase() !== this.anonymous) {
+			this.setRefreshTokenTimer();
+		} else {
+			this.stopRefreshTokenTimer();
+		}
+	};
+
+	/**
+	 * @description Authenticates an account VIA the API using the provided account and password
 	 * @param {string} account - The client's account.
 	 * @param {string} password - The client's password.
 	 * @return {Promise<boolean | string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
 	 */
-	private async authenticate(account: string, password: string): Promise<IAuthenticationResponse> {
-		return new Promise<IAuthenticationResponse>((resolve, reject) => {
+	private authenticate(account: string, password: string): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
 			if (this._GWCommon.isNullOrEmpty(account)) {
 				throw new Error('account can not be blank!');
 			}
@@ -102,7 +129,9 @@ export class AccountService extends BaseService {
 			};
 			this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_Authenticate, null, mHttpOptions).subscribe({
 				next: (response) => {
-					resolve(response.item1);
+					const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+					this.afterAuthentication(mAccountInformation);
+					resolve(true);
 				},
 				error: (error) => {
 					if (error.status && error.status === 403) {
@@ -132,7 +161,6 @@ export class AccountService extends BaseService {
 		if (this._GWCommon.isNullOrEmpty(oldPassword)) {
 			throw new Error('oldPassword can not be blank!');
 		}
-		// console.log(this._Api_ChangePassword);
 		return new Promise<boolean>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
 				.set('oldPassword', oldPassword)
@@ -144,18 +172,16 @@ export class AccountService extends BaseService {
 				responseType: 'text' as 'json',
 				params: mQueryParameter,
 			};
-			this._HttpClient.post<string>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
-				next: (response: string) => {
-					if (response.startsWith('Your password has been changed')) {
-						this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-						this.authenticate(this.authenticationResponse.account, newPassword).then((authenticationResponse: IAuthenticationResponse) => {
-							const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: this._ClientChoices };
-							this.afterLogin(mAccountInformation);
-							sessionStorage.setItem('jwt', authenticationResponse.jwtToken);
-						});
+			this._HttpClient.post<{ item1: string; item2: IAuthenticationResponse }>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
+				next: (response) => {
+					// const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+					if (response.item1.startsWith('Your password has been changed')) {
+						const mAccountInformation = { authenticationResponse: response.item2, clientChoices: this._AccountInformation.clientChoices };
+						this.afterAuthentication(mAccountInformation);
+						this._LoggingSvc.toast(response.item1, 'Change password', LogLevel.Success);
 						resolve(true);
 					} else {
-						this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
+						this._LoggingSvc.toast(response.item1, 'Change password', LogLevel.Error);
 						reject(false);
 					}
 				},
@@ -174,55 +200,11 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-	 * Retrieves the client choices asynchronously.
+	 * Sends a password reset request to the server.
 	 *
-	 * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
+	 * @param {string} account - The account to send the password reset request to.
+	 * @return {Promise<string>} A promise that resolves to a string with the response from the server.
 	 */
-	private async getClientChoices(): Promise<IClientChoices> {
-		const mHttpOptions = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-			}),
-		};
-		return new Promise<IClientChoices>((resolve, reject) => {
-			this._HttpClient.get<IClientChoices>(this._Api_ClientChoices, mHttpOptions).subscribe({
-				next: (response: IClientChoices) => {
-					resolve(response);
-				},
-				error: (error) => {
-					reject(false);
-					this._LoggingSvc.errorHandler(error, 'AccountService', 'getClientChoices');
-				},
-				// complete: () => {}
-			});
-		});
-	}
-
-	/**
-	 * Retrieves a list of selectable actions.
-	 *
-	 * @return {Promise<ISelectedableAction[]>} A promise that resolves to an array of selectable actions.
-	 */
-	public async getSelectableActions(): Promise<ISelectedableAction[]> {
-		const mHttpOptions = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-			})
-		};
-		return new Promise<ISelectedableAction[]>((resolve, reject) => {
-			this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
-				next: (response: ISelectedableAction[]) => {
-					resolve(response);
-				},
-				error: (error) => {
-					this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
-					reject('Failed to call the API');
-				},
-				// complete: () => {}
-			});
-		});
-	}
-
 	forgotPassword(account: string): Promise<string> {
 		// console.log('AccountService.forgotPassword: ', account);
 		return new Promise<string>((resolve, reject) => {
@@ -282,6 +264,31 @@ export class AccountService extends BaseService {
 	}
 
 	/**
+	 * Retrieves a list of selectable actions.
+	 *
+	 * @return {Promise<ISelectedableAction[]>} A promise that resolves to an array of selectable actions.
+	 */
+	public async getSelectableActions(): Promise<ISelectedableAction[]> {
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			})
+		};
+		return new Promise<ISelectedableAction[]>((resolve, reject) => {
+			this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
+				next: (response: ISelectedableAction[]) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
+					reject('Failed to call the API');
+				},
+				// complete: () => {}
+			});
+		});
+	}
+
+	/**
 	 * Logs in the client with the provided account and password.
 	 *
 	 * @param {string} account - The client's account.
@@ -300,37 +307,24 @@ export class AccountService extends BaseService {
 		 *  1.) Navigate to the appropriate page
 		 */
 		return new Promise<boolean>((resolve, reject) => {
-			this.authenticate(account, password).then((authenticationResponse: IAuthenticationResponse) => {
-				this.getClientChoices().then((clientChoices: IClientChoices) => {
-					let mNavigationUrl: string = clientChoices.action;
-					if (authenticationResponse.status == 4) {
-						mNavigationUrl = '/accounts/change-password';
-					}
-					const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
-					sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
-					this.afterLogin(mAccountInformation);
+			this.authenticate(account, password).then((response: boolean) => {
+				let mNavigationUrl: string = this._AccountInformation.clientChoices.action;
+				if (this._AccountInformation.authenticationResponse.status == 4) {
+					mNavigationUrl = '/accounts/change-password';
+				}
+				if(response === true) {
 					this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
-					if (!silent) {
-						this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
-					}
-					resolve(true);
-				});
+				}
+				if (!silent) {
+					this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
+				}
+				resolve(response);
 			}).catch((error) => {
 				this._LoggingSvc.errorHandler(error, 'AccountService', 'logIn');
 				this._Router.navigate(['/accounts/logout']);
 				reject(error);
 			});
 		});
-	}
-
-	private afterLogin(accountInformation: IAccountInformation) {
-		this._AuthenticationResponse = accountInformation.authenticationResponse;
-		this._ClientChoices = accountInformation.clientChoices;
-		const mClientChoices: string = JSON.stringify(this._ClientChoices);
-		sessionStorage.setItem('clientChoices', mClientChoices);
-		this._AccountInformationSubject.next(accountInformation);
-		this.triggerMenuUpdate();
-		this.startRefreshTokenTimer();
 	}
 
 	/**
@@ -349,11 +343,7 @@ export class AccountService extends BaseService {
 			next: (response) => {
 				// console.log('logout.authenticationResponse', authenticationResponse);
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
-				this._AuthenticationResponse = mAccountInformation.authenticationResponse;
-				this._ClientChoices = mAccountInformation.clientChoices;
-				this._AccountInformationSubject.next(mAccountInformation);
-				this.triggerMenuUpdate();
+				this.afterAuthentication(mAccountInformation);
 				if (!slient) {
 					this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
 				}
@@ -380,12 +370,16 @@ export class AccountService extends BaseService {
 			.pipe(map((response) => {
 				// 2.) update information from the response
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
-				this.afterLogin(mAccountInformation);
+				this.afterAuthentication(mAccountInformation);
 				return mAccountInformation.authenticationResponse;
 			}));
 	}
 
+	/**
+	 * Registers a new account.
+	 * @param accountProfile 
+	 * @returns Promise<string>
+	 */
 	async registerAccount(accountProfile: IAccountProfile): Promise<string> {
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -416,6 +410,12 @@ export class AccountService extends BaseService {
 		});
 	}
 
+	/**
+	 * Resets the password.
+	 * @param resetToken 
+	 * @param newPassword 
+	 * @returns Promise<boolean>
+	 */
 	public async resetPassword(resetToken: string, newPassword: string): Promise<boolean> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('resetToken', resetToken)
@@ -431,7 +431,7 @@ export class AccountService extends BaseService {
 				next: (response: { item1: IAuthenticationResponse, item2: IClientChoices }) => {
 					if(response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
 						const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-						this.afterLogin(mAccountInformation);
+						this.afterAuthentication(mAccountInformation);
 						this._Router.navigate(['home']);
 					} else {
 						resolve(false);
@@ -491,10 +491,7 @@ export class AccountService extends BaseService {
 			this._HttpClient.post<IClientChoices>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
 				next: (response: IClientChoices) => {
 					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: response };
-					this._ClientChoices = response;
-					sessionStorage.setItem('clientChoices', JSON.stringify(response));
-					this._AccountInformationSubject.next(mAccountInformation);
-					this.triggerMenuUpdate();
+					this.afterAuthentication(mAccountInformation, true);
 					resolve(true);
 				},
 				error: (error) => {
@@ -509,9 +506,13 @@ export class AccountService extends BaseService {
 	/**
 	 * Starts the refresh token timer.
 	 */
-	private startRefreshTokenTimer() {
+	private setRefreshTokenTimer() {
 		// parse json object from base64 encoded jwt token
-		const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
+		const mJasonWebToken = sessionStorage.getItem('jwt');
+		let mJwtBase64 = null;
+		if(mJasonWebToken != null) {
+			mJwtBase64 = mJasonWebToken.split('.')[1];
+		}
 		if (mJwtBase64) {
 			const mJwtToken = JSON.parse(window.atob(mJwtBase64));
 
@@ -539,11 +540,16 @@ export class AccountService extends BaseService {
 	 *
 	 * @return {void} 
 	 */
-	public triggerMenuUpdate(): void {
-		this._TriggerMenuUpdateSubject.next(true);
+	public triggerMenuUpdates(): void {
+		this.updateMenu$.next(true);
 	}
 
-	
+	/**
+	 * Verifies an account using the verification token and email.
+	 * @param verificationToken 
+	 * @param email 
+	 * @returns 
+	 */
 	public verifyAccount(verificationToken: string, email: string): void {
 		if(this._GWCommon.isNullOrEmpty(verificationToken)) {
 			this._LoggingSvc.console('verificationToken can not be blank!', LogLevel.Error);
@@ -564,8 +570,7 @@ export class AccountService extends BaseService {
 			next: (response) => {
 				// console.log('AccountService.verifyAccount response: ', response);
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
-				this.afterLogin(mAccountInformation);
+				this.afterAuthentication(mAccountInformation);
 				this._Router.navigate(['/accounts/change-password']);
 				this._LoggingSvc.toast('Account has been verified, Please change your password', 'Verify Account', LogLevel.Success);
 			},
