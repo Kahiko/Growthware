@@ -38,18 +38,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "Task: Web-Publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "Task: Start NodeJS",
             "type": "shell",
             "isBackground": true,
