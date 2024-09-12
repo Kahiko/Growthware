@@ -472,11 +472,11 @@ export class GWCommon {
 	 *
 	 * @requires #sortBy a basic comparer function
 	 *
-	 * @param {Array} columnName this is the array to be sorted
-	 * @param {String} columnName this is the name of the column or element in the array
-	 * @param {String} orderByDirection this is the desired direction valid options asc or desc
+	 * @param dataArray this is the array to be sorted
+	 * @param columnName this is the name of the column or element in the array
+	 * @param orderByDirection this is the desired direction valid options asc or desc
 	 *
-	 * @returns {Array} a sorted array of object given a object property
+	 * @returns a sorted array of object given a object property
 	 *
 	 * @usage:
 	 * var myArray = [
