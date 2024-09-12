@@ -455,12 +455,11 @@ export class GWCommon {
     return 0;
   }
 
-
   /**
 	 * sleep for x number of milliseconds
 	 *
-	 * @param {number} ms
-	 * @return {*}
+	 * @param ms
+	 * 
 	 * @memberof UtilityService
 	 */
   public async sleep(ms: number) {
