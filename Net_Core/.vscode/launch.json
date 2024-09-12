@@ -79,7 +79,7 @@
             "configurations": ["Web.Api", "PWA Chrome"]
         },
         {
-            "name": "2.) API + w/Edge",
+            "name": "2.) API + Edge",
             "configurations": ["Web.Api", "PWA Edge"]
         }       
     ]
