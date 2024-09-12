@@ -11,7 +11,7 @@
             "name": "Database Manager",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "DB_Manager_Build",
+            "preLaunchTask": "Task: DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net8.0/GrowthWare.DatabaseManager.dll",
             "args": [
@@ -24,9 +24,9 @@
             "stopAtEntry": false
         },
         {
+            "name": "PWA Chrome",
             "type": "chrome",
             "request": "launch",
-            "name": "PWA Chrome",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "https://localhost:44455",
@@ -35,12 +35,14 @@
             // "trace": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
-            }
+            },
+            "preLaunchTask": "Task: Start NodeJS",
+            "postDebugTask": "Task: Stop NodeJS"
         },
         {
+            "name": "PWA Edge",
             "type": "msedge",
             "request": "launch",
-            "name": "PWA Edge",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "https://localhost:44455",
@@ -48,20 +50,15 @@
             "sourceMaps": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
-            }
-        },
-        {
-            "command": "npm start",
-            "name": "Start NodeJS",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceFolder}/Web.Angular",
+            },
+            "preLaunchTask": "Task: Start NodeJS",
+            "postDebugTask": "Task: Stop NodeJS"
         },
         {
             "name": "Web.Api",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "Web.Api-Build",
+            "preLaunchTask": "Task: Api-Build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Web.Api/bin/Debug/net8.0/GrowthWare.Web.Api.dll",
             "args": [],
@@ -73,20 +70,17 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Web.Angular"
             }
         }
     ],
     "compounds": [
         {
-            "name": "1.) Debug w/Chrome",
-            "configurations": ["Web.Api", "Start NodeJS", "PWA Chrome"]
+            "name": "1.) API + Chrome",
+            "configurations": ["Web.Api", "PWA Chrome"]
         },
         {
-            "name": "2.) Debug w/Edge",
-            "configurations": ["Web.Api", "Start NodeJS", "PWA Edge"]
+            "name": "2.) API + w/Edge",
+            "configurations": ["Web.Api", "PWA Edge"]
         }       
     ]
 }
