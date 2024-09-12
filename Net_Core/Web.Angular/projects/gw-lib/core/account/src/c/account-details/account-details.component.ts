@@ -345,7 +345,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
           this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
           this.closeModal();
-        }).catch((error) => {
+        }).catch((error: unknown) => {
           console.log('error', error);
           this._LoggingSvc.toast('Error saving account!', 'Save Account', LogLevel.Error);
         });          
@@ -354,7 +354,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this._AccountSvc.registerAccount(this._AccountProfile).then((mMessage: string) => {
           this._LoggingSvc.toast(mMessage, 'Register Account', LogLevel.Success);
           this.closeModal();
-        }).catch((error) => {
+        }).catch((error: unknown) => {
           console.log('error', error);
           this._LoggingSvc.toast('Error registring account!', 'Registration', LogLevel.Error);
         });

@@ -4,12 +4,14 @@ import { finalize } from 'rxjs';
 import { AccountService, IAuthenticationResponse } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DynamicTableService } from '@growthware/core/dynamic-table';
+import { NavigationService } from '@growthware/core/navigation';
 
 export function appInitializer(
 	_ActivatedRoute: ActivatedRoute,
 	_AccountSvc: AccountService, 
 	_ConfigurationSvc: ConfigurationService,
 	_DynamicTableSvc: DynamicTableService,
+	_NavigationSvc: NavigationService,
 ) {
 	// Called by app.config.ts:ApplicationConfig
 	return () => {
@@ -17,6 +19,7 @@ export function appInitializer(
 			_ConfigurationSvc.loadAppSettings();
 			_DynamicTableSvc.loadDefaultTableConfig();
 			_AccountSvc.refreshToken().pipe(finalize(() => {
+				_NavigationSvc.navigateTo(_AccountSvc.clientChoices.action);
 				resolve(true);
 			})).subscribe({
 				next: (authenticationResponse: IAuthenticationResponse) => {

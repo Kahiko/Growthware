@@ -13,6 +13,7 @@ import { appInitializer } from './app.initializer';
 import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DynamicTableService } from '@growthware/core/dynamic-table';
+import { NavigationService } from '@growthware/core/navigation';
 
 export function tokenGetter() {
 	return sessionStorage.getItem('jwt');
@@ -37,6 +38,6 @@ export const appConfig: ApplicationConfig = {
 			ErrorInterceptor,
 			JwtInterceptor
 		])),
-		{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [ActivatedRoute, AccountService, ConfigurationService, DynamicTableService] },
+		{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [ActivatedRoute, AccountService, ConfigurationService, DynamicTableService, NavigationService] },
 	]
 };

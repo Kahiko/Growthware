@@ -15,9 +15,12 @@
 ### Improvements
 - Changed SQL Server database manager to remove the database property from the connection in a more robust way
 - Updated Angular to 18.2
+- appInitializer now navigates to the clientChoices.action
+- Added iconName property to SnakeListComponent
+- Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
 
 ### Bug Fixes
-- No bug fixes
+- Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
 
 ## Net_Core Version 5.0.0.x (2024-08-31)
 

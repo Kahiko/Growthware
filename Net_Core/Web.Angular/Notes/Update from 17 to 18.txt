@@ -1,3 +1,8 @@
+node --version
+	v20.9.0
+npm --version
+	10.1.0
+
 npm outdated
 npm uninstall -g @angular/cli
 npm uninstall typescript -g
