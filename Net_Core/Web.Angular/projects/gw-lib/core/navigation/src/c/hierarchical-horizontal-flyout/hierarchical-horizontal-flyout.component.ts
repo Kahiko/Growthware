@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-
+import { Component, ElementRef, input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 // Library
 import { AccountService } from '@growthware/core/account';
@@ -24,11 +23,10 @@ import { MenuTypes } from '../../menu-types.enum';
 })
 export class HierarchicalHorizontalFlyoutComponent extends BaseNavigationFlyoutComponent implements OnInit {
 
-	@Input() backgroundColor: string = 'lightblue'; // #1bc2a2
-	@Input() hoverBackgroundColor: string = '#2c3e50'; // #2c3e50
-	@Input() fontColor: string = 'white'; // #fff
-	@Input() override name: string = '';
-	@Input() height: string = '32px';
+	backgroundColor = input<string>('lightblue');
+	hoverBackgroundColor = input<string>('#2c3e50');
+	fontColor = input<string>('white');
+	height = input<string>('32px');
 
 	@ViewChild('firstLevel', { static: false }) override firstLevel!: ElementRef<HTMLUListElement>;
 
@@ -53,11 +51,11 @@ export class HierarchicalHorizontalFlyoutComponent extends BaseNavigationFlyoutC
 
 	ngOnInit(): void {
 		this._MenuType = MenuTypes.Hierarchical;
-		document.documentElement.style.setProperty('--fontColor', this.fontColor);
-		document.documentElement.style.setProperty('--height', this.height);
-		document.documentElement.style.setProperty('--hoverBackgroundColor', this.hoverBackgroundColor);
-		document.documentElement.style.setProperty('--ulBackgroundColor', this.backgroundColor);
-		document.documentElement.style.setProperty('--ulLiBackgroundColor', this.backgroundColor);
+		document.documentElement.style.setProperty('--fontColor', this.fontColor());
+		document.documentElement.style.setProperty('--height', this.height());
+		document.documentElement.style.setProperty('--hoverBackgroundColor', this.hoverBackgroundColor());
+		document.documentElement.style.setProperty('--ulBackgroundColor', this.backgroundColor());
+		document.documentElement.style.setProperty('--ulLiBackgroundColor', this.backgroundColor());
 	}
 
 }

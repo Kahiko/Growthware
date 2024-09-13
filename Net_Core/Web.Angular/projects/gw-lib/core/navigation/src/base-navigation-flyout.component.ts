@@ -1,4 +1,5 @@
 import { Component, AfterContentInit, OnDestroy, ElementRef } from '@angular/core';
+import { input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
@@ -33,7 +34,7 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
 	protected _NavigationSvc!: NavigationService;
 	protected _Router!: Router;
 
-	name: string = '';
+	name = input.required<string>();
 	menuData: INavItem[] = [];
 
 	firstLevel!: ElementRef<HTMLUListElement>;
@@ -44,17 +45,17 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
 
 	ngAfterContentInit(): void {
 		// console.log('BaseNavigationFlyoutComponent.ngAfterContentInit._ModalSvc', this._ModalSvc);
-		if(this._GWCommon.isNullOrEmpty(this.name)) {
+		if(this._GWCommon.isNullOrEmpty(this.name())) {
 			this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
 		} else {
 			this._Subscription.add(
 				this._AccountSvc.updateMenu$.subscribe(() => { 
-					this._NavigationSvc.getMenuData(this._MenuType, this.name);
+					this._NavigationSvc.getMenuData(this._MenuType, this.name());
 				})
 			);
 			this._Subscription.add(
 				this._DataSvc.dataChanged$.subscribe((data) => {
-					if(data.name.toLowerCase() === this.name.toLowerCase()) {
+					if(data.name.toLowerCase() === this.name().toLowerCase()) {
 						// console.log('BaseNavigationFlyoutComponent.ngAfterContentInit.data', data);
 						this._GWCommon.buildNavItems(data.value).forEach((item) => {
 							this.menuData.push(item);
