@@ -38,9 +38,7 @@ export class PagerComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._DataChangedSub = this._SearchSvc.searchDataChanged$.subscribe(
 			(results: ISearchResultsNVP) => {
-				if (
-					this.name.trim().toLowerCase() === results.name.trim().toLowerCase()
-				) {
+				if (this.name.trim().toLowerCase() === results.name.trim().toLowerCase()) {
 					this._SearchCriteria = results.payLoad.searchCriteria;
 					if (results.payLoad.data) {
 						const mFirstRow = results.payLoad.data[0];
@@ -61,6 +59,10 @@ export class PagerComponent implements OnDestroy, OnInit {
 									}
 									this.totalPages = mCalculatedPages;
 								}
+							} else {
+								this.pages.splice(0, this.pages.length);
+								this.selectedPage = '1';
+								this.totalPages = 0;
 							}
 						}
 					} else {
