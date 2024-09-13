@@ -38,14 +38,14 @@
     @if ((skin$ | async); as layout) {
       @switch (layout) {
         @case ('snake') {
-          <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+          <gw-core-file-list [numberOfColumns]=5></gw-core-file-list>
         }
         @case ('table') {
           <gw-core-table-file-list></gw-core-table-file-list>
         }
         @default {
           <div>
-            <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+            <gw-core-file-list [numberOfColumns]=5></gw-core-file-list>
           </div>
         }
       }
