@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
@@ -25,14 +25,15 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 	styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-	@Input() allItemsText: string = '';
-	@Input() header: string = '';
-	@Input() id: string = '';
-	@Input() name: string = '';
-	@Input() pickListTableHelp: string = '';
-	@Input() selectedItemsText: string = '';
-	@Input() size: string = '8';
-	@Input() width: string = '120';
+
+	allItemsText = input<string>('');
+	header = input<string>('');
+	id = input<string>('');
+	name = input<string>('');
+	pickListTableHelp = input<string>('');
+	selectedItemsText = input<string>('');
+	size = input<string>('8');
+	width = input<string>('120');
 
 	private _AvailableItemsSubject = new BehaviorSubject<any[]>([]);
 	private _AvailableItemsData: any[] = [];
@@ -53,11 +54,11 @@ export class ListComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		if (!this._GWCommon.isNullOrUndefined(this.id) && !this._GWCommon.isNullOrEmpty(this.id)) {
-			this._ModalOptions = new ModalOptions(this.id + '_Modal', this.header, this.pickListTableHelp, ModalSize.Small);
+		if (!this._GWCommon.isNullOrUndefined(this.id()) && !this._GWCommon.isNullOrEmpty(this.id())) {
+			this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);
 			this._Subscriptions.add(
 				this._DataSvc.dataChanged$.subscribe((results: INameDataPair) => {
-					if (this.name.trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
+					if (this.name().trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
 						// update the local data
 						this._AvailableItemsData = results.value;
 						this._AvailableItemsSubject.next(this._AvailableItemsData);
