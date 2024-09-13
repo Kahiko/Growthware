@@ -1,12 +1,12 @@
-<gw-frontend-dev-ops-header [sidenav]="sidenav"></gw-frontend-dev-ops-header>
+<gw-frontend-dev-ops-header [sidenav]="sidenav" />
 <mat-sidenav-container class="drawer-container" color="primary" autosize>
   <mat-sidenav id="sidebar-left" #sidenav class="drawer-sidenav" opened="true" mode="side">
-    <gw-core-vertical name="vertical" fontColor="white"></gw-core-vertical>
+    <gw-core-vertical name="vertical" fontColor="white" />
   </mat-sidenav>
   <div class="router-outlet__div page">
-    <gw-core-loader></gw-core-loader>
+    <gw-core-loader />
     <router-outlet></router-outlet>
   </div>
 </mat-sidenav-container>
-<gw-frontend-dev-ops-footer></gw-frontend-dev-ops-footer>
+<gw-frontend-dev-ops-footer />
 

@@ -67,8 +67,7 @@
 <div>
   <div mat-list-item class="drawer-nav-list__list-item">
     @for (child of item.children; track child) {
-    <gw-core-vertical-list-item [item]="child" [depth]="depth+1">
-    </gw-core-vertical-list-item>
+    <gw-core-vertical-list-item [item]="child" [depth]="depth+1" />
     }
   </div>
 </div>

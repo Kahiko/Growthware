@@ -1,27 +1,27 @@
 <div>
-  <gw-core-toaster></gw-core-toaster>
+  <gw-core-toaster />
   @if ((skin$ | async); as layout) {
     @switch (layout) {
       @case ('arc') {
-        <gw-frontend-arc-layout></gw-frontend-arc-layout>
+        <gw-frontend-arc-layout />
       }
       @case ('dashboard') {
-        <gw-frontend-dashboard-layout></gw-frontend-dashboard-layout>
+        <gw-frontend-dashboard-layout />
       }
       @case ('default') {
-        <gw-frontend-default-layout></gw-frontend-default-layout>
+        <gw-frontend-default-layout />
       }
       @case ('blue arrow') {
-        <gw-frontend-blue-arrow-layout></gw-frontend-blue-arrow-layout>
+        <gw-frontend-blue-arrow-layout />
       }
       @case ('devops') {
-        <gw-frontend-dev-ops-layout></gw-frontend-dev-ops-layout>
+        <gw-frontend-dev-ops-layout />
       }
       @case ('professional') {
-        <gw-frontend-professional-layout></gw-frontend-professional-layout>
+        <gw-frontend-professional-layout />
       }
       @default {
-        <div><gw-frontend-default-layout></gw-frontend-default-layout></div>
+        <div><gw-frontend-default-layout /></div>
       }
     }
   }
