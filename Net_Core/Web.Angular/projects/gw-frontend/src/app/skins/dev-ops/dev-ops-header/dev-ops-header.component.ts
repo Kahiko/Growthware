@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Angular Material
@@ -23,7 +23,7 @@ export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 	isAuthenticated: boolean = false;
 	version: string = '';
 
-	@Input() sidenav!: MatSidenav;
+	sidenav = input.required<MatSidenav>();
 
 	constructor(
 		private _AccountSvc: AccountService,
