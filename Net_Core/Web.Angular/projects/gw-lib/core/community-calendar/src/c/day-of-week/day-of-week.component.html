@@ -1,23 +1,23 @@
-<mat-toolbar (click)="onDateClick(calendarDay)" [ngClass]="headerClass(calendarDay)">
-  <button (click)="onAddEventClick(calendarDay)" mat-icon-button class="header__icon-button">
+<mat-toolbar (click)="onDateClick(calendarDay())" [ngClass]="headerClass(calendarDay())">
+  <button (click)="onAddEventClick(calendarDay())" mat-icon-button class="header__icon-button">
     <mat-icon class="header__mat-icon">add</mat-icon>
   </button>
   <div class="right header__date">
-    @if (calendarDay.date.getDate() === 1 || (weekNumber === 0 && calendarDay.date.getDay() == 0)) {
-      <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
+    @if (calendarDay().date.getDate() === 1 || (weekNumber() === 0 && calendarDay().date.getDay() == 0)) {
+      <strong> {{monthNames[calendarDay().date.getMonth()]}}</strong>
     }
-    @if (!calendarDay.isSelected) {
+    @if (!calendarDay().isSelected) {
       <a>
-        {{calendarDay.date.getDate()}}
+        {{calendarDay().date.getDate()}}
       </a>
     } @else {
-      {{calendarDay.date.getDate()}}
+      {{calendarDay().date.getDate()}}
     }
   </div>    
 </mat-toolbar>
 <div class="event-body">
-  @for (item of calendarDay.events; track $index) {
-    <div (click)="onEventClick(calendarDay, item)" class="event-body__event" [ngStyle]="{'background-color': item.color,}" matTooltip="{{item.title}}" [matTooltipPosition]="'right'">
+  @for (item of calendarDay().events; track $index) {
+    <div (click)="onEventClick(calendarDay(), item)" class="event-body__event" [ngStyle]="{'background-color': item.color,}" matTooltip="{{item.title}}" [matTooltipPosition]="'right'">
       <div>
         {{item.start | date: 'shortTime'}} - {{item.end | date: 'shortTime'}}
       </div>
