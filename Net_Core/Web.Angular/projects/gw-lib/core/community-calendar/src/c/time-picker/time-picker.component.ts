@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, input, OnDestroy, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { DatePipe } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
@@ -39,10 +39,10 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	frmProfile!: FormGroup;
 	numberOfHours: number = 12;
 
-	@Input() endDate!: Date;
-	@Input() military: boolean = false;
-	@Input() startDate!: Date;
-	@Output() timeRangeSelected = new EventEmitter<{ startDate: Date, endDate: Date }>();
+	endDate = input.required<Date>();
+	military = input(false);
+	startDate = input.required<Date>();
+	timeRangeSelected = output<{ startDate: Date, endDate: Date }>();
 
 	get controls() {
 		return this.frmProfile.controls;
@@ -52,7 +52,7 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 		private _GWCommon: GWCommon,
 		private _FormBuilder: FormBuilder,
 	) {
-		if (this.military) {
+		if (this.military()) {
 			this.numberOfHours = 24;
 		}
 	}
@@ -73,10 +73,12 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	}
 
 	private createForm(): void {
-		this.startDate = new Date(this.startDate);
-		this.endDate = new Date(this.endDate);
-		const mStartTime = this.startDate.toTimeString().slice(0, 5);
-		const mEndTime = this.endDate.toTimeString().slice(0, 5);
+		// this.startDate = new Date(this.startDate());
+		this.startDate.apply(new Date(this.startDate()));
+		// this.endDate = new Date(this.endDate());
+		this.endDate.apply(new Date(this.endDate()));
+		const mStartTime = this.startDate().toTimeString().slice(0, 5);
+		const mEndTime = this.endDate().toTimeString().slice(0, 5);
 		this.frmProfile = this._FormBuilder.group({
 			startTime: [mStartTime, [Validators.required]],
 			endTime: [mEndTime, [Validators.required]],
@@ -86,14 +88,14 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	emitTimeRange(): void {
 		const mStartTime = this.controls['startTime'].getRawValue();
 		const mEndTime = this.controls['endTime'].getRawValue();
-		console.log('emitTimeRange - timezoneOffset_UtcOffset', this._GWCommon.timezoneOffset_UtcOffset(new Date().getTimezoneOffset()));
-		this.startDate.setHours(mStartTime.split(':')[0]);
-		this.startDate.setMinutes(mStartTime.split(':')[1]);
-		this.endDate.setHours(mEndTime.split(':')[0]);
-		this.endDate.setMinutes(mEndTime.split(':')[1]);
+		// console.log('emitTimeRange - timezoneOffset_UtcOffset', this._GWCommon.timezoneOffset_UtcOffset(new Date().getTimezoneOffset()));
+		this.startDate().setHours(mStartTime.split(':')[0]);
+		this.startDate().setMinutes(mStartTime.split(':')[1]);
+		this.endDate().setHours(mEndTime.split(':')[0]);
+		this.endDate().setMinutes(mEndTime.split(':')[1]);
 		this.timeRangeSelected.emit({
-			startDate: new Date(this.startDate),
-			endDate: new Date(this.endDate)
+			startDate: new Date(this.startDate()),
+			endDate: new Date(this.endDate())
 		});
 	}
 
