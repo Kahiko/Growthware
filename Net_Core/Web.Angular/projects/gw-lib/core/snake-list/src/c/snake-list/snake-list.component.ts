@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 	standalone: true,
 	imports: [
 		CommonModule,
-
+		// Angular Material
 		MatIconModule,
 	],
 	templateUrl: './snake-list.component.html',
@@ -25,9 +25,8 @@ export class SnakeListComponent implements OnDestroy, OnInit {
 	private _Subscriptions: Subscription = new Subscription();
 
 	readonly data$ = this._DataSubject.asObservable();
-	@Input() iconName: string = '';
-
-	@Input() id: string = '';
+	iconName = input('');
+	id = input.required<string>();
 
 	constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
 
@@ -36,12 +35,12 @@ export class SnakeListComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.id = this.id.trim();
+		this.id.apply(this.id().trim());
 		if (this._GWCommon.isNullOrUndefined(this.id)) {
 			this._LoggingSvc.toast('The is can not be blank!', 'Snake List Component', LogLevel.Error);
 		} else {
 			this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
-				if (data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
+				if (data.name.toLocaleLowerCase() === this.id().toLowerCase()) {
 					this._DataSubject.next(data.value);
 				}
 			}));
