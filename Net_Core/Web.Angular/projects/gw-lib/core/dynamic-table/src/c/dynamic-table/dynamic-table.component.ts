@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, input, ViewChild } from '@angular/core';
-import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
-import { TemplateRef } from '@angular/core';
+import { OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Angular Material
@@ -38,7 +37,7 @@ import { DynamicTableService } from '../../../public-api';
 	templateUrl: './dynamic-table.component.html',
 	styleUrls: ['./dynamic-table.component.scss'],
 })
-export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
+export class DynamicTableComponent implements OnDestroy, OnInit {
 	private _RowClickCount = 0;
 	private _OnRowClickCallBackMethod?: CallbackMethod;
 	private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
@@ -49,7 +48,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _TableData: Array<unknown> = [];
 
 	configurationName = input.required<string>();
-	@ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
 	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
 
 	activeRow: number = -1;
@@ -178,12 +176,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 			}
 		});
 		return mRetVal;
-	}
-
-	ngAfterViewInit(): void {
-		if (this.pagerComponent) {
-			this.pagerComponent.name = this.configurationName();
-		}
 	}
 
 	ngOnDestroy(): void {

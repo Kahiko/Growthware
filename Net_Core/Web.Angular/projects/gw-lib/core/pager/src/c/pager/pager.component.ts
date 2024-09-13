@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -19,8 +19,7 @@ export class PagerComponent implements OnDestroy, OnInit {
 	private _DataChangedSub: Subscription = new Subscription();
 	private _SearchCriteria: SearchCriteria = new SearchCriteria([''], [''], 1, '', 1);
 
-	@Input() name: string = '';
-
+	name = input<string>('');
 
 	public pages: number[] = [];
 	public selectedPage: string = '1';
@@ -38,7 +37,7 @@ export class PagerComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._DataChangedSub = this._SearchSvc.searchDataChanged$.subscribe(
 			(results: ISearchResultsNVP) => {
-				if (this.name.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+				if (this.name().trim().toLowerCase() === results.name.trim().toLowerCase()) {
 					this._SearchCriteria = results.payLoad.searchCriteria;
 					if (results.payLoad.data) {
 						const mFirstRow = results.payLoad.data[0];
@@ -80,7 +79,7 @@ export class PagerComponent implements OnDestroy, OnInit {
 	 */
 	onGoToPageClick(): void {
 		this._SearchCriteria.selectedPage = parseInt(this.selectedPage);
-		this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
+		this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
 	}
 
 	/**
@@ -95,25 +94,25 @@ export class PagerComponent implements OnDestroy, OnInit {
 			case 'first':
 				if (this._SearchCriteria.selectedPage > 1) {
 					this._SearchCriteria.selectedPage = 1;
-					this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
 				}
 				break;
 			case 'last':
 				if (this._SearchCriteria.selectedPage < this.totalPages) {
 					this._SearchCriteria.selectedPage = this.totalPages;
-					this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
 				}
 				break;
 			case 'next':
 				if (this._SearchCriteria.selectedPage < this.totalPages) {
 					this._SearchCriteria.selectedPage++;
-					this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
 				}
 				break;
 			case 'previous':
 				if (this._SearchCriteria.selectedPage > 1) {
 					this._SearchCriteria.selectedPage--;
-					this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
 				}
 				break;
 			default:
