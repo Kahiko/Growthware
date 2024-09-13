@@ -19,22 +19,20 @@ import { NavigationService } from '../../navigation.service';
 })
 export class HierarchicalHorizontalComponent extends BaseNavigationComponent {
 
-  @Input() override name: string = '';
-  // @Input() override depth!: number;
-  // @Input() override item!: INavLink;    
+	@Input() override name: string = '';
 
-  constructor(
-  	accountSvc: AccountService,
-  	dataSvc: DataService,
-  	gwCommon: GWCommon,
-  	loggingSvc: LoggingService,
-  	menuListSvc: NavigationService,
-  ) {
-  	super();
-  	this._AccountSvc = accountSvc;
-  	this._DataSvc = dataSvc;
-  	this._GWCommon = gwCommon;
-  	this._LoggingSvc = loggingSvc;
-  	this._NavigationSvc = menuListSvc;
-  }
+	constructor(
+		accountSvc: AccountService,
+		dataSvc: DataService,
+		gwCommon: GWCommon,
+		loggingSvc: LoggingService,
+		menuListSvc: NavigationService,
+	) {
+		super();
+		this._AccountSvc = accountSvc;
+		this._DataSvc = dataSvc;
+		this._GWCommon = gwCommon;
+		this._LoggingSvc = loggingSvc;
+		this._NavigationSvc = menuListSvc;
+	}
 }
