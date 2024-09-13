@@ -14,22 +14,17 @@ import { EventType } from '../../event-type.enum';
 	styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {
-	// @Output() disposeEvent = new EventEmitter();
 	disposeEvent = output();
 
 	@ViewChild('toastElement', { static: true })
 	toastEl!: ElementRef;
 
-	//   @Input() type!: EventType;
 	type = input.required<EventType>();
 
-	// @Input() dateTime: string = new Date().toLocaleString();
 	dateTime = input<string>(new Date().toLocaleString());
 
-	// @Input() title!: string;
 	title = input.required<string>();
 
-	// @Input() message!: string;
 	message = input.required<string>();
 
 	public typeClass: string = '';
