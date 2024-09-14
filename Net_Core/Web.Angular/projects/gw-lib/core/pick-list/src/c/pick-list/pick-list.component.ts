@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -24,14 +24,14 @@ import { ModalOptions, ModalService } from '@growthware/core/modal';
 	styleUrls: ['./pick-list.component.scss']
 })
 export class PickListComponent implements OnDestroy, OnInit {
-	@Input() allItemsText: string = '';
-	@Input() header: string = '';
-	@Input() id: string = '';
-	@Input() name: string = '';
-	@Input() pickListTableHelp: string = '';
-	@Input() selectedItemsText: string = '';
-	@Input() size: string = '8';
-	@Input() width: string = '120';
+	allItemsText = input<string>('');
+	header = input<string>('');
+	id = input<string>('');
+	name = input<string>('');
+	pickListTableHelp = input<string>('');
+	selectedItemsText = input<string>('');
+	size = input<string>('8');
+	width = input<string>('120');
 
 	private _AvailableItemsSubject = new BehaviorSubject<Array<string>>([]);
 	private _AvailableItemsData: Array<string> = [];
@@ -55,16 +55,16 @@ export class PickListComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		if (!this._GWCommon.isNullOrUndefined(this.id) && !this._GWCommon.isNullOrEmpty(this.id)) {
-			this._ModalOptions = new ModalOptions(this.id + '_Modal', this.header, this.pickListTableHelp);
+		if (!this._GWCommon.isNullOrUndefined(this.id()) && !this._GWCommon.isNullOrEmpty(this.id())) {
+			this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp());
 			this._Subscriptions.add(
 				this._DataSvc.dataChanged$.subscribe((results: INameDataPair) => {
-					if (this.name.trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
+					if (this.name().trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
 						// update the local data
 						this._AvailableItemsData = results.value;
 						this._AvailableItemsSubject.next(results.value);
 					}
-					if (this.name.trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
+					if (this.name().trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
 						// update the local data
 						this._SelectedItemsData = results.value;
 						for (let mOuterIndex = 0; mOuterIndex < this._SelectedItemsData.length; mOuterIndex++) {
@@ -110,7 +110,7 @@ export class PickListComponent implements OnDestroy, OnInit {
 	switchAll(e: Event, source: string): void {
 		e.stopPropagation();
 		e.preventDefault();
-		const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+		const objFromBox = document.getElementById(this.id() + source)! as HTMLSelectElement;
 		// var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
 		if (objFromBox.length > 0) {
 			if (source == '_SrcList') {
@@ -142,7 +142,7 @@ export class PickListComponent implements OnDestroy, OnInit {
 	switchList(e: Event, source: string): void {
 		e.stopPropagation();
 		e.preventDefault();
-		const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+		const objFromBox = document.getElementById(this.id() + source)! as HTMLSelectElement;
 		// var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
 		if (objFromBox.selectedOptions.length > 0) {
 			if (source == '_SrcList') {
@@ -185,7 +185,7 @@ export class PickListComponent implements OnDestroy, OnInit {
 			return GWCommon.naturalSort(a, b);
 		});
 		this._SelectedItemsSubject.next(sortedArray);
-		this._DataSvc.notifyDataChanged(this.id, sortedArray);
+		this._DataSvc.notifyDataChanged(this.id(), sortedArray);
 	}
 
 }

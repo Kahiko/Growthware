@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Angular Material
@@ -40,8 +40,8 @@ export class DayOfWeekComponent {
 
 	public monthNames: Array<string> = [];
 	
-	@Input() calendarDay!: IDay;
-	@Input() weekNumber?: number;
+	calendarDay = input.required<IDay>();
+	weekNumber = input<number>();
 
 	constructor(
 		private _CalendarSvc: CalendarService,

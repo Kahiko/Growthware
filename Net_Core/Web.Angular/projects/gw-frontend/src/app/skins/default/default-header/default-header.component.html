@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
-  <button style="outline: none;" mat-icon-button (click)="sidenav.toggle();">
+  <button style="outline: none;" mat-icon-button (click)="sidenav().toggle();">
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer">
     <button (click)="onLogoClick()" class="button__link">{{applicationName}}</button>
   </span>
-  <gw-core-horizontal name="horizontal" fontColor="white"></gw-core-horizontal>
+  <gw-core-horizontal name="horizontal" fontColor="white" />
   <span>Version {{version}}</span>
   <button mat-icon-button>
     <mat-icon>help_outline</mat-icon>

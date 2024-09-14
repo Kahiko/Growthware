@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, Input, ViewChild } from '@angular/core';
-import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
-import { TemplateRef } from '@angular/core';
+import { Component, input, ViewChild } from '@angular/core';
+import { OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Angular Material
@@ -30,15 +29,15 @@ import { DynamicTableService } from '../../../public-api';
 	imports: [
 		CommonModule,
 		FormsModule,
-
+		// Angular Material
 		MatButtonModule,
-
+		// Features
 		PagerComponent
 	],
 	templateUrl: './dynamic-table.component.html',
 	styleUrls: ['./dynamic-table.component.scss'],
 })
-export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
+export class DynamicTableComponent implements OnDestroy, OnInit {
 	private _RowClickCount = 0;
 	private _OnRowClickCallBackMethod?: CallbackMethod;
 	private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
@@ -48,8 +47,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _TableDataSubject = new BehaviorSubject<any[]>([]);
 	private _TableData: Array<unknown> = [];
 
-	@Input() configurationName: string = '';
-	@ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
+	configurationName = input.required<string>();
 	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
 
 	activeRow: number = -1;
@@ -180,28 +178,22 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 		return mRetVal;
 	}
 
-	ngAfterViewInit(): void {
-		if (this.pagerComponent) {
-			this.pagerComponent.name = this.configurationName;
-		}
-	}
-
 	ngOnDestroy(): void {
   	this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
-		this.configurationName = this.configurationName.trim();
+		this.configurationName.apply(this.configurationName().trim());
 		const mClientChoicesString = sessionStorage.getItem('clientChoices') ?? '';
 		if(!this._GWCommon.isNullOrEmpty(mClientChoicesString)) {
 			this.clientChoices = JSON.parse(mClientChoicesString);
 		}
-		if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
-			this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
+		if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName())) {
+			this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName());
 			if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
 				this.maxHeadHeight = this.tableConfiguration.maxHeadHeight;
 				this.rowHeight = this.tableConfiguration.maxTableRowHeight;
-				this._SearchCriteria = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName, this.tableConfiguration).payLoad;
+				this._SearchCriteria = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName(), this.tableConfiguration).payLoad;
 				this.showHelp = this.tableConfiguration.showHelp;
 				this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
 				let mWidth: number = 0;
@@ -215,7 +207,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 			// subscribe to the data change event and update the local data
 			this._Subscriptions.add(
 				this._SearchSvc.searchDataChanged$.subscribe((results: ISearchResultsNVP) => {
-					if (this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+					if (this.configurationName().trim().toLowerCase() === results.name.trim().toLowerCase()) {
 						// update the local search criteria with the one used to perform the search
 						this._SearchCriteria = results.payLoad.searchCriteria;
 						// update the local data
@@ -256,7 +248,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 							, pageSize: +newText
 							, selectedPage: 1
 						};
-						this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
+						this._SearchSvc.setSearchCriteria(this.configurationName(), mSearchCriteria);
 					} else {
 						this.recordsPerPageMsg =
 				'Value must be numeric and greater than zero!';
@@ -272,7 +264,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 						, searchText: newText
 						, selectedPage: 1
 					};
-					this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
+					this._SearchSvc.setSearchCriteria(this.configurationName(), mSearchCriteria);
 				})
 		);
 	}
@@ -338,7 +330,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 			...this._SearchCriteria
 			, searchColumns: mColumns
 		};
-		this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
+		this._SearchSvc.setSearchCriteria(this.configurationName(), mSearchCriteria);
 	}
 
 	/**
@@ -352,7 +344,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 			...this._SearchCriteria
 			, sortColumns: this.getColumnArray(columnName, 'sort')
 		};
-		this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
+		this._SearchSvc.setSearchCriteria(this.configurationName(), mSearchCriteria);
 	}
 
 	public setRowClickMethod(): void {

@@ -2,7 +2,7 @@
   <tbody>
     <tr class="pickListTableHeader">
       <td>
-        {{header}}&nbsp;&nbsp;
+        {{header()}}&nbsp;&nbsp;
         <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
           <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
         </button>
@@ -13,11 +13,11 @@
         <table class="listPicker">
           <tbody>
             <tr>
-              <td>{{allItemsText}}</td>
+              <td>{{allItemsText()}}</td>
             </tr>
             <tr>
               <td valign="top" style="border: solid 1px;">
-                <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                <select name="{{id()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
                   @for (item of availableItems$ | async; track item; let rowIndex = $index) {
                     <option [value]="item" style="width: 300px;">
                       {{item}}

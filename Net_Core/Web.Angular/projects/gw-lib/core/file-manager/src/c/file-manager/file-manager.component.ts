@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -54,7 +54,8 @@ export class FileManagerComponent implements OnInit {
 	];
 	readonly skin$ = this._Skin.asObservable();
 
-  @Input() configurationName: string = '';
+  configurationName = input<string>();
+
   @ViewChild('helpText', { read: TemplateRef }) private _HelpText!:TemplateRef<unknown>;
 
   constructor(
@@ -68,7 +69,7 @@ export class FileManagerComponent implements OnInit {
   ngOnInit(): void {
   	const mAction: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
   	this._Action = mAction;
-  	this.configurationName = mAction;
+  	this.configurationName.apply(mAction);
   	this._FileManagerSvc.getDirectories(mAction, '\\');
   }
 

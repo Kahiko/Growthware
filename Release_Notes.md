@@ -18,9 +18,12 @@
 - appInitializer now navigates to the clientChoices.action
 - Added iconName property to SnakeListComponent
 - Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
+- Changed all gw- tages to self closing tags
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
+- Fixed Pager not displaying the correct number of pages
+- Fixed the "derived" roles not being displayed/populated
 
 ## Net_Core Version 5.0.0.x (2024-08-31)
 

@@ -1,21 +1,21 @@
 <mat-toolbar>
   <span>
-    <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName}}" name="btnNewFolder_{{configurationName}}" (click)="onCreateDirectory()">
+    <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName()}}" name="btnNewFolder_{{configurationName()}}" (click)="onCreateDirectory()">
       <span color="white" class="material-icons">add</span>
       <span>New Folder</span>
     </button>
   </span>
   <span>
-    <gw-core-upload></gw-core-upload>
+    <gw-core-upload />
   </span>
   <span>
-    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName}}" name="btnRefresh_{{configurationName}}">
+    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName()}}" name="btnRefresh_{{configurationName()}}">
       <span color="white" class="material-icons">refresh</span>
     </button>
   </span>
   <span class="spacer"></span>
   <span>
-    <button type="button" [matMenuTriggerFor]="layoutMenu" mat-button color="accent" id="btnView_{{configurationName}}" name="btnView_{{configurationName}}">
+    <button type="button" [matMenuTriggerFor]="layoutMenu" mat-button color="accent" id="btnView_{{configurationName()}}" name="btnView_{{configurationName()}}">
       <span color="white" class="material-icons">grid_view</span>
     </button>
     <mat-menu #layoutMenu="matMenu">
@@ -25,27 +25,27 @@
     </mat-menu>
   </span>
   <span>
-    <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName}}" name="btnInfo_{{configurationName}}">
+    <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName()}}" name="btnInfo_{{configurationName()}}">
       <span color="white" class="material-icons">info_outline</span>
     </button>
   </span>
 </mat-toolbar>
 <div style="position: relative; top: 0px; left: 0px;">
   <div class="directories">
-    <gw-core-directory-tree></gw-core-directory-tree>
+    <gw-core-directory-tree />
   </div>
   <div class="fileList">
     @if ((skin$ | async); as layout) {
       @switch (layout) {
         @case ('snake') {
-          <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+          <gw-core-file-list [numberOfColumns]=5 />
         }
         @case ('table') {
-          <gw-core-table-file-list></gw-core-table-file-list>
+          <gw-core-table-file-list />
         }
         @default {
           <div>
-            <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+            <gw-core-file-list [numberOfColumns]=5 />
           </div>
         }
       }
