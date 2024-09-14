@@ -2,7 +2,7 @@
   <tbody>
     <tr class="pickListTableHeader">
       <td>
-        {{header}}&nbsp;&nbsp;
+        {{header()}}&nbsp;&nbsp;
         <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
           <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
         </button>
@@ -13,14 +13,14 @@
         <table class="listPicker">
           <tbody>
             <tr>
-              <td>{{allItemsText}}</td>
+              <td>{{allItemsText()}}</td>
               <td>&nbsp;</td>
-              <td>{{selectedItemsText}}</td>
+              <td>{{(selectedItemsText())}}</td>
               <td></td>
             </tr>
             <tr>
               <td valign="top">
-                <select name="{{name}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                <select name="{{name()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
                   @for (item of availableItems$ | async; track item; let rowIndex = $index) {
                     <option [value]="item">
                       {{item}}
@@ -35,7 +35,7 @@
                 <button class="material-icons" (click)="switchAll($event, '_DstList')"><mat-icon>keyboard_double_arrow_left</mat-icon></button><br/>
               </td>
               <td valign="top">
-                <select name="{{name}}_DstList" id="{{id}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                <select name="{{name()}}_DstList" id="{{id()}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
                   <!-- <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
                   @for (item of selectedItems$ | async; track item; let rowIndex = $index) {
                     <option [value]="item">
