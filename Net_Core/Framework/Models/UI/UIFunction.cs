@@ -41,6 +41,11 @@ public class UIFunctionProfile
         this.AddGroups = functionProfile.AddGroups;
         this.EditGroups = functionProfile.EditGroups;
         this.DeleteGroups = functionProfile.DeleteGroups;
+
+        this.DerivedViewRoles = functionProfile.DerivedViewRoles;
+        this.DerivedAddRoles = functionProfile.DerivedAddRoles;
+        this.DerivedEditRoles = functionProfile.DerivedEditRoles;
+        this.DerivedDeleteRoles = functionProfile.DerivedDeleteRoles;
     }
 
     private void init() 
@@ -92,6 +97,11 @@ public class UIFunctionProfile
     public Collection<string> AssignedAddRoles{get; set;}
     public Collection<string> AssignedEditRoles{get; set;}
     public Collection<string> AssignedDeleteRoles{get; set;}
+
+    public Collection<string> DerivedViewRoles{get; set;}
+    public Collection<string> DerivedAddRoles{get; set;}
+    public Collection<string> DerivedEditRoles{get; set;}
+    public Collection<string> DerivedDeleteRoles{get; set;}
 
     public Collection<string> ViewGroups{get; set;}
     public Collection<string> AddGroups{get; set;}
