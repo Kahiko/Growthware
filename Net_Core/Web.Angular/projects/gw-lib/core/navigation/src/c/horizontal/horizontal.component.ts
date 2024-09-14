@@ -29,31 +29,31 @@ import { INavLink } from '../../nav-link.model';
 })
 export class HorizontalComponent extends BaseNavigationComponent implements OnInit {
 
-  @Input() override name: string = '';
-  @Input() fontColor: string = 'white';
+	@Input() override name: string = '';
+	@Input() fontColor: string = 'white';
 
-  constructor(
-  	accountSvc: AccountService,
-  	dataSvc: DataService,
-  	gwCommon: GWCommon,
-  	loggingSvc: LoggingService,
-  	menuListSvc: NavigationService,
-  	runter: Router,
-  ) {
-  	super();
-  	this._AccountSvc = accountSvc;
-  	this._DataSvc = dataSvc;
-  	this._GWCommon = gwCommon;
-  	this._LoggingSvc = loggingSvc;
-  	this._NavigationSvc = menuListSvc;
-  	this._Router = runter;
-  }
+	constructor(
+		accountSvc: AccountService,
+		dataSvc: DataService,
+		gwCommon: GWCommon,
+		loggingSvc: LoggingService,
+		menuListSvc: NavigationService,
+		runter: Router,
+	) {
+		super();
+		this._AccountSvc = accountSvc;
+		this._DataSvc = dataSvc;
+		this._GWCommon = gwCommon;
+		this._LoggingSvc = loggingSvc;
+		this._NavigationSvc = menuListSvc;
+		this._Router = runter;
+	}
 
-  ngOnInit(): void {
-  	this._MenuType = MenuTypes.Horizontal;
-  }
+	ngOnInit(): void {
+		this._MenuType = MenuTypes.Horizontal;
+	}
 
-  override onItemSelected(item: INavLink) {
-  	super.onItemSelected(item);
-  }
+	override onItemSelected(item: INavLink) {
+		super.onItemSelected(item);
+	}
 }
