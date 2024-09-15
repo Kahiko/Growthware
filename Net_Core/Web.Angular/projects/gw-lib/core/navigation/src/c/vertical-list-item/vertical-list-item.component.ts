@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
@@ -36,7 +36,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
 	expanded!: boolean;
 	showSideNavLinkText!: boolean;
 	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
-	@Input() depth!: number;
+	depth = input<number>(0);
 	@Input() item!: INavLink;
 
 	private _Subscription: Subscription = new Subscription();
@@ -51,9 +51,6 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.depth === undefined) {
-			this.depth = 0;
-		}
 		this._Subscription.add(
 			this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
 		);
