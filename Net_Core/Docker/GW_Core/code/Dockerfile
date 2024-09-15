@@ -19,7 +19,7 @@ RUN apt-get update \
 && apt-get install -y build-essential nodejs
 
 # Install Angular
-RUN npm install -g @angular/cli@17.2
+RUN npm install -g @angular/cli@18.2
 
 # Clone the growthware repository
 RUN git config --global --add safe.directory /growthware
