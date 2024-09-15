@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
@@ -37,7 +37,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
 	showSideNavLinkText!: boolean;
 	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
 	depth = input<number>(0);
-	@Input() item!: INavLink;
+	item = input.required<INavLink>();
 
 	private _Subscription: Subscription = new Subscription();
 

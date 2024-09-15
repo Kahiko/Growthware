@@ -20,7 +20,7 @@ describe('VerticalListItemComponent', () => {
 		
 		fixture = TestBed.createComponent(VerticalListItemComponent);
 		component = fixture.componentInstance;
-		component.item = new NavLink('', '', '', '', '', 0, '', true, '');
+		component.item.apply(new NavLink('', '', '', '', '', 0, '', true, ''));
 		fixture.detectChanges();
 	});
 

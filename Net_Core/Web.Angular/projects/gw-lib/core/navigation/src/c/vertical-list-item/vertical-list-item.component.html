@@ -1,63 +1,63 @@
-@if (item.isRouterLink || item.children.length > 0) {
+@if (item().isRouterLink || item().children.length > 0) {
 <a mat-list-item 
-    [activated]="item.isActive"
+    [activated]="item().isActive"
     class="drawer-nav-list__list-item" 
     [ngStyle]="{'padding-left': (depth() * 12).toString() + 'px'}"
-    (click)="onItemSelected(item)" 
+    (click)="onItemSelected(item())" 
     [ngClass]="{'expanded': expanded}" 
-    data-title="{{ item.description }}">
+    data-title="{{ item().description }}">
   <div style="display: flex;">
     <span>
-      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+      <mat-icon class="routeIcon">{{item().icon}}</mat-icon>
     </span>
     <span>
-      @if (item.children && item.children.length) {
+      @if (item().children && item().children.length) {
       <span>
         <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
           chevron_right
         </mat-icon>
-        @if (showSideNavLinkText===true && item.children.length===0) {
-        <span>{{ item.label }}</span>
+        @if (showSideNavLinkText===true && item().children.length===0) {
+        <span>{{ item().label }}</span>
         }
       </span>
       }
       <span class="spacer">
         @if (showSideNavLinkText) {
-        <span>{{ item.label }}</span>
+        <span>{{ item().label }}</span>
         }
       </span>
     </span>
   </div>
 </a>
 }
-@if (!item.isRouterLink && item.children.length === 0) {
+@if (!item().isRouterLink && item().children.length === 0) {
 <a mat-list-item 
-    [routerLink]="item.action"
-    [activated]="item.isActive"
+    [routerLink]="item().action"
+    [activated]="item().isActive"
     class="drawer-nav-list__list-item" 
     [ngStyle]="{'padding-left': (depth() * 12) + 'px'}"
-    (click)="onItemSelected(item)" 
-    data-title="{{ item.description }}">
+    (click)="onItemSelected(item())" 
+    data-title="{{ item().description }}">
   <div style="display: flex;">
     <span>
-      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+      <mat-icon class="routeIcon">{{item().icon}}</mat-icon>
     </span>
-    @if (item.children && item.children.length==0) {
+    @if (item().children && item().children.length==0) {
     <span style="width: 24px;"></span>
     }
-    @if (item.children && item.children.length) {
+    @if (item().children && item().children.length) {
     <span>
       <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
         chevron_right
       </mat-icon>
-      @if (showSideNavLinkText===true && item.children.length===0) {
-      <span>{{ item.label }}</span>
+      @if (showSideNavLinkText===true && item().children.length===0) {
+      <span>{{ item().label }}</span>
       }
     </span>
     }
     <span class="spacer">
       @if (showSideNavLinkText) {
-      <span>{{ item.label }}</span>
+      <span>{{ item().label }}</span>
       }
     </span>
   </div>
@@ -66,7 +66,7 @@
 @if (expanded) {
 <div>
   <div mat-list-item class="drawer-nav-list__list-item">
-    @for (child of item.children; track child) {
+    @for (child of item().children; track child) {
     <gw-core-vertical-list-item [item]="child" [depth]="depth()+1" />
     }
   </div>
