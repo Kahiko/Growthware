@@ -11,6 +11,7 @@
 - Added iconName property to SnakeListComponent
 - Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
 - Changed all gw- tages to self closing tags
+- Updated all @Input/@Output types to input/output in prep for being able to drop Zone.js
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
