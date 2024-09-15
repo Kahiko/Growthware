@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -44,7 +44,7 @@ export class UploadComponent implements OnDestroy, OnInit {
 	showFileProgress: boolean = false;
 	showOverallProgress: boolean = false;
 
-	@Input() multiple: string = 'false';
+	multiple = input<string>('false');
 	@ViewChild('progressTemplate', { read: TemplateRef }) private _ProgressTemplate!: TemplateRef<unknown>;
 
 	constructor(
