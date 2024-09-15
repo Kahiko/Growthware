@@ -29,7 +29,6 @@ import { INavLink } from '../../nav-link.model';
 })
 export class HorizontalComponent extends BaseNavigationComponent implements OnInit {
 
-	@Input() override name: string = '';
 	@Input() fontColor: string = 'white';
 
 	constructor(

@@ -19,7 +19,7 @@ import { NavigationService } from '../../navigation.service';
 })
 export class HierarchicalHorizontalComponent extends BaseNavigationComponent {
 
-	@Input() override name: string = '';
+	// @Input() override name: string = '';
 
 	constructor(
 		accountSvc: AccountService,

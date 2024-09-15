@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, OnDestroy, HostBinding } from '@angular/core';
+import { Component, AfterContentInit, input, OnDestroy, HostBinding } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -40,7 +40,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
 	protected _NavigationSvc!: NavigationService;
 	protected _Router!: Router;
 
-	name: string = '';
+	name = input.required<string>();
 
 	ngOnDestroy(): void {
 		this._Subscription.unsubscribe();
@@ -48,17 +48,17 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
 
 	ngAfterContentInit(): void {
 		// console.log('BaseNavigationComponent.ngAfterContentInit._ModalSvc', this._ModalSvc);
-		if (this._GWCommon.isNullOrEmpty(this.name)) {
+		if (this._GWCommon.isNullOrEmpty(this.name())) {
 			this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
 		} else {
 			this._Subscription.add(
 				this._AccountSvc.updateMenu$.subscribe(() => {
-					this._NavigationSvc.getNavLinks(this._MenuType, this.name);
+					this._NavigationSvc.getNavLinks(this._MenuType, this.name());
 				})
 			);
 			this._Subscription.add(
 				this._DataSvc.dataChanged$.subscribe((data) => {
-					if (data.name.toLowerCase() === this.name.toLowerCase()) {
+					if (data.name.toLowerCase() === this.name().toLowerCase()) {
 						// console.log('this.dataName', this.dataName);
 						// console.log('BaseHierarchicalComponent.ngOnInit.navLinks', this.navLinks);
 						this.navLinks = data.value;

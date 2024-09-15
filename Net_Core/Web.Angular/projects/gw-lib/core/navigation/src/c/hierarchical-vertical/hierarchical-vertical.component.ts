@@ -27,7 +27,6 @@ import { VerticalListItemComponent } from '../vertical-list-item/vertical-list-i
 })
 export class HierarchicalVerticalComponent extends BaseNavigationComponent implements OnInit {
 
-  @Input() override name: string = '';
 
   constructor(
   	accountSvc: AccountService,

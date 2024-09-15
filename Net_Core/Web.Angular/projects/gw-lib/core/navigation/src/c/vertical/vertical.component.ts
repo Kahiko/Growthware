@@ -31,7 +31,6 @@ import { INavLink } from '../../nav-link.model';
 export class VerticalComponent extends BaseNavigationComponent implements OnInit {
 
 	@Input() fontColor: string = 'white';
-	@Input() override name: string = '';
 
 	constructor(
 		accountSvc: AccountService,
