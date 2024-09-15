@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 // Angular Material
@@ -29,7 +29,7 @@ import { INavLink } from '../../nav-link.model';
 })
 export class HorizontalComponent extends BaseNavigationComponent implements OnInit {
 
-	@Input() fontColor: string = 'white';
+	fontColor = input<string>('white');
 
 	constructor(
 		accountSvc: AccountService,
