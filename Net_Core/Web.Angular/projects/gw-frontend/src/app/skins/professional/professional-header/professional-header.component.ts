@@ -30,12 +30,6 @@ export class ProfessionalHeaderComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._Subscription.add(this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val; }));
 		this._Subscription.add( this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; }));
-		// this._Subscription.add(
-		// 	this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { 
-		// 		this.securityEntityName = val.clientChoices.securityEntityName; 
-		// 		this.name = val.clientChoices.accountName;
-		// 	})
-		// );
 	}
 
 }
