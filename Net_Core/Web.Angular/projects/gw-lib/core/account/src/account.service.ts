@@ -82,7 +82,7 @@ export class AccountService extends BaseService {
 		// if account information is not null
 		// 	1.) Make the JWT token available VIA sessionStorage to avoid injecting the AccountService
 		let mTriggerMenuUpdates = false;
-		if(this._AccountInformation.authenticationResponse.account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
+		if (this._AccountInformation.authenticationResponse.account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
 			mTriggerMenuUpdates = true;
 		}
 		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
@@ -91,13 +91,13 @@ export class AccountService extends BaseService {
 		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
 		this.accountInformationChanged$.next(this._AccountInformation);
-		if(mTriggerMenuUpdates || forceMenuUpdate) {
-			this.triggerMenuUpdates();			
+		if (mTriggerMenuUpdates || forceMenuUpdate) {
+			this.triggerMenuUpdates();
 		}
-		if(this._AccountInformation.authenticationResponse.jwtToken !== null) {
+		if (this._AccountInformation.authenticationResponse.jwtToken !== null) {
 			sessionStorage.setItem('jwt', this._AccountInformation.authenticationResponse.jwtToken);
 		}
-		if(this._AccountInformation !== null && this._AccountInformation.authenticationResponse.account.toLowerCase() !== this.anonymous) {
+		if (this._AccountInformation !== null && this._AccountInformation.authenticationResponse.account.toLowerCase() !== this.anonymous) {
 			this.setRefreshTokenTimer();
 		} else {
 			this.stopRefreshTokenTimer();
@@ -312,7 +312,7 @@ export class AccountService extends BaseService {
 				if (this._AccountInformation.authenticationResponse.status == 4) {
 					mNavigationUrl = '/accounts/change-password';
 				}
-				if(response === true) {
+				if (response === true) {
 					this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
 				}
 				if (!silent) {
@@ -347,7 +347,7 @@ export class AccountService extends BaseService {
 				if (!slient) {
 					this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
 				}
-				if(navigate) {
+				if (navigate) {
 					this._Router.navigate(['generic_home']);
 				}
 				this.stopRefreshTokenTimer();
@@ -394,10 +394,10 @@ export class AccountService extends BaseService {
 			mAccountToSave.lastName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.lastName);
 			mAccountToSave.middleName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.middleName);
 			mAccountToSave.preferredName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.preferredName);
-			this._HttpClient.post<{message: string}>(this._Api_RegisterAccount, mAccountToSave, mHttpOptions).subscribe({
-				next: (mReturnString: {message: string}) => {
+			this._HttpClient.post<{ message: string }>(this._Api_RegisterAccount, mAccountToSave, mHttpOptions).subscribe({
+				next: (mReturnString: { message: string }) => {
 					console.log('AccountService.registerAccount', mReturnString);
-					if(mReturnString.message.toLowerCase().indexOf('failed') > -1) {
+					if (mReturnString.message.toLowerCase().indexOf('failed') > -1) {
 						reject(mReturnString.message);
 					}
 					resolve(mReturnString.message);
@@ -429,7 +429,7 @@ export class AccountService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.put<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_ResetPassword, null, mHttpOptions).subscribe({
 				next: (response: { item1: IAuthenticationResponse, item2: IClientChoices }) => {
-					if(response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
+					if (response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
 						const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
 						this.afterAuthentication(mAccountInformation);
 						this._Router.navigate(['home']);
@@ -510,7 +510,7 @@ export class AccountService extends BaseService {
 		// parse json object from base64 encoded jwt token
 		const mJasonWebToken = sessionStorage.getItem('jwt');
 		let mJwtBase64 = null;
-		if(mJasonWebToken != null) {
+		if (mJasonWebToken != null) {
 			mJwtBase64 = mJasonWebToken.split('.')[1];
 		}
 		if (mJwtBase64) {
@@ -551,7 +551,7 @@ export class AccountService extends BaseService {
 	 * @returns 
 	 */
 	public verifyAccount(verificationToken: string, email: string): void {
-		if(this._GWCommon.isNullOrEmpty(verificationToken)) {
+		if (this._GWCommon.isNullOrEmpty(verificationToken)) {
 			this._LoggingSvc.console('verificationToken can not be blank!', LogLevel.Error);
 			this._LoggingSvc.toast('Unable to verify account.', 'Verify Account', LogLevel.Error);
 			return;
