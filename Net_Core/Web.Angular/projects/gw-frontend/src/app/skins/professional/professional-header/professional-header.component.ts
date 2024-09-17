@@ -1,7 +1,7 @@
 import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 
 @Component({
