@@ -50,15 +50,15 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	rolesAvailable: Array<string> = [];
 	rolesPickListName: string = 'roles';
 	rolesSelected: Array<string> = [];
-  
+
 	constructor(
-    private _DataSvc: DataService,
-    private _FormBuilder: FormBuilder,
-    private _GroupSvc: GroupService,
-    private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
-    private _SearchSvc: SearchService,
-    private _SecuritySvc: SecurityService
+		private _DataSvc: DataService,
+		private _FormBuilder: FormBuilder,
+		private _GroupSvc: GroupService,
+		private _LoggingSvc: LoggingService,
+		private _ModalSvc: ModalService,
+		private _SearchSvc: SearchService,
+		private _SecuritySvc: SecurityService
 	) { }
 
 	ngOnDestroy(): void {
@@ -67,7 +67,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
 	ngOnInit(): void {
 		let mIdToGet = -1;
-		if(this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
+		if (this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
 			// console.log('selectedRow', this._GroupSvc.selectedRow);
 			mIdToGet = this._GroupSvc.selectedRow.GroupSeqId;
 		}
@@ -85,18 +85,18 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
 			// console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()). // used to determine the data name
 			switch (data.name.toLowerCase()) {
-			case 'roles':
-				this._GroupProfile.rolesInGroup = data.value;
-				break;
-			default:
-				break;
+				case 'roles':
+					this._GroupProfile.rolesInGroup = data.value;
+					break;
+				default:
+					break;
 			}
 		}));
 	}
 
 	applySecurity(): void {
 		this.canDelete = this.securityInfo.mayDelete;
-		if(this._GroupSvc.modalReason.toLowerCase() == 'newprofile') {
+		if (this._GroupSvc.modalReason.toLowerCase() == 'newprofile') {
 			this.canDelete = false;
 		}
 	}
@@ -113,13 +113,13 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -165,9 +165,9 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
 	updateSearch(): void {
 		const mSearchCriteria = this._SearchSvc.getSearchCriteria('Groups'); // from SearchAccountsComponent line 25
-		if(mSearchCriteria != null) {
+		if (mSearchCriteria != null) {
 			this._SearchSvc.setSearchCriteria('Groups', mSearchCriteria);
-		}    
+		}
 	}
 
 }
