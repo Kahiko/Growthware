@@ -1,5 +1,4 @@
-import { Component, computed, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, computed, ViewEncapsulation } from '@angular/core';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
@@ -11,16 +10,13 @@ import { GWCommon } from '@growthware/common/services';
 	styleUrls: ['./blue-arrow-layout.component.scss'],
 	encapsulation: ViewEncapsulation.None,
 })
-export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
+export class BlueArrowLayoutComponent {
 
-	private _Subscription: Subscription = new Subscription();
-
-	applicationName: string = '';
-	environment: string = 'Development';
+	environment = computed(() => this._ConfigurationSvc.environment());
 	navDescription: string = '';
 	securityEntityName = computed(() => this._AccountSvc.clientChoices().securityEntityName);
-	securityEntityTranslation: string = '';
-	version: string = '';
+	securityEntityTranslation = computed(() => this._ConfigurationSvc.securityEntityTranslation());
+	version = computed(() => this._ConfigurationSvc.version());
 
 	constructor(
     private _AccountSvc: AccountService,
@@ -29,24 +25,4 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 	) {
 		// do nothing atm
 	}
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val;})
-		);    
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })      
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.environment$.subscribe((val: string) => { this.environment = val; })
-		);
-	}
-
 }
