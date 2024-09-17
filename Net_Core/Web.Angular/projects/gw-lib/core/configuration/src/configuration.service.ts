@@ -1,6 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
@@ -17,13 +16,11 @@ export class ConfigurationService {
 	private _ApiGetDBInformationURL: string = '';
 	private _ApiSetDBInformationURL: string = '';
 	private _Loaded: boolean = false;
-	private _Version = new BehaviorSubject('0.0.0.0');
 
 	readonly applicationName = signal<string>('');
 	readonly environment = signal<string>('');
 	readonly logPriority = signal<string>('');
 	readonly securityEntityTranslation = signal<string>('');
-	readonly version$ = this._Version.asObservable();
 	readonly version = signal<string>('');
 
 	constructor(
@@ -68,10 +65,7 @@ export class ConfigurationService {
 					if (response.environment) { this.environment.set(response.environment); }
 					if (response.logPriority) { this.logPriority.set(response.logPriority); }
 					if (response.securityEntityTranslation) { this.securityEntityTranslation.set(response.securityEntityTranslation); }
-					if (response.version) { 
-						this._Version.next(response.version); 
-						this.version.set(response.version); 
-					}
+					if (response.version) { this.version.set(response.version); }
 					this._Loaded = true;
 				},
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
