@@ -66,7 +66,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 		if (this._IsResetPassword) {
 			this.title = 'Reset Password';
 		}
-		this.hideOldPassword = this._AccountSvc.authenticationResponse.status == 4 || this._IsResetPassword;
+		this.hideOldPassword = this._AccountSvc.authenticationResponse().status == 4 || this._IsResetPassword;
 		this.populateForm();
 		this._Subscription.add(this.getControls['newPassword'].valueChanges.subscribe(() => {
 			this.onPasswordChange();
@@ -113,7 +113,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 		let mRetVal: string = '';
 		switch (fieldName) {
 		case 'oldPassword':
-			if (this._AccountSvc.authenticationResponse.status != 4) {
+			if (this._AccountSvc.authenticationResponse().status != 4) {
 				if (this.getControls['oldPassword'].hasError('required')) {
 					return 'Required';
 				}
@@ -143,7 +143,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 	}
 
 	private populateForm(): void {
-		if (this._AccountSvc.authenticationResponse.status == 4 || !this._GWCommon.isNullOrEmpty(this._ResetToken)) {
+		if (this._AccountSvc.authenticationResponse().status == 4 || !this._GWCommon.isNullOrEmpty(this._ResetToken)) {
 			this.frmChangePassword = this._FormBuilder.group({
 				oldPassword: ['forced change'],
 				newPassword: ['', [Validators.required]],

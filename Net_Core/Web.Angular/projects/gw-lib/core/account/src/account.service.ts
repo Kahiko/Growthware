@@ -19,11 +19,10 @@ import { SelectedRow } from './selected-row.model';
 	providedIn: 'root'
 })
 export class AccountService extends BaseService {
-	public clientChoicesSig = signal<IClientChoices>(new ClientChoices());
+	public authenticationResponse = signal<IAuthenticationResponse>(new AuthenticationResponse());
 	override addEditModalId: string = 'addEditAccountModal';
-	public authenticationResponse: IAuthenticationResponse = new AuthenticationResponse();
-	public authenticationResponseSig = signal<IAuthenticationResponse>(new AuthenticationResponse());
 	readonly anonymous = 'anonymous';
+	public clientChoicesSig = signal<IClientChoices>(new ClientChoices());
 	public clientChoices: IClientChoices = new ClientChoices();
 	readonly forgotPasswordModalId = 'forgotPasswordModal';
 	readonly logInModalId = 'logInModal';
@@ -87,12 +86,11 @@ export class AccountService extends BaseService {
 			mTriggerMenuUpdates = true;
 		}
 		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
-		this.authenticationResponse = this._AccountInformation.authenticationResponse;
 		this.clientChoices = JSON.parse(JSON.stringify(this._AccountInformation.clientChoices));
 		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
 		// this.accountInformationChanged$.next(this._AccountInformation);
-		this.authenticationResponseSig.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
+		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
 		this.clientChoicesSig.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
 			this.triggerMenuUpdates();
@@ -493,7 +491,7 @@ export class AccountService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.post<IClientChoices>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
 				next: (response: IClientChoices) => {
-					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: response };
+					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse(), clientChoices: response };
 					this.afterAuthentication(mAccountInformation, true);
 					resolve(true);
 				},

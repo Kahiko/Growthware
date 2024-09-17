@@ -62,7 +62,7 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onLogoClick(): void {
-		if (this._AccountSvc.authenticationResponseSig().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
+		if (this._AccountSvc.authenticationResponse().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
 			this._Router.navigate(['home']);
 		} else {
 			this._Router.navigate(['generic_home']);

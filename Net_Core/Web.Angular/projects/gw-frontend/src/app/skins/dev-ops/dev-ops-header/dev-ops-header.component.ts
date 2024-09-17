@@ -18,9 +18,9 @@ import { ConfigurationService } from '@growthware/core/configuration';
 export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
-	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponseSig().account, "text:28"));
+	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponse().account, "text:28"));
 	applicationName: string = '';
-	isAuthenticated = computed(() => this._AccountSvc.authenticationResponseSig().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
+	isAuthenticated = computed(() => this._AccountSvc.authenticationResponse().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
 	version: string = '';
 
 	sidenav = input.required<MatSidenav>();
@@ -58,7 +58,7 @@ export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onLogoClick(): void {
-		if (this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
+		if (this._AccountSvc.authenticationResponse().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
 			this._Router.navigate(['home']);
 		} else {
 			this._Router.navigate(['generic_home']);

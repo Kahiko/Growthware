@@ -150,7 +150,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         break;
       case '/accounts/edit-my-account':
         this._AccountSvc.modalReason = 'EditProfile';
-        mDesiredAccount = this._AccountSvc.authenticationResponse.account;
+        mDesiredAccount = this._AccountSvc.authenticationResponse().account;
         this.canDelete = false;
         break;
       case '/accounts/register':
@@ -374,7 +374,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           enableNotifications: [this._AccountProfile.enableNotifications],
           failedAttempts: [this._AccountProfile.failedAttempts],
           firstName: [this._AccountProfile.firstName],
-          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
           lastName: [this._AccountProfile.lastName],
           location: [this._AccountProfile.location],
           middleName: [this._AccountProfile.middleName],
@@ -389,7 +389,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           enableNotifications: [this._AccountProfile.enableNotifications],
           failedAttempts: [this._AccountProfile.failedAttempts],
           firstName: [this._AccountProfile.firstName, [Validators.required]],
-          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
           lastName: [this._AccountProfile.lastName, [Validators.required]],
           location: [this._AccountProfile.location],
           middleName: [this._AccountProfile.middleName],
@@ -406,7 +406,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         enableNotifications: [false],
         failedAttempts: [0],
         firstName: [''],
-        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
         lastName: [''],
         location: [''],
         middleName: [''],
