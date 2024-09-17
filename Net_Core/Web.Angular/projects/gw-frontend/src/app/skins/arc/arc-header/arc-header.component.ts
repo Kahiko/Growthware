@@ -5,10 +5,7 @@ import { Subscription } from 'rxjs';
 import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { ConfigurationService } from '@growthware/core/configuration';
-// import { LoginComponent } from '@growthware/core/account';
-// import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { INavLink, NavigationService } from '@growthware/core/navigation';
-// Skin
 
 @Component({
 	selector: 'gw-frontend-arc-header',
@@ -18,37 +15,25 @@ import { INavLink, NavigationService } from '@growthware/core/navigation';
 export class ArcHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
-	applicationName: string = '';
-	environment: string = 'Development';
+	environment = computed<string>(() => this._ConfigurationSvc.environment());
 	navDescription: string = '';
 	securityEntityName = computed(() => this._AccountSvc.clientChoices().securityEntityName);
-	securityEntityTranslation: string = '';
-	version: string = '';
+	securityEntityTranslation = computed<string>(() => this._ConfigurationSvc.securityEntityTranslation());
+	version = computed<string>(() => this._ConfigurationSvc.version());
 
 	constructor(
 		private _AccountSvc: AccountService,
 		private _ConfigurationSvc: ConfigurationService,
 		private _GWCommon: GWCommon,
-		// private _ModalSvc: ModalService,
 		private _NavigationSvc: NavigationService,
 		private _Router: Router
-	) {
-		// do nothing atm
-	}
+	) { }
+
 	ngOnDestroy(): void {
 		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		);
 		this._Subscription.add(
 			this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => {
 				// console.log('ArcHeaderComponent.ngOnInit.description', val.description);
