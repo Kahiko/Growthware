@@ -88,7 +88,8 @@ export class AccountService extends BaseService {
 		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
 		this.clientChoices.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
-			this.triggerMenuUpdates();
+			// this.triggerMenuUpdates();
+			this.updateMenu$.next(true);
 		}
 		if (this.authenticationResponse().jwtToken !== null) {
 			sessionStorage.setItem('jwt', this.authenticationResponse().jwtToken);
@@ -537,7 +538,11 @@ export class AccountService extends BaseService {
 	 * @return {void} 
 	 */
 	public triggerMenuUpdates(): void {
-		this.updateMenu$.next(true);
+		// This isn't a great solution, but it works.
+		// At this point we should be looking into using signals instead.
+		// of afterAuthentication at all.
+		const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse(), clientChoices: this.clientChoices() };
+		this.afterAuthentication(mAccountInformation, true);
 	}
 
 	/**
