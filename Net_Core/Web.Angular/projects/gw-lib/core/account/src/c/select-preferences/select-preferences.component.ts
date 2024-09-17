@@ -40,7 +40,7 @@ export interface IColorSchemeColumns {
 		CommonModule,
 		FormsModule,
 		ReactiveFormsModule,
-    
+
 		MatButtonModule,
 		MatIconModule,
 		MatRadioModule,
@@ -60,11 +60,11 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 	selectedAction!: string;
 
 	validColorSchemes: IColorSchemes[] = [
-		{ alternatingRow_BackColor: '#6699cc'	,back_Color: '#ffffff'	,color_Scheme: 'Blue'	,head_Color: '#C7C7C7'	,header_ForeColor: 'Black'	,left_Color: '#eeeeee'	,row_BackColor: '#b6cbeb'	, sub_Head_Color: '#b6cbeb' },
-		{ alternatingRow_BackColor: '#c5e095'	,back_Color: '#ffffff'	,color_Scheme: 'Green'	,head_Color: '#808577'	,header_ForeColor: 'White'	,left_Color: '#eeeeee'	,row_BackColor: '#879966'	, sub_Head_Color: '#879966' },
-		{ alternatingRow_BackColor: '#f8e094'	,back_Color: '#ffffff'	,color_Scheme: 'Yellow'	,head_Color: '#CF9C00'	,header_ForeColor: 'Black'	,left_Color: '#f8e094'	,row_BackColor: '#f8bc03'	, sub_Head_Color: '#f8bc03' },
-		{ alternatingRow_BackColor: '#91619b'	,back_Color: '#ffffff'	,color_Scheme: 'Purple'	,head_Color: '#C7C7C7'	,header_ForeColor: 'Black'	,left_Color: '#eeeeee'	,row_BackColor: '#be9cc5'	, sub_Head_Color: '#be9cc5' },
-		{ alternatingRow_BackColor: '#A72A49'	,back_Color: '#ffffff'	,color_Scheme: 'Red'    ,head_Color: '#BA706A'	,header_ForeColor: 'White'	,left_Color: '#eeeeee'	,row_BackColor: '#DE8587'	, sub_Head_Color: '#df867f' }
+		{ alternatingRow_BackColor: '#6699cc', back_Color: '#ffffff', color_Scheme: 'Blue', head_Color: '#C7C7C7', header_ForeColor: 'Black', left_Color: '#eeeeee', row_BackColor: '#b6cbeb', sub_Head_Color: '#b6cbeb' },
+		{ alternatingRow_BackColor: '#c5e095', back_Color: '#ffffff', color_Scheme: 'Green', head_Color: '#808577', header_ForeColor: 'White', left_Color: '#eeeeee', row_BackColor: '#879966', sub_Head_Color: '#879966' },
+		{ alternatingRow_BackColor: '#f8e094', back_Color: '#ffffff', color_Scheme: 'Yellow', head_Color: '#CF9C00', header_ForeColor: 'Black', left_Color: '#f8e094', row_BackColor: '#f8bc03', sub_Head_Color: '#f8bc03' },
+		{ alternatingRow_BackColor: '#91619b', back_Color: '#ffffff', color_Scheme: 'Purple', head_Color: '#C7C7C7', header_ForeColor: 'Black', left_Color: '#eeeeee', row_BackColor: '#be9cc5', sub_Head_Color: '#be9cc5' },
+		{ alternatingRow_BackColor: '#A72A49', back_Color: '#ffffff', color_Scheme: 'Red', head_Color: '#BA706A', header_ForeColor: 'White', left_Color: '#eeeeee', row_BackColor: '#DE8587', sub_Head_Color: '#df867f' }
 	];
 
 	validLinks = [
@@ -72,10 +72,10 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 	];
 
 	constructor(
-    private _AccountSvc: AccountService,
-    private _FormBuilder: FormBuilder,
-    private _GWCommon: GWCommon,
-    private _LoggingSvc: LoggingService,
+		private _AccountSvc: AccountService,
+		private _FormBuilder: FormBuilder,
+		private _GWCommon: GWCommon,
+		private _LoggingSvc: LoggingService,
 	) {
 		this.selectedColorScheme = 'Blue';
 	}
@@ -108,11 +108,11 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 		const mKey: ObjectKey = columnName.propertyName as ObjectKey;
 		return colorSchemes[mKey];
 	}
-  
+
 	onSubmit(): void {
 		const mSelectedColor: string = this.controls['selectedColorScheme'].getRawValue();
 		const mSelectedColorScheme = this.validColorSchemes.find(item => item.color_Scheme === mSelectedColor);
-		if(mSelectedColorScheme) {
+		if (mSelectedColorScheme) {
 			this.clientChoices.alternatingRowBackColor = mSelectedColorScheme.alternatingRow_BackColor;
 			this.clientChoices.backColor = mSelectedColorScheme.back_Color;
 			this.clientChoices.colorScheme = mSelectedColorScheme.color_Scheme;
@@ -133,15 +133,15 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 	}
 
 	private populateForm(): void {
-		if(!this._GWCommon.isNullOrUndefined(this.clientChoices)) {
+		if (!this._GWCommon.isNullOrUndefined(this.clientChoices)) {
 			this.selectedAction = 'home';
-			if(!this._GWCommon.isNullOrEmpty(this.clientChoices.action)) {
+			if (!this._GWCommon.isNullOrEmpty(this.clientChoices.action)) {
 				this.selectedAction = this.clientChoices.action.toLocaleLowerCase();
 			}
 			this.frmSelectPreferences = this._FormBuilder.group({
 				recordsPerPage: [this.clientChoices.recordsPerPage, [Validators.required]],
 				selectedColorScheme: [this.clientChoices.colorScheme, [Validators.required]],
-			});   
+			});
 		} else {
 			this.frmSelectPreferences = this._FormBuilder.group({
 				recordsPerPage: [10, [Validators.required]],
@@ -160,7 +160,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 				propertyName: key
 			};
 			this.colorSchemeColumns.push(mColorSchemeColumn);
-		  }
+		}
 		//   console.log('xx.setHeaders', this.colorSchemeColumns);
 	}
 }
