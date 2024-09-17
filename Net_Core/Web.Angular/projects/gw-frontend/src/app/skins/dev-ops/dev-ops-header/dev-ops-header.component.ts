@@ -1,6 +1,5 @@
-import { Component, computed, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatSidenav } from '@angular/material/sidenav';
 // Library
@@ -15,13 +14,10 @@ import { ConfigurationService } from '@growthware/core/configuration';
 	templateUrl: './dev-ops-header.component.html',
 	styleUrls: ['./dev-ops-header.component.scss']
 })
-export class DevOpsHeaderComponent implements OnDestroy, OnInit {
-	private _Subscription: Subscription = new Subscription();
+export class DevOpsHeaderComponent {
 
 	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponse().account, "text:28"));
-	applicationName: string = '';
 	isAuthenticated = computed(() => this._AccountSvc.authenticationResponse().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
-	version: string = '';
 
 	sidenav = input.required<MatSidenav>();
 
@@ -31,22 +27,6 @@ export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 		private _GWCommon: GWCommon,
 		private _ModalSvc: ModalService,
 		private _Router: Router) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._ConfigurationSvc.loadAppSettings();
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => {
-				this.version = val;
-			})
-		);
-	}
 
 	onLogin(): void {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
@@ -66,7 +46,7 @@ export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onModalOk() {
-
+		this._ModalSvc.close(this._AccountSvc.logInModalId);
 	}
 
 	onLogout(): void {
