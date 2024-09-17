@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 // Library
@@ -24,10 +24,15 @@ export class ConfigurationService {
 	private _Version = new BehaviorSubject('0.0.0.0');
 
 	readonly applicationName$ = this._ApplicationName.asObservable();
+	readonly applicationName = signal<string>('');
 	readonly environment$ = this._Environment.asObservable();
+	readonly environment = signal<string>('');
 	readonly logPriority$ = this._LogPriority.asObservable();
+	readonly logPriority = signal<string>('');
 	readonly securityEntityTranslation$ = this._SecurityEntityTranslation.asObservable();
+	readonly securityEntityTranslation = signal<string>('');
 	readonly version$ = this._Version.asObservable();
+	readonly version = signal<string>('');
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -67,11 +72,26 @@ export class ConfigurationService {
 			const mUrl = this._ApiAppSettingsURL;
 			this._HttpClient.get<IAppSettings>(mUrl).subscribe({
 				next: (response: IAppSettings) => {
-					if (response.name) { this._ApplicationName.next(response.name); }
-					if (response.environment) { this._Environment.next(response.environment); }
-					if (response.logPriority) { this._LogPriority.next(response.logPriority); }
-					if (response.version) { this._Version.next(response.version); }
-					if (response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
+					if (response.name) { 
+						this._ApplicationName.next(response.name); 
+						this.applicationName.set(response.name); 
+					}
+					if (response.environment) { 
+						this._Environment.next(response.environment); 
+						this.environment.set(response.environment); 
+					}
+					if (response.logPriority) { 
+						this._LogPriority.next(response.logPriority); 
+						this.logPriority.set(response.logPriority); 
+					}
+					if (response.version) { 
+						this._Version.next(response.version); 
+						this.version.set(response.version); 
+					}
+					if (response.securityEntityTranslation) { 
+						this._SecurityEntityTranslation.next(response.securityEntityTranslation); 
+						this.securityEntityTranslation.set(response.securityEntityTranslation); 
+					}
 					this._Loaded = true;
 				},
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any

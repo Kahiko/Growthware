@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
@@ -35,12 +34,8 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnDestroy, OnInit {
-	private _Skin: BehaviorSubject<string> = new BehaviorSubject<string>('default');
-	private _Subscription: Subscription = new Subscription();
-
-	readonly skin$ = this._Skin.asObservable();
-	skin = 'default';
+export class AppComponent {
+	skin = signal<string>('default');
 	title = 'gw-frontend';
 
 	constructor(
@@ -53,24 +48,16 @@ export class AppComponent implements OnDestroy, OnInit {
 		effect(() => {
 			this.setSkin(this._AccountSvc.clientChoices());
 		});
-	}
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { 
-				this.title = val;
-				this._TitleService.setTitle(val + ' | Growthware');
-			})
-		);
+		effect(() => {
+			this.title = this._ConfigurationSvc.applicationName();
+			this._TitleService.setTitle(this.title + ' | Growthware');
+		});
 	}
 
 	private setSkin(clientChoices: IClientChoices): void {
 		this._SecurityEntitySvc.getSecurityEntity(clientChoices.securityEntityID).then((response: ISecurityEntityProfile) => {
 			// console.log('AppComponent.setSkin.response', response);
-			this._Skin.next(response.skin.toLowerCase());
+			this.skin.set(response.skin.toLowerCase());
 		});
 	}
 }
