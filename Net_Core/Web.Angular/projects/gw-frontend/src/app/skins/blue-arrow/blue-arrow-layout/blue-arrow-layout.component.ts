@@ -18,7 +18,7 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 	applicationName: string = '';
 	environment: string = 'Development';
 	navDescription: string = '';
-	securityEntityName = computed(() => this._AccountSvc.clientChoicesSig().securityEntityName);
+	securityEntityName = computed(() => this._AccountSvc.clientChoices().securityEntityName);
 	securityEntityTranslation: string = '';
 	version: string = '';
 

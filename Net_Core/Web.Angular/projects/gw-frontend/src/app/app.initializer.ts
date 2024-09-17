@@ -19,7 +19,7 @@ export function appInitializer(
 			_ConfigurationSvc.loadAppSettings();
 			_DynamicTableSvc.loadDefaultTableConfig();
 			_AccountSvc.refreshToken().pipe(finalize(() => {
-				_NavigationSvc.navigateTo(_AccountSvc.clientChoices.action);
+				_NavigationSvc.navigateTo(_AccountSvc.clientChoices().action);
 				resolve(true);
 			})).subscribe({
 				next: (authenticationResponse: IAuthenticationResponse) => {

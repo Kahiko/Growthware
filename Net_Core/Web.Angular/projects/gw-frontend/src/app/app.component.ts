@@ -51,7 +51,7 @@ export class AppComponent implements OnDestroy, OnInit {
 	) { 
 		// update the sking if the client choices change in the AccountService
 		effect(() => {
-			this.setSkin(this._AccountSvc.clientChoicesSig());
+			this.setSkin(this._AccountSvc.clientChoices());
 		});
 	}
 	ngOnDestroy(): void {

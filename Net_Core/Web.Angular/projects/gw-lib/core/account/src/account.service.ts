@@ -22,8 +22,7 @@ export class AccountService extends BaseService {
 	public authenticationResponse = signal<IAuthenticationResponse>(new AuthenticationResponse());
 	override addEditModalId: string = 'addEditAccountModal';
 	readonly anonymous = 'anonymous';
-	public clientChoicesSig = signal<IClientChoices>(new ClientChoices());
-	public clientChoices: IClientChoices = new ClientChoices();
+	public clientChoices = signal<IClientChoices>(new ClientChoices());
 	readonly forgotPasswordModalId = 'forgotPasswordModal';
 	readonly logInModalId = 'logInModal';
 	override modalReason: string = '';
@@ -86,12 +85,11 @@ export class AccountService extends BaseService {
 			mTriggerMenuUpdates = true;
 		}
 		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
-		this.clientChoices = JSON.parse(JSON.stringify(this._AccountInformation.clientChoices));
 		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
 		// this.accountInformationChanged$.next(this._AccountInformation);
 		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
-		this.clientChoicesSig.set(JSON.parse(mClientChoicesString));
+		this.clientChoices.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
 			this.triggerMenuUpdates();
 		}

@@ -90,7 +90,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 			recordsPerPage: new FormControl(10),
 			selectedColorScheme: new FormControl('Blue'),
 		});
-		this.clientChoices = this._AccountSvc.clientChoices;
+		this.clientChoices = this._AccountSvc.clientChoices();
 		// console.log('clientChoices', this.clientChoices);
 		this._AccountSvc.getSelectableActions().then((response: ISelectedableAction[]) => {
 			this.validLinks = response;

@@ -14,8 +14,8 @@ export class ProfessionalHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
 	environment: string = 'Development';
-	name = computed(() => this._AccountSvc.clientChoicesSig().accountName);
-	securityEntityName = computed(() => this._AccountSvc.clientChoicesSig().securityEntityName);
+	name = computed(() => this._AccountSvc.clientChoices().accountName);
+	securityEntityName = computed(() => this._AccountSvc.clientChoices().securityEntityName);
 	securityEntityTranslation: string = '';
 	version: string = '';
   
