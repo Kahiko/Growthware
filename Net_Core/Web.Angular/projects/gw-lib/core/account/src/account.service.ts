@@ -8,7 +8,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
 // Feature
-import { IAccountInformation, AccountInformation } from './account-information.model';
+import { IAccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
 import { IClientChoices, ClientChoices } from './client-choices.model';
@@ -29,7 +29,6 @@ export class AccountService extends BaseService {
 	override selectedRow: SelectedRow = new SelectedRow();
 	public updateMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-	private _AccountInformation = new AccountInformation;
 	private _ApiName: string = 'GrowthwareAccount/';
 	private _Api_ChangePassword = '';
 	private _Api_Authenticate: string = '';
@@ -81,22 +80,20 @@ export class AccountService extends BaseService {
 		// if account information is not null
 		// 	1.) Make the JWT token available VIA sessionStorage to avoid injecting the AccountService
 		let mTriggerMenuUpdates = false;
-		if (this._AccountInformation.authenticationResponse.account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
+		if (this.authenticationResponse().account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
 			mTriggerMenuUpdates = true;
 		}
-		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
-		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
+		const mClientChoicesString: string = JSON.stringify(this.clientChoices());
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
-		// this.accountInformationChanged$.next(this._AccountInformation);
 		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
 		this.clientChoices.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
 			this.triggerMenuUpdates();
 		}
-		if (this._AccountInformation.authenticationResponse.jwtToken !== null) {
-			sessionStorage.setItem('jwt', this._AccountInformation.authenticationResponse.jwtToken);
+		if (this.authenticationResponse().jwtToken !== null) {
+			sessionStorage.setItem('jwt', this.authenticationResponse().jwtToken);
 		}
-		if (this._AccountInformation !== null && this._AccountInformation.authenticationResponse.account.toLowerCase() !== this.anonymous) {
+		if (this.authenticationResponse() !== null && this.authenticationResponse().account.toLowerCase() !== this.anonymous) {
 			this.setRefreshTokenTimer();
 		} else {
 			this.stopRefreshTokenTimer();
@@ -175,7 +172,7 @@ export class AccountService extends BaseService {
 				next: (response) => {
 					// const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
 					if (response.item1.startsWith('Your password has been changed')) {
-						const mAccountInformation = { authenticationResponse: response.item2, clientChoices: this._AccountInformation.clientChoices };
+						const mAccountInformation = { authenticationResponse: response.item2, clientChoices: this.clientChoices() };
 						this.afterAuthentication(mAccountInformation);
 						this._LoggingSvc.toast(response.item1, 'Change password', LogLevel.Success);
 						resolve(true);
@@ -307,8 +304,8 @@ export class AccountService extends BaseService {
 		 */
 		return new Promise<boolean>((resolve, reject) => {
 			this.authenticate(account, password).then((response: boolean) => {
-				let mNavigationUrl: string = this._AccountInformation.clientChoices.action;
-				if (this._AccountInformation.authenticationResponse.status == 4) {
+				let mNavigationUrl: string = this.clientChoices().action;
+				if (this.authenticationResponse().status == 4) {
 					mNavigationUrl = '/accounts/change-password';
 				}
 				if (response === true) {
