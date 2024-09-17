@@ -83,7 +83,7 @@ export class AccountService extends BaseService {
 		if (this.authenticationResponse().account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
 			mTriggerMenuUpdates = true;
 		}
-		const mClientChoicesString: string = JSON.stringify(this.clientChoices());
+		const mClientChoicesString: string = JSON.stringify(accountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
 		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
 		this.clientChoices.set(JSON.parse(mClientChoicesString));
