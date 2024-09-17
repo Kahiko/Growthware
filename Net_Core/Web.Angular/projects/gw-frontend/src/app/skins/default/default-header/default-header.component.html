@@ -3,10 +3,10 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer">
-    <button (click)="onLogoClick()" class="button__link">{{applicationName}}</button>
+    <button (click)="onLogoClick()" class="button__link">{{applicationName()}}</button>
   </span>
   <gw-core-horizontal name="horizontal" fontColor="white" />
-  <span>Version {{version}}</span>
+  <span>Version {{version()}}</span>
   <button mat-icon-button>
     <mat-icon>help_outline</mat-icon>
   </button>

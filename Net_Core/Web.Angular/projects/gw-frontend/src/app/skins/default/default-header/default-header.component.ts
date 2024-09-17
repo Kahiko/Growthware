@@ -19,9 +19,9 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
 	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponse().account, "text:28"));
-	applicationName: string = '';
+	applicationName = computed(() => this._ConfigurationSvc.applicationName());
 	isAuthenticated = computed(() => this._AccountSvc.authenticationResponse().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
-	version: string = '';
+	version = computed(() => this._ConfigurationSvc.version());
 
 	sidenav = input.required<MatSidenav>();
 
@@ -37,12 +37,12 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		);
+		// this._Subscription.add(
+		// 	this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
+		// );
+		// this._Subscription.add(
+		// 	this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
+		// );
 	}
 
 	onLogin(): void {
