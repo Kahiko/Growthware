@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 
 // Library
 import { BaseSearchComponent } from '@growthware/core/base/components';
@@ -22,22 +22,22 @@ import { SecurityEntityService } from '../../security-entity.service';
 })
 export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 
-	securityEntityTranslation: string = 'Security Entity';
+	securityEntityTranslation = computed(() => this._ConfigurationSvc.securityEntityTranslation());
 
 	constructor(
-    private _ConfigurationSvc: ConfigurationService,
-    theFeatureSvc: SecurityEntityService,
-    dataSvc: DataService,
-    dynamicTableSvc: DynamicTableService,
-    modalSvc: ModalService,
-    searchSvc: SearchService,
-	) { 
+		private _ConfigurationSvc: ConfigurationService,
+		theFeatureSvc: SecurityEntityService,
+		dataSvc: DataService,
+		dynamicTableSvc: DynamicTableService,
+		modalSvc: ModalService,
+		searchSvc: SearchService,
+	) {
 		super();
 		this.configurationName = 'Security_Entities';
 		this._TheFeatureName = 'Security Entity';
 		this._TheApi = 'GrowthwareSecurityEntity/Security_Entities';
 		this._TheComponent = SecurityEntityDetailsComponent;
-		this._TheWindowSize = new WindowSize(630,775);
+		this._TheWindowSize = new WindowSize(630, 775);
 		this._TheService = theFeatureSvc;
 		this._DataSvc = dataSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
@@ -46,8 +46,6 @@ export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 	}
 
 	override init(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val;})
-		);
+		super.init();
 	}
 }

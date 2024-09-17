@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +45,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	private _RegistrationInformation: IRegistrationInformation = new registrationInformation();
 
 	canEnterName: boolean = false;
-	securityEntityTranslation: string = 'Security Entity';
+	securityEntityTranslation = computed(() => this._ConfigurationSvc.securityEntityTranslation());
 	securityEntityName: string = '';
 
 	selectedDal: string = '';
@@ -114,11 +114,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		// console.log('SecurityEntityDetailsComponent.ngOnInit.modalReason', this._ProfileSvc.modalReason);
 		// console.log('SecurityEntityDetailsComponent.ngOnInit.selectedRow', this._ProfileSvc.selectedRow);
 		// console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { 
-				this.securityEntityTranslation = val;
-			})
-		);
 		let mEditId = -1;
 		if(this._ProfileSvc.modalReason.toLocaleLowerCase() != 'newprofile') {
 			mEditId = this._ProfileSvc.selectedRow.SecurityEntitySeqId;
