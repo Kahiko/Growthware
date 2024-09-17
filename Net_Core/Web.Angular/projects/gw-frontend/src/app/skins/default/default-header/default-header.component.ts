@@ -1,6 +1,5 @@
-import { Component, computed, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatSidenav } from '@angular/material/sidenav';
 // Library
@@ -15,8 +14,7 @@ import { ConfigurationService } from '@growthware/core/configuration';
 	templateUrl: './default-header.component.html',
 	styleUrls: ['./default-header.component.scss']
 })
-export class DefaultHeaderComponent implements OnDestroy, OnInit {
-	private _Subscription: Subscription = new Subscription();
+export class DefaultHeaderComponent {
 
 	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponse().account, "text:28"));
 	applicationName = computed(() => this._ConfigurationSvc.applicationName());
@@ -32,18 +30,6 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 		private _ModalSvc: ModalService,
 		private _Router: Router) { }
 
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		// this._Subscription.add(
-		// 	this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-		// );
-		// this._Subscription.add(
-		// 	this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		// );
-	}
 
 	onLogin(): void {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
@@ -63,7 +49,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onModalOk() {
-
+		this._ModalSvc.close(this._AccountSvc.logInModalId);
 	}
 
 	onLogout(): void {
