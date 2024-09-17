@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { GWCommon } from '@growthware/common/services';
 
@@ -15,11 +15,10 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 
 	private _Subscription: Subscription = new Subscription();
 
-	accountName: string = '';
 	applicationName: string = '';
 	environment: string = 'Development';
 	navDescription: string = '';
-	securityEntity: string = '';
+	securityEntityName = computed(() => this._AccountSvc.clientChoicesSig().securityEntityName);
 	securityEntityTranslation: string = '';
 	version: string = '';
 
@@ -43,29 +42,8 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })      
 		);
 		this._Subscription.add(
-			// this._ConfigurationSvc.environment$.subscribe((val: string) => { this.environment = val; })
-		);
-		this._Subscription.add(
 			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
 		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
-			})
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { this.securityEntity = val.clientChoices.securityEntityName; })
-		);
-		// this._Subscription.add(
-		//   this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => { 
-		//     // console.log('ArcHeaderComponent.ngOnInit.description', val.description);
-		//     if(val.description.length > 0) {
-		//       this.navDescription = val.description; 
-		//     } else {
-		//       this.navDescription = 'Home';
-		//     }
-		//   })
-		// );
 	}
 
 }

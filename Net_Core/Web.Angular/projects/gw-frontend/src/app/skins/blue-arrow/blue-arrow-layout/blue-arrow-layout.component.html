@@ -7,7 +7,7 @@
       @if (environment !== 'Production') {
       <span id="spEnvironment" style="color: Black;">Environment: {{environment}}</span><br />
       }
-      <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntity}}</span><br />
+      <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntityName()}}</span><br />
       Version: <span id="spVersion" style="color: Black;">{{version}}</span>
     </div>
   </div>

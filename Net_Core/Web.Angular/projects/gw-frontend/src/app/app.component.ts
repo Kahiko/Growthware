@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -48,18 +48,17 @@ export class AppComponent implements OnDestroy, OnInit {
 		private _ConfigurationSvc: ConfigurationService,
 		private _SecurityEntitySvc: SecurityEntityService,
 		private _TitleService: Title,
-	) { }
+	) { 
+		// update the sking if the client choices change in the AccountService
+		effect(() => {
+			this.setSkin(this._AccountSvc.clientChoicesSig());
+		});
+	}
 	ngOnDestroy(): void {
 		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				// console.log('AppComponent.ngOnInit.val', val);
-				this.setSkin(val.clientChoices);
-			})
-		);
 		this._Subscription.add(
 			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { 
 				this.title = val;

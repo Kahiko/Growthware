@@ -1,10 +1,10 @@
-import { Component, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatSidenav } from '@angular/material/sidenav';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { LoginComponent } from '@growthware/core/account';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
@@ -18,9 +18,9 @@ import { ConfigurationService } from '@growthware/core/configuration';
 export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
-	accountName: string = '';
+	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponseSig().account, "text:28"));
 	applicationName: string = '';
-	isAuthenticated: boolean = false;
+	isAuthenticated = computed(() => this._AccountSvc.authenticationResponseSig().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
 	version: string = '';
 
 	sidenav = input.required<MatSidenav>();
@@ -44,12 +44,6 @@ export class DevOpsHeaderComponent implements OnDestroy, OnInit {
 		this._Subscription.add(
 			this._ConfigurationSvc.version$.subscribe((val: string) => {
 				this.version = val;
-			})
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
-				this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
 			})
 		);
 	}

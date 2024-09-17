@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
@@ -19,9 +19,10 @@ import { SelectedRow } from './selected-row.model';
 	providedIn: 'root'
 })
 export class AccountService extends BaseService {
-	public accountInformationChanged$: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
+	public clientChoicesSig = signal<IClientChoices>(new ClientChoices());
 	override addEditModalId: string = 'addEditAccountModal';
 	public authenticationResponse: IAuthenticationResponse = new AuthenticationResponse();
+	public authenticationResponseSig = signal<IAuthenticationResponse>(new AuthenticationResponse());
 	readonly anonymous = 'anonymous';
 	public clientChoices: IClientChoices = new ClientChoices();
 	readonly forgotPasswordModalId = 'forgotPasswordModal';
@@ -90,7 +91,9 @@ export class AccountService extends BaseService {
 		this.clientChoices = JSON.parse(JSON.stringify(this._AccountInformation.clientChoices));
 		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
-		this.accountInformationChanged$.next(this._AccountInformation);
+		// this.accountInformationChanged$.next(this._AccountInformation);
+		this.authenticationResponseSig.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
+		this.clientChoicesSig.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
 			this.triggerMenuUpdates();
 		}

@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { ConfigurationService } from '@growthware/core/configuration';
 // import { LoginComponent } from '@growthware/core/account';
@@ -18,21 +18,20 @@ import { INavLink, NavigationService } from '@growthware/core/navigation';
 export class ArcHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
-	accountName: string = '';
 	applicationName: string = '';
 	environment: string = 'Development';
 	navDescription: string = '';
-	securityEntity: string = '';
+	securityEntityName = computed(() => this._AccountSvc.clientChoicesSig().securityEntityName);
 	securityEntityTranslation: string = '';
 	version: string = '';
 
 	constructor(
-    private _AccountSvc: AccountService,
-    private _ConfigurationSvc: ConfigurationService,
-    private _GWCommon: GWCommon,
-    // private _ModalSvc: ModalService,
-    private _NavigationSvc: NavigationService,
-    private _Router: Router
+		private _AccountSvc: AccountService,
+		private _ConfigurationSvc: ConfigurationService,
+		private _GWCommon: GWCommon,
+		// private _ModalSvc: ModalService,
+		private _NavigationSvc: NavigationService,
+		private _Router: Router
 	) {
 		// do nothing atm
 	}
@@ -42,8 +41,8 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
 
 	ngOnInit(): void {
 		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val;})
-		);    
+			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val; })
+		);
 		this._Subscription.add(
 			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
 		);
@@ -51,18 +50,10 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
 			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
 		);
 		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
-			})
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { this.securityEntity = val.clientChoices.securityEntityName; })
-		);
-		this._Subscription.add(
-			this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => { 
+			this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => {
 				// console.log('ArcHeaderComponent.ngOnInit.description', val.description);
-				if(val.description.length > 0) {
-					this.navDescription = val.description; 
+				if (val.description.length > 0) {
+					this.navDescription = val.description;
 				} else {
 					this.navDescription = 'Home';
 				}
@@ -71,7 +62,7 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onLogoClick(): void {
-		if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
+		if (this._AccountSvc.authenticationResponseSig().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
 			this._Router.navigate(['home']);
 		} else {
 			this._Router.navigate(['generic_home']);

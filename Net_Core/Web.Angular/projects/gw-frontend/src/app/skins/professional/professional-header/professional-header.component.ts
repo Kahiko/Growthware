@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
 import { AccountService, IAccountInformation } from '@growthware/core/account';
@@ -14,8 +14,8 @@ export class ProfessionalHeaderComponent implements OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();
 
 	environment: string = 'Development';
-	name: string = '';
-	securityEntity: string = '';
+	name = computed(() => this._AccountSvc.clientChoicesSig().accountName);
+	securityEntityName = computed(() => this._AccountSvc.clientChoicesSig().securityEntityName);
 	securityEntityTranslation: string = '';
 	version: string = '';
   
@@ -30,12 +30,12 @@ export class ProfessionalHeaderComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._Subscription.add(this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val; }));
 		this._Subscription.add( this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; }));
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { 
-				this.securityEntity = val.clientChoices.securityEntityName; 
-				this.name = val.clientChoices.accountName;
-			})
-		);
+		// this._Subscription.add(
+		// 	this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { 
+		// 		this.securityEntityName = val.clientChoices.securityEntityName; 
+		// 		this.name = val.clientChoices.accountName;
+		// 	})
+		// );
 	}
 
 }
