@@ -44,6 +44,9 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 		this._Subscription.add(
 			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
 		);
+		this._Subscription.add(
+			this._ConfigurationSvc.environment$.subscribe((val: string) => { this.environment = val; })
+		);
 	}
 
 }
