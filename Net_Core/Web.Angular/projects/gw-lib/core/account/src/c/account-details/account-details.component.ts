@@ -14,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { GroupService } from '@growthware/core/group';
 import { ISecurityInfo } from '@growthware/core/security';
@@ -61,6 +60,7 @@ export class AccountDetailsComponent implements OnInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
+  derivedRoles: string[] = [];
   derivedRolesId: string = 'derivedRoles';
 
   groupsAvailable: Array<string> = [];
@@ -120,16 +120,15 @@ export class AccountDetailsComponent implements OnInit {
   ];
 
   constructor(
-		private _AccountSvc: AccountService,
-		private _FormBuilder: FormBuilder,
-		private _DataSvc: DataService,
-		private _GroupSvc: GroupService,
-		private _GWCommon: GWCommon,
-		private _LoggingSvc: LoggingService,
-		private _ModalSvc: ModalService,
-		private _RoleSvc: RoleService,
-		private _Router: Router,
-		private _SecuritySvc: SecurityService
+    private _AccountSvc: AccountService,
+    private _FormBuilder: FormBuilder,
+    private _GroupSvc: GroupService,
+    private _GWCommon: GWCommon,
+    private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
+    private _RoleSvc: RoleService,
+    private _Router: Router,
+    private _SecuritySvc: SecurityService
   ) { }
 
   ngOnInit(): void {
@@ -356,7 +355,7 @@ export class AccountDetailsComponent implements OnInit {
     if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
       this.selectedStatus = this._AccountProfile.status;
       this.selectedTimeZone = this._AccountProfile.timeZone;
-      this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
+      this.derivedRoles = this._AccountProfile.derivedRoles;
       if(!this.isRegistration) {
         this.frmAccount = this._FormBuilder.group({
           account: [this._AccountProfile.account, [Validators.required]],

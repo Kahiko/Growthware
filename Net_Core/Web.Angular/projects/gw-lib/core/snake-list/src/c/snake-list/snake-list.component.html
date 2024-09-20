@@ -1,5 +1,5 @@
 <ul class="grid-list">
-  @for (item of data$ | async; track item; let rowIndex = $index) {
+  @for (item of items(); track item; let rowIndex = $index) {
     <li>
       @if (iconName().length > 0) {
         <i style="padding-right: 3px" class="Form_Button_Icon material-icons" style="vertical-align: middle;">{{iconName()}}</i>{{item}}
