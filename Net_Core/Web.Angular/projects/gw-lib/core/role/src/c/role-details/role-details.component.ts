@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -11,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 // import { GWCommon } from '@growthware/common/services';
-import { DataService } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -37,7 +35,7 @@ import { IRoleProfile, RoleProfile } from '../../role-profile.model';
 	templateUrl: './role-details.component.html',
 	styleUrls: ['./role-details.component.scss']
 })
-export class RoleDetailsComponent implements OnDestroy, OnInit {
+export class RoleDetailsComponent implements OnInit {
 
 	private _Role: IRoleProfile = new RoleProfile();
 	private _SecurityInfo: ISecurityInfo = new SecurityInfo();
@@ -54,7 +52,6 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 	constructor(
 		private _FormBuilder: FormBuilder,
 		// private _GWCommon: GWCommon,
-		private _DataSvc: DataService,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
 		private _RoleSvc: RoleService,
@@ -65,17 +62,6 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
-			// console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()); // used to determine the data name 
-			switch (data.name.toLowerCase()) {
-				case 'membersList':
-					// set the paload to whatever you are using to track the "selected" items
-					this._Role.accountsInRole = data.value;
-					break;
-				default:
-					break;
-			}
-		}));
 		this._SecuritySvc.getSecurityInfo('Search_Roles').then((securityInfo: ISecurityInfo) => { // Request #1
 			// Response Hendler #1
 			// console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);
@@ -111,10 +97,6 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 			this.populateForm();
 		});
 		this.populateForm();
-	}
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
 	}
 
 	get controls() {
