@@ -50,15 +50,15 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 	securityInfo!: ISecurityInfo;
 
 	constructor(
-    private _FormBuilder: FormBuilder,
-    // private _GWCommon: GWCommon,
-    private _DataSvc: DataService,
-    private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
-    private _RoleSvc: RoleService,
-    private _SearchSvc: SearchService,
-    private _SecuritySvc: SecurityService,
-	) { 
+		private _FormBuilder: FormBuilder,
+		// private _GWCommon: GWCommon,
+		private _DataSvc: DataService,
+		private _LoggingSvc: LoggingService,
+		private _ModalSvc: ModalService,
+		private _RoleSvc: RoleService,
+		private _SearchSvc: SearchService,
+		private _SecuritySvc: SecurityService,
+	) {
 		this.frmRole = this._FormBuilder.group({});
 	}
 
@@ -66,12 +66,12 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
 			// console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()); // used to determine the data name 
 			switch (data.name.toLowerCase()) {
-			case 'membersList':
-				// set the paload to whatever you are using to track the "selected" items
-				this._Role.accountsInRole = data.value;
-				break;
-			default:
-				break;
+				case 'membersList':
+					// set the paload to whatever you are using to track the "selected" items
+					this._Role.accountsInRole = data.value;
+					break;
+				default:
+					break;
 			}
 		}));
 		this._SecuritySvc.getSecurityInfo('Search_Roles').then((securityInfo: ISecurityInfo) => { // Request #1
@@ -79,7 +79,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 			// console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);
 			this._SecurityInfo = securityInfo;
 			let mRoleSeqId: number = -1;
-			if(this._RoleSvc.modalReason === 'EditProfile') {
+			if (this._RoleSvc.modalReason === 'EditProfile') {
 				mRoleSeqId = this._RoleSvc.selectedRow.RoleSeqId;
 				this.canSave = securityInfo.mayEdit;
 			} else {
@@ -90,13 +90,13 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 		}).catch((error) => { // Request #1 error
 			this._LoggingSvc.toast('Error getting security info for \'EditRole\' :\r\n' + error, 'Role Details:', LogLevel.Error);
 		}).then((profile) => {
-			if(profile) {
+			if (profile) {
 				this._Role = profile;
 				setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_AvailableItems', this._Role.accountsNotInRole); }, 500);
-				setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_SelectedItems', this._Role.accountsInRole); }, 500);        
-				if(profile.id === -1 || profile.isSystemOnly) {
+				setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_SelectedItems', this._Role.accountsInRole); }, 500);
+				if (profile.id === -1 || profile.isSystemOnly) {
 					this.canDelete = false;
-					if(profile.isSystemOnly) {
+					if (profile.isSystemOnly) {
 						this.canSave = false;
 					}
 				} else {
@@ -125,13 +125,13 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -164,8 +164,8 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 		this.frmRole = this._FormBuilder.group({
 			name: [this._Role.name, Validators.required],
 			description: [this._Role.description],
-			isSystem :[{value : this._Role.isSystem, disabled: this._Role.isSystemOnly}],
-			isSystemOnly :[{value : this._Role.isSystemOnly, disabled: this._Role.isSystemOnly}],
+			isSystem: [{ value: this._Role.isSystem, disabled: this._Role.isSystemOnly }],
+			isSystemOnly: [{ value: this._Role.isSystemOnly, disabled: this._Role.isSystemOnly }],
 		});
 	}
 
@@ -178,8 +178,8 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 
 	updateSearch(): void {
 		const mSearchCriteria = this._SearchSvc.getSearchCriteria('Roles'); // from SearchAccountsComponent line 25
-		if(mSearchCriteria != null) {
+		if (mSearchCriteria != null) {
 			this._SearchSvc.setSearchCriteria('Roles', mSearchCriteria);
-		}    
+		}
 	}
 }
