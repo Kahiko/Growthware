@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -37,9 +37,8 @@ import { IGroupProfile, GroupProfile } from '../../group-profile.model';
 	templateUrl: './group-details.component.html',
 	styleUrls: ['./group-details.component.scss']
 })
-export class GroupDetailsComponent implements OnDestroy, OnInit {
+export class GroupDetailsComponent implements OnInit {
 	private _GroupProfile: IGroupProfile = new GroupProfile();
-	private _Subscription: Subscription = new Subscription();
 
 	canDelete: boolean = false;
 	frmGroup!: FormGroup;
@@ -61,10 +60,6 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 		private _SecuritySvc: SecurityService
 	) { }
 
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
 	ngOnInit(): void {
 		let mIdToGet = -1;
 		if (this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
@@ -82,16 +77,6 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 			this.applySecurity();
 		});
 		this.populateForm();
-		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
-			// console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()). // used to determine the data name
-			switch (data.name.toLowerCase()) {
-				case 'roles':
-					this._GroupProfile.rolesInGroup = data.value;
-					break;
-				default:
-					break;
-			}
-		}));
 	}
 
 	applySecurity(): void {
