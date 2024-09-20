@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@growthware/core/dynamic-table';
-import { DataService } from '@growthware/common/services';
 import { SearchService, ISearchCriteriaNVP } from '@growthware/core/search';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 
@@ -23,7 +22,6 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, O
 	protected _TheWindowSize = new WindowSize(450,900);
 
 	protected _TheService!: BaseService;
-	protected _DataSvc!: DataService;
 	protected _DynamicTableSvc!: DynamicTableService;
 	protected _ModalSvc!: ModalService;
 	protected _SearchSvc!: SearchService;
