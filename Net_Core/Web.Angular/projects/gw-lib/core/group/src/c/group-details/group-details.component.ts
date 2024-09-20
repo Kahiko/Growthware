@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -47,9 +46,10 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	height: number = 350;
 	securityInfo!: ISecurityInfo;
 	showDerived: boolean = false;
-	rolesAvailable: Array<string> = [];
 	rolesPickListName: string = 'roles';
-	rolesSelected: Array<string> = [];
+
+	availableRoles: Array<string> = [];
+	selectedRoles: Array<string> = [];
 
 	constructor(
 		private _DataSvc: DataService,
@@ -73,8 +73,8 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 		}
 		this._GroupSvc.getGroupForEdit(mIdToGet).then((response: IGroupProfile) => {
 			this._GroupProfile = response;
-			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', this._GroupProfile.rolesInGroup); }, 500);
-			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', this._GroupProfile.rolesNotInGroup); }, 500);
+			this.availableRoles = this._GroupProfile.rolesNotInGroup;
+			this.selectedRoles = this._GroupProfile.rolesInGroup;
 			this.populateForm();
 			return this._SecuritySvc.getSecurityInfo('Manage_Groups');
 		}).then((response: ISecurityInfo) => {
@@ -106,8 +106,6 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	}
 
 	closeModal(): void {
-		// console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.modalReason);
-		// console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.addEditModalId);
 		this._ModalSvc.close(this._GroupSvc.addEditModalId);
 	}
 
@@ -161,6 +159,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	private populateProfile(): void {
 		this._GroupProfile.name = this.controls['name'].getRawValue();
 		this._GroupProfile.description = this.controls['description'].getRawValue();
+		this._GroupProfile.rolesInGroup = this.selectedRoles;
 	}
 
 	updateSearch(): void {

@@ -18,7 +18,7 @@
             <tr>
               <td valign="top" style="border: solid 1px;">
                 <select name="{{id()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
-                  @for (item of availableItems$ | async; track item; let rowIndex = $index) {
+                  @for (item of availableItems(); track item; let rowIndex = $index) {
                     <option [value]="item" style="width: 300px;">
                       {{item}}
                     </option>

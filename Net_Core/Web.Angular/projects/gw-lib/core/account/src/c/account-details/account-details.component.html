@@ -201,6 +201,8 @@
         <div class="mat-tab__content formSectionContents containerSize">
           <gw-core-pick-list
             #rolePickList
+            [(availableItems)] = rolesAvailable
+            [(selectedItems)] = rolesSelected
             id="roles"
             name="{{ rolesPickListName }}"
             allItemsText="Available Roles"
@@ -219,6 +221,8 @@
         <div class="mat-tab__content formSectionContents containerSize">
           <gw-core-pick-list
             #groupPickList
+            [(availableItems)] = groupsAvailable
+            [(selectedItems)] = groupsSelected
             id="groups"
             name="{{ groupsPickListName }}"
             allItemsText="Available Groups"

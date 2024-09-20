@@ -43,11 +43,13 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 	private _SecurityInfo: ISecurityInfo = new SecurityInfo();
 	private _Subscription: Subscription = new Subscription();
 
+	availableRoles: Array<string> = [];
 	canDelete: boolean = false;
 	canSave: boolean = false;
 	frmRole!: FormGroup;
 	membersPickListName: string = 'membersList';
 	securityInfo!: ISecurityInfo;
+	selectedRoles: Array<string> = [];
 
 	constructor(
 		private _FormBuilder: FormBuilder,
@@ -92,8 +94,8 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 		}).then((profile) => {
 			if (profile) {
 				this._Role = profile;
-				setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_AvailableItems', this._Role.accountsNotInRole); }, 500);
-				setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_SelectedItems', this._Role.accountsInRole); }, 500);
+				this.availableRoles = this._Role.accountsNotInRole;
+				this.selectedRoles = this._Role.accountsInRole;
 				if (profile.id === -1 || profile.isSystemOnly) {
 					this.canDelete = false;
 					if (profile.isSystemOnly) {
@@ -174,6 +176,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 		this._Role.description = this.controls['description'].getRawValue();
 		this._Role.isSystem = this.controls['isSystem'].getRawValue();
 		this._Role.isSystemOnly = this.controls['isSystemOnly'].getRawValue();
+		this._Role.accountsInRole = this.selectedRoles;
 	}
 
 	updateSearch(): void {

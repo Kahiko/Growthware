@@ -1,6 +1,5 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,9 +23,11 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
 
 	allItemsText = input<string>('');
+	availableItems = input<Array<string>>([]);
+	availableItemsChange = output<Array<string>>();
 	header = input<string>('');
 	id = input<string>('');
 	name = input<string>('');
@@ -35,14 +36,7 @@ export class ListComponent implements OnInit {
 	size = input<string>('8');
 	width = input<string>('120');
 
-	private _AvailableItemsSubject = new BehaviorSubject<any[]>([]);
-	private _AvailableItemsData: any[] = [];
 	private _ModalOptions!: ModalOptions;
-
-	readonly availableItems$ = this._AvailableItemsSubject.asObservable();
-
-	private _Subscriptions: Subscription = new Subscription();
-
 
 	constructor(
 		private _DataSvc: DataService,
@@ -50,37 +44,7 @@ export class ListComponent implements OnInit {
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService
 	) {
-		// nothing atm
-	}
-
-	ngOnInit(): void {
-		if (!this._GWCommon.isNullOrUndefined(this.id()) && !this._GWCommon.isNullOrEmpty(this.id())) {
-			this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);
-			this._Subscriptions.add(
-				this._DataSvc.dataChanged$.subscribe((results: INameDataPair) => {
-					if (this.name().trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
-						// update the local data
-						this._AvailableItemsData = results.value;
-						this._AvailableItemsSubject.next(this._AvailableItemsData);
-					}
-				})
-			);
-		} else {
-			const mLogDestinations: Array<LogDestination> = [];
-			mLogDestinations.push(LogDestination.Console);
-			mLogDestinations.push(LogDestination.Toast);
-			const mLogOptions: ILogOptions = new LogOptions(
-				'PickListComponent.ngOnInit: id is blank',
-				LogLevel.Error,
-				mLogDestinations,
-				'PickListComponent',
-				'PickListComponent',
-				'ngOnInit',
-				'system',
-				'PickListComponent'
-			);
-			this._LoggingSvc.log(mLogOptions);
-		}
+		this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);
 	}
 
 	onShowHelp(): void {

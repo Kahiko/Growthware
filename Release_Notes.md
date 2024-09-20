@@ -20,6 +20,11 @@
 - Fixed the "derived" roles not being displayed/populated
 - Fixed the "Blue Arrow" skin not displaying Envirnment correctly
 
+- Fixed roles and groups not being saved in AccountDetailsComponent
+- Fixed roles and groups not being saved in FunctionDetailsComponent
+- Fixed roles not being saved in GroupDetailsComponent
+- Fixed Members not being saved in RoleDetailsComponent
+
 ## Net_Core Version 5.0.0.x (2024-08-31)
 
 ### New Features

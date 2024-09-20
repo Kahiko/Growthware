@@ -201,6 +201,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #rolesView
+                  [(availableItems)] = availableViewRoles
+                  [(selectedItems)] = selectedViewRoles
                   id="viewRoles"
                   name="{{ rolesPickListNameView }}"
                   allItemsText="Available Roles"
@@ -214,6 +216,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #rolesAdd
+                  [(availableItems)] = availableAddRoles
+                  [(selectedItems)] = selectedAddRoles
                   id="addRoles"
                   name="{{ rolesPickListNameAdd }}"
                   allItemsText="Available Roles"
@@ -230,6 +234,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #rolesEdit
+                  [(availableItems)] = availableEditRoles
+                  [(selectedItems)] = selectedEditRoles
                   id="editRoles"
                   name="{{ rolesPickListNameEdit }}"
                   allItemsText="Available Roles"
@@ -243,6 +249,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #rolesDelete
+                  [(availableItems)] = availableDeleteRoles
+                  [(selectedItems)] = selectedDeleteRoles
                   id="deleteRoles"
                   name="{{ rolesPickListNameDelete }}"
                   header="Delete roles"
@@ -267,6 +275,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #groupsView
+                  [(availableItems)] = availableViewGroups
+                  [(selectedItems)] = selectedViewGroups
                   id="viewGroups"
                   name="{{ groupsPickListNameView }}"
                   allItemsText="Available Groups"
@@ -280,6 +290,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #groupsAdd
+                  [(availableItems)] = availableAddGroups
+                  [(selectedItems)] = selectedAddGroups
                   id="addGroups"
                   name="{{ groupsPickListNameAdd }}"
                   allItemsText="Available Groups"
@@ -296,6 +308,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #groupsEdit
+                  [(availableItems)] = availableEditGroups
+                  [(selectedItems)] = selectedEditGroups
                   id="editGroups"
                   name="{{ groupsPickListNameEdit }}"
                   allItemsText="Available Groups"
@@ -309,6 +323,8 @@
               <div class="td centerDiv">
                 <gw-core-pick-list
                   #groupsDelete
+                  [(availableItems)] = availableDeleteGroups
+                  [(selectedItems)] = selectedDeleteGroups
                   id="deleteGroups"
                   name="{{ groupsPickListNameDelete }}"
                   allItemsText="Available Groups"
@@ -380,8 +396,9 @@
             <div class="tr">
               <div class="td centerDiv">
                 <gw-core-list #derivedViewRoles
+                  [availableItems] = derivedViewGroups
                   id="derivedViewRoles"
-                  name="{{ derivedRolesView }}"
+                  name="{{ derivedRolesViewName }}"
                   allItemsText=""
                   header="Derived View Roles"
                   pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
@@ -391,8 +408,9 @@
               </div>
               <div class="td centerDiv">
                 <gw-core-list #derivedAddRoles
+                  [availableItems] = derivedAddGroups
                   id="derivedAddRoles"
-                  name="{{derivedRolesAdd}}"
+                  name="{{derivedRolesAddName}}"
                   allItemsText=""
                   header="Derived Add Roles"
                   pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
@@ -405,8 +423,9 @@
             <div class="tr">
               <div class="td centerDiv">
                 <gw-core-list #derivedEditRoles
+                  [availableItems] = derivedEditGroups
                   id="derivedEditRoles"
-                  name="{{ derivedRolesEdit }}"
+                  name="{{ derivedRolesEditName }}"
                   allItemsText=""
                   header="Derived Edit Roles"
                   pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
@@ -416,8 +435,9 @@
               </div>
               <div class="td centerDiv">
                 <gw-core-list #derivedDeleteRoles
+                  [availableItems] = derivedDeleteGroups
                   id="derivedDeleteRoles"
-                  name="{{ derivedRolesDelete }}"
+                  name="{{ derivedRolesDeleteName }}"
                   allItemsText=""
                   header="Derived Delete Roles"
                   pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."

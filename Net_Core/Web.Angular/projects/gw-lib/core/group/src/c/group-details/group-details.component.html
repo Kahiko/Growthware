@@ -42,6 +42,8 @@
       <div class="mat-tab__container formSection containerSize">
         <div class="mat-tab__container formSection containerSize">
           <gw-core-pick-list #rolePickList
+            [(availableItems)] = availableRoles
+            [(selectedItems)] = selectedRoles
             id="roles"
             name="{{rolesPickListName}}"
             allItemsText="Available Roles"
