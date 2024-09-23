@@ -406,7 +406,14 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRefreshToken = string.Empty;
         }
-        AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
+        try
+        {
+            AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
+        }
+        catch (System.Exception)
+        {
+            setTokenCookie("");
+        }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
         CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile.EncryptionType);

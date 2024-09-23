@@ -13,12 +13,14 @@
 - Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
 - Changed all gw- tages to self closing tags
 - Updated all @Input/@Output types to input/output in prep for being able to drop Zone.js
+- Re-Worked the navagation feature to reduce the number of components needed
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
 - Fixed Pager not displaying the correct number of pages
 - Fixed the "derived" roles not being displayed/populated
 - Fixed the "Blue Arrow" skin not displaying Envirnment correctly
+- Fixed Logoff so that it wouldn't through an error and sends back the Anonumous Profile
 
 - Fixed roles and groups not being saved in AccountDetailsComponent
 - Fixed roles and groups not being saved in FunctionDetailsComponent
