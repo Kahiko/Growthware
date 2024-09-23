@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { AccountService } from '@growthware/core/account';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature

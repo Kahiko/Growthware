@@ -19,7 +19,6 @@ import {
 } from '@angular/cdk/drag-drop';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
-import { DataService } from '@growthware/common/services';
 import { GroupService } from '@growthware/core/group';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService, IModalOptions, ModalOptions } from '@growthware/core/modal';
@@ -132,14 +131,12 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,
 		private _RoleSvc: RoleService,
-		dataSvc: DataService,
 		loggingSvc: LoggingService,
 		modalSvc: ModalService,
 		profileSvc: FunctionService,
 		securitySvc: SecurityService
 	) {
 		super();
-		this._DataSvc = dataSvc;
 		this._LoggingSvc = loggingSvc;
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;

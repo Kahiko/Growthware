@@ -10,7 +10,7 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 // Library
-import { DataService, GWCommon } from '@growthware/common/services';
+import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 import { ISecurityInfo, SecurityService } from '@growthware/core/security';
@@ -68,7 +68,6 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<unknown>;
 	
 	constructor(
-		private _DataSvc: DataService,
 		private _FileManagerSvc: FileManagerService,
 		private _FormBuilder: FormBuilder,
 		private _GWCommon: GWCommon,

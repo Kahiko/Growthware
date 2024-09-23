@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Library
-import { DataService } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@growthware/core/security';
@@ -31,7 +30,6 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	protected _ProfileSvc: any = {};
-	protected _DataSvc!: DataService;
 	protected _LoggingSvc!: LoggingService;
 	protected _ModalSvc!: ModalService;
 	protected _SecuritySvc!: SecurityService;

@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 // Library
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
@@ -29,7 +28,6 @@ export class NavigationService {
 	readonly showNavText$ = this._ShowNavText.asObservable();
 
 	constructor(
-    private _DataSvc: DataService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
@@ -65,7 +63,6 @@ export class NavigationService {
 		return new Promise<INavLink[]>((resolve, reject) => {
 			this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
 				next: (response: any[]) => {
-					this._DataSvc.notifyDataChanged(configuarionName, response);
 					resolve(response);
 				},
 				error: (error) => {
@@ -91,7 +88,6 @@ export class NavigationService {
 		return new Promise<INavLink[]>((resolve, reject) => {
 			this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
 				next: (response: INavLink[]) => {
-					this._DataSvc.notifyDataChanged(configuarionName, response);
 					resolve(response);
 				},
 				error: (error) => {

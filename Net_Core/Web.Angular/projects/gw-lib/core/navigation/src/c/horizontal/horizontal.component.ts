@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 // Library
 import { AccountService } from '@growthware/core/account';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature

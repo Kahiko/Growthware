@@ -11,7 +11,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
-import { DataService } from '@growthware/common/services';
 import { IKeyValuePair } from '@growthware/common/interfaces';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
@@ -50,14 +49,12 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
 
 	constructor(
 		private _FormBuilder: FormBuilder,
-		dataSvc: DataService,
 		loggingSvc: LoggingService,
 		modalSvc: ModalService,
 		profileSvc: StatesService,
 		securitySvc: SecurityService,
 	) {
 		super();
-		this._DataSvc = dataSvc;
 		this._LoggingSvc = loggingSvc;
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;

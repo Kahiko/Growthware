@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { INameDataPair } from '@growthware/common/interfaces';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
@@ -39,7 +38,6 @@ export class ListComponent {
 	private _ModalOptions!: ModalOptions;
 
 	constructor(
-		private _DataSvc: DataService,
 		private _GWCommon: GWCommon,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService

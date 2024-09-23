@@ -11,7 +11,6 @@ import { GWCommon } from '@growthware/common/services';
 import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { PagerComponent } from '@growthware/core/pager';
-import { DataService } from '@growthware/common/services';
 import { SearchService, ISearchResultsNVP, SearchCriteria } from '@growthware/core/search';
 import { ISearchCriteria } from '@growthware/core/search';
 
@@ -95,7 +94,6 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 
 	constructor(
 		private _GWCommon: GWCommon,
-		private _DataSvc: DataService,
 		private _DynamicTableSvc: DynamicTableService,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,

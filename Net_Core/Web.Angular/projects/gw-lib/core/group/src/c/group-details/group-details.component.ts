@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatLineModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
-import { DataService } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -51,7 +50,6 @@ export class GroupDetailsComponent implements OnInit {
 	selectedRoles: Array<string> = [];
 
 	constructor(
-		private _DataSvc: DataService,
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,
 		private _LoggingSvc: LoggingService,

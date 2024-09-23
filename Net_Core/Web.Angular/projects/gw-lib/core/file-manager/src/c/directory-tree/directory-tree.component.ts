@@ -6,7 +6,7 @@ import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
-import { DataService, GWCommon } from '@growthware/common/services';
+import { GWCommon } from '@growthware/common/services';
 import { IDirectoryTree } from '@growthware/common/interfaces';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
@@ -63,7 +63,6 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	@ViewChild('directoryProperties', { read: TemplateRef }) private _DirectoryProperties!: TemplateRef<unknown>;
 
 	constructor(
-		private _DataSvc: DataService,
 		private _FileManagerSvc: FileManagerService,
 		private _GWCommon: GWCommon,
 		private _LoggingSvc: LoggingService,

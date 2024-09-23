@@ -12,7 +12,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
@@ -67,7 +66,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
 
 	constructor(
-		private _DataSvc: DataService,
 		private _GWCommon: GWCommon,
 		private _FileManagerSvc: FileManagerService,
 		private _FormBuilder: FormBuilder,

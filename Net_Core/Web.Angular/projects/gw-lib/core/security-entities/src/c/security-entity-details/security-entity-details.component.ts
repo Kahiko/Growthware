@@ -11,7 +11,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { ConfigurationService } from '@growthware/core/configuration';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
@@ -95,7 +94,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	constructor(
 		private _FormBuilder: FormBuilder,
 		private _ConfigurationSvc: ConfigurationService,
-		dataSvc: DataService,
 		private _GWCommon: GWCommon,
 		loggingSvc: LoggingService,
 		modalSvc: ModalService,
@@ -103,7 +101,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		securitySvc: SecurityService
 	) {
 		super();
-		this._DataSvc = dataSvc;
 		this._LoggingSvc = loggingSvc;
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;

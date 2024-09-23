@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 
 // Library
 import { AccountService } from '@growthware/core/account';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature

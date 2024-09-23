@@ -60,7 +60,6 @@ export abstract class NavigationComponentBase implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     if (this.flyout() === 'false') {
-      this._NavigationSvc.getNavLinks(this._MenuType, this.id());
       this._Subscriptions.add(
         this._AccountSvc.updateMenu$.subscribe(() => {
           this._NavigationSvc.getNavLinks(this._MenuType).then((response) => {

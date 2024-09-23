@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 // Library
-import { DataService } from '@growthware/common/services';
+// import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { IDirectoryTree } from '@growthware/common/interfaces';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
@@ -50,7 +50,7 @@ export class FileManagerService {
 	public readonly uploadStatusChanged$ = this._UploadStatusSub.asObservable();
 
 	constructor(
-		private _DataSvc: DataService,
+		// private _DataSvc: DataService,
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
