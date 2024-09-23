@@ -53,7 +53,7 @@ export class NavigationService {
 		});
 	}
 
-	public getMenuData(menuType: MenuTypes, configuarionName: string): void {
+	public getMenuData(menuType: MenuTypes, configuarionName: string): Promise<any[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -62,20 +62,24 @@ export class NavigationService {
 			}),
 			params: mQueryParameter
 		};
-		this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
-			next: (response: INavLink[]) => {
-				this._DataSvc.notifyDataChanged(configuarionName, response);
-			},
-			error: (error) => {
-				this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
-			},
-			complete: () => {
-				// here as example
-			}
+		return new Promise<INavLink[]>((resolve, reject) => {
+			this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
+				next: (response: any[]) => {
+					this._DataSvc.notifyDataChanged(configuarionName, response);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
+					reject(error);
+				},
+				complete: () => {
+					// here as example
+				}
+			});
 		});
 	}
 
-	public getNavLinks(menuType: MenuTypes, configuarionName: string): void {
+	public getNavLinks(menuType: MenuTypes, configuarionName: string = ''): Promise<INavLink[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -84,22 +88,27 @@ export class NavigationService {
 			}),
 			params: mQueryParameter
 		};
-		this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
-			next: (response: INavLink[]) => {
-				this._DataSvc.notifyDataChanged(configuarionName, response);
-			},
-			error: (error) => {
-				this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
-			},
-			complete: () => {
-				// here as example
-			}
+		return new Promise<INavLink[]>((resolve, reject) => {
+			this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
+				next: (response: INavLink[]) => {
+					this._DataSvc.notifyDataChanged(configuarionName, response);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
+					reject(error);
+				},
+				complete: () => {
+					// here as example
+				}
+			});	
 		});
 	}
 
 	getShowNavText(): boolean {
 		return this._ShowNavText.getValue();
 	}
+
 	navigateTo(arg: INavLink | string): void {
 		// console.log('NavigationService.navigateTo', navLink);
 		if (typeof arg === 'object') {

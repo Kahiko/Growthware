@@ -1,23 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { HierarchicalVerticalFlyoutComponent } from './hierarchical-vertical-flyout.component';
+// Feature
+import { NavLink } from '../../nav-link.model';
+import { HierarchicalNavListItemComponent } from './hierarchical-nav-list-item';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-describe('HierarchicalVerticalFlyoutComponent', () => {
-	let component: HierarchicalVerticalFlyoutComponent;
-	let fixture: ComponentFixture<HierarchicalVerticalFlyoutComponent>;
+describe('HierarchicalNavListItemComponent', () => {
+	let component: HierarchicalNavListItemComponent;
+	let fixture: ComponentFixture<HierarchicalNavListItemComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-    imports: [HierarchicalVerticalFlyoutComponent,
+    declarations: [],
+    imports: [HierarchicalNavListItemComponent,
         NoopAnimationsModule],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
-    
-		fixture = TestBed.createComponent(HierarchicalVerticalFlyoutComponent);
+		
+		fixture = TestBed.createComponent(HierarchicalNavListItemComponent);
 		component = fixture.componentInstance;
+		component.item.apply(new NavLink('', '', '', '', '', 0, '', true, ''));
 		fixture.detectChanges();
 	});
 

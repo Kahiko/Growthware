@@ -22,19 +22,21 @@
   <div class="tr">
     <div class="td leftColumnCell"></div>
     <div class="td">
-      <gw-core-horizontal name="horizontal" fontColor="black" />
+      <gw-core-horizontal id="horizontal" fontColor="black" />
     </div>
   </div>
   <div class="tr">
     <div class="td left leftColumnCell top">
-      <gw-core-vertical name="vertical" />
+      <gw-core-vertical id="vertical" />
       <mat-divider></mat-divider>
-      <gw-core-hierarchical-vertical-flyout
+      <gw-core-hierarchical-vertical
+        flyout="true"
         backgroundColor="#525252"
         fontColor="#fff"
         height="52px"
         hoverBackgroundColor="#2c3e50"
         name="hierarchicalVerticalFlyout"
+        id="hierarchicalVerticalFlyout"
       />
     </div>
     <div class="td">

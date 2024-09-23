@@ -363,13 +363,30 @@ export class AccountService extends BaseService {
 	 */
 	refreshToken(): Observable<IAuthenticationResponse> {
 		// 1.) get the refresh token response
-		return this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_RefreshToken, {}, { withCredentials: true })
-			.pipe(map((response) => {
-				// 2.) update information from the response
-				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-				this.afterAuthentication(mAccountInformation);
-				return mAccountInformation.authenticationResponse;
-			}));
+		// return this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_RefreshToken, {}, { withCredentials: true })
+		// 	.pipe(map((response) => {
+		// 		// 2.) update information from the response
+		// 		const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+		// 		this.afterAuthentication(mAccountInformation);
+		// 		return mAccountInformation.authenticationResponse;
+		// 	}));
+		return new Observable<IAuthenticationResponse>((subscriber) => {
+			this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>('http://localhost:8080/login', {}).subscribe({
+				next: (response) => {
+					const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+					this.afterAuthentication(mAccountInformation);
+					subscriber.next(mAccountInformation.authenticationResponse);
+					// return mAccountInformation.authenticationResponse;
+				},
+				error: (error) => {
+					this.logout(true, true);
+					subscriber.error(error);
+				},
+				complete: () => {
+					subscriber.complete();
+				}
+			});
+		});
 	}
 
 	/**

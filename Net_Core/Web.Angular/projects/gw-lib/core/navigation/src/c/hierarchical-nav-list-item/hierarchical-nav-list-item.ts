@@ -20,8 +20,8 @@ import { NavigationService } from '../../navigation.service';
 
 		RouterModule
 	],
-	templateUrl: './vertical-list-item.component.html',
-	styleUrls: ['./vertical-list-item.component.scss'],
+	templateUrl: './hierarchical-nav-list-item.html',
+	styleUrls: ['./hierarchical-nav-list-item.scss'],
 	animations: [
 		trigger('indicatorRotate', [
 			state('collapsed', style({ transform: 'rotate(0deg)' })),
@@ -32,7 +32,7 @@ import { NavigationService } from '../../navigation.service';
 		])
 	]
 })
-export class VerticalListItemComponent implements OnDestroy, OnInit {
+export class HierarchicalNavListItemComponent implements OnDestroy, OnInit {
 	expanded!: boolean;
 	showSideNavLinkText!: boolean;
 	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;

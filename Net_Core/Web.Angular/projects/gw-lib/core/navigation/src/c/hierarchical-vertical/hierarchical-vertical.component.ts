@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -9,43 +8,23 @@ import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
-import { BaseNavigationComponent } from '../../base-navigation.component';
-import { NavigationService } from '../../navigation.service';
+import { HierarchicalNavListItemComponent } from '../hierarchical-nav-list-item/hierarchical-nav-list-item';
 import { MenuTypes } from '../../menu-types.enum';
-import { VerticalListItemComponent } from '../vertical-list-item/vertical-list-item.component';
+import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 
 @Component({
 	selector: 'gw-core-hierarchical-vertical',
 	standalone: true,
 	imports: [
-		VerticalListItemComponent,
-		
+		HierarchicalNavListItemComponent,
+		// Angular Material
 		MatIconModule,
 	],
 	templateUrl: './hierarchical-vertical.component.html',
-	styleUrls: ['./hierarchical-vertical.component.scss']
+	styleUrls: ['./hierarchical-vertical.component.scss'],
+	encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class HierarchicalVerticalComponent extends BaseNavigationComponent implements OnInit {
-
-
-  constructor(
-  	accountSvc: AccountService,
-  	dataSvc: DataService,
-  	gwCommon: GWCommon,
-  	loggingSvc: LoggingService,
-  	menuListSvc: NavigationService,
-  	runter: Router,
-  ) {
-  	super();
-  	this._AccountSvc = accountSvc;
-  	this._DataSvc = dataSvc;
-  	this._GWCommon = gwCommon;
-  	this._LoggingSvc = loggingSvc;
-  	this._NavigationSvc = menuListSvc;
-  	this._Router = runter;
+export class HierarchicalVerticalComponent extends NavigationComponentBase {
+	@ViewChild('firstLevel', { static: false }) override firstLevel!: ElementRef<HTMLUListElement>;
+	override _MenuType: MenuTypes = MenuTypes.Hierarchical;
   }
-
-  ngOnInit(): void {
-  	this._MenuType = MenuTypes.Hierarchical;
-  }
-}

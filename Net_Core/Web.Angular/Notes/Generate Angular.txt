@@ -222,13 +222,12 @@ Library: (core) From Web.Angular
 	Navigation:
 			https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
 			https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
+		ng generate component --path=projects/gw-lib/core/navigation/src c/NavigationComponentBase      --standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/navigation/src c/HierarchicalNavListItem      --standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/HierarchicalHorizontal 		--standalone --style scss --project gw-lib
-		ng generate component --path=projects/gw-lib/core/navigation/src c/HierarchicalHorizontalFlyout --standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/HierarchicalVertical 		--standalone --style scss --project gw-lib
-		ng generate component --path=projects/gw-lib/core/navigation/src c/HierarchicalVerticalFlyout 	--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/Horizontal 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/Vertical 					--standalone --style scss --project gw-lib
-		ng generate component --path=projects/gw-lib/core/navigation/src c/VerticalListItem 			--standalone --style scss --project gw-lib
 		ng generate interface --path=projects/gw-lib/core/navigation/src NavLink 						--type model --project gw-lib
 		ng generate enum 	  --path=projects/gw-lib/core/navigation/src MenuTypes 						--type enum --project gw-lib
 		ng generate enum 	  --path=projects/gw-lib/core/navigation/src LinkBehaviors 					--type enum --project gw-lib

@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, ElementRef, input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 // Angular Material
@@ -11,7 +11,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 // Feature
-import { BaseNavigationComponent } from '../../base-navigation.component';
+import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 import { NavigationService } from '../../navigation.service';
 import { MenuTypes } from '../../menu-types.enum';
 import { INavLink } from '../../nav-link.model';
@@ -28,34 +28,8 @@ import { INavLink } from '../../nav-link.model';
 	templateUrl: './vertical.component.html',
 	styleUrls: ['./vertical.component.scss']
 })
-export class VerticalComponent extends BaseNavigationComponent implements OnInit {
+export class VerticalComponent extends NavigationComponentBase {
+	@ViewChild('firstLevel', { static: false }) override firstLevel!: ElementRef<HTMLUListElement>;
+	override _MenuType: MenuTypes = MenuTypes.Vertical;
+  }
 
-	fontColor = input<string>('white');
-
-	constructor(
-		accountSvc: AccountService,
-		dataSvc: DataService,
-		gwCommon: GWCommon,
-		loggingSvc: LoggingService,
-		menuListSvc: NavigationService,
-		modalSvc: ModalService,
-		runter: Router,
-	) {
-		super();
-		this._AccountSvc = accountSvc;
-		this._DataSvc = dataSvc;
-		this._GWCommon = gwCommon;
-		this._LoggingSvc = loggingSvc;
-		this._NavigationSvc = menuListSvc;
-		this._ModalSvc = modalSvc;
-		this._Router = runter;
-	}
-
-	ngOnInit(): void {
-		this._MenuType = MenuTypes.Vertical;
-	}
-
-	override onItemSelected(item: INavLink) {
-		super.onItemSelected(item);
-	}
-}
