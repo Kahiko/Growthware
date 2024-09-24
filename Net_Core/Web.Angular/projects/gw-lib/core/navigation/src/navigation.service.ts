@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
@@ -9,7 +9,6 @@ import { LoggingService } from '@growthware/core/logging';
 import { INavLink, NavLink } from './nav-link.model';
 import { MenuTypes } from './menu-types.enum';
 import { LinkBehaviors } from './link-behaviors.enum';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,11 +21,12 @@ export class NavigationService {
 	private _BaseURL: string = '';
 
 	private _CurrentNavLink = signal<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
-	private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
+	private _CurrentUrl = signal<string>('');
+	private _ShowNavText = signal<boolean>(true); // Sets the inital value in all controls
 
 	public currentNavLink$ = toObservable(this._CurrentNavLink);
-	public currentUrl = new BehaviorSubject<string>('');
-	readonly showNavText$ = this._ShowNavText.asObservable();
+	public currentUrl = toObservable(this._CurrentUrl);
+	readonly showNavText$ = toObservable(this._ShowNavText);
 
 	constructor(
     private _GWCommon: GWCommon,
@@ -46,7 +46,7 @@ export class NavigationService {
 		this._Router.events.subscribe({
 			next: (event) => {
 				if (event instanceof NavigationEnd) {
-					this.currentUrl.next(event.urlAfterRedirects);
+					this._CurrentUrl.update(() => event.urlAfterRedirects);
 				}
 			},
 		});
@@ -103,7 +103,7 @@ export class NavigationService {
 	}
 
 	getShowNavText(): boolean {
-		return this._ShowNavText.getValue();
+		return this._ShowNavText();
 	}
 
 	navigateTo(arg: INavLink | string): void {
@@ -139,6 +139,6 @@ export class NavigationService {
 
 
 	setShowNavText(value: boolean): void {
-		this._ShowNavText.next(value);
+		this._ShowNavText.update(() => value);
 	}
 }

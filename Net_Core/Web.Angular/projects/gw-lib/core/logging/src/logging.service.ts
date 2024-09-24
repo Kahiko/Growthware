@@ -301,7 +301,7 @@ export class LoggingService {
         mToastMessage.eventType = EventType.Info;
         break;
     }
-    this._ToastSvc.showToast(mToastMessage);
+    this._ToastSvc.addOrUpdateToasts(mToastMessage);
   }
 
   /**

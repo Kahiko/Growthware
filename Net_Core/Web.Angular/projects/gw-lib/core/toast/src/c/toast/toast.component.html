@@ -1,5 +1,6 @@
 <div #toastElement class="toast fade toast-width mt-2" [ngClass]="typeClass" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
+    <!-- <strong class="title">{{id()}}: {{ title() }}</strong> -->
     <strong class="title">{{ title() }}</strong>
     <button type="button" class="button__link" aria-label="Close" (click)="hide()">x</button>
   </div>

@@ -1,8 +1,8 @@
-import { Component, ElementRef, input, OnInit, output, ViewChild } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { fromEvent, take } from 'rxjs';
 // Feature
 import { EventType } from '../../event-type.enum';
+import { ToastService } from '../../toast.service';
 
 @Component({
 	selector: 'gw-core-toast',
@@ -14,20 +14,14 @@ import { EventType } from '../../event-type.enum';
 	styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {
-	disposeEvent = output();
+	private _ToastSvc = inject(ToastService);
 
-	@ViewChild('toastElement', { static: true })
-	toastEl!: ElementRef;
-
-	type = input.required<EventType>();
-
-	dateTime = input<string>(new Date().toLocaleString());
-
-	title = input.required<string>();
-
-	message = input.required<string>();
-
-	public typeClass: string = '';
+	public dateTime = input<string>(new Date().toLocaleString());
+	public id = input.required<string>();
+	public message = input.required<string>();
+	public title = input.required<string>();
+	public type = input.required<EventType>();
+	public typeClass: string = 'bg-success text-white';
 
 	ngOnInit() {
 		switch (EventType[this.type()]) {
@@ -47,21 +41,9 @@ export class ToastComponent implements OnInit {
 				this.typeClass = 'bg-primary text-white';
 				break;
 		}
-		this.show();
-	}
-
-	private show() {
-		if (this.type() !== EventType.Error) {
-			setTimeout(() => {
-				this.hide();
-			}, 3000);
-		}
-		fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')
-			.pipe(take(1))
-			.subscribe(() => this.hide());
 	}
 
 	hide() {
-		this.disposeEvent.emit();
+		this._ToastSvc.removeToast(this.id());
 	}
 }
