@@ -1,13 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
-import { INameDataPair } from '@growthware/common/interfaces';
-import { GWCommon } from '@growthware/common/services';
-import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 
 @Component({
@@ -22,7 +18,7 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.scss']
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
 
 	allItemsText = input<string>('');
 	availableItems = input<Array<string>>([]);
@@ -36,12 +32,9 @@ export class ListComponent {
 	width = input<string>('120');
 
 	private _ModalOptions!: ModalOptions;
+	private _ModalSvc = inject(ModalService);
 
-	constructor(
-		private _GWCommon: GWCommon,
-		private _LoggingSvc: LoggingService,
-		private _ModalSvc: ModalService
-	) {
+	ngOnInit(): void {
 		this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);
 	}
 
