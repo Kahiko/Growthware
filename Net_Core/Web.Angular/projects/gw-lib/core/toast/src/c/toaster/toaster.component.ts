@@ -24,10 +24,10 @@ export class ToasterComponent implements OnDestroy, OnInit {
 	private _ToastSub: Subscription = new Subscription();
 
 	constructor(
-    private _ChangeDetectorRef: ChangeDetectorRef,
-    private _GWCommon: GWCommon,
-    private _ToastSvc: ToastService,
-	) {}
+		private _ChangeDetectorRef: ChangeDetectorRef,
+		private _GWCommon: GWCommon,
+		private _ToastSvc: ToastService,
+	) { }
 
 	ngOnDestroy(): void {
 		this._ToastSub.unsubscribe();
@@ -39,7 +39,7 @@ export class ToasterComponent implements OnDestroy, OnInit {
 				const mIncomingToast: IToastMessage = new ToastMessage(toast.message, toast.title, toast.eventType);
 				const mExistingToast: IToastMessage = this.currentToasts.filter(x => x.message.toLocaleLowerCase() == mIncomingToast.message.toLocaleLowerCase())[0];
 				// only add new messages to the current toast
-				if(this._GWCommon.isNullOrUndefined(mExistingToast)) {
+				if (this._GWCommon.isNullOrUndefined(mExistingToast)) {
 					this.currentToasts.push(mIncomingToast);
 					this._ChangeDetectorRef.detectChanges();
 				} else {
