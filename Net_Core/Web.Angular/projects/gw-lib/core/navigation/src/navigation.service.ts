@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -9,6 +9,7 @@ import { LoggingService } from '@growthware/core/logging';
 import { INavLink, NavLink } from './nav-link.model';
 import { MenuTypes } from './menu-types.enum';
 import { LinkBehaviors } from './link-behaviors.enum';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
 	providedIn: 'root',
@@ -20,10 +21,10 @@ export class NavigationService {
 	private _Api_GetMenuItems: string = '';
 	private _BaseURL: string = '';
 
-	private _CurrentNavLink = new BehaviorSubject<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
+	private _CurrentNavLink = signal<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
 	private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
 
-	public currentNavLink$ = this._CurrentNavLink.asObservable();
+	public currentNavLink$ = toObservable(this._CurrentNavLink);
 	public currentUrl = new BehaviorSubject<string>('');
 	readonly showNavText$ = this._ShowNavText.asObservable();
 
@@ -108,8 +109,8 @@ export class NavigationService {
 	navigateTo(arg: INavLink | string): void {
 		// console.log('NavigationService.navigateTo', navLink);
 		if (typeof arg === 'object') {
-			this._CurrentNavLink.next(arg);
 			if (!arg.children || !arg.children.length) {
+				this._CurrentNavLink.update(() => arg);
 				switch (arg.linkBehavior) {
 				case LinkBehaviors.Internal:
 					this._Router.navigate([arg.action.toLowerCase()]);
