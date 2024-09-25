@@ -1,6 +1,6 @@
-import { Component, ElementRef, HostBinding, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
+import { Component, ElementRef, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { effect, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
@@ -11,6 +11,7 @@ import { INavLink, NavLink } from '../../nav-link.model';
 import { NavigationService } from '../../navigation.service';
 import { MenuTypes } from '../../menu-types.enum';
 import { HttpErrorResponse } from '@angular/common/http';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 interface IMenuData {
   Description: string;
@@ -32,8 +33,7 @@ interface IMenuData {
 	styles: [
 	]
 })
-export abstract class NavigationComponentBase implements OnDestroy, OnInit {
-  private _Subscriptions: Subscription = new Subscription();
+export abstract class NavigationComponentBase implements OnInit {
 
 	backgroundColor = input<string>('lightblue');
   expanded!: boolean;
@@ -54,44 +54,38 @@ export abstract class NavigationComponentBase implements OnDestroy, OnInit {
   protected _Router = inject(Router);
   private _GWCommon = inject(GWCommon);
 
-  ngOnDestroy(): void {
-    this._Subscriptions.unsubscribe();
+  constructor() {
+    effect(() => {
+      this._AccountSvc.updateMenu$();
+      // console.log('NavigationComponentBase.constructor', this._AccountSvc.updateMenu$());
+      if (this.flyout() === 'false') {
+        this._NavigationSvc.getNavLinks(this._MenuType).then((response) => {
+          this.menuData.update(() => response);
+        }).catch((error: HttpErrorResponse) => {
+          // console.log('error', error);
+        });
+      } else {
+        this._NavigationSvc.getMenuData(this._MenuType, this.id()).then((response) => {
+          // convert the retunred data into IMenuItem
+          const mNavItems: INavItem[] = [];
+          this._GWCommon.buildNavItems(response).forEach((item) => {
+            mNavItems.push(item);
+          });
+          // console.log('NavigationComponentBase.ngOnInit.mMenuData', mNavItems);
+          const mNavLinks: INavLink[] = [];
+          mNavItems.forEach((item) => {
+            mNavLinks.push(this.populateNavLink(item));
+          })
+          this.menuData.update(() => mNavLinks);
+          this._GWCommon.buildUL(this.firstLevel.nativeElement, mNavItems, (action: string) => { return this.onItemSelected(action);});
+        }).catch((error: HttpErrorResponse) => {
+          // console.log('error', error);
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
-    if (this.flyout() === 'false') {
-      this._Subscriptions.add(
-        this._AccountSvc.updateMenu$.subscribe(() => {
-          this._NavigationSvc.getNavLinks(this._MenuType).then((response) => {
-            this.menuData.update(() => response);
-          }).catch((error: HttpErrorResponse) => {
-            // console.log('error', error);
-          })
-        })
-      );
-    } else {
-      // this._NavigationSvc.getMenuData(this._MenuType, this.id());
-      this._Subscriptions.add(
-        this._AccountSvc.updateMenu$.subscribe(() => {
-          this._NavigationSvc.getMenuData(this._MenuType, this.id()).then((response) => {
-            // convert the retunred data into IMenuItem
-            const mNavItems: INavItem[] = [];
-						this._GWCommon.buildNavItems(response).forEach((item) => {
-							mNavItems.push(item);
-						});
-            // console.log('NavigationComponentBase.ngOnInit.mMenuData', mNavItems);
-            const mNavLinks: INavLink[] = [];
-            mNavItems.forEach((item) => {
-              mNavLinks.push(this.populateNavLink(item));
-            })
-            this.menuData.update(() => mNavLinks);
-            this._GWCommon.buildUL(this.firstLevel.nativeElement, mNavItems, (action: string) => { return this.onItemSelected(action);});
-          }).catch((error: HttpErrorResponse) => {
-            // console.log('error', error);
-          });
-        })
-      );
-    }
 		document.documentElement.style.setProperty('--fontColor', this.fontColor());
 		document.documentElement.style.setProperty('--height', this.height());
 		document.documentElement.style.setProperty('--hoverBackgroundColor', this.hoverBackgroundColor());

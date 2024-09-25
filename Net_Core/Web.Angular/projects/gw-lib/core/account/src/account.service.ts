@@ -27,7 +27,7 @@ export class AccountService extends BaseService {
 	readonly logInModalId = 'logInModal';
 	override modalReason: string = '';
 	override selectedRow: SelectedRow = new SelectedRow();
-	public updateMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+	public updateMenu$ = signal<boolean>(true);
 
 	private _ApiName: string = 'GrowthwareAccount/';
 	private _Api_ChangePassword = '';
@@ -89,7 +89,7 @@ export class AccountService extends BaseService {
 		this.clientChoices.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
 			// this.triggerMenuUpdates();
-			this.updateMenu$.next(true);
+			this.updateMenu$.update(() => !this.updateMenu$());
 		}
 		if (this.authenticationResponse().jwtToken !== null) {
 			sessionStorage.setItem('jwt', this.authenticationResponse().jwtToken);
