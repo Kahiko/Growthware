@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -39,7 +38,6 @@ export class RoleDetailsComponent implements OnInit {
 
 	private _Role: IRoleProfile = new RoleProfile();
 	private _SecurityInfo: ISecurityInfo = new SecurityInfo();
-	private _Subscription: Subscription = new Subscription();
 
 	availableRoles: Array<string> = [];
 	canDelete: boolean = false;
@@ -51,7 +49,6 @@ export class RoleDetailsComponent implements OnInit {
 
 	constructor(
 		private _FormBuilder: FormBuilder,
-		// private _GWCommon: GWCommon,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
 		private _RoleSvc: RoleService,
