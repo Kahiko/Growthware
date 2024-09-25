@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
@@ -29,8 +28,7 @@ export class CalendarService extends BaseService {
 	private _Api_GetEventSecurity: string = '';
 	private _Api_SaveEvent: string = '';
 
-	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
-	public calendarData$ = this._CalendarData.asObservable();
+	public calendarData$ = signal<IMonth>(new Month());
 	private _FirstDayOfWeek: NamesOfDays = NamesOfDays.Monday;
 	public get firstDayOfWeek(): NamesOfDays { return this._FirstDayOfWeek; }
 	private _SelectedDate: Date = new Date();
@@ -73,7 +71,7 @@ export class CalendarService extends BaseService {
 			this._HttpClient.get<boolean>(this._ApiDeleteEvent, mHttpOptions).subscribe({
 				next: (response: boolean) => {
 					if (response) {
-						const mCalendarData = this._CalendarData.getValue();
+						const mCalendarData = this.calendarData$();
 						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
 							const mDays = mCalendarData.weeks[mWeekIndex].days;
 							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
@@ -261,7 +259,7 @@ export class CalendarService extends BaseService {
 					}
 				});
 			});
-			this._CalendarData.next(monthData);
+			this.calendarData$.update(() => monthData);
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'CalendarService', 'mergeEvents');
 		});
@@ -298,7 +296,7 @@ export class CalendarService extends BaseService {
 			// console.log('mParameters.calendarEvent.end After :', mParameters.calendarEvent.end);
 			this._HttpClient.post<ICalendarEvent>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
 				next: (response: ICalendarEvent) => {
-					const mCalendarData = this._CalendarData.getValue();
+					const mCalendarData = this.calendarData$();
 					if (calendarEvent.id > 0) {
 						// Update with response
 						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
@@ -336,7 +334,7 @@ export class CalendarService extends BaseService {
 							}
 						}
 					}
-					this._CalendarData.next(mCalendarData);
+					this.calendarData$.update(() => mCalendarData);
 					resolve(true);
 				},
 				error: (error) => {
@@ -360,21 +358,21 @@ export class CalendarService extends BaseService {
 		const mYearMatch = newSelectedDate.getFullYear() === this._SelectedDate.getFullYear();
 		this._SelectedDate = newSelectedDate;
 		if (!force && mMonthMatch && mYearMatch) {
-			this._CalendarData.getValue().weeks.some((week: IWeek) => {
+			this.calendarData$().weeks.some((week: IWeek) => {
 				week.days.some((day: IDay) => {
 					if (day.isSelected) {
 						day.isSelected = false;
 					}
 				});
 			});
-			this._CalendarData.getValue().weeks.some((week: IWeek) => {
+			this.calendarData$().weeks.some((week: IWeek) => {
 				week.days.some((day: IDay) => {
 					if (this._GWCommon.datesEqual(day.date, newSelectedDate)) {
 						day.isSelected = true;
 					}
 				});
 			});
-			this._CalendarData.next(this._CalendarData.getValue());
+			this.calendarData$.update(() => this.calendarData$());
 		} else {
 			this.getMonthData(action, newSelectedDate);
 		}
