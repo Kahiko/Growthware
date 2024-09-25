@@ -5,7 +5,6 @@ import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
-import { NavigationService } from '../../navigation.service';
 import { MenuTypes } from '../../menu-types.enum';
 import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 // import { INavLink } from '../../nav-link.model';

@@ -1,7 +1,6 @@
-import { Component, HostBinding, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, HostBinding, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -15,10 +14,10 @@ import { NavigationService } from '../../navigation.service';
 	standalone: true,
 	imports: [
 		CommonModule,
+		RouterModule,
+		// Angular Material
 		MatIconModule,
-		MatListModule,
-
-		RouterModule
+		MatListModule
 	],
 	templateUrl: './hierarchical-nav-list-item.html',
 	styleUrls: ['./hierarchical-nav-list-item.scss'],
@@ -32,29 +31,15 @@ import { NavigationService } from '../../navigation.service';
 		])
 	]
 })
-export class HierarchicalNavListItemComponent implements OnDestroy, OnInit {
+export class HierarchicalNavListItemComponent {
+	private _NavigationSvc = inject(NavigationService);
+	private _Router = inject(Router);
+
 	expanded!: boolean;
-	showSideNavLinkText!: boolean;
+	showSideNavLinkText = computed(() =>this._NavigationSvc.showNavText$());
 	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
 	depth = input<number>(0);
 	item = input.required<INavLink>();
-
-	private _Subscription: Subscription = new Subscription();
-
-	constructor(
-		private _NavigationSvc: NavigationService,
-		public _Router: Router
-	) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
-		);
-	}
 
 	onItemSelected(item: INavLink) {
 		if (item.children && item.children.length) {

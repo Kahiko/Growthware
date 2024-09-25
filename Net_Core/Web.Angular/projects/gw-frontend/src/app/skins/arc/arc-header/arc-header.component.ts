@@ -1,6 +1,5 @@
-import { Component, computed, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, effect } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
@@ -12,8 +11,7 @@ import { INavLink, NavigationService } from '@growthware/core/navigation';
 	templateUrl: './arc-header.component.html',
 	styleUrls: ['./arc-header.component.scss']
 })
-export class ArcHeaderComponent implements OnDestroy, OnInit {
-	private _Subscription: Subscription = new Subscription();
+export class ArcHeaderComponent {
 
 	environment = computed<string>(() => this._ConfigurationSvc.environment());
 	navDescription: string = '';
@@ -27,23 +25,15 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
 		private _GWCommon: GWCommon,
 		private _NavigationSvc: NavigationService,
 		private _Router: Router
-	) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => {
-				// console.log('ArcHeaderComponent.ngOnInit.description', val.description);
-				if (val.description.length > 0) {
-					this.navDescription = val.description;
-				} else {
-					this.navDescription = 'Home';
-				}
-			})
-		);
+	) { 
+		effect(() => {
+			const mNavLink = this._NavigationSvc.currentNavLink$();
+			if (mNavLink.description.length > 0) {
+				this.navDescription = mNavLink.description;
+			} else {
+				this.navDescription = '';
+			}			
+		});
 	}
 
 	onLogoClick(): void {

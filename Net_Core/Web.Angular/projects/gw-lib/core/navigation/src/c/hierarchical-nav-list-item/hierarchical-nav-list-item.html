@@ -16,13 +16,13 @@
         <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
           chevron_right
         </mat-icon>
-        @if (showSideNavLinkText===true && item().children.length===0) {
+        @if (showSideNavLinkText()===true && item().children.length===0) {
         <span>{{ item().label }}</span>
         }
       </span>
       }
       <span class="spacer">
-        @if (showSideNavLinkText) {
+        @if (showSideNavLinkText()) {
         <span>{{ item().label }}</span>
         }
       </span>
@@ -50,13 +50,13 @@
       <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
         chevron_right
       </mat-icon>
-      @if (showSideNavLinkText===true && item().children.length===0) {
+      @if (showSideNavLinkText()===true && item().children.length===0) {
       <span>{{ item().label }}</span>
       }
     </span>
     }
     <span class="spacer">
-      @if (showSideNavLinkText) {
+      @if (showSideNavLinkText()) {
       <span>{{ item().label }}</span>
       }
     </span>

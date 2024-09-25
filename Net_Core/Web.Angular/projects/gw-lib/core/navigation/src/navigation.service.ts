@@ -20,13 +20,12 @@ export class NavigationService {
 	private _Api_GetMenuItems: string = '';
 	private _BaseURL: string = '';
 
-	private _CurrentNavLink = signal<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
-	private _CurrentUrl = signal<string>('');
-	private _ShowNavText = signal<boolean>(true); // Sets the inital value in all controls
+	// private _ShowNavText = signal<boolean>(true); // Sets the inital value in all controls
 
-	public currentNavLink$ = toObservable(this._CurrentNavLink);
-	public currentUrl = toObservable(this._CurrentUrl);
-	readonly showNavText$ = toObservable(this._ShowNavText);
+	public currentNavLink$ = signal<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
+
+	public currentUrl = signal<string>('');
+	readonly showNavText$ = signal<boolean>(true);
 
 	constructor(
     private _GWCommon: GWCommon,
@@ -46,7 +45,7 @@ export class NavigationService {
 		this._Router.events.subscribe({
 			next: (event) => {
 				if (event instanceof NavigationEnd) {
-					this._CurrentUrl.update(() => event.urlAfterRedirects);
+					this.currentUrl.update(() => event.urlAfterRedirects);
 				}
 			},
 		});
@@ -103,14 +102,14 @@ export class NavigationService {
 	}
 
 	getShowNavText(): boolean {
-		return this._ShowNavText();
+		return this.showNavText$();
 	}
 
 	navigateTo(arg: INavLink | string): void {
 		// console.log('NavigationService.navigateTo', navLink);
 		if (typeof arg === 'object') {
 			if (!arg.children || !arg.children.length) {
-				this._CurrentNavLink.update(() => arg);
+				this.currentNavLink$.update(() => arg);
 				switch (arg.linkBehavior) {
 				case LinkBehaviors.Internal:
 					this._Router.navigate([arg.action.toLowerCase()]);
@@ -139,6 +138,6 @@ export class NavigationService {
 
 
 	setShowNavText(value: boolean): void {
-		this._ShowNavText.update(() => value);
+		this.showNavText$.update(() => value);
 	}
 }
