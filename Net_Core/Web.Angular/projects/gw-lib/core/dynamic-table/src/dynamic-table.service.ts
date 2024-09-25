@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { SearchCriteria, SearchCriteriaNVP } from '@growthware/core/search';
@@ -12,8 +11,6 @@ import { IDynamicTableConfiguration } from './dynamic-table-configuration.model'
 })
 export class DynamicTableService {
 	private _TableConfigurations: IDynamicTableConfiguration[] = [];
-
-	public tableConfigurationsChanged = new Subject<boolean>();
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -100,15 +97,14 @@ export class DynamicTableService {
 		const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(data));
 		for (let index = 0; index < mDefaultData.length; index++) {
 			this._TableConfigurations.push(mDefaultData[index]);
-		}
-		this.tableConfigurationsChanged.next(true);
+		};
 	}
 
 	/**
-   * @description Allows an outside process to change the default table configurations
-   *
-   * @memberof DynamicTableService
-   */
+	 * @description Allows an outside process to change the default table configurations
+	 *
+	 * @memberof DynamicTableService
+	 */
 	public set tableConfigurations(tableConfigurations: IDynamicTableConfiguration[]) {
 		if (!this._GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0) {
 			this._TableConfigurations = tableConfigurations;
