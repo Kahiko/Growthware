@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
@@ -88,7 +88,8 @@ export class AccountService extends BaseService {
 		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
 		this.clientChoices.set(JSON.parse(mClientChoicesString));
 		if (mTriggerMenuUpdates || forceMenuUpdate) {
-			// this.triggerMenuUpdates();
+			// The value isn't important the information we are conveying
+			// is that the menu needs to be updated so the value always changes.
 			this.updateMenu$.update(() => !this.updateMenu$());
 		}
 		if (this.authenticationResponse().jwtToken !== null) {
