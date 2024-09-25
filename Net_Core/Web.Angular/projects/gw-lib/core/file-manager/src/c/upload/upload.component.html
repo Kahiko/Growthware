@@ -20,16 +20,16 @@
         Overall:
         <br />
         <div class="progressContainer">
-          <span class="progressContainer__text">{{ overallProgressSubject | async }}%</span>
-          <mat-progress-bar [value]="overallProgressSubject | async" color="accent"></mat-progress-bar>
+          <span class="progressContainer__text">{{ overallProgress }}%</span>
+          <mat-progress-bar [value]="overallProgress" color="accent"></mat-progress-bar>
         </div>
       </div>
       <div class="flexWidthChild" [style.visibility]="showFileProgress ? 'visible' : 'hidden'">
         File: {{currentFile}}
       </div>
       <div class="progressContainer" [style.visibility]="showFileProgress ? 'visible' : 'hidden'">
-        <span class="progressContainer__text">{{ fileProgressSubject | async }}%</span>
-        <mat-progress-bar [value]="fileProgressSubject | async" color="accent"></mat-progress-bar>
+        <span class="progressContainer__text">{{ fileProgress }}%</span>
+        <mat-progress-bar [value]="fileProgress" color="accent"></mat-progress-bar>
       </div>
       <div style="width: 100%; position: relative;">
         <div style="position: absolute; right: 5px; margin-top: 15px;">

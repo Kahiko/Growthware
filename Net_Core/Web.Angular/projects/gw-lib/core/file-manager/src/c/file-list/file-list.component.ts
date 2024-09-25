@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,9 +12,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { GWCommon } from '@growthware/common/services';
+import { ISecurityInfo } from '@growthware/core/security';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
-import { ISecurityInfo } from '@growthware/core/security';
 import { SecurityService } from '@growthware/core/security';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
@@ -28,7 +27,7 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 		CommonModule,
 		FormsModule,
 		ReactiveFormsModule,
-
+		// Angular Material
 		MatButtonModule,
 		MatIconModule,
 		MatMenuModule,
@@ -39,17 +38,21 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 	styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnDestroy, OnInit {
+	private _FileManagerSvc = inject(FileManagerService);
+	private _FormBuilder = inject(FormBuilder);
+	private _LoggingSvc = inject(LoggingService);
+	private _ModalSvc = inject(ModalService);
+	private _Router = inject(Router);
+	private _SecuritySvc = inject(SecurityService);
 
 	private _Action: string = '';
-	private _DataSubject = new BehaviorSubject<Array<IFileInfoLight>>([]);
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
-	private _Subscriptions: Subscription = new Subscription();
 
-	readonly data$ = this._DataSubject.asObservable();
+	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.filesChanged$());
 
-	id: string = '';
+	id = input.required<string>();
 	frmRenameFile!: FormGroup;
 	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates 
 	selectedFile!: IFileInfoLight;
@@ -65,24 +68,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!: TemplateRef<unknown>;
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
 
-	constructor(
-		private _GWCommon: GWCommon,
-		private _FileManagerSvc: FileManagerService,
-		private _FormBuilder: FormBuilder,
-		private _LoggingSvc: LoggingService,
-		private _ModalSvc: ModalService,
-		private _Router: Router,
-		private _SecuritySvc: SecurityService
-	) { }
-
 	ngOnDestroy(): void {
 		this._Action = '';
-		this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
 		this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
-		this.id = this._Action + '_Files';
+		this.id.apply(this._Action + '_Files');
 		this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
 			this.showDownload = response.mayView;
 			this.showDelete = response.mayDelete;
@@ -91,13 +83,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
 		});
 
-		if (this._GWCommon.isNullOrUndefined(this.id)) {
-			this._LoggingSvc.toast('The id can not be blank!', 'File List Component', LogLevel.Error);
-		} else {
-			this._Subscriptions.add(this._FileManagerSvc.filesChanged$.subscribe((data: Array<IFileInfoLight>) => {
-				this._DataSubject.next(data);
-			}));
-		}
 	}
 
 	get getControls() {

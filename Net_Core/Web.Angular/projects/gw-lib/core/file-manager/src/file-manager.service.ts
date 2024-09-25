@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 // Library
-// import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
-import { IDirectoryTree } from '@growthware/common/interfaces';
+import { DirectoryTree, IDirectoryTree } from '@growthware/common/interfaces';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { IFileInfoLight } from './interfaces/file-info-light.model';
@@ -35,19 +34,15 @@ export class FileManagerService {
 		return this._SelectedPath;
 	}
 
-	private _FilesSub  = new BehaviorSubject<Array<IFileInfoLight>>([] as Array<IFileInfoLight>);
-	public readonly filesChanged$ = this._FilesSub.asObservable();
+	public readonly filesChanged$ = signal<Array<IFileInfoLight>>([] as Array<IFileInfoLight>);
 
-	private _DirectoriesSub = new BehaviorSubject<Array<IDirectoryTree>>([] as Array<IDirectoryTree>);
-	public readonly directoriesChanged$ = this._DirectoriesSub.asObservable();
+	public directoriesChanged$ = signal<Array<IDirectoryTree>>([] as Array<IDirectoryTree>);
 
 	public needToExpand: boolean = false;
 
-	private _SelectedDirectorySub  = new BehaviorSubject<IDirectoryTree>({} as IDirectoryTree);
-	public readonly selectedDirectoryChanged$ = this._SelectedDirectorySub.asObservable();
+	public selectedDirectoryChanged$ = signal<IDirectoryTree>({} as IDirectoryTree);
 
-	private _UploadStatusSub  = new BehaviorSubject<IUploadStatus>({ id: '' } as unknown as IUploadStatus);
-	public readonly uploadStatusChanged$ = this._UploadStatusSub.asObservable();
+	public readonly uploadStatusChanged$ = signal<IUploadStatus>({ id: '' } as unknown as IUploadStatus);
 
 	constructor(
 		// private _DataSvc: DataService,
@@ -79,7 +74,7 @@ export class FileManagerService {
 		return new Promise((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
 				.append('action', action)
-				.append('selectedPath', this._SelectedDirectorySub.getValue().relitivePath)
+				.append('selectedPath', this.selectedDirectoryChanged$().relitivePath)
 				.append('newPath', newPath);
 			const mHttpOptions = {
 				headers: new HttpHeaders({
@@ -87,10 +82,10 @@ export class FileManagerService {
 				}),
 				params: mQueryParameter,
 			};
-			const mCurrentPath = this._SelectedDirectorySub.getValue().relitivePath;
+			const mCurrentPath = this.selectedDirectoryChanged$().relitivePath;
 			this._HttpClient.post<never>(this._Api_CreateDirectory, null, mHttpOptions).subscribe({
 				next: (response: boolean) => {
-					this.getDirectories(action, this._SelectedDirectorySub.getValue().relitivePath).then(() => {
+					this.getDirectories(action, this.selectedDirectoryChanged$().relitivePath).then(() => {
 						this.needToExpand = true;
 						this.setSelectedDirectory(mCurrentPath);
 						resolve(response);
@@ -108,14 +103,14 @@ export class FileManagerService {
 	}
 
 	/**
-	 * Deletes a directory from the server, updates the local directory tree, fires _DirectoriesSub.next, calls setSelectedDirectory, and returns a promise of the result
+	 * Deletes a directory from the server, updates the local directory tree, fires directoriesChanged$.update, calls setSelectedDirectory, and returns a promise of the result
 	 * @param {string} action - 
 	 * @param {string} selectedPath - 
 	 * @return {Promise<boolean>} 
 	 */
 	public async deleteDirectory(action: string, selectedPath: string): Promise<boolean> {
 		return new Promise((resolve, reject) => {
-			const mDirectory = this._GWCommon.hierarchySearch(this._DirectoriesSub.getValue(), selectedPath, 'relitivePath') as IDirectoryTree;
+			const mDirectory = this._GWCommon.hierarchySearch(this.directoriesChanged$(), selectedPath, 'relitivePath') as IDirectoryTree;
 			if (mDirectory) {
 				const mQueryParameter: HttpParams = new HttpParams()
 					.append('action', action)
@@ -129,9 +124,9 @@ export class FileManagerService {
 				this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
 					next: (response: boolean) => {
 						if(response === true) {
-							const mNewDirectoryArray = JSON.parse(JSON.stringify(this._DirectoriesSub.getValue()));
+							const mNewDirectoryArray = JSON.parse(JSON.stringify(this.directoriesChanged$()));
 							this._GWCommon.hierarchyRemoveItem(mNewDirectoryArray, selectedPath, 'relitivePath');
-							this._DirectoriesSub.next(mNewDirectoryArray);
+							this.directoriesChanged$.update(() => mNewDirectoryArray);
 							this.setSelectedDirectory(mDirectory.parentRelitivePath);
 						}
 						resolve(response);
@@ -167,9 +162,9 @@ export class FileManagerService {
 			};
 			this._HttpClient.get<IDirectoryTree>(this._Api_GetDirectories, mHttpOptions).subscribe({
 				next: (response: IDirectoryTree) => {
-					const mDirectoryTree = [];
+					const mDirectoryTree: Array<IDirectoryTree> = [];
 					mDirectoryTree.push(response);
-					this._DirectoriesSub.next(mDirectoryTree);
+					this.directoriesChanged$.update(() => mDirectoryTree);
 					resolve(true);
 				},
 				error: (error) => {
@@ -194,7 +189,7 @@ export class FileManagerService {
 	 * @return {Promise<boolean>} description of return value
 	 */
 	public async renameDirectory(action: string, newName: string): Promise<boolean> {
-		const mOriginalDirectory = this._SelectedDirectorySub.getValue();
+		const mOriginalDirectory = this.selectedDirectoryChanged$();
 		const mNewDirectory = JSON.parse(JSON.stringify(mOriginalDirectory));
 		return new Promise((resolve, reject) => {
 			if(mOriginalDirectory) {
@@ -214,9 +209,9 @@ export class FileManagerService {
 						mNewDirectory.key = mOriginalDirectory.key.replace(mOriginalDirectory.name, newName);
 						mNewDirectory.name = newName;
 						mNewDirectory.relitivePath = mNewRelitivePath;
-						const mNewDirectoryArray = JSON.parse(JSON.stringify(this._DirectoriesSub.getValue()));
+						const mNewDirectoryArray = JSON.parse(JSON.stringify(this.directoriesChanged$()));
 						this._GWCommon.hierarchyReplaceItem(mNewDirectoryArray, mOriginalDirectory.key, 'key', 'children', mNewDirectory);
-						this._DirectoriesSub.next(mNewDirectoryArray);
+						this.directoriesChanged$.update(() => mNewDirectoryArray);
 						this.setSelectedDirectory(mNewDirectory.relitivePath);
 						resolve(true);
 					},
@@ -237,12 +232,12 @@ export class FileManagerService {
 	 * @return {void} 
 	 */
 	public setSelectedDirectory(relitivePath: string): void {
-		const mDirectory = this._GWCommon.hierarchySearch(this._DirectoriesSub.getValue(), relitivePath, 'relitivePath') as IDirectoryTree;
+		const mDirectory = this._GWCommon.hierarchySearch(this.directoriesChanged$(), relitivePath, 'relitivePath') as IDirectoryTree;
 		// console.log('setSelectedDirectory.mDirectory', mDirectory);
 		if(mDirectory) {
-			this._SelectedDirectorySub.next(mDirectory);
+			this.selectedDirectoryChanged$.update(() => mDirectory);
 		} else {
-			this._SelectedDirectorySub.next({} as IDirectoryTree);
+			this.selectedDirectoryChanged$.update(() => new DirectoryTree());
 		}
 	}
 
@@ -370,7 +365,7 @@ export class FileManagerService {
 	}
 
 	/**
-	 * @description Retrives a array of IFileInfoLight for the given path, and fires this._FilesSub.
+	 * @description Retrives a array of IFileInfoLight for the given path, and updates this.filesChanged$.
 	 *
 	 * @param {string} action Used to determine the upload directory and enforce security on the server
 	 * @param {string} selectedPath The relative of the directory path
@@ -389,7 +384,7 @@ export class FileManagerService {
 		this._SelectedPath = selectedPath;
 		this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
 			next: (response) => {
-				this._FilesSub.next(response);
+				this.filesChanged$.update(() => response);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
@@ -439,7 +434,7 @@ export class FileManagerService {
 					mParams.uploadNumber = mNextUploadNumber;
 					mParams.startingByte = parameters.endingByte;
 					mParams.endingByte = parameters.endingByte + parameters.chunkSize;
-					this._UploadStatusSub.next(mUploadStatus);
+					this.uploadStatusChanged$.update(() => mUploadStatus);
 					this.multiPartFileUpload(mParams);
 				},
 				error: (error) => {
@@ -459,13 +454,13 @@ export class FileManagerService {
 			this.multiUploadComplete(mParams.action, mParams.file.name, this._Api_UploadFile).subscribe({
 				next: (response: IUploadResponse) => {
 					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					this._UploadStatusSub.next(mUploadStatus);
+					this.uploadStatusChanged$.update(() => mUploadStatus);
 					this.getFiles(mParams.action, this._SelectedPath);
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
 					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mParams.file.name, error, true, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					this._UploadStatusSub.next(mUploadStatus);
+					this.uploadStatusChanged$.update(() => mUploadStatus);
 				},
 				// complete: () => {}
 			});
@@ -510,7 +505,7 @@ export class FileManagerService {
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
-				this._UploadStatusSub.next(mUploadStatus);
+				this.uploadStatusChanged$.update(() => mUploadStatus);
 				if (mUploadStatus.completed) {
 					this.getFiles(action, this._SelectedPath);
 				}

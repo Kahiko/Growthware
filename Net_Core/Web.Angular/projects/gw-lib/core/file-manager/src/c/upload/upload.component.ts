@@ -1,8 +1,8 @@
-import { Component, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { computed, effect, input } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +21,7 @@ import { IUploadStatus } from '../../interfaces/upload-status.model';
 	standalone: true,
 	imports: [
 		CommonModule,
-
+		// Angular Material
 		MatButtonModule,
 		MatIconModule,
 		MatProgressBarModule,
@@ -29,18 +29,17 @@ import { IUploadStatus } from '../../interfaces/upload-status.model';
 	templateUrl: './upload.component.html',
 	styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy, OnInit {
+export class UploadComponent implements OnInit {
 	private _Action: string = '';
 	private _NumberOfFilesCompleted: number = 0;
 	private _ProgressModalId: string = 'progressTemplate';
 	private _TotalNumberOfFiles: number = 0;
-	private _Subscription: Subscription = new Subscription();
 
 	id: string = '';
 	isMultiple: boolean = true;
-	fileProgressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	fileProgress: number = 0;
 	currentFile: string = '';
-	overallProgressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	overallProgress: number = 0;
 	showFileProgress: boolean = false;
 	showOverallProgress: boolean = false;
 
@@ -53,53 +52,33 @@ export class UploadComponent implements OnDestroy, OnInit {
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
 		private _Router: Router
-	) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
+	) { 
+		effect(() => {
+			const mData = computed(() => this._FileManagerSvc.uploadStatusChanged$());
+			if (mData().id.toLowerCase() + '_upload' === this.id.toLowerCase()) {
+				const mFilePercentage: number = Math.floor((mData().uploadNumber / mData().totalNumberOfUploads) * 100);
+				this.fileProgress = mFilePercentage;
+				if (mFilePercentage == 100) {
+					this._NumberOfFilesCompleted = this._NumberOfFilesCompleted + 1;
+					const mTotalPercent: number = Math.floor((this._NumberOfFilesCompleted / this._TotalNumberOfFiles) * 100);
+					this.overallProgress = mTotalPercent;
+					if (mTotalPercent == 100) {
+						this._GWCommon.sleep(500).then(() => {
+							this.showFileProgress = false;
+							// this._FileManagerSvc.refresh(this._Action);
+							this._GWCommon.sleep(3000).then(() => {
+								this.onOk();
+							});
+						});
+					}
+				}
+			}
+		});		
 	}
 
 	ngOnInit(): void {
 		this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
 		this.id = this._Action + '_Upload';
-		if (!this._GWCommon.isNullOrEmpty(this.id)) {
-			this._Subscription.add(this._FileManagerSvc.uploadStatusChanged$.subscribe((data: IUploadStatus) => {
-				// console.log('data', data);
-				if (data.id.toLowerCase() + '_upload' === this.id.toLowerCase()) {
-					const mFilePercentage: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
-					this.fileProgressSubject.next(mFilePercentage);
-					if (mFilePercentage == 100) {
-						this._NumberOfFilesCompleted = this._NumberOfFilesCompleted + 1;
-						const mTotalPercent: number = Math.floor((this._NumberOfFilesCompleted / this._TotalNumberOfFiles) * 100);
-						this.overallProgressSubject.next(mTotalPercent);
-						if (mTotalPercent == 100) {
-							this._GWCommon.sleep(500).then(() => {
-								this.showFileProgress = false;
-								// this._FileManagerSvc.refresh(this._Action);
-								this._GWCommon.sleep(3000).then(() => {
-									this.onOk();
-								});
-							});
-						}
-					}
-				}
-			}));
-		} else {
-			const mLogDestinations: Array<LogDestination> = [];
-			mLogDestinations.push(LogDestination.Console);
-			mLogDestinations.push(LogDestination.Toast);
-			const mLogOptions: ILogOptions = new LogOptions(
-				'UploadComponent.ngOnInit: id is blank',
-				LogLevel.Error,
-				mLogDestinations,
-				'UploadComponent',
-				'UploadComponent',
-				'ngOnInit',
-				'system',
-				'UploadComponent'
-			);
-			this._LoggingSvc.log(mLogOptions);
-		}
 	}
 
 	onFileSelected(event: Event): void {
@@ -110,8 +89,8 @@ export class UploadComponent implements OnDestroy, OnInit {
 			this._ModalSvc.open(mModalOptions);
 			this._NumberOfFilesCompleted = 0;
 			this._TotalNumberOfFiles = mFileList.length;
-			this.fileProgressSubject.next(0);
-			this.overallProgressSubject.next(0);
+			this.fileProgress = 0;
+			this.overallProgress = 0;
 			this.showFileProgress = true;
 			this.showOverallProgress = true;
 			const mAction = this.id.replace('_Upload', '');

@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -41,7 +40,6 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
-	private _Subscriptions: Subscription = new Subscription();
 
 	dataSource = new MatTableDataSource<IFileInfoLight>([]);
 	// displayedColumns pulled from IFileInfoLight Note: order here effects the order in the table
@@ -79,7 +77,6 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 
 	ngOnDestroy(): void {
 		this._Action = '';
-		this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -94,12 +91,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		if (this._GWCommon.isNullOrUndefined(this.id)) {
 			this._LoggingSvc.toast('The id can not be blank!', 'File List Component', LogLevel.Error);
 		} else {
-			this._Subscriptions.add(this._FileManagerSvc.filesChanged$.subscribe((data: Array<IFileInfoLight>) => {
-				// console.log('TableFileListComponent.ngOnInit', data);
-				this.dataSource.data = data;
-				// this.dataSource.paginator = this.paginator;
-				// this.dataSource.sort = this.sort;
-			}));
+			this.dataSource.data = this._FileManagerSvc.filesChanged$();
 		}
 	}
 

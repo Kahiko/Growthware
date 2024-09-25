@@ -6,7 +6,7 @@
     </button>
   </span>
   <span>
-    <gw-core-upload />
+    <gw-core-upload id="upload" />
   </span>
   <span>
     <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName()}}" name="btnRefresh_{{configurationName()}}">
@@ -35,17 +35,17 @@
     <gw-core-directory-tree />
   </div>
   <div class="fileList">
-    @if ((skin$ | async); as layout) {
+    @if ((skin$()); as layout) {
       @switch (layout) {
         @case ('snake') {
-          <gw-core-file-list [numberOfColumns]=5 />
+          <gw-core-file-list id="setByCode" [numberOfColumns]=5 />
         }
         @case ('table') {
           <gw-core-table-file-list />
         }
         @default {
           <div>
-            <gw-core-file-list [numberOfColumns]=5 />
+            <gw-core-file-list id="setByCode" [numberOfColumns]=5 />
           </div>
         }
       }
