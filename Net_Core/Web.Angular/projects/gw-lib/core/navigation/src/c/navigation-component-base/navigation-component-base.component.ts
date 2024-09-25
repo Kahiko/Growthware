@@ -56,7 +56,9 @@ export abstract class NavigationComponentBase implements OnInit {
 
   constructor() {
     effect(() => {
+      // Just making a reference to the updateMenu$ signal to the effect will be registered
       this._AccountSvc.updateMenu$();
+      // The signals value isn't important only that a change was triggered.
       // console.log('NavigationComponentBase.constructor', this._AccountSvc.updateMenu$());
       if (this.flyout() === 'false') {
         this._NavigationSvc.getNavLinks(this._MenuType).then((response) => {
