@@ -28,11 +28,13 @@
     font-size: .5rem;
 }
 
+// TODO: need to implement the color as a property but for now we'll just use black
 .pickListTableContents {
     padding: 2px;
     font-size: .8rem;
     background-color: var(--pickListTableContentsBackground);
     color: var(--pickListTableContentsFont);
+    color: black;
 }
 
 .help {
