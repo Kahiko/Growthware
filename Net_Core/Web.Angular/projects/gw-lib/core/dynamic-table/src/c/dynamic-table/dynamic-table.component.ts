@@ -11,7 +11,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { PagerComponent } from '@growthware/core/pager';
-import { SearchService, ISearchResultsNVP, SearchCriteria } from '@growthware/core/search';
+import { SearchService, SearchCriteria } from '@growthware/core/search';
 import { ISearchCriteria } from '@growthware/core/search';
 
 // Interfaces/Models
