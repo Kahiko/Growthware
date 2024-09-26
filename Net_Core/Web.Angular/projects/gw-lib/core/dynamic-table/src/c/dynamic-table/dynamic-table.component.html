@@ -67,10 +67,10 @@
             <caption id="caption_{{tableConfiguration.name}}"style="padding-top: 3px">{{tableConfiguration.captionText}}</caption>
           }
           <thead>
-            <tr [style.background-color]="clientChoices.headColor">
+            <tr [ngStyle]="{'background-color': clientChoices.headColor}">
               @for (column of tableConfiguration.columns; track column) {
                 <th [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
-                  <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight }">
+                  <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight, 'color': clientChoices.subHeadColor }">
                     <div style="display: inline-block;">
                       @if (column.allowSearch) {
                         <input

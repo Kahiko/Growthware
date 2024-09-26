@@ -15,6 +15,7 @@
 - Updated all @Input/@Output types to input/output in prep for being able to drop Zone.js
 - Re-Worked the navagation feature to reduce the number of components needed
 - The Toast feature now works on signals only
+- The Dynamic Table now uses ClientChoices.subHeadColor to set the header font color
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
