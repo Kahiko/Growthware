@@ -1,12 +1,10 @@
-import { Component, OnDestroy, AfterViewInit, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DynamicTableBtnMethods, DynamicTableComponent } from '@growthware/core/dynamic-table';
-import { ISearchCriteriaNVP, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
+import { ISearchCriteriaNVP, SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
-// import { INameValuePair } from '@growthware/common/interfaces';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile } from '../../name-value-pair-parent-profile.model';
@@ -19,21 +17,20 @@ import { MatButtonModule } from '@angular/material/button';
 	standalone: true,
 	imports: [
 		CommonModule,
-
+		// Angular Material
 		MatButtonModule,
-
+		// Library
 		DynamicTableComponent,
 	],
 	templateUrl: './manage-name-value-pairs.component.html',
 	styleUrls: ['./manage-name-value-pairs.component.scss']
 })
-export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, OnInit {
+export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 
-	private _Subscription: Subscription = new Subscription();
 	private _Api_Name: string = 'GrowthwareNameValuePair/';
 	private _Api_Nvp_Search: string = '';
 	private _Api_Nvp_Details_Search: string = '';
-	private _SearchCriteriaNVP!: SearchCriteriaNVP;
+	private _SearchCriteriaNVP!: ISearchCriteriaNVP;
 	private _nameValuePairWindowSize: WindowSize = new WindowSize(350, 400);
 
 	activeParrentRowIndex: number = 0;
@@ -56,6 +53,28 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 		this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
 		this.childConfigurationName = this._NameValuePairService.childConfigurationName;
 		// console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
+		effect(() => {
+			let criteria = this._SearchSvc.searchCriteriaChanged$();
+			if (criteria.name.trim().toLowerCase() === this._NameValuePairService.parentConfigurationName.trim().toLowerCase()) {
+				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
+					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
+					this.nameValuePairParentData$.update(() => results.payLoad.data);
+					this._NameValuePairService.nvpChildId = 0;
+					const mNvpParentProfile = this.nameValuePairParentData$()[0];
+					this._NameValuePairService.nvpParentId = mNvpParentProfile.nvpSeqId;
+					this._NameValuePairService.searchChildNameValuePairs(mNvpParentProfile.nvpSeqId);
+				}).catch((error) => {
+					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
+				});
+			}
+			if (criteria.name.trim().toLowerCase() === this._NameValuePairService.childConfigurationName.trim().toLowerCase()) {
+				this._SearchSvc.getResults(this._Api_Nvp_Details_Search, criteria).then((results) => {
+					this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
+				}).catch((error) => {
+					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
+				});
+			}			
+		})
 	}
 
 	ngAfterViewInit(): void {
@@ -66,38 +85,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 		this.dynamicTable.rowDoubleClickBackMethod = (rowNumber: number) => { this.onEditNvpChild(rowNumber); };
 	}
 
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
 	ngOnInit(): void {
-		this._Subscription.add(
-			this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
-				if (criteria.name.trim().toLowerCase() === this._NameValuePairService.parentConfigurationName.trim().toLowerCase()) {
-					this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
-						// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
-						this.nameValuePairParentData$.update(() => results.payLoad.data);
-						this._NameValuePairService.nvpChildId = 0;
-						const mNvpParentProfile = this.nameValuePairParentData$()[0];
-						this._NameValuePairService.nvpParentId = mNvpParentProfile.nvpSeqId;
-						this._NameValuePairService.searchChildNameValuePairs(mNvpParentProfile.nvpSeqId);
-					}).catch((error) => {
-						this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
-					});
-				}
-			})
-		);
-		this._Subscription.add(
-			this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
-				if (criteria.name.trim().toLowerCase() === this._NameValuePairService.childConfigurationName.trim().toLowerCase()) {
-					this._SearchSvc.getResults(this._Api_Nvp_Details_Search, criteria).then((results) => {
-						this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
-					}).catch((error) => {
-						this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
-					});
-				}
-			})
-		);
 		// Get the initial child SearchCriteriaNVP from the service
 		let mNvpParentId = this._NameValuePairService.nvpParentId;
 		if (!mNvpParentId) {

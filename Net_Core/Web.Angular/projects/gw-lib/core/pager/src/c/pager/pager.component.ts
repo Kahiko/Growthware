@@ -1,7 +1,5 @@
-import { Component, input, OnDestroy, OnInit } from '@angular/core';
-
+import { Component, effect, input, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { SearchService, SearchCriteria, ISearchResultsNVP } from '@growthware/core/search';
@@ -15,8 +13,7 @@ import { SearchService, SearchCriteria, ISearchResultsNVP } from '@growthware/co
 	templateUrl: './pager.component.html',
 	styleUrls: ['./pager.component.scss'],
 })
-export class PagerComponent implements OnDestroy, OnInit {
-	private _DataChangedSub: Subscription = new Subscription();
+export class PagerComponent {
 	private _SearchCriteria: SearchCriteria = new SearchCriteria([''], [''], 1, '', 1);
 
 	name = input<string>('');
@@ -28,48 +25,41 @@ export class PagerComponent implements OnDestroy, OnInit {
 	constructor(
 		private _GWCommon: GWCommon,
 		private _SearchSvc: SearchService
-	) { }
-
-	ngOnDestroy(): void {
-		this._DataChangedSub.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._DataChangedSub = this._SearchSvc.searchDataChanged$.subscribe(
-			(results: ISearchResultsNVP) => {
-				if (this.name().trim().toLowerCase() === results.name.trim().toLowerCase()) {
-					this._SearchCriteria = results.payLoad.searchCriteria;
-					if (results.payLoad.data) {
-						const mFirstRow = results.payLoad.data[0];
-						if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-							const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
-							const mPageSize: number = results.payLoad.searchCriteria.pageSize;
-							if (mTotalRecords > mPageSize) {
-								let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
-								const mRemainder = mTotalRecords % mPageSize;
-								if (mRemainder != 0) {
-									mCalculatedPages += 1;
-								}
-								if (this.totalPages !== mCalculatedPages) {
-									this.pages.splice(0, this.pages.length);
-									this.selectedPage = '1';
-									for (let index = 1; index < mCalculatedPages + 1; index++) {
-										this.pages.push(index);
-									}
-									this.totalPages = mCalculatedPages;
-								}
-							} else {
+	) { 
+		effect(() => {
+			const mSearchDataResults = this._SearchSvc.searchDataChanged$();
+			if (this.name().trim().toLowerCase() === mSearchDataResults.name.trim().toLowerCase()) {
+				this._SearchCriteria = mSearchDataResults.payLoad.searchCriteria;
+				if (mSearchDataResults.payLoad.data) {
+					const mFirstRow = mSearchDataResults.payLoad.data[0];
+					if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+						const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
+						const mPageSize: number = mSearchDataResults.payLoad.searchCriteria.pageSize;
+						if (mTotalRecords > mPageSize) {
+							let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
+							const mRemainder = mTotalRecords % mPageSize;
+							if (mRemainder != 0) {
+								mCalculatedPages += 1;
+							}
+							if (this.totalPages !== mCalculatedPages) {
 								this.pages.splice(0, this.pages.length);
 								this.selectedPage = '1';
-								this.totalPages = 0;
+								for (let index = 1; index < mCalculatedPages + 1; index++) {
+									this.pages.push(index);
+								}
+								this.totalPages = mCalculatedPages;
 							}
+						} else {
+							this.pages.splice(0, this.pages.length);
+							this.selectedPage = '1';
+							this.totalPages = 0;
 						}
-					} else {
-						this.totalPages = 0;
 					}
+				} else {
+					this.totalPages = 0;
 				}
-			}
-		);
+			}			
+		});
 	}
 
 	/**

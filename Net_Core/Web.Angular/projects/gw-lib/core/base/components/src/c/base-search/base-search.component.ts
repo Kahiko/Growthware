@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Component, effect, OnInit, ViewChild } from '@angular/core';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@growthware/core/dynamic-table';
@@ -12,9 +11,7 @@ import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthwa
 	styles: [
 	]
 })
-export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, OnInit {
-
-	protected _Subscription: Subscription = new Subscription();
+export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
 
 	protected _TheApi: string = '';
 	protected _TheComponent: object = {};
@@ -31,6 +28,19 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, O
   public configurationName = '';
   public results: unknown;
 
+  constructor() {
+	effect(() => {
+		const criteria = this._SearchSvc.searchCriteriaChanged$();
+		if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
+			this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
+				this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
+			}).catch((error) => {
+				console.log(error);
+			});
+		}		
+	});
+  }
+
   ngAfterViewInit(): void {
   	// Setup the dynamic table button methods
   	const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
@@ -41,23 +51,7 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, O
   	this.dynamicTable.rowDoubleClickBackMethod = (rowNumber: number) => { this.onRowDoubleClick(rowNumber); };    
   }
 
-  ngOnDestroy(): void {
-  	this._Subscription.unsubscribe();
-  }
-
   ngOnInit(): void {
-  	this._Subscription.add(
-  		this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
-  			if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-  				this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
-  					this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
-  				}).catch((error) => {
-  					console.log(error);
-  				});
-  			}
-  		})
-  	);
-
   	// Get the initial SearchCriteriaNVP from the service
   	const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
   	const mResults: ISearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName, mAccountTableConfig);

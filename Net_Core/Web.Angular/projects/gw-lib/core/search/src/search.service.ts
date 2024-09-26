@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { ITotalRecords } from '@growthware/common/interfaces';
@@ -14,8 +13,8 @@ export class SearchService {
 	private _BaseUrl: string = '';
 	private _SearchCriteria_NVP_Array: SearchCriteriaNVP[] = [];
 
-	public searchCriteriaChanged$ = new Subject<SearchCriteriaNVP>();
-	public searchDataChanged$ = new Subject<SearchResultsNVP>();
+	public searchCriteriaChanged$ = signal<SearchCriteriaNVP>(new SearchCriteriaNVP('', new SearchCriteria([], [], 0, '', 0)));
+	public searchDataChanged$ = signal<SearchResultsNVP>(new SearchResultsNVP('', { data: [], totalRecords: 0, searchCriteria: new SearchCriteria([], [], 0, '', 0) }));
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -81,7 +80,7 @@ export class SearchService {
 	public notifySearchDataChanged(name: string, data: Array<ITotalRecords>, searchCriteria: SearchCriteria): void {
 		const mTotalRecords = this._GWCommon.getTotalRecords(data);
 		const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(name, { data: data, totalRecords: mTotalRecords, searchCriteria: searchCriteria });
-		this.searchDataChanged$.next(mSearchResultsNVP);
+		this.searchDataChanged$.update(() => mSearchResultsNVP);
 	}
 
 	/**
@@ -93,6 +92,6 @@ export class SearchService {
 	public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
 		const mChangedCriteria = new SearchCriteriaNVP(name, searchCriteria);
 		this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria, 'name');
-		this.searchCriteriaChanged$.next(mChangedCriteria);
+		this.searchCriteriaChanged$.update(() => mChangedCriteria);
 	}
 }
