@@ -19,8 +19,8 @@ import { ISelectedableAction } from '../../selectedable-action.model';
 
 export interface IColorSchemes {
 	color_Scheme: string;
-	odd_row: string;
 	even_row: string;
+	odd_row: string;
 	row_font: string;
 	background: string;
 	header_Color: string;
@@ -60,11 +60,11 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 	selectedAction!: string;
 
 	validColorSchemes: IColorSchemes[] = [
-		{ color_Scheme: 'Blue',   odd_row: '#b6cbeb', even_row: '#6699cc', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#b6cbeb' },
-		{ color_Scheme: 'Green',  odd_row: '#879966', even_row: '#c5e095', row_font: 'White', background: '#ffffff', header_Color: '#808577', header_font: '#879966' },
-		{ color_Scheme: 'Yellow', odd_row: '#f8bc03', even_row: '#f8e094', row_font: 'Black', background: '#ffffff', header_Color: '#CF9C00', header_font: '#f8bc03' },
-		{ color_Scheme: 'Purple', odd_row: '#be9cc5', even_row: '#91619b', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#be9cc5' },
-		{ color_Scheme: 'Red',    odd_row: '#DE8587', even_row: '#A72A49', row_font: 'White', background: '#ffffff', header_Color: '#BA706A', header_font: '#df867f' }
+		{ color_Scheme: 'Blue',   even_row: '#6699cc', odd_row: '#b6cbeb', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#b6cbeb' },
+		{ color_Scheme: 'Green',  even_row: '#c5e095', odd_row: '#879966', row_font: 'White', background: '#ffffff', header_Color: '#808577', header_font: '#879966' },
+		{ color_Scheme: 'Yellow', even_row: '#f8e094', odd_row: '#f8bc03', row_font: 'Black', background: '#ffffff', header_Color: '#CF9C00', header_font: '#f8bc03' },
+		{ color_Scheme: 'Purple', even_row: '#91619b', odd_row: '#be9cc5', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#be9cc5' },
+		{ color_Scheme: 'Red',    even_row: '#A72A49', odd_row: '#DE8587', row_font: 'White', background: '#ffffff', header_Color: '#BA706A', header_font: '#df867f' }
 	];
 
 	validLinks = [
