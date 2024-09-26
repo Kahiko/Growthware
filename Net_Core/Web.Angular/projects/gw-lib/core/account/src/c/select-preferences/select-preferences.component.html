@@ -3,52 +3,58 @@
     <mat-tab label="Select Your Preferences">
       <div class="mat-tab__container formSection">
         <div class="mat-tab__content formSectionContents">
-          <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedColorScheme">
-            <table class="table" style="padding: 5px">
-              <caption>
-                <label id="colorSchemGroupLabel">Pick your favorite color scheme</label>
-              </caption>
-              <thead>
-                <tr>
-                  <th class="rotated-th" style="width: 100px;">
-                    <div>
-                      <span  class="rotated-th__label">
-                        Color Scheme
-                      </span>
-                    </div>
-                  </th> 
-                  @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
-                    @if (colorSchemeColumnsIndex !== 0) {
-                  <th class="rotated-th" style="width: 100px;">
-                    <div>
-                      <span  class="rotated-th__label">
-                        {{column.displayedName}}
-                      </span>
-                    </div>
-                  </th>                        
-                    }
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of validColorSchemes; track row; let colorSchemIndex = $index) {
-                <tr>
-                  <td>
-                    <mat-radio-button [value]="row.color_Scheme">
-                      <div style="display: inline-block; width: 50px;">{{row.color_Scheme}} </div>
-                    </mat-radio-button>
-                  </td>
-                  @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
-                    @if (colorSchemeColumnsIndex !== 0) {
-                    <td>                      
-                      <div [ngStyle]="{'background-color': getValue(row, column)}" style="height: 2opx; width: 20px;">&nbsp;</div>
-                    </td>
-                    }
-                  }
-                </tr>
-                }
-              </tbody>
-            </table>
+          <div class="table">
+            <div class="tr">
+              <div class="td" style="border: solid 3px; padding-right: 3em;">
+                <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedColorScheme">
+                  <table class="table" style="padding: 5px">
+                    <caption>
+                      <label id="colorSchemGroupLabel">Pick your favorite color scheme</label>
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th class="rotated-th" style="width: 100px;">
+                          <div>
+                            <span  class="rotated-th__label">
+                              Color Scheme
+                            </span>
+                          </div>
+                        </th> 
+                        @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
+                          @if (colorSchemeColumnsIndex !== 0) {
+                        <th class="rotated-th" style="width: 100px;">
+                          <div>
+                            <span  class="rotated-th__label">
+                              {{column.displayedName}}
+                            </span>
+                          </div>
+                        </th>                        
+                          }
+                        }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of validColorSchemes; track row; let colorSchemIndex = $index) {
+                      <tr>
+                        <td>
+                          <mat-radio-button [value]="row.color_Scheme">
+                            <div style="display: inline-block; width: 50px;">{{row.color_Scheme}} </div>
+                          </mat-radio-button>
+                        </td>
+                        @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
+                          @if (colorSchemeColumnsIndex !== 0) {
+                          <td>                      
+                            <div [ngStyle]="{'background-color': getValue(row, column)}" style="height: 2opx; width: 20px;">&nbsp;</div>
+                          </td>
+                          }
+                        }
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </mat-radio-group>
+              </div>
+            </div>
             <div class="tr">
               <div class="td">
                 <div class="table" style="padding: 5px">
@@ -79,14 +85,9 @@
                 </div>
               </div>
             </div>
-          </mat-radio-group>
+          </div>
         </div>
       </div>
     </mat-tab>
   </mat-tab-group>
-  <div class="buttonRow">
-    <button type="submit" [disabled]="frmSelectPreferences.invalid" mat-button class="Form_Button" color="primary">
-      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
-    </button>
-  </div>
 </form>
