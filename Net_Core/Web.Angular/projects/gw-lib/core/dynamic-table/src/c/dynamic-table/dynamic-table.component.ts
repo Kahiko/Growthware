@@ -188,7 +188,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
-  	this._Subscriptions.unsubscribe();
+  		this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
