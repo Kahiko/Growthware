@@ -18,6 +18,7 @@ import {
 	moveItemInArray,
 } from '@angular/cdk/drag-drop';
 // Library
+import { AccountService, IClientChoices } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { GroupService } from '@growthware/core/group';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
@@ -69,6 +70,8 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
 	avalibleParents = [{ key: -1, value: 'None' }];
 
+	clientChoices: IClientChoices = this._AccountSvc.clientChoices();
+
 	derivedRolesId: string = 'derivedRoles';
 
 	functionMenuOrders: IFunctionMenuOrder[] = [];
@@ -113,6 +116,9 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	public derivedEditGroups: Array<string> = [];
 	public derivedViewGroups: Array<string> = [];
 
+	pickListTableContentsBackground = this.clientChoices.alternatingRowBackColor;
+	pickListTableHeaderBackground = this.clientChoices.rowBackColor;
+
 	selectedFunctionType: number = 1;
 	selectedNavigationType: number = 1;
 	selectedParentId: number = -1;
@@ -128,6 +134,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	validNavigationTypes: IKeyValuePair[] = [new KeyValuePair()];
 
 	constructor(
+		private _AccountSvc: AccountService,
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,
 		private _RoleSvc: RoleService,
