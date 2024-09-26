@@ -18,7 +18,7 @@
                     </div>
                   </th> 
                   @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
-                    @if (colorSchemeColumnsIndex !== 2) {
+                    @if (colorSchemeColumnsIndex !== 0) {
                   <th class="rotated-th" style="width: 100px;">
                     <div>
                       <span  class="rotated-th__label">
@@ -39,7 +39,7 @@
                     </mat-radio-button>
                   </td>
                   @for (column of colorSchemeColumns; track column.propertyName; let colorSchemeColumnsIndex = $index) {
-                    @if (colorSchemeColumnsIndex !== 2) {
+                    @if (colorSchemeColumnsIndex !== 0) {
                     <td>                      
                       <div [ngStyle]="{'background-color': getValue(row, column)}" style="height: 2opx; width: 20px;">&nbsp;</div>
                     </td>
