@@ -20,6 +20,9 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 })
 export class ListComponent implements OnInit {
 
+	private _ModalOptions!: ModalOptions;
+	private _ModalSvc = inject(ModalService);
+
 	allItemsText = input<string>('');
 	availableItems = input<Array<string>>([]);
 	availableItemsChange = output<Array<string>>();
@@ -30,9 +33,6 @@ export class ListComponent implements OnInit {
 	selectedItemsText = input<string>('');
 	size = input<string>('8');
 	width = input<string>('120');
-
-	private _ModalOptions!: ModalOptions;
-	private _ModalSvc = inject(ModalService);
 
 	ngOnInit(): void {
 		this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);
