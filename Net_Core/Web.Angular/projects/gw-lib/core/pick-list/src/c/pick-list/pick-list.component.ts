@@ -41,6 +41,9 @@ export class PickListComponent implements OnDestroy, OnInit {
 	header = input<string>('');
 	id = input.required<string>();
 	name = input<string>('');
+	pickListTableContentsBackground = input<string>('pink');
+	pickListTableContentsFont = input<string>('black');
+	pickListTableHeaderBackground = input<string>('lightpink');
 	pickListTableHelp = input<string>('');
 	selectedItemsText = input<string>('');
 	size = input<string>('8');
@@ -88,6 +91,9 @@ export class PickListComponent implements OnDestroy, OnInit {
 				}
 			})
 		);
+		document.documentElement.style.setProperty('--pickListTableContentsBackground', this.pickListTableContentsBackground());
+		document.documentElement.style.setProperty('--pickListTableContentsFont', this.pickListTableContentsFont());
+		document.documentElement.style.setProperty('--pickListTableHeaderBackground', this.pickListTableHeaderBackground());
 	}
 
 	ngOnDestroy(): void {

@@ -17,6 +17,7 @@
 - The Toast feature now works on signals only
 - The Dynamic Table now uses ClientChoices.subHeadColor to set the header font color
 - Added color properties to ListComponent
+- Added color properties to PickListComponent
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html

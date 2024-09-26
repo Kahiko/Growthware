@@ -117,6 +117,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	public derivedViewGroups: Array<string> = [];
 
 	pickListTableContentsBackground = this.clientChoices.alternatingRowBackColor;
+	pickListTableContentsFont = this.clientChoices.headerForeColor;
 	pickListTableHeaderBackground = this.clientChoices.rowBackColor;
 
 	selectedFunctionType: number = 1;
