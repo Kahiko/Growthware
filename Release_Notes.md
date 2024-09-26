@@ -1,4 +1,11 @@
 # Release Notes
+## Net_Core Version 5.0.1.x (yyyy-mm-dd)
+
+### New Features
+- No new features added
+### Improvements
+### Bug Fixes
+
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
 ### New Features
