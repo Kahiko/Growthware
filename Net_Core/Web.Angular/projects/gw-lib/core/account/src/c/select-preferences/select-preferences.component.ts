@@ -17,7 +17,7 @@ import { AccountService } from '../../account.service';
 import { ClientChoices, IClientChoices } from '../../client-choices.model';
 import { ISelectedableAction } from '../../selectedable-action.model';
 
-export interface IColorSchemes {
+interface IColorSchemes {
 	color_Scheme: string;
 	even_row: string;
 	odd_row: string;
@@ -28,7 +28,7 @@ export interface IColorSchemes {
 	header_font: string;
 }
 
-export interface IColorSchemeColumns {
+interface IColorSchemeColumns {
 	displayedName: string;
 	propertyName: string;
 }
