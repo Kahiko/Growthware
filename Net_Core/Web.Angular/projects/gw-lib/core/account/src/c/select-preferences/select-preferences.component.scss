@@ -52,7 +52,7 @@ tbody td {
   * need to artificially consume vertical space so that the rotated headers
   * don't overlap with the content above the table.
   */
-  height: 165px ;
+  height: 100px ;
   position: relative ;
 }
 /**
@@ -63,7 +63,7 @@ tbody td {
 */
 .rotated-th__label {
   bottom: 5px ;
-  left: 50% ;
+  left: 20% ;
   position: absolute ;
   transform: rotate( -45deg ) ;
   transform-origin: center left ;
