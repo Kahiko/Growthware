@@ -41,7 +41,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the name of the account.
+        /// Gets the name of the account column.
         /// </summary>
         /// <value>The name of the account.</value>
         public static string Account
@@ -50,7 +50,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the security entity ID.
+        /// Gets the security entity Id column.
         /// </summary>
         /// <value>The security entity ID.</value>
         public static string SecurityEntityId
@@ -59,7 +59,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the name of the security entity.
+        /// Gets the name of the security entity column.
         /// </summary>
         /// <value>The name of the security entity.</value>
         public static string SecurityEntityName
@@ -77,7 +77,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the head.
+        /// Gets the "header" row column.
         /// </summary>
         /// <value>The color of the head.</value>
         public static string HeaderRow
@@ -86,7 +86,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the header fore.
+        /// Gets the "header" row font column.
         /// </summary>
         /// <value>The color of the header fore.</value>
         public static string HeaderFont
@@ -95,7 +95,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the row back.
+        /// Gets the "even" row column.
         /// </summary>
         /// <value>The color of the row back.</value>
         public static string EvenRow
@@ -104,7 +104,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the row back.
+        /// Gets the "even" row font column.
         /// </summary>
         /// <value>The color of the row back.</value>
         public static string EvenFont
@@ -113,7 +113,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the alternating row back.
+        /// Gets the "odd" row column.
         /// </summary>
         /// <value>The color of the alternating row back.</value>
         public static string OddRow
@@ -122,7 +122,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color of the alternating row back.
+        /// Gets the "odd" row font column.
         /// </summary>
         /// <value>The color of the alternating row back.</value>
         public static string OddFont
@@ -131,7 +131,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the color scheme.
+        /// Gets the color scheme column.
         /// </summary>
         /// <value>The color scheme.</value>
         public static string ColorScheme
@@ -140,7 +140,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the action.
+        /// Gets the action column.
         /// </summary>
         /// <value>The action.</value>
         public static string Action
