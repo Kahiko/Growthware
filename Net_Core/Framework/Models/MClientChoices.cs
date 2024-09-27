@@ -19,7 +19,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The records per page.</value>
         public static string RecordsPerPage
         {
-            get { return "recordsPerPage"; }
+            get { return "RecordsPerPage"; }
         }
 
         /// <summary>
@@ -44,18 +44,18 @@ namespace GrowthWare.Framework.Models
         /// Gets the name of the account.
         /// </summary>
         /// <value>The name of the account.</value>
-        public static string AccountName
+        public static string Account
         {
-            get { return "ACCT"; }
+            get { return "Account"; }
         }
 
         /// <summary>
         /// Gets the security entity ID.
         /// </summary>
         /// <value>The security entity ID.</value>
-        public static string SecurityEntityID
+        public static string SecurityEntityId
         {
-            get { return "SecurityEntityID"; }
+            get { return "SecurityEntityId"; }
         }
 
         /// <summary>
@@ -71,63 +71,63 @@ namespace GrowthWare.Framework.Models
         /// Gets the color of the back.
         /// </summary>
         /// <value>The color of the back.</value>
-        public static string BackColor
+        public static string Background
         {
-            get { return "BackColor"; }
-        }
-
-        /// <summary>
-        /// Gets the color of the left.
-        /// </summary>
-        /// <value>The color of the left.</value>
-        public static string LeftColor
-        {
-            get { return "LeftColor"; }
+            get { return "Background"; }
         }
 
         /// <summary>
         /// Gets the color of the head.
         /// </summary>
         /// <value>The color of the head.</value>
-        public static string HeadColor
+        public static string HeaderRow
         {
-            get { return "HeadColor"; }
+            get { return "HeaderRow"; }
         }
 
         /// <summary>
         /// Gets the color of the header fore.
         /// </summary>
         /// <value>The color of the header fore.</value>
-        public static string HeaderForeColor
+        public static string HeaderFont
         {
-            get { return "HeaderForeColor"; }
-        }
-
-        /// <summary>
-        /// Gets the color of the subhead.
-        /// </summary>
-        /// <value>The color of the subhead.</value>
-        public static string SubheadColor
-        {
-            get { return "SubHeadColor"; }
+            get { return "HeaderFont"; }
         }
 
         /// <summary>
         /// Gets the color of the row back.
         /// </summary>
         /// <value>The color of the row back.</value>
-        public static string RowBackColor
+        public static string EvenRow
         {
-            get { return "RowBackColor"; }
+            get { return "EvenRow"; }
+        }
+
+        /// <summary>
+        /// Gets the color of the row back.
+        /// </summary>
+        /// <value>The color of the row back.</value>
+        public static string EvenFont
+        {
+            get { return "EvenFont"; }
         }
 
         /// <summary>
         /// Gets the color of the alternating row back.
         /// </summary>
         /// <value>The color of the alternating row back.</value>
-        public static string AlternatingRowBackColor
+        public static string OddRow
         {
-            get { return "AlternatingRowBackColor"; }
+            get { return "OddRow"; }
+        }
+
+        /// <summary>
+        /// Gets the color of the alternating row back.
+        /// </summary>
+        /// <value>The color of the alternating row back.</value>
+        public static string OddFont
+        {
+            get { return "OddFont"; }
         }
 
         /// <summary>

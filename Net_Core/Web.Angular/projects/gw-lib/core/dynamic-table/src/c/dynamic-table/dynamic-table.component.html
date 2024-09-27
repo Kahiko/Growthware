@@ -67,10 +67,10 @@
             <caption id="caption_{{tableConfiguration.name}}"style="padding-top: 3px">{{tableConfiguration.captionText}}</caption>
           }
           <thead>
-            <tr [ngStyle]="{'background-color': clientChoices.headColor}">
+            <tr [ngStyle]="{'background-color': clientChoices.headerRow}">
               @for (column of tableConfiguration.columns; track column) {
                 <th [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
-                  <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight, 'color': clientChoices.subHeadColor }">
+                  <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight, 'color': clientChoices.headerFont }">
                     <div style="display: inline-block;">
                       @if (column.allowSearch) {
                         <input
@@ -119,7 +119,7 @@
           </thead>
           <tbody>
             @for (row of tableData$(); track row; let rowIndex = $index, isEven = $even) {
-              <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight, 'color': clientChoices.headerForeColor, 'background-color': isEven ? clientChoices.alternatingRowBackColor : (!isEven ? clientChoices.rowBackColor : null) }" [class.active-row]="rowIndex == activeRow">
+              <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight, 'color': isEven ? clientChoices.evenFont : (!isEven ? clientChoices.oddFont : null), 'background-color': isEven ? clientChoices.evenRow : (!isEven ? clientChoices.oddRow : null) }" [class.active-row]="rowIndex == activeRow">
                 @for (column of tableConfiguration.columns; track column) {
                   <td>
                     <div>

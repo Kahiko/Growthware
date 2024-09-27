@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,11 +19,11 @@ import { ISelectedableAction } from '../../selectedable-action.model';
 interface IColorSchemes {
 	color_Scheme: string;
 	even_row: string;
+	even_font: string;
 	odd_row: string;
-	row_font: string;
+	odd_font: string;
 	background: string;
-	header_Color: string;
-	// left_Color: string; // not used
+	header_row: string;
 	header_font: string;
 }
 
@@ -50,8 +49,7 @@ interface IColorSchemeColumns {
 	templateUrl: './select-preferences.component.html',
 	styleUrls: ['./select-preferences.component.scss']
 })
-export class SelectPreferencesComponent implements OnDestroy, OnInit {
-	private _Subscription: Subscription = new Subscription();
+export class SelectPreferencesComponent implements OnInit {
 
 	colorSchemeColumns: IColorSchemeColumns[] = [];
 	clientChoices: IClientChoices = new ClientChoices();
@@ -60,11 +58,11 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 	selectedAction!: string;
 
 	validColorSchemes: IColorSchemes[] = [
-		{ color_Scheme: 'Blue',   even_row: '#6699cc', odd_row: '#b6cbeb', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#b6cbeb' },
-		{ color_Scheme: 'Green',  even_row: '#c5e095', odd_row: '#879966', row_font: 'White', background: '#ffffff', header_Color: '#808577', header_font: '#879966' },
-		{ color_Scheme: 'Yellow', even_row: '#f8e094', odd_row: '#f8bc03', row_font: 'Black', background: '#ffffff', header_Color: '#CF9C00', header_font: '#f8bc03' },
-		{ color_Scheme: 'Purple', even_row: '#91619b', odd_row: '#be9cc5', row_font: 'Black', background: '#ffffff', header_Color: '#C7C7C7', header_font: '#be9cc5' },
-		{ color_Scheme: 'Red',    even_row: '#A72A49', odd_row: '#DE8587', row_font: 'White', background: '#ffffff', header_Color: '#BA706A', header_font: '#df867f' }
+		{ color_Scheme: 'Blue',   even_row: '#6699cc', even_font: 'White', odd_row: '#b6cbeb', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: 'Black' 	  },
+		{ color_Scheme: 'Green',  even_row: '#c5e095', even_font: 'Black', odd_row: '#879966', odd_font: 'White', background: '#ffffff', header_row: '#808577', header_font: 'White' 	  },
+		{ color_Scheme: 'Yellow', even_row: '#f8e094', even_font: 'Black', odd_row: '#f8bc03', odd_font: 'Black', background: '#ffffff', header_row: '#CF9C00', header_font: 'Black' 	  },
+		{ color_Scheme: 'Purple', even_row: '#91619b', even_font: 'White', odd_row: '#be9cc5', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: '#91619b' 	  },
+		{ color_Scheme: 'Red',    even_row: '#A72A49', even_font: 'White', odd_row: '#DE8587', odd_font: 'Black', background: '#ffffff', header_row: '#BA706A', header_font: 'WhiteSmoke' }
 	];
 
 	validLinks = [
@@ -78,10 +76,6 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 		private _LoggingSvc: LoggingService,
 	) {
 		this.selectedColorScheme = 'Blue';
-	}
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -113,16 +107,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 		const mSelectedColor: string = this.controls['selectedColorScheme'].getRawValue();
 		const mSelectedColorScheme = this.validColorSchemes.find(item => item.color_Scheme === mSelectedColor);
 		if (mSelectedColorScheme) {
-			this.clientChoices.alternatingRowBackColor = mSelectedColorScheme.even_row;
-			this.clientChoices.backColor = mSelectedColorScheme.background;
-			this.clientChoices.colorScheme = mSelectedColorScheme.color_Scheme;
-			this.clientChoices.headColor = mSelectedColorScheme.header_Color;
-			this.clientChoices.headerForeColor = mSelectedColorScheme.row_font;
-			this.clientChoices.leftColor = '#eeeeee'; // mSelectedColorScheme.left_Color;
-			this.clientChoices.rowBackColor = mSelectedColorScheme.odd_row;
-			this.clientChoices.subHeadColor = mSelectedColorScheme.header_font;
-			this.clientChoices.action = this.selectedAction;
-			this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
+			this.populateProfile(mSelectedColorScheme)
 			this._AccountSvc.saveClientChoices(this.clientChoices).catch(() => {
 				this._LoggingSvc.toast('Unable to save your preferences', 'Save Preferences', LogLevel.Error);
 			}).then(() => {
@@ -148,6 +133,19 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 				selectedColorScheme: ['Blue', [Validators.required]],
 			});
 		}
+	}
+
+	private populateProfile(selectedColorScheme: IColorSchemes): void {
+		this.clientChoices.colorScheme = selectedColorScheme.color_Scheme;
+		this.clientChoices.action = this.selectedAction;
+		this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
+		this.clientChoices.evenRow = selectedColorScheme.even_row;
+		this.clientChoices.evenFont = selectedColorScheme.even_font;
+		this.clientChoices.oddRow = selectedColorScheme.odd_row;
+		this.clientChoices.oddFont = selectedColorScheme.odd_font;
+		this.clientChoices.background = selectedColorScheme.background;
+		this.clientChoices.headerRow = selectedColorScheme.header_row;
+		this.clientChoices.headerFont = selectedColorScheme.header_font;
 	}
 
 	setHeaders(): void {

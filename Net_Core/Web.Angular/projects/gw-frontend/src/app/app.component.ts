@@ -55,7 +55,7 @@ export class AppComponent {
 	}
 
 	private setSkin(clientChoices: IClientChoices): void {
-		this._SecurityEntitySvc.getSecurityEntity(clientChoices.securityEntityID).then((response: ISecurityEntityProfile) => {
+		this._SecurityEntitySvc.getSecurityEntity(clientChoices.securityEntityId).then((response: ISecurityEntityProfile) => {
 			// console.log('AppComponent.setSkin.response', response);
 			this.skin.set(response.skin.toLowerCase());
 		});

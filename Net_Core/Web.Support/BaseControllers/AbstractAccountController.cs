@@ -617,22 +617,27 @@ public abstract class AbstractAccountController : ControllerBase
         if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
             MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
-            mClientChoicesState[MClientChoices.AccountName] = accountChoices.Account;
+
+            mClientChoicesState[MClientChoices.Account] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
-            mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor ?? mDefaultClientChoicesState[MClientChoices.AlternatingRowBackColor];
-            mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor ?? mDefaultClientChoicesState[MClientChoices.BackColor];
-            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme ?? mDefaultClientChoicesState[MClientChoices.ColorScheme];
-            mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor ?? mDefaultClientChoicesState[MClientChoices.HeadColor];
-            mClientChoicesState[MClientChoices.HeaderForeColor] = accountChoices.HeaderForeColor ?? mDefaultClientChoicesState[MClientChoices.HeaderForeColor];
-            mClientChoicesState[MClientChoices.LeftColor] = accountChoices.LeftColor ?? mDefaultClientChoicesState[MClientChoices.LeftColor];
-            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString() ?? mDefaultClientChoicesState[MClientChoices.RecordsPerPage];
-            mClientChoicesState[MClientChoices.RowBackColor] = accountChoices.RowBackColor ?? mDefaultClientChoicesState[MClientChoices.RowBackColor];
-            mClientChoicesState[MClientChoices.SecurityEntityID] = mSecurityEntity.Id.ToString();
+            mClientChoicesState[MClientChoices.SecurityEntityId] = mSecurityEntity.Id.ToString();
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
-            mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
+            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString() ?? mDefaultClientChoicesState[MClientChoices.RecordsPerPage];
+
+            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme ?? mDefaultClientChoicesState[MClientChoices.ColorScheme];
+            mClientChoicesState[MClientChoices.EvenRow] = accountChoices.EvenRow ?? mDefaultClientChoicesState[MClientChoices.EvenRow];
+            mClientChoicesState[MClientChoices.EvenFont] = accountChoices.EvenFont ?? mDefaultClientChoicesState[MClientChoices.EvenFont];
+
+            mClientChoicesState[MClientChoices.OddRow] = accountChoices.OddRow ?? mDefaultClientChoicesState[MClientChoices.OddRow];
+            mClientChoicesState[MClientChoices.OddFont] = accountChoices.OddFont ?? mDefaultClientChoicesState[MClientChoices.OddFont];
+
+            mClientChoicesState[MClientChoices.HeaderRow] = accountChoices.HeaderRow ?? mDefaultClientChoicesState[MClientChoices.HeaderRow];
+            mClientChoicesState[MClientChoices.HeaderFont] = accountChoices.HeaderFont ?? mDefaultClientChoicesState[MClientChoices.HeaderFont];
+
+            mClientChoicesState[MClientChoices.Background] = accountChoices.Background ?? mDefaultClientChoicesState[MClientChoices.Background];
             ClientChoicesUtility.Save(mClientChoicesState);
             AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
             UIAccountChoices mRetVal = new(mClientChoicesState);

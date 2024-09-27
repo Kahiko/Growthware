@@ -12,7 +12,7 @@ public class MClientChoicesState
 {
     Hashtable m_ClientChoices = new Hashtable(StringComparer.OrdinalIgnoreCase);
 
-    string m_AccountName;
+    string m_Account;
 
     bool m_IsDirty = false;
 
@@ -23,7 +23,7 @@ public class MClientChoicesState
     public MClientChoicesState(DataRow clientChoicesData)
         : base()
     {
-        m_AccountName = AccountName;
+        m_Account = Account;
         if (clientChoicesData != null)
         {
             try
@@ -34,7 +34,7 @@ public class MClientChoicesState
                 for (i = 0; i <= myTable.Columns.Count - 1; i++)
                 {
                     object Value = Row[myTable.Columns[i]];
-                    if (myTable.Columns[i].ToString() == "ACCT") m_AccountName = Value.ToString();
+                    if (myTable.Columns[i].ToString() == "Account") m_Account = Value.ToString();
                     m_ClientChoices[myTable.Columns[i].ToString()] = Value.ToString();
                 }
             }
@@ -49,10 +49,10 @@ public class MClientChoicesState
     /// Gets or sets the name of the account.
     /// </summary>
     /// <value>The name of the account.</value>
-    public string AccountName
+    public string Account
     {
-        get { return m_AccountName; }
-        set { m_AccountName = value; }
+        get { return m_Account; }
+        set { m_Account = value; }
     }
 
     /// <summary>

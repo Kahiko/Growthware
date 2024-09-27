@@ -4,6 +4,7 @@
 ### New Features
 - No new features added
 ### Improvements
+- Updated the color scheme information in the ClientChoices to be more consistent and useful
 ### Bug Fixes
 
 ## Net_Core Version 5.0.1.x (2024-09-26)

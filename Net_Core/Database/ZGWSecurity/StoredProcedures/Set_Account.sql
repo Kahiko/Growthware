@@ -84,6 +84,10 @@ Usage:
 -- Create date: 08/07/2024
 -- Description:	Added @P_VerificationToken
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 09/26/2024
+-- Description: Updated to match [ZGWCoreWeb].[Account_Choices] changes
+-- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_StatusSeqId INT
 	,@P_Account VARCHAR(128)
@@ -111,20 +115,20 @@ IF @P_Debug = 1 PRINT 'Start Set_Account';
 IF ISDATE(@P_Password_Last_Set) = 0 SET @P_Password_Last_Set = GETDATE();
 IF ISDATE(@P_Last_Login) = 0 SET @P_Last_Login = NULL;
 
-DECLARE @VSecurityEntitySeqId VARCHAR(1)
-	,@V_SecurityEntityName VARCHAR(50)
-	,@V_BackColor VARCHAR(15)
-	,@V_LeftColor VARCHAR(15)
-	,@V_HeadColor VARCHAR(15)
-	,@V_HeaderForeColor VARCHAR(15)
-	,@V_SubHeadColor VARCHAR(15)
-	,@V_RowBackColor VARCHAR(15)
-	,@V_AlternatingRowBackColor VARCHAR(15)
-	,@V_ColorScheme VARCHAR(15)
-	,@V_FavoriteAction VARCHAR(25)
-	,@V_recordsPerPage VARCHAR(1000)
-	,@V_Default_Account VARCHAR(50)
-	,@V_Now DATETIME = GETDATE()
+DECLARE @V_SecurityEntityId int
+		, @V_SecurityEntityName VARCHAR(256)
+		, @V_ColorScheme VARCHAR(15)
+		, @V_EvenRow VARCHAR(15)
+		, @V_EvenFont VARCHAR(15)
+		, @V_OddRow VARCHAR(15)
+		, @V_OddFont VARCHAR(15)
+		, @V_HeaderRow VARCHAR(15)
+		, @V_HeaderFont VARCHAR(15)
+		, @V_Background VARCHAR(15)
+		, @V_FavoriteAction VARCHAR(50)
+		, @V_RecordsPerPage int
+		, @V_Default_Account VARCHAR(50)
+		, @V_Now DATETIME = GETDATE()
 
 IF @P_AccountSeqId > - 1
 BEGIN
@@ -231,19 +235,19 @@ BEGIN
 					PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX), @V_Default_Account)
 
 				SELECT -- FILL THE DEFAULT VALUES
-					@VSecurityEntitySeqId = SecurityEntityID
-					,@V_SecurityEntityName = SecurityEntityName
-					,@V_BackColor = BackColor
-					,@V_LeftColor = LeftColor
-					,@V_HeadColor = HeadColor
-					,@V_HeaderForeColor = HeaderForeColor
-					,@V_SubHeadColor = SubHeadColor
-					,@V_RowBackColor = RowBackColor
-					,@V_AlternatingRowBackColor = AlternatingRowBackColor
-					,@V_ColorScheme = ColorScheme
-					,@V_FavoriteAction = FavoriteAction
-					,@V_recordsPerPage = recordsPerPage
-				FROM [ZGWCoreWeb].Account_Choices
+					  @V_SecurityEntityId = [SecurityEntityId]
+					, @V_SecurityEntityName = [SecurityEntityName]
+					, @V_ColorScheme = [ColorScheme]
+					, @V_EvenRow = [EvenRow]
+					, @V_EvenFont = [EvenFont]
+					, @V_OddRow = [OddRow]
+					, @V_OddFont = [OddFont]
+					, @V_HeaderRow = [HeaderRow]
+					, @V_HeaderFont = [HeaderFont]
+					, @V_Background = [Background]
+					, @V_FavoriteAction = [FavoriteAction]
+					, @V_RecordsPerPage = [RecordsPerPage]
+				FROM [ZGWCoreWeb].[Account_Choices]
 				WHERE Account = @V_Default_Account
 			END
 			ELSE
@@ -251,18 +255,18 @@ BEGIN
 				IF @P_Debug = 1
 					PRINT 'Populating default values minimum values'
 
-				SET @VSecurityEntitySeqId = (
+				SET @V_SecurityEntityId = (
 						SELECT MIN(SecurityEntitySeqId)
-						FROM ZGWSecurity.Security_Entities
+						FROM [ZGWSecurity].[Security_Entities]
 					);
 				SET @V_SecurityEntityName = (
 						SELECT [Name]
-						FROM ZGWSecurity.Security_Entities
-						WHERE SecurityEntitySeqId = @VSecurityEntitySeqId
+						FROM [ZGWSecurity].[Security_Entities]
+						WHERE SecurityEntitySeqId = @V_SecurityEntityId
 					);
 
-				IF @VSecurityEntitySeqId = NULL
-					SET @VSecurityEntitySeqId = 1
+				IF @V_SecurityEntityId = NULL
+					SET @V_SecurityEntityId = 1
 
 				IF @V_SecurityEntityName = NULL
 					SET @V_SecurityEntityName = 'System'
@@ -273,18 +277,18 @@ BEGIN
 				PRINT 'Executing ZGWCoreWeb.Set_Account_Choices'
 
 			EXEC ZGWCoreWeb.Set_Account_Choices @P_Account
-				,@VSecurityEntitySeqId
-				,@V_SecurityEntityName
-				,@V_BackColor
-				,@V_LeftColor
-				,@V_HeadColor
-				,@V_HeaderForeColor
-				,@V_SubHeadColor
-				,@V_RowBackColor
-				,@V_AlternatingRowBackColor
-				,@V_ColorScheme
-				,@V_FavoriteAction
-				,@V_recordsPerPage
+				, @V_SecurityEntityId
+				, @V_SecurityEntityName
+				, @V_ColorScheme
+				, @V_EvenRow
+				, @V_EvenFont
+				, @V_OddRow
+				, @V_OddFont
+				, @V_HeaderRow
+				, @V_HeaderFont
+				, @V_Background
+				, @V_FavoriteAction
+				, @V_RecordsPerPage
 		END
 		--END IF
 	END
@@ -327,5 +331,4 @@ IF @P_Debug = 1
 */
 SET NOCOUNT OFF;
 IF @P_Debug = 1 PRINT 'End Set_Account';
-
 GO
