@@ -21,13 +21,12 @@ export class ClientChoices implements IClientChoices {
 	securityEntityId = 1;
 	securityEntityName = '';
 	recordsPerPage = 10;
-
     colorScheme = 'Blue';
     evenRow = '#6699cc';
     evenFont = 'White';
     oddRow = '#b6cbeb';
-    oddFont = 'black';
+    oddFont = 'Black';
     background = '#ffffff';
     headerRow = '#C7C7C7';
-    headerFont = '#b6cbeb';
+    headerFont = 'Black';
 }
