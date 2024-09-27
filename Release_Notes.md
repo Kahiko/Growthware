@@ -5,7 +5,10 @@
 - No new features added
 ### Improvements
 - Updated the color scheme information in the ClientChoices to be more consistent and useful
+
 ### Bug Fixes
+- There is an issue where the refresh token is being revoked when it shouldn't be
+- Fixed where "Delete roles" pick list allItemsText was blank
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
