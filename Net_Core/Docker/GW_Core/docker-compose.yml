@@ -13,7 +13,7 @@ services:
     build:
       context: code
     container_name: growthware-code
-    image: growthware-code:4.1.0.0   # Tag specified here
+    image: growthware-code:5.1.0.0   # Tag specified here
     depends_on:
       - growthware-db
     command: sleep infinity # Overrides default command so things don't shut down after the process ends.
@@ -34,7 +34,7 @@ services:
       - growthware-db-volume:/var/opt/mssql
     ports:
       - "11433:1433"
-    image: growthware-db:4.1.0.0  # Tag specified here
+    image: growthware-db:5.1.0.0  # Tag specified here
     networks:
       - growthware-backend
 
