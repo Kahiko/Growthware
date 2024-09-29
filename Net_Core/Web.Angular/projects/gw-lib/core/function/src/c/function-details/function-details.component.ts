@@ -18,8 +18,9 @@ import {
 	moveItemInArray,
 } from '@angular/cdk/drag-drop';
 // Library
-import { AccountService, IClientChoices } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
+import { IClientChoices } from '@growthware/core/clientchoices'
 import { GroupService } from '@growthware/core/group';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService, IModalOptions, ModalOptions } from '@growthware/core/modal';

@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
-// import { GWCommon } from '@growthware/common/services';
+import { ClientChoicesService, IClientChoices } from '@growthware/core/clientchoices';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -52,6 +52,7 @@ export class RoleDetailsComponent implements OnInit {
 	pickListTableHeaderBackground = '#b6cbeb';
 
 	constructor(
+		private _ClientChoicesSvc: ClientChoicesService,
 		private _FormBuilder: FormBuilder,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
@@ -63,6 +64,11 @@ export class RoleDetailsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		const mClientChoices: IClientChoices = this._ClientChoicesSvc.getClientChoices();
+		this.pickListTableContentsBackground = mClientChoices.evenRow;
+		this.pickListTableContentsFont = mClientChoices.evenFont;
+		this.pickListTableHeaderBackground = mClientChoices.oddRow;
+
 		this._SecuritySvc.getSecurityInfo('Search_Roles').then((securityInfo: ISecurityInfo) => { // Request #1
 			// Response Hendler #1
 			// console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);

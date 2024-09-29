@@ -6,7 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { AccountService, IClientChoices } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
+import { IClientChoices } from '@growthware/core/clientchoices'
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { SecurityEntityService } from '../../security-entity.service';

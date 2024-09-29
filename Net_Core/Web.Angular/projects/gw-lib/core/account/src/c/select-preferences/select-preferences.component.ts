@@ -9,11 +9,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
+import { ClientChoices, IClientChoices } from '@growthware/core/clientchoices';
 import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
 import { AccountService } from '../../account.service';
-import { ClientChoices, IClientChoices } from '../../client-choices.model';
 import { ISelectedableAction } from '../../selectedable-action.model';
 
 interface IColorSchemes {

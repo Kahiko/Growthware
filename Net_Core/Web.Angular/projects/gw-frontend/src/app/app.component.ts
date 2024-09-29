@@ -4,7 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
-import { AccountService, IAccountInformation, IClientChoices } from '@growthware/core/account';
+import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { IClientChoices } from '@growthware/core/clientchoices';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 // Application Modules (UI Skins)

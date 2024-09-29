@@ -215,10 +215,9 @@ Library: (core) From Web.Angular
 		ng generate component --path=projects/gw-lib/core/account/src c/UpdateAnonymousProfile 	--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/VerifyAccount			--standalone --style scss --project gw-lib
 		ng generate service   --path=projects/gw-lib/core/account/src account --project gw-lib
-	Sort By:
-			*ng generate module features/sortBy --project gw-lib
-			*ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib
-			*ng generate service features/sort-by/sortBy --project gw-lib
+	clientChoices
+		ng generate interface --path=projects/gw-lib/core/clientchoices/src IClientChoices --type model --project gw-lib
+		ng generate service   --path=projects/gw-lib/core/clientchoices/src clientChoices  --project gw-lib
 	Navigation:
 			https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
 			https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts

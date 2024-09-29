@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
+import { IClientChoices, ClientChoices } from '@growthware/core/clientchoices';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
@@ -11,7 +12,6 @@ import { SearchService } from '@growthware/core/search';
 import { IAccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
-import { IClientChoices, ClientChoices } from './client-choices.model';
 import { ISelectedableAction } from './selectedable-action.model';
 import { SelectedRow } from './selected-row.model';
 

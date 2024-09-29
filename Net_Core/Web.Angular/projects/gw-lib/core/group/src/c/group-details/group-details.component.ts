@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatLineModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
+import { ClientChoicesService, IClientChoices } from '@growthware/core/clientchoices';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -53,6 +54,7 @@ export class GroupDetailsComponent implements OnInit {
 	pickListTableHeaderBackground = '#b6cbeb';
 
 	constructor(
+		private _ClientChoicesSvc: ClientChoicesService,
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,
 		private _LoggingSvc: LoggingService,
@@ -62,6 +64,11 @@ export class GroupDetailsComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
+		const mClientChoices: IClientChoices = this._ClientChoicesSvc.getClientChoices();
+		this.pickListTableContentsBackground = mClientChoices.evenRow;
+		this.pickListTableContentsFont = mClientChoices.evenFont;
+		this.pickListTableHeaderBackground = mClientChoices.oddRow;
+		
 		let mIdToGet = -1;
 		if (this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
 			// console.log('selectedRow', this._GroupSvc.selectedRow);

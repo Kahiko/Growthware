@@ -5,11 +5,14 @@
 - No new features added
 ### Improvements
 - Updated the color scheme information in the ClientChoices to be more consistent and useful
+- Added the ClientChoices feature in order to access the ClientChoices object without causing a circular dependency in the GroupDetailsComponent and RoleDetailsComponent.
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
 
 ### Bug Fixes
-- There is an issue where the refresh token is being revoked when it shouldn't be
 - Fixed where "Delete roles" pick list allItemsText was blank
-- Set the color properties for the PickListComponent in AccountDetailsComponent, GroupDetailsComponent and RoleDetailsComponent.  Note this is hard coded because it would cause a circular ref. issue otherwise.
+- Set the color properties for the PickListComponent in AccountDetailsComponent, GroupDetailsComponent and RoleDetailsComponent.
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
