@@ -9,6 +9,7 @@
 ### Bug Fixes
 - There is an issue where the refresh token is being revoked when it shouldn't be
 - Fixed where "Delete roles" pick list allItemsText was blank
+- Set the color properties for the PickListComponent in AccountDetailsComponent, GroupDetailsComponent and RoleDetailsComponent.  Note this is hard coded because it would cause a circular ref. issue otherwise.
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 

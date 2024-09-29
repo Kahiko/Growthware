@@ -47,6 +47,10 @@ export class RoleDetailsComponent implements OnInit {
 	securityInfo!: ISecurityInfo;
 	selectedRoles: Array<string> = [];
 
+	pickListTableContentsBackground = '#6699cc';
+	pickListTableContentsFont = 'White';
+	pickListTableHeaderBackground = '#b6cbeb';
+
 	constructor(
 		private _FormBuilder: FormBuilder,
 		private _LoggingSvc: LoggingService,

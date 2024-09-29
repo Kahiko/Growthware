@@ -48,6 +48,10 @@ export class GroupDetailsComponent implements OnInit {
 	availableRoles: Array<string> = [];
 	selectedRoles: Array<string> = [];
 
+	pickListTableContentsBackground = '#6699cc';
+	pickListTableContentsFont = 'White';
+	pickListTableHeaderBackground = '#b6cbeb';
+
 	constructor(
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,

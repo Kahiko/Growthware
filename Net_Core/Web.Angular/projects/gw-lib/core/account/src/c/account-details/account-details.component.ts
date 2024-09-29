@@ -76,6 +76,10 @@ export class AccountDetailsComponent implements OnInit {
   litLastNameWarning: string = '';
   litStatusWarning: string = '';
 
+	pickListTableContentsBackground = this._AccountSvc.clientChoices().evenRow;
+	pickListTableContentsFont = this._AccountSvc.clientChoices().evenFont;
+	pickListTableHeaderBackground = this._AccountSvc.clientChoices().oddRow;
+
   rolesAvailable: Array<string> = ['one', 'two'];
   rolesSelected: Array<string> = [];
   rolesPickListName: string = 'roles';
