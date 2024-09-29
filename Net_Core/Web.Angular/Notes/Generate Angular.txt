@@ -215,7 +215,7 @@ Library: (core) From Web.Angular
 		ng generate component --path=projects/gw-lib/core/account/src c/UpdateAnonymousProfile 	--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/VerifyAccount			--standalone --style scss --project gw-lib
 		ng generate service   --path=projects/gw-lib/core/account/src account --project gw-lib
-	clientChoices
+	ClientChoices
 		ng generate interface --path=projects/gw-lib/core/clientchoices/src IClientChoices --type model --project gw-lib
 		ng generate service   --path=projects/gw-lib/core/clientchoices/src clientChoices  --project gw-lib
 	Navigation:
