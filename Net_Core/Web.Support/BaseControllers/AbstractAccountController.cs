@@ -277,7 +277,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetSelectableActions")]
     public List<UISelectedableAction> GetSelectableActions()
     {
-        List<string> mExcludedActions = new List<string>() { "favorite", "logoff", "logon" };
+        List<string> mExcludedActions = new List<string>() { "api", "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
         IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
