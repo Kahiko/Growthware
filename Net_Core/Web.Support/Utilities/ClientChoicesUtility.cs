@@ -168,7 +168,7 @@ public static class ClientChoicesUtility
     /// <remarks>Calls getClientChoicesState to ensure the Session/Cache matches for the given account.</remarks>
     public static void Save(MClientChoicesState clientChoicesState)
     {
-        if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
+        if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
         BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
         mBusinessLayer.Save(clientChoicesState);
         getClientChoicesState(clientChoicesState.Account);

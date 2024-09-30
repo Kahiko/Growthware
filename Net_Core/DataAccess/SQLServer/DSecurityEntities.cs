@@ -45,8 +45,8 @@ namespace GrowthWare.DataAccess.SQLServer
 
         DataTable ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)
         {
-            if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!"); };
-            if (SecurityEntityID == -1) { throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
+            if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!"); };
+            if (SecurityEntityID == -1) { throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
             string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] mParameters =
             {
@@ -60,8 +60,8 @@ namespace GrowthWare.DataAccess.SQLServer
 
         DataTable ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
         {
-            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!");
-            if (SecurityEntityID == -1) throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID must be greater than -1");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!");
+            if (SecurityEntityID == -1) throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID must be greater than -1");
 
             string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] myParameters =
@@ -75,7 +75,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         int ISecurityEntities.Save(MSecurityEntity profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile can not be nothing");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be nothing");
             SqlParameter mPrimaryKey = GetSqlParameter("@P_PRIMARY_KEY", null, ParameterDirection.Output);
             mPrimaryKey.Size = 10;
             string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";

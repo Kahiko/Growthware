@@ -70,7 +70,7 @@ public class BSearch : AbstractBusinessLogic
     {
         if (securityEntityProfile == null)
         {
-            throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         if (!ConfigSettings.CentralManagement)
         {
@@ -89,7 +89,7 @@ public class BSearch : AbstractBusinessLogic
     }
     public DataTable GetSearchResults(MSearchCriteria searchCriteria)
     {
-        if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
+        if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
         return m_DSearch.GetSearchResults(searchCriteria);
     }
 }

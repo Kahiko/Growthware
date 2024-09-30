@@ -95,7 +95,7 @@ public abstract class AbstractController : ControllerBase
     public ActionResult<MSecurityInfo> GetSecurityInfo(string action)
     {
         MSecurityInfo mSecurityInfo = new MSecurityInfo();
-        if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException("action", " can not be null or blank!");
+        if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException(nameof(action), " can not be null or blank!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)

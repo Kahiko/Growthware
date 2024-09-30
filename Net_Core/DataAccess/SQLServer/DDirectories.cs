@@ -24,7 +24,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         void IDirectories.Save(MDirectoryProfile profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
             String mStoredProcedure = "ZGWOptional.Set_Directory";
             SqlParameter[] mParameters =
 			{

@@ -23,7 +23,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         DataTable ISearch.GetSearchResults(MSearchCriteria searchCriteria)
         {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
+            if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
             string mOrderByClause = Regex.Replace(searchCriteria.OrderByClause, @"<[^>]+>|&nbsp;", "").Trim();
             mOrderByClause = mOrderByClause.Replace("\r\n", "");

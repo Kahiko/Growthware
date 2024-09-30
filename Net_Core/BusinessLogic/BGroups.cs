@@ -74,7 +74,7 @@ public class BGroups : AbstractBusinessLogic
     {
         if (securityEntityProfile == null)
         {
-            throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
         m_DGroups.ConnectionString = securityEntityProfile.ConnectionString;
@@ -101,7 +101,7 @@ public class BGroups : AbstractBusinessLogic
     /// <returns>System.Int32.</returns>
     public void AddGroup(MGroupProfile profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DGroups.Profile = profile;
         if (DatabaseIsOnline()) m_DGroups.AddGroup();
     }
@@ -127,7 +127,7 @@ public class BGroups : AbstractBusinessLogic
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
     public bool DeleteGroup(MGroupProfile profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         bool retVal = false;
         m_DGroups.Profile = profile;
         if (DatabaseIsOnline()) retVal = m_DGroups.DeleteGroup();
@@ -141,7 +141,7 @@ public class BGroups : AbstractBusinessLogic
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
     public int Save(MGroupProfile profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         int mRetVal = 0;
         m_DGroups.Profile = profile;
         if (DatabaseIsOnline())
@@ -158,7 +158,7 @@ public class BGroups : AbstractBusinessLogic
     /// <returns>System.String[][].</returns>
     public string[] GetSelectedRoles(MGroupRoles profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         ArrayList ClientRoles = new ArrayList();
         m_DGroups.GroupRolesProfile = profile;
         DataTable myDataTable = null;
@@ -189,7 +189,7 @@ public class BGroups : AbstractBusinessLogic
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
     public bool UpdateGroupRoles(MGroupRoles profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         bool mRetVal = false;
         m_DGroups.GroupRolesProfile = profile;
         if (DatabaseIsOnline()) mRetVal = m_DGroups.UpdateGroupRoles();

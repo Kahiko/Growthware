@@ -29,7 +29,7 @@ public class DLogging : AbstractDBInteraction, ILogging
 
     void ILogging.Save(MLoggingProfile profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         String mStoredProcedure = "[ZGWSystem].[Set_Log]";
         SqlParameter[] mParameters =
         {

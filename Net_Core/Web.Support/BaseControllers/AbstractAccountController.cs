@@ -74,7 +74,7 @@ public abstract class AbstractAccountController : ControllerBase
         // it is possible for data to be associated with an account outside the realms of this
         // application and deleting it here could be quite an issue
 
-        if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        if (accountSeqId < 1) throw new ArgumentNullException(nameof(accountSeqId), " must be a positive number!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -163,7 +163,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         if (String.IsNullOrWhiteSpace(account)) 
         {
-            ArgumentNullException mArgumentNullException = new ("account", " account can not be null or empty");
+            ArgumentNullException mArgumentNullException = new (nameof(account), " account can not be null or empty");
             m_Logger.Error(mArgumentNullException);
             return StatusCode(StatusCodes.Status400BadRequest, mArgumentNullException.Message);
 
@@ -461,7 +461,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("Register")]
     public IActionResult Register(MAccountProfile accountProfile)
     {
-        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
@@ -556,7 +556,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         // requesting profile same as 
         bool mRetVal = false;
-        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Account)) throw new ArgumentNullException("Account", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
@@ -614,7 +614,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("SaveClientChoices")]
     public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
     {
-        if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
+        if (accountChoices == null) throw new ArgumentNullException(nameof(accountChoices), "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);

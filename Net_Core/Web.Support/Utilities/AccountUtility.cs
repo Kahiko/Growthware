@@ -86,8 +86,8 @@ public static class AccountUtility
     /// <returns>MAccountProfile or null</returns>
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password), "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
         MAccountProfile mRetVal = null;
         if (account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
@@ -270,7 +270,7 @@ public static class AccountUtility
     /// <exception cref="ArgumentNullException"></exception>
     public static string GetMenuData(string account, MenuType menuType)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         string mMenuName = menuType.ToString() + "_" + account + "_Menu_Data";
         string mRetVal = getFromCacheOrSession<string>(account, mMenuName);
         if (mRetVal != default)
@@ -296,7 +296,7 @@ public static class AccountUtility
     /// <exception cref="ArgumentNullException">he type of menu (e.g., Hierarchical, Horizontal, or Vertical) to retrieve the menu items for.</exception>
     public static IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
         string mMenuName = menuType.ToString() + "_" + account + "_Menu";
         mRetVal = getFromCacheOrSession<IList<MMenuTree>>(account, mMenuName);

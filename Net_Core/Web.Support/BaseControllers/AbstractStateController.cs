@@ -36,7 +36,7 @@ public abstract class AbstractStateController : ControllerBase
     [HttpPost("Save")]
     public ActionResult<bool> Save(MState state)
     {
-        if (state == null) throw new ArgumentNullException("state", " can not be null!");
+        if (state == null) throw new ArgumentNullException(nameof(state), " can not be null!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        

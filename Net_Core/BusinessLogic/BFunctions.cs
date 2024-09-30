@@ -159,7 +159,7 @@ namespace GrowthWare.BusinessLogic
         /// <returns>System.Int32.</returns>
         public int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
             if (DatabaseIsOnline()) 
             {
                 m_DFunctions.Profile = profile;

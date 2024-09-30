@@ -92,7 +92,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     {
         if (securityEntityProfile == null)
         {
-            throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities");
         m_DSecurityEntities.ConnectionString = securityEntityProfile.ConnectionString;
@@ -158,7 +158,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <returns>Integer</returns>
     public int Save(MSecurityEntity profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) profile.Id = m_DSecurityEntities.Save(profile);
         return profile.Id;
     }
@@ -172,7 +172,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     public MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
     {
         MRegistrationInformation mRetVal = profile;
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) mRetVal = new(m_DSecurityEntities.SaveRegistrationInformation(profile));
         return mRetVal;
     }

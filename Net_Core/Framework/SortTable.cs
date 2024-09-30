@@ -46,8 +46,8 @@ namespace GrowthWare.Framework
         /// <param name="sortDirection">The sort direction.</param>
         public void Sort(DataTable dataTable, DataColumn dataColumn, string sortDirection)
         {
-            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable cannot be a null reference (Nothing in Visual Basic)!");
-            if (dataColumn == null) throw new ArgumentNullException("dataColumn", "dataColumn cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataTable == null) throw new ArgumentNullException(nameof(dataTable), "dataTable cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataColumn == null) throw new ArgumentNullException(nameof(dataColumn), "dataColumn cannot be a null reference (Nothing in Visual Basic)!");
             m_StartTime = DateTime.Now;
             int rowCount = dataTable.Rows.Count - 1;
             string[] sortValues = new string[rowCount + 1];
@@ -84,8 +84,8 @@ namespace GrowthWare.Framework
         /// <remarks>Calls Sort passing "ASC" as sortDirection</remarks>
         public void Sort(DataTable dataTable, DataColumn dataColumn)
         {
-            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable cannot be a null reference (Nothing in Visual Basic)!");
-            if (dataColumn == null) throw new ArgumentNullException("dataColumn", "dataColumn cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataTable == null) throw new ArgumentNullException(nameof(dataTable), "dataTable cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataColumn == null) throw new ArgumentNullException(nameof(dataColumn), "dataColumn cannot be a null reference (Nothing in Visual Basic)!");
             Sort(dataTable,dataColumn,"ASC");
         }
 
@@ -97,8 +97,8 @@ namespace GrowthWare.Framework
         /// <param name="sortDirection">The sort direction.</param>
         public void Sort(DataTable dataTable, string columnName, string sortDirection)
         {
-            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable cannot be a null reference (Nothing in Visual Basic)!");
-            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("columnName", "columnName cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataTable == null) throw new ArgumentNullException(nameof(dataTable), "dataTable cannot be a null reference (Nothing in Visual Basic)!");
+            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException(nameof(columnName), "columnName cannot be a null reference (Nothing in Visual Basic)!");
             m_StartTime = DateTime.Now;
             int rowCount = dataTable.Rows.Count - 1;
             string[] sortValues = new string[rowCount + 1];
@@ -135,8 +135,8 @@ namespace GrowthWare.Framework
         /// <remarks>Calls Sort passing sortDirection of "ASC"</remarks>
         public void Sort(DataTable dataTable, string columnName) 
         {
-            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable cannot be a null reference (Nothing in Visual Basic)!");
-            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("columnName", "columnName cannot be a null reference (Nothing in Visual Basic)!");
+            if (dataTable == null) throw new ArgumentNullException(nameof(dataTable), "dataTable cannot be a null reference (Nothing in Visual Basic)!");
+            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException(nameof(columnName), "columnName cannot be a null reference (Nothing in Visual Basic)!");
             Sort(dataTable, columnName, "ASC");
         }
     }
