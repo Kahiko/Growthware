@@ -5,7 +5,7 @@ IF "%~2"=="" GOTO NoPassword
 REM Docker Login
 :Password
 REM The password is a previously generated access token
-REM The token looks simular to: "dckr_pat_?"
+REM The token looks simular to: "dckr_pat_?????????????????????????"
 docker login -u kahiko -p %2
 GOTO DoneLogin
 :NoPassword
