@@ -30,14 +30,14 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Registration - Internal</td>
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Registration - Google</td>
@@ -116,7 +116,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Roles by SE</td>
@@ -124,7 +124,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Groups by SE</td>
@@ -132,7 +132,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Functions</td>
@@ -140,7 +140,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Associate Roles/Groups to Functions/Pages</td>
@@ -148,7 +148,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Associate Roles/Groups to Accounts</td>
@@ -156,7 +156,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
     </tbody>
 </table>
@@ -195,7 +195,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Logging - File</td>
@@ -219,7 +219,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Multi-Tenant</td>
@@ -227,7 +227,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Multiple datastore technology</td>
@@ -235,7 +235,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>File Manager</td>
@@ -243,7 +243,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>In-memory storage (Cache/Session)</td>
