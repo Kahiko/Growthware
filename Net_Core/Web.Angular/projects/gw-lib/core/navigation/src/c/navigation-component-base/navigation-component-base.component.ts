@@ -79,6 +79,7 @@ export abstract class NavigationComponentBase implements OnInit {
             mNavLinks.push(this.populateNavLink(item));
           })
           this.menuData.update(() => mNavLinks);
+          this.firstLevel.nativeElement.innerHTML = ''
           this._GWCommon.buildUL(this.firstLevel.nativeElement, mNavItems, (action: string) => { return this.onItemSelected(action);});
         }).catch((error: HttpErrorResponse) => {
           // console.log('error', error);

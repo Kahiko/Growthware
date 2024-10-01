@@ -15,6 +15,7 @@
 - Set the color properties for the PickListComponent in AccountDetailsComponent, GroupDetailsComponent and RoleDetailsComponent.
 - Fixed "API" being displayed in the "Favorite Link" drop down of Select Preferences.
 - Fixed NG8109: securityEntityTranslation is a function in SecurityEntityDetailsComponent
+- Fixed NavigationComponentBase was doubling the flyout navigation
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
