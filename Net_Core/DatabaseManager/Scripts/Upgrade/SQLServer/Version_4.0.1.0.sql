@@ -1,7 +1,7 @@
 -- Upgrade script for version 4.0.1.0
 SET NOCOUNT ON;
 
-DECLARE @V_MessageSeqId INT = (SELECT [MessageSeqId] from [ZGWCoreWeb].[Messages] where [Name] = 'RequestNewPassword');
+DECLARE @V_MessageSeqId INT = (SELECT [MessageSeqId] FROM [ZGWCoreWeb].[Messages] WHERE [SecurityEntitySeqId] = 1 AND [Name] = 'RequestNewPassword');
 
 ALTER TABLE [ZGWSecurity].[Accounts] ALTER COLUMN [ResetToken] VARCHAR(256);
 

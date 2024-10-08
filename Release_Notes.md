@@ -17,6 +17,7 @@
 - Fixed "API" being displayed in the "Favorite Link" drop down of Select Preferences.
 - Fixed NG8109: securityEntityTranslation is a function in SecurityEntityDetailsComponent
 - Fixed NavigationComponentBase was doubling the flyout navigation
+- Fixed Setting @V_MessageSeqId in upgrade/downgrade Version_4_0_1_0.sql can return more than 1 entry in the sub query
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
