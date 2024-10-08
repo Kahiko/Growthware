@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { provideNativeDateAdapter } from '@angular/material/core';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { LogLevel } from '@growthware/core/logging';
@@ -24,12 +26,16 @@ import { INameValuePair, NameValuePair } from '@growthware/common/interfaces';
 @Component({
   selector: 'gw-core-event-details',
   standalone: true,
+  providers: [
+    provideNativeDateAdapter(),
+  ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
     // Angular Material
     MatButtonModule,
     MatCheckboxModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
@@ -46,8 +52,8 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
 
   private _Action: string = '';
   private _Profile!: ICalendarEvent;
-
   endDate!: Date;
+  readonly selectedEventDate = new FormControl(new Date());
   selectedColor: string = 'Blue';
   startDate!: Date;
   validColors: INameValuePair[] = [];
@@ -95,6 +101,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override createForm(): void {
+    this.selectedEventDate.setValue(new Date(this._Profile.start));
     this.selectedColor = this._Profile.color;  
     this.endDate = new Date(this._Profile.end);
     this.startDate = new Date(this._Profile.start);
@@ -137,6 +144,10 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override populateProfile(): void {
+    if (this.selectedEventDate.value) {
+      const mNewDate = new Date(this.selectedEventDate.value);
+      this.startDate.setFullYear(mNewDate.getFullYear(), mNewDate.getMonth(), mNewDate.getDate());
+    }
     this._Profile.allDay = this.controls['allDay'].getRawValue();
     this._Profile.color = this.selectedColor;
     this._Profile.description = this.controls['description'].getRawValue();

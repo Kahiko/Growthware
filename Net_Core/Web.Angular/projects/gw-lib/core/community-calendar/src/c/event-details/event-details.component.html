@@ -3,6 +3,22 @@
         <mat-tab label="Details">
             <div class="mat-tab__container">
                 <div class="mat-tab__content formSectionContents containerSize">
+                    <div class="table">
+                        <div class="tr">
+                            <div class="td firstCell left">
+                                <mat-form-field>
+                                    <mat-label>Angular forms</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [formControl]="selectedEventDate">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="td middleCell"></div>
+                            <div class="td left">
+                            </div>
+                        </div>
+                    </div>
                     <gw-core-time-picker [endDate]=endDate [startDate]=startDate (timeRangeSelected)="timeRangeSelected($event)" />
                     <div class="table">
                         <div class="tr">
@@ -78,7 +94,6 @@
             </div>
         </mat-tab>
     </mat-tab-group>
-    <br/>
     <div class="buttonRow">
         @if (canSave) {
             <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">

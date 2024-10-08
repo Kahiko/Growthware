@@ -1,11 +1,12 @@
 # Release Notes
-## Net_Core Version 5.0.1.x (yyyy-mm-dd)
+## Net_Core Version 5.1.0.x (yyyy-mm-dd)
 
 ### New Features
 - No new features added
 ### Improvements
 - Updated the color scheme information in the ClientChoices to be more consistent and useful
 - Added the ClientChoices feature in order to access the ClientChoices object without causing a circular dependency in the GroupDetailsComponent and RoleDetailsComponent.
+- Can now change the event date in the Event Details Component
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

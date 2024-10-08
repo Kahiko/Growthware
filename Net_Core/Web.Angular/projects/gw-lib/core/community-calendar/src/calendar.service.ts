@@ -296,44 +296,40 @@ export class CalendarService extends BaseService {
 			// console.log('mParameters.calendarEvent.end After :', mParameters.calendarEvent.end);
 			this._HttpClient.post<ICalendarEvent>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
 				next: (response: ICalendarEvent) => {
+					// Get a working copy of the canendar data
 					const mCalendarData = this.calendarData$();
+					/**
+					 * If the id is greater than 0, then it is an update and needs to be removed so it can be added again.
+					 * Doing so accounts for when an event date changes.
+					 */
 					if (calendarEvent.id > 0) {
 						// Update with response
-						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
-							const mDays = mCalendarData.weeks[mWeekIndex].days;
-							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
-								const mDay = mDays[mDayIndex];
+						// 1.) Remove the Event from the current month it may have changed dates
+						for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
+							mCalendarData.weeks[mWeekIndex].days.forEach(mDay => {
 								if (mDay.events) {
-									const mEvents = mDay.events;
-									for (let mEvenIndex = 0; mEvenIndex < mEvents.length; mEvenIndex++) {
-										const mEvent = mEvents[mEvenIndex];
-										if (mEvent && mEvent.id === response.id) {
-											mEvents[mEvenIndex] = response;
-											mDay.events.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-											break outerLoop;
-										}
-									}
+									mDay.events = mDay.events.filter(obj => obj.id !== response.id);
 								}
-							}
+							})
 						}
-					} else {
-						// Add response
-						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
-							const mDays = mCalendarData.weeks[mWeekIndex].days;
-							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
-								const mDay = mDays[mDayIndex];
-								if (this._GWCommon.datesEqual(mDay.date, new Date(response.start))) {
-									if (mDay.events) {
-										mDay.events.push(response);
-										mDay.events.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-									} else {
-										mDay.events = [response];
-									}
-									break outerLoop;
+					}
+					// Add response
+					outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
+						const mDays = mCalendarData.weeks[mWeekIndex].days;
+						for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
+							const mDay = mDays[mDayIndex];
+							if (this._GWCommon.datesEqual(mDay.date, new Date(response.start))) {
+								if (mDay.events) {
+									mDay.events.push(response);
+									mDay.events.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+								} else {
+									mDay.events = [response];
 								}
+								break outerLoop;
 							}
 						}
 					}
+					// Update the calendar signal with the updated data
 					this.calendarData$.update(() => mCalendarData);
 					resolve(true);
 				},
