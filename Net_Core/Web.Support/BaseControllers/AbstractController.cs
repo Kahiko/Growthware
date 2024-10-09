@@ -7,6 +7,7 @@ using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Framework.Enumerations;
+using System.Linq;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -118,7 +119,20 @@ public abstract class AbstractController : ControllerBase
     [HttpPost("Log")]
     public bool Log(MLoggingProfile profile)
     {
-        LoggingUtility.Save(profile);
+        if (profile.Destination != null) {
+            if (profile.Destination.Contains(LogDestination.DB)) 
+            {
+                LoggingUtility.Save(profile);
+            }
+            if (profile.Destination.Contains(LogDestination.File)) 
+            {
+                this.m_Logger.Log(profile.Msg, (LogPriority)Enum.Parse(typeof(LogPriority), profile.Level));
+            }
+        } 
+        else 
+        {
+            this.m_Logger.Log(profile.Msg, (LogPriority)Enum.Parse(typeof(LogPriority), profile.Level));
+        }
         return true;
     }
 

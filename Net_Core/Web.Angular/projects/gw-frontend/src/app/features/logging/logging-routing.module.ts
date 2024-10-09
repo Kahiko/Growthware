@@ -7,6 +7,7 @@ import { SetLogLevelComponent } from '@growthware/core/configuration';
 
 const childRoutes: Routes = [
 	{ path: '', component: SetLogLevelComponent, canActivate: [AuthGuard] },
+	{ path: 'test-logging', loadComponent: () => import('@growthware/core/logging').then(m => m.TestLoggingComponent)  },
 ];
 
 @NgModule({

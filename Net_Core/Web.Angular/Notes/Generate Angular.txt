@@ -150,7 +150,7 @@ Library: (core) From Web.Angular
 		ng generate interface LogOptions 	 --path=projects/gw-lib/core/logging/src --type model --project gw-lib
 		ng generate interface LoggingProfile --path=projects/gw-lib/core/logging/src --type model --project gw-lib
 		ng generate service   logging 		 --path=projects/gw-lib/core/logging/src --project gw-lib
-
+		ng generate component                --path=projects/gw-lib/core/logging/src c/TestLogging --standalone --style scss --project gw-lib
 	Modal:
 			https://garage.sekrab.com/posts/homemade-dialog-service-in-angular
 			https://stackblitz.com/edit/angular-program-component?file=src%2Flib%2FDialog%2Fservice.ts

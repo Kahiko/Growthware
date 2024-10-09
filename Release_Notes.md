@@ -2,7 +2,8 @@
 ## Net_Core Version 5.1.0.x (yyyy-mm-dd)
 
 ### New Features
-- No new features added
+- Added a "Page" for testing logging
+
 ### Improvements
 - Updated the color scheme information in the ClientChoices to be more consistent and useful
 - Added the ClientChoices feature in order to access the ClientChoices object without causing a circular dependency in the GroupDetailsComponent and RoleDetailsComponent.

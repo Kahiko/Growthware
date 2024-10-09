@@ -173,7 +173,7 @@ namespace GrowthWare.Framework
                 if (s_Logger == null)
                 {
                     s_Logger = new Logger();
-                    s_Logger.log("Logger initialized", LogPriority.Info);
+                    s_Logger.Log("Logger initialized", LogPriority.Info);
                 }
             }
             catch
@@ -227,7 +227,7 @@ namespace GrowthWare.Framework
         /// <param name="message">The message.</param>
         public void Debug(object message)
         {
-            log(message, LogPriority.Debug);
+            Log(message, LogPriority.Debug);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace GrowthWare.Framework
         /// <param name="message">The message.</param>
         public void Info(object message)
         {
-            log(message, LogPriority.Info);
+            Log(message, LogPriority.Info);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace GrowthWare.Framework
         /// <param name="message">The message.</param>
         public void Warn(object message)
         {
-            log(message, LogPriority.Warn);
+            Log(message, LogPriority.Warn);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace GrowthWare.Framework
         /// <param name="message">The message.</param>
         public void Error(object message)
         {
-            log(message, LogPriority.Error);
+            Log(message, LogPriority.Error);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace GrowthWare.Framework
         /// <param name="message">The message.</param>
         public void Fatal(object message)
         {
-            log(message, LogPriority.Fatal);
+            Log(message, LogPriority.Fatal);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace GrowthWare.Framework
         /// <param name="priority">LogPriority</param>
         /// <remarks>Will consume any errors ... no need to crash the application because the log did not work.</remarks>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void log(object message, LogPriority priority)
+        public void Log(object message, LogPriority priority)
         {
             if ((int)priority < this.CurrentLogLevel)
             {

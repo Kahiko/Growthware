@@ -1,0 +1,172 @@
+<form [formGroup]="theForm" (ngSubmit)="onSubmit(theForm)" class="containerSize">
+    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
+        <mat-tab label="Test Logging">
+            <div class="mat-tab__container formSection" style="border: 1px solid;">
+                <div class="mat-tab__content formSectionContents" style="width: 98%;">
+                    <div class="table">
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field style="width: 98%;">
+                                    <mat-label>Title</mat-label>
+                                    <input matInput placeholder="Ex. My Title" value="" formControlName="title">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field style="width: 98%;">
+                                    <mat-label>Message</mat-label>
+                                    <textarea matInput placeholder="Ex. My Message" formControlName="msg"></textarea>
+                                    <mat-hint align="end">{{ controls['msg'].getRawValue().length }}/512</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td">
+                                <div class="table">
+                                    <div class="tr">
+                                        <div class="td left">
+                                            <mat-form-field style="width: 98%;">
+                                                <mat-label>Select a Log Level</mat-label>
+                                                <mat-select formControlName="selectedLogLevel" class="Form_Field rounded" style="width: 132px">
+                                                    @for (item of validLogLevels; track item.id) {
+                                                    <mat-option [value]="item.id">
+                                                        {{item.name}}
+                                                    </mat-option>
+                                                    }
+                                                </mat-select>    
+                                            </mat-form-field>            
+                                        </div>
+                                        <div class="td top left">
+                                            <div>Select the Destination(s):</div>
+                                            @for (item of validDestinations; let i = $index; track item.id) {
+                                            <div style="display: inline-block">
+                                                <input type="checkbox" [formControlName]="item.name">
+                                                <label>{{ validDestinations[i].name }}</label>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td left">
+                                <div class="table">
+                                    <div class="tr">
+                                        <div class="td">
+                                            <mat-form-field style="width: 98%;">
+                                                <mat-label>Component Name</mat-label>
+                                                <input matInput placeholder="Ex. componentName" formControlName="componentName">
+                                            </mat-form-field>
+            
+                                        </div>
+                                        <div class="td">
+                                            <mat-form-field style="width: 98%;">
+                                                <mat-label>Class Name</mat-label>
+                                                <input matInput placeholder="Ex. componentName" formControlName="className">
+                                            </mat-form-field>            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="table">
+                                <div class="tr">
+                                    <div class="td">
+                                        <mat-form-field style="width: 98%;">
+                                            <mat-label>Method Name</mat-label>
+                                            <input matInput placeholder="Ex. methodName" formControlName="methodName">
+                                        </mat-form-field>      
+                                    </div>
+                                    <div class="td">
+                                        <mat-form-field style="width: 98%;">
+                                            <mat-label>Account</mat-label>
+                                            <input matInput placeholder="Ex. account" formControlName="account">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Behaviors">
+            <div class="mat-tab__container" style="border: 1px solid;">
+                <div class="mat-tab__content left" style="width: 98%;">
+                    <p>
+                        Not every destination will use or support all of the fields.  None of the logging destions will use the "Destination" field.  The only used to send the logging information to the "Destination".
+                    </p>
+                    <ul>
+                        <li>File - <i (click)="onHelp('File')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                            <ul>
+                              <li>Level</li>
+                              <li>Message</li>
+                            </ul>
+                        </li>
+                        <li>Console - <i (click)="onHelp('Console')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                          <ul>
+                            <li>Level</li>
+                            <li>Message</li>
+                          </ul>
+                        </li>
+                        <li>DB - <i (click)="onHelp('DB')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                            <ul>
+                                <li>Account</li>
+                                <li>Component</li>
+                                <li>ClassName</li>
+                                <li>Level</li>
+                                <li>LogDate</li>
+                                <li>LogSeqId</li>
+                                <li>MethodName</li>
+                                <li>Msg</li>
+                            </ul>
+                        </li>
+                        <li>Toast - <i (click)="onHelp('Toast')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                            <ul>
+                                <li>Level</li>
+                                <li>Message</li>
+                                <li>Title</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+      <button type="submit" [disabled]="theForm.invalid" mat-button class="Form_Button" color="primary">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+      </button>
+    </div>
+  </form>
+<ng-template #File>
+    <p>
+        File only uses the "message" field to write the message to a text file.<br />
+        The location of the log file is defined in the "GrowthWare.json" file in the XX_Log_Path setting.<br />
+        XX is replaced with the name of the environment.  So if the environment is "Development" then the log file will be "Development_Log.txt".<br />
+    </p>
+</ng-template>
+<ng-template #Console>
+    <p>
+        Console only uses the "message" field to "print" the message in the browser console.<br />
+    </p>
+</ng-template>
+<ng-template #DB>
+    <p>
+        DB uses the most "fields" of any methods of logging and stores the information in the database via the API.<br />
+        The data is stored in a table called "[ZGWSystem].[Logging]".<br />
+    </p>
+</ng-template>
+<ng-template #Toast>
+    <p>
+        Stacks a 'toast' message in the lower right corner of the screen.<br />
+        If a duplicate exists it will simply update the "time" and the counter and keep only on in the UI at a time.<br />
+        "Toasts" will be automatically removed after 3 seconds except for the "Error" Level.<br />
+        Error and Fatal will remain on the screen until it is removed manually by clicking on the "X" in the top right corner of the toast.<br />
+        If the same "message" is logged with a "Level" other than "Error" or "Fatal" then the toast will follow the same removal process.<br />
+        Look at the "toast.component.scss" to see the styling/colors for each of the types.<br />
+    </p>
+</ng-template>

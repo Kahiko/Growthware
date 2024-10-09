@@ -22,5 +22,6 @@ export const routes: Routes = [
 	{ path: 'communitycalendar', loadComponent: () => import('@growthware/core/community-calendar').then(m => m.CalendarComponent)  },
 	{ path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
 	{ path: 'setloglevel', loadChildren: () => import('./features/logging/logging.module').then(m => m.LoggingModule)  },
+	{ path: 'logging/test-logging', loadComponent: () => import('@growthware/core/logging').then(m => m.TestLoggingComponent)  },
 ];
 // export const routes: Routes = [];
