@@ -1,5 +1,5 @@
 -- Upgrade from 5.0.0.0 to 5.1.0.0
---USE [YourDatabaseName];
+USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
@@ -8,8 +8,20 @@ GO
 /****** Start: [ZGWCoreWeb].[Account_Choices2] ******/
 IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices2', N'U') IS NOT NULL DROP TABLE [ZGWCoreWeb].[Account_Choices2];
 GO
-IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices', N'U') IS NOT NULL
-    BEGIN
+IF NOT EXISTS(
+		SELECT TOP(1) * FROM sys.columns WHERE [Name] IN (
+			  N'EvenRow'
+			, N'EvenFont'
+			, N'OddRow'
+			, N'OddFont'
+			, N'HeaderRow'
+			, N'HeaderFont'
+			, N'Background'
+		) 
+		AND Object_ID = Object_ID(N'ZGWCoreWeb.Account_Choices')
+	)
+	BEGIN
+		PRINT 'Columns do not exists!';
         SELECT * INTO [ZGWCoreWeb].[Account_Choices2]
         FROM (
             SELECT
@@ -40,7 +52,7 @@ IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices', N'U') IS NOT NULL
             ADD CONSTRAINT [UK_ZGWCore_Account_Choices] 
                 UNIQUE NONCLUSTERED ([Account] ASC);
         IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices2', N'U') IS NOT NULL DROP TABLE [ZGWCoreWeb].[Account_Choices2];
-    END
+	END
 --END IF
 GO
 --************ [ZGWCoreWeb].[Set_Account_Choice] ************
@@ -551,6 +563,70 @@ SET NOCOUNT OFF;
 IF @P_Debug = 1 PRINT 'End Set_Account';
 GO
 /****** Done: [ZGWCoreWeb].[Account_Choices2] ******/
+
+/****** Start: Adding Test Logging ******/
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE '%test-logging%')
+BEGIN
+	PRINT 'Adding Test Logging';
+
+	DECLARE @V_FunctionSeqId INT = -1
+		,@V_Name VARCHAR(30) = 'Test Logging'
+		,@V_Description VARCHAR(512) = 'Test Logging'
+		,@V_FunctionTypeSeqId INT = 1
+		,@V_Source VARCHAR(512) = ''
+		,@V_Controller VARCHAR(512) = ''
+		,@V_Resolve VARCHAR(MAX) = ''
+		,@V_Enable_View_State INT = 0
+		,@V_Enable_Notifications INT = 0
+		,@V_Redirect_On_Timeout INT = 0
+		,@V_Is_Nav INT = 1
+		,@V_Link_Behavior INT = 1
+		,@V_NO_UI INT = 0
+		,@V_NAV_TYPE_ID INT = 1
+		,@V_Action VARCHAR(256) = '/logging/test-logging'
+		,@V_Meta_Key_Words VARCHAR(512) = ''
+		,@V_ParentSeqId INT = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SystemAdministration')
+		,@V_Notes VARCHAR(512) = 'Used to test all the logging functionality'
+		,@V_Debug INT = 0
+		,@V_SystemID INT = 1
+		,@V_ViewPermission INT;
+
+	EXEC ZGWSecurity.Set_Function 
+		  -1                     -- FunctionSeqId (-1 indicates new record)
+		, @V_Name                -- Name
+		, @V_Description         -- Description
+		, @V_FunctionTypeSeqId   -- FunctionTypeSeqId
+		, @V_Source              -- Source
+		, @V_Controller          -- Controller
+		, NULL                   -- Resolve
+		, 0                      -- Enable_View_State
+		, 0                      -- Enable_Notifications
+		, 0                      -- Redirect_On_Timeout
+		, 1                      -- Is_Nav
+		, 1                      -- Link_Behavior (Internal)
+		, 0                      -- NO_UI
+		, 3                      -- NVP_DetailSeqId (Hierarchical)
+		, @V_Action              -- Action
+		, @V_META_KEY_WORDS      -- Meta_Key_Words
+		, @V_ParentSeqId         -- ParentSeqId
+		, @V_Notes               -- Notes
+		, @V_SystemID            -- Added_By
+		, @V_Debug               -- Debug flag
+
+	SET @V_FunctionSeqId = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE action = @V_Action);
+
+	SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM [ZGWSecurity].[Permissions] WHERE NVP_Detail_Value = 'View');
+
+	EXEC [ZGWSecurity].[Set_Function_Roles] 
+		 @V_FunctionSeqId   -- FunctionSeqId
+		,1                  -- SecurityEntitySeqId
+		,'Developer'        -- Roles
+		,@V_ViewPermission  -- PermissionsNVPDetailSeqId
+		,@V_SystemID        -- AccountSeqId for the 'System Administrator'
+		,@V_Debug;          -- Debug flag
+END
+--END IF
+/****** Done: Adding Test Logging ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]

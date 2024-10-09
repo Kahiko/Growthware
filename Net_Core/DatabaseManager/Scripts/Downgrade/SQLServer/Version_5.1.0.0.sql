@@ -1,5 +1,5 @@
 -- Downgrade from 5.1.0.0 to 5.0.0.0
---USE [YourDatabaseName];
+USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
@@ -8,7 +8,18 @@ GO
 /****** Start: [ZGWCoreWeb].[Account_Choices2] ******/
 IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices2', N'U') IS NOT NULL DROP TABLE [ZGWCoreWeb].[Account_Choices2];
 GO
-IF OBJECT_ID(N'ZGWCoreWeb.Account_Choices', N'U') IS NOT NULL
+IF NOT EXISTS(
+		SELECT TOP(1) * FROM sys.columns WHERE [Name] IN (
+			  N'BackColor'
+			, N'LeftColor'
+			, N'HeadColor'
+			, N'SubHeadColor'
+			, N'RowBackColor'
+			, N'AlternatingRowBackColor'
+			, N'HeaderForeColor'
+		) 
+		AND Object_ID = Object_ID(N'ZGWCoreWeb.Account_Choices')
+	)
     BEGIN
         SELECT * INTO [ZGWCoreWeb].[Account_Choices2]
         FROM (
@@ -538,6 +549,14 @@ SET NOCOUNT OFF;
 IF @P_Debug = 1 PRINT 'End Set_Account';
 GO
 /****** Done: [ZGWCoreWeb].[Account_Choices2] ******/
+
+/****** Start: Removing Test Logging ******/
+IF EXISTS (SELECT * FROM [ZGWSecurity].[Functions] WHERE [Action] = 'test-logging')
+	BEGIN
+		DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'test-logging'
+	END
+--END IF
+/****** End: Removing Test Logging ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
