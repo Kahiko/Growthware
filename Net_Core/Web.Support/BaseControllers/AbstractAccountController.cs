@@ -50,15 +50,18 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("ChangePassword")]
     public ActionResult<Tuple<string, AuthenticationResponse>> ChangePassword(string oldPassword, string newPassword)
     {
-        UIChangePassword mChangePassword = new UIChangePassword();
-        mChangePassword.OldPassword = oldPassword;
-        mChangePassword.NewPassword = newPassword;
-        // if (mChangePassword. <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        UIChangePassword mChangePassword = new()
+        {
+            OldPassword = oldPassword,
+            NewPassword = newPassword
+        };
         if (mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
         if (mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
-        string mRetString = AccountUtility.ChangePassword(mChangePassword);
-        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(AccountUtility.CurrentProfile);
-        return Ok(Tuple.Create(mRetString, mAuthenticationResponse));
+        Tuple<string, MAccountProfile> mChangePasswordResult = AccountUtility.ChangePassword(mChangePassword, ipAddress());
+        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mChangePasswordResult.Item2);
+        setTokenCookie(mAuthenticationResponse.RefreshToken);
+        Tuple<string, AuthenticationResponse> mRetVal = Tuple.Create(mChangePasswordResult.Item1, mAuthenticationResponse);
+        return Ok(mRetVal);
     }
 
     /// <summary>
