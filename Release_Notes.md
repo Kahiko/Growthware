@@ -11,6 +11,7 @@
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- When the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in.
 
 ### Bug Fixes
 - Fixed where "Delete roles" pick list allItemsText was blank
