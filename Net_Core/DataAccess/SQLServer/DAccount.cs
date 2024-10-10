@@ -58,8 +58,8 @@ public class DAccounts : DSearch, IAccount
             {
                 String mStoredProcedure = "ZGWSecurity.Get_Account_By_Refresh_Token";
                 SqlParameter[] mParameters = {
-                        GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
-                    };
+                    GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
+                };
                 return base.GetDataRow(mStoredProcedure, mParameters);
             }
         }
