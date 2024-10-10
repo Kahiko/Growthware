@@ -11,6 +11,7 @@
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- After DB has been created and an account logs on the app, clicking on a guarded link will result in being logged out
 
 ### Bug Fixes
 - Fixed where "Delete roles" pick list allItemsText was blank
