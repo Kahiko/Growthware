@@ -11,6 +11,7 @@
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10
 
 ### Bug Fixes
 - Fixed where "Delete roles" pick list allItemsText was blank
