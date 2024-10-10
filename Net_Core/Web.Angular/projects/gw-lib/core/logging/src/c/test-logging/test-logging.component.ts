@@ -88,7 +88,7 @@ export class TestLoggingComponent implements OnInit {
         this.theForm.addControl(item.name, new FormControl<boolean>(true));
       }
     });
-    console.log('TestLoggingComponent.createForm: theForm ', this.theForm);
+    // console.log('TestLoggingComponent.createForm: theForm ', this.theForm);
   }
 
   get controls() {
