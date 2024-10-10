@@ -167,7 +167,6 @@ export class AccountService extends BaseService {
 				headers: new HttpHeaders({
 					'Content-Type': 'text/plain',
 				}),
-				responseType: 'text' as 'json',
 				params: mQueryParameter,
 			};
 			this._HttpClient.post<{ item1: string; item2: IAuthenticationResponse }>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
