@@ -11,7 +11,6 @@
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
-- When the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in.
 
 ### Bug Fixes
 - Fixed where "Delete roles" pick list allItemsText was blank
@@ -21,6 +20,7 @@
 - Fixed NavigationComponentBase was doubling the flyout navigation
 - Fixed Setting @V_MessageSeqId in upgrade/downgrade Version_4_0_1_0.sql can return more than 1 entry in the sub query
 - Fixed Log API call not getting the destination properties (was missing), the API now logs to both the database and the file.
+- Fixed when the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
