@@ -3,7 +3,6 @@ import { Inject, Injectable, TemplateRef, Type } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 // Library
-import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { GWCommon } from '@growthware/common/services';
 // Features
 import { ContentObject, IContentObject } from './content-object.model';
@@ -21,10 +20,10 @@ export class ModalService {
 	private _ContentType: ContentType = ContentType.String;
 
 	constructor(
-    private _ApplicationRef: ApplicationRef,
-    @Inject(DOCUMENT) private _Document: Document,
-    private _GWCommon: GWCommon,
-    private _LoggingSvc: LoggingService,
+		private _ApplicationRef: ApplicationRef,
+		@Inject(DOCUMENT) private _Document: Document,
+		private _GWCommon: GWCommon,
+		// private _LoggingSvc: LoggingService,
 	) { }
 
 	/**
@@ -47,7 +46,7 @@ export class ModalService {
 					} else {
 						mMsg = String(error);
 					}
-					this._LoggingSvc.console(mMsg, LogLevel.Error);
+					this.logConsole(mMsg, 'Error');
 				}
 			}
 			// remove and destroy the modal component
@@ -65,12 +64,12 @@ export class ModalService {
    */
 	public open(options: IModalOptions): void {
 		if(this._GWCommon.isNullOrEmpty(options.modalId)) {
-			this._LoggingSvc.toast('options.modalId can not be null or blank', 'Modal Service', LogLevel.Error);
+			this.logConsole('options.modalId can not be null or blank', 'Error');
 			// console.log('ModalService.open', options);
 			return;
 		}
 		if (this._GWCommon.isNullOrEmpty(options.contentPayLoad) && typeof (options.contentPayLoad) !== 'function') {
-			this._LoggingSvc.toast('Please set the contentPayLoad property', 'Modal Service', LogLevel.Error);
+			this.logConsole('Please set the contentPayLoad property', 'Error');
 			return;
 		}
 		// resolve the ngContent
@@ -102,6 +101,35 @@ export class ModalService {
 		// attach the ModalComponentRef host view to the application view
 		this._ApplicationRef.attachView(mModalComponentRef.hostView);
 	}
+
+	private logConsole(msg: string, level: string): void {
+		const mMsg =
+				this._GWCommon.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
+				'\n  ' +
+				msg;
+		switch (level) {
+		  case 'Debug':
+			console.debug(mMsg);
+			break;
+		  case 'Error':
+		  case 'Fatal':
+			console.error(mMsg);
+			break;
+		  case 'Info':
+			console.info(mMsg);
+			break;
+		  case 'Warn':
+			console.warn(mMsg);
+			break;
+		  case 'Trace':
+			console.trace(mMsg);
+			break;
+		  case 'Success':
+		  default:
+			console.log(mMsg);
+			break;
+		}
+	  }
 
 	/**
    * Resolves the ngContent of a given Content object.
@@ -152,14 +180,14 @@ export class ModalService {
 			mModalComponentInstance.closeCallBackMethod = modalOptions.buttons.closeButton.callbackMethod;
 		} else {
 			if (modalOptions.buttons.closeButton.visible) {
-				this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error);
+				this.logConsole('You have not set the options.buttons.closeButton.callbackMethod', 'Error');
 			}
 		}
 		if (this._GWCommon.isFunction(modalOptions.buttons.okButton.callbackMethod)) {
 			mModalComponentInstance.oKCallBackMethod = modalOptions.buttons.okButton.callbackMethod;
 		} else {
 			if (modalOptions.buttons.okButton.visible) {
-				this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error);
+				this.logConsole('You have not set the options.buttons.okButton.callbackMethod', 'Error');
 			}
 		}
 	}

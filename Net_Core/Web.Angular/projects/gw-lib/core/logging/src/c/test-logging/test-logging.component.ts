@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
-import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
+// import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
 import { LoggingService } from '../../logging.service';
 import { ILogOptions, LogOptions } from '../../log-options.model';
@@ -41,13 +41,13 @@ import { LogDestination } from '../../log-destination.enum';
 export class TestLoggingComponent implements OnInit {
 
   private _FormBuilder = inject(FormBuilder);
-  private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
+  // private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
   @ViewChild('File') private _HelpFile!: TemplateRef<unknown>;
   @ViewChild('Console') private _HelpConsole!: TemplateRef<unknown>;
   @ViewChild('DB') private _HelpDB!: TemplateRef<unknown>;
   @ViewChild('Toast') private _HelpToast!: TemplateRef<unknown>;
   private _LoggingSvc = inject(LoggingService);
-  private _ModalSvc = inject(ModalService);
+  // private _ModalSvc = inject(ModalService);
 
   theForm: FormGroup = this._FormBuilder.group({});
   validDestinations = [
@@ -96,28 +96,28 @@ export class TestLoggingComponent implements OnInit {
   }
 
   onHelp(controleName: string): void {
-    switch (controleName) {
-      case 'File':
-        // this._HelpOptions.windowSize = 1;
-        this._HelpOptions.windowSize = new WindowSize(250, 600);
-        this._HelpOptions.contentPayLoad = this._HelpFile;
-        break;
-      case 'Console':
-        this._HelpOptions.windowSize = 1;
-        this._HelpOptions.contentPayLoad = this._HelpConsole;
-        break;
-      case 'DB':
-        this._HelpOptions.windowSize = 1;
-        this._HelpOptions.contentPayLoad = this._HelpDB;
-        break;
-      case 'Toast':
-        this._HelpOptions.windowSize = new WindowSize(250, 600);
-        this._HelpOptions.contentPayLoad = this._HelpToast;
-        break;
-      default:
-        break;
-    }
-    this._ModalSvc.open(this._HelpOptions);
+    // switch (controleName) {
+    //   case 'File':
+    //     // this._HelpOptions.windowSize = 1;
+    //     this._HelpOptions.windowSize = new WindowSize(250, 600);
+    //     this._HelpOptions.contentPayLoad = this._HelpFile;
+    //     break;
+    //   case 'Console':
+    //     this._HelpOptions.windowSize = 1;
+    //     this._HelpOptions.contentPayLoad = this._HelpConsole;
+    //     break;
+    //   case 'DB':
+    //     this._HelpOptions.windowSize = 1;
+    //     this._HelpOptions.contentPayLoad = this._HelpDB;
+    //     break;
+    //   case 'Toast':
+    //     this._HelpOptions.windowSize = new WindowSize(250, 600);
+    //     this._HelpOptions.contentPayLoad = this._HelpToast;
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this._ModalSvc.open(this._HelpOptions);
   }
 
   onSubmit(form: FormGroup): void {
