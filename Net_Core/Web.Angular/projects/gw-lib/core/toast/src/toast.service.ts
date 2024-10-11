@@ -1,7 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { EventType } from './event-type.enum';
-// Library
-import { GWCommon } from '@growthware/common/services';
 // Feature
 import { IToastMessage, ToastMessage } from './toast-message.model';
 
@@ -10,7 +8,6 @@ import { IToastMessage, ToastMessage } from './toast-message.model';
 })
 export class ToastService {
 
-	private _GWCommon = inject(GWCommon);
 	private _Timer: any;
 
 	public currentToasts = signal<Array<IToastMessage>>([]);
