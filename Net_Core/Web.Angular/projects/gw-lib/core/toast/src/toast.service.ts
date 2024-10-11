@@ -56,16 +56,9 @@ export class ToastService {
 	 * @memberof ToastService
 	 */
 	addOrUpdateToasts(toastMessage: ToastMessage): void {
-		/** 
-		 * We are getting this error "NG0956: The configured tracking expression (track by identity)"
-		 * I have tried to fix it, but nothing I tried work.
-		 *  I tried using a service tracked integer and was able to keep the "id"
-		 * 	the same when updating the toast but we still get the error NG0956 and the dateTime
-		 * 	is not changing in the UI.
-		 * 
-		 * TODO: Looking in to fixing the error later.
-		*/
+
 		const mExistingToast: IToastMessage | undefined = this.currentToasts().find(item => item.message === toastMessage.message);
+		
 		if (mExistingToast === undefined) {
 			// Added the incomming toast message
 			this.currentToasts.update((items) => [...items, toastMessage]);
