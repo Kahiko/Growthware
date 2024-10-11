@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 // Feature
 import { EventType } from '../../event-type.enum';
 import { ToastService } from '../../toast.service';
+import { IToastMessage } from '../../toast-message.model';
 
 @Component({
 	selector: 'gw-core-toast',
@@ -16,15 +17,12 @@ import { ToastService } from '../../toast.service';
 export class ToastComponent implements OnInit {
 	private _ToastSvc = inject(ToastService);
 
-	public dateTime = input<string>(new Date().toLocaleString());
-	public id = input.required<string>();
-	public message = input.required<string>();
-	public title = input.required<string>();
-	public type = input.required<EventType>();
+	public toastMessage = input.required<IToastMessage>();
+
 	public typeClass: string = 'bg-success text-white';
 
 	ngOnInit() {
-		switch (EventType[this.type()]) {
+		switch (EventType[this.toastMessage().eventType]) {
 			case 'Info':
 				this.typeClass = 'bg-info text-dark';
 				break;
@@ -44,6 +42,6 @@ export class ToastComponent implements OnInit {
 	}
 
 	hide() {
-		this._ToastSvc.removeToast(this.id());
+		this._ToastSvc.removeToast(this.toastMessage().id);
 	}
 }
