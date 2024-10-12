@@ -19,7 +19,7 @@ import { ILogOptions, LogDestination, LoggingService, LogOptions } from '@growth
     MatIconModule,
     MatTabsModule,
   ],
-  templateUrl: './page.compontent.html',
+  templateUrl: './page.component.html',
   styleUrl: './page.component.scss'
 })
 export class TestLoggingComponent implements OnInit {
