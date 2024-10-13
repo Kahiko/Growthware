@@ -20,7 +20,7 @@ $width: '410px';
   min-height: calc(#{$height} - 40px);
 }
 
-.div__tab-container { // height of mat-tab__tab + 50 more px
+.div__tab-container { // height of mat-tab__tab + 50px
   border: 1px solid;
   max-height: calc(#{$height} - 90px);
   min-height: calc(#{$height} - 90px);
