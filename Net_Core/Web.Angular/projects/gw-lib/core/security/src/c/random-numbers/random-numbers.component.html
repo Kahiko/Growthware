@@ -1,49 +1,49 @@
-<div class="containerSize">
-    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
-        <mat-tab label="Generate Random Numbers">
-            <div class="mat-tab__container formSection">
-                <div class="mat-tab__content formSectionContents">
-                    <div class="table" style="padding: 5px">
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">Minimum:</span>
-                            </div>
-                            <div class="td left">
-                                <input type="number" id="txtMinNumber" [(ngModel)]="minNumber" class="rounded" style="width: 322px;" />
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">Maximum:</span>
-                            </div>
-                            <div class="td left">
-                                <input type="number" id="txtMaxNumber" [(ngModel)]="maxNumber" class="rounded" style="width: 322px;" />
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">How Many Numbers:</span>
-                            </div>
-                            <div class="td left">
-                                <input type="number" id="txtAmountOfNumbers" [(ngModel)]="amountOfNumbers" class="rounded" style="width: 322px;" />
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">Results:</span>
-                            </div>
-                            <div class="td left">
-                                <textarea id="txtResults" name="txtResults" rows="4" cols="50" [(ngModel)]="results" class="rounded">Textarea</textarea>
-                            </div>
-                        </div>
+<div class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+      <mat-tab label="Generate Random Numbers" class="mat-tab__tab">
+        <div class="mat-tab__container formSection">
+          <div class="formSectionContents center">
+            <div class="table" style="padding: 5px">
+                <div class="tr">
+                    <div class="td right">
+                        <span class="Form_LabelText">Minimum:</span>
+                    </div>
+                    <div class="td left">
+                        <input type="number" id="txtMinNumber" [(ngModel)]="minNumber" class="rounded" style="width: 322px;" />
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td right">
+                        <span class="Form_LabelText">Maximum:</span>
+                    </div>
+                    <div class="td left">
+                        <input type="number" id="txtMaxNumber" [(ngModel)]="maxNumber" class="rounded" style="width: 322px;" />
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td right">
+                        <span class="Form_LabelText">How Many Numbers:</span>
+                    </div>
+                    <div class="td left">
+                        <input type="number" id="txtAmountOfNumbers" [(ngModel)]="amountOfNumbers" class="rounded" style="width: 322px;" />
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td right">
+                        <span class="Form_LabelText">Results:</span>
+                    </div>
+                    <div class="td left">
+                        <textarea id="txtResults" name="txtResults" rows="4" cols="50" [(ngModel)]="results" class="rounded">Textarea</textarea>
                     </div>
                 </div>
             </div>
-        </mat-tab>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
     <div class="buttonRow">
         <button mat-button class="Form_Button" (click)="doGetNumbers()" color="primary">
             <i style="padding-right: 3px" class="Form_Button_Icon material-icons">assignment</i>Generate
         </button>
     </div>
-</div>
+  </div>
