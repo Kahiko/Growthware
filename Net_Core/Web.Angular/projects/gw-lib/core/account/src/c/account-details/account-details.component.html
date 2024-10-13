@@ -1,7 +1,7 @@
 <form [formGroup]="frmAccount" (ngSubmit)="onSubmit(frmAccount)" class="formSize">
   <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
       <mat-tab label="{{title}}" class="mat-tab__tab">
-          <div class="mat-tab__container formSection">
+          <div class="div__tab-container formSection">
               <div class="formSectionContents center" style="width: 80%; padding-left: 10%;">
                 <div class="table" style="padding: 5px">
                   <div class="tr">
@@ -197,7 +197,7 @@
       </mat-tab>
       @if (showRoles) {
         <mat-tab label="Roles" class="mat-tab__tab">
-          <div class="mat-tab__container formSection">
+          <div class="div__tab-container formSection">
               <div class="formSectionContents center">
                 <gw-core-pick-list
                   #rolePickList
@@ -221,7 +221,7 @@
       }
       @if (showGroups) {
         <mat-tab label="Groups" class="mat-tab__tab">
-          <div class="mat-tab__container formSection">
+          <div class="div__tab-container formSection">
               <div class="formSectionContents center">
                 <gw-core-pick-list
                   #groupPickList
@@ -245,7 +245,7 @@
       }
       @if (showDerived) {
         <mat-tab label="Derived Roles" class="mat-tab__tab">
-          <div class="mat-tab__container formSection" style="background: white;">
+          <div class="div__tab-container formSection" style="background: white;">
             <div class="formSectionContents left">
               <gw-core-snake-list iconName="security" id="{{ derivedRolesId }}" [items]="derivedRoles" />
             </div>

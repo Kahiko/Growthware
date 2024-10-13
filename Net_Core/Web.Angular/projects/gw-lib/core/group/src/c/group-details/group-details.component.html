@@ -1,7 +1,7 @@
 <form [formGroup]="frmGroup" (ngSubmit)="onSubmit(frmGroup)" class="formSize">
   <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
     <mat-tab label="General" class="mat-tab__tab">
-      <div class="mat-tab__container formSection">
+      <div class="div__tab-container formSection">
         <div class="formSectionContents center">
           <div class="table" style="padding: 5px; width: 100%;">
             <div class="tr">
@@ -39,7 +39,7 @@
       </div>
     </mat-tab>
     <mat-tab label="Roles" class="mat-tab__tab">
-      <div class="mat-tab__container formSection">
+      <div class="div__tab-container formSection">
         <div class="formSectionContents center" style="padding-top: 8px;">
           <gw-core-pick-list #rolePickList
             [(availableItems)] = availableRoles
