@@ -1,8 +1,8 @@
-<form [formGroup]="frmRole" (ngSubmit)="onSubmit()">
-  <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px; min-width: 400px;">
-    <mat-tab label="General">
+<form [formGroup]="frmRole" (ngSubmit)="onSubmit()" class="formSize">
+  <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+    <mat-tab label="General" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__container formSection containerSize">
+        <div class="formSectionContents center">
           <div class="table" style="padding: 5px; width: 100%;">
             <div class="tr">
               <div class="td left">
@@ -55,9 +55,9 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Members">
+    <mat-tab label="Members" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__container formSection containerSize">
+        <div class="formSectionContents center">
           <gw-core-pick-list #rolePickList
             [(availableItems)] = availableRoles
             [(selectedItems)] = selectedRoles
