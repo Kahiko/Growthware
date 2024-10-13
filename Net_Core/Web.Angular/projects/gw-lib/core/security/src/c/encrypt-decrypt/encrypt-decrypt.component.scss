@@ -1,6 +1,27 @@
-.containerSize {
-	max-height: calc(225px - 125px);
-	min-height: calc(225px - 125px);
-	max-width: calc(650px - 50px);  
-	min-width: calc(650px - 50px);  
+// Defined here
+$height: '425px';
+$width: '550px';  
+
+.formSize { 
+  max-height: calc(#{$height} - 35px);
+  min-height: calc(#{$height} - 35px);
+  max-width: calc(#{$width} - 10px);
+  min-width: calc(#{$width} - 10px);
+}
+
+.mat-tab__group { // height 5px more from fromSzie
+  padding-bottom: 0px;
+  max-height: calc(#{$height} - 40px);
+  min-height: calc(#{$height} - 40px);
+}
+
+.mat-tab__tab { // same as mat-tab__group
+  max-height: calc(#{$height} - 40px);
+  min-height: calc(#{$height} - 40px);
+}
+
+.mat-tab__container { // height of mat-tab__tab + 50 more px
+  border: 1px solid;
+  max-height: calc(#{$height} - 90px);
+  min-height: calc(#{$height} - 90px);
 }
