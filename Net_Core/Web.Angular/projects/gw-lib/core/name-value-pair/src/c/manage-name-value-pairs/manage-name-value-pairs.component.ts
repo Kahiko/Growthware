@@ -31,7 +31,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 	private _Api_Nvp_Search: string = '';
 	private _Api_Nvp_Details_Search: string = '';
 	private _SearchCriteriaNVP!: ISearchCriteriaNVP;
-	private _nameValuePairWindowSize: WindowSize = new WindowSize(350, 400);
+	private _nameValuePairWindowSize: WindowSize = new WindowSize(300, 400);
 
 	activeParrentRowIndex: number = 0;
 	childConfigurationName: string = '';
