@@ -1,8 +1,8 @@
-<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" novalidate>
-  <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
-    <mat-tab label="General">
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" class="formSize">
+  <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+    <mat-tab label="General" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+        <div class="formSectionContents">
           <div class="table">
             <div class="tr">
               <div class="td firstCell left">
@@ -172,9 +172,9 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Menu Order">
+    <mat-tab label="Menu Order" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+        <div class="formSectionContents center">
           <div class="table">
             <div class="tr">
               <div class="td">
@@ -193,182 +193,182 @@
       </div>
     </mat-tab>
     @if (showRoles) {
-    <mat-tab label="Roles">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
-          <div class="table">
-            <div class="tr">
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #rolesView
-                  [(availableItems)] = availableViewRoles
-                  [(selectedItems)] = selectedViewRoles
-                  id="viewRoles"
-                  name="{{ rolesPickListNameView }}"
-                  allItemsText="Available Roles"
-                  header="View roles"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-                  selectedItemsText="Selected Roles"
-                  size="8"
-                  width="120"
-                />
+      <mat-tab label="Roles" class="mat-tab__tab">
+        <div class="mat-tab__container formSection">
+          <div class="formSectionContents center">
+            <div class="table">
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #rolesView
+                    [(availableItems)] = availableViewRoles
+                    [(selectedItems)] = selectedViewRoles
+                    id="viewRoles"
+                    name="{{ rolesPickListNameView }}"
+                    allItemsText="Available Roles"
+                    header="View roles"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size="8"
+                    width="120"
+                  />
+                </div>
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #rolesAdd
+                    [(availableItems)] = availableAddRoles
+                    [(selectedItems)] = selectedAddRoles
+                    id="addRoles"
+                    name="{{ rolesPickListNameAdd }}"
+                    allItemsText="Available Roles"
+                    header="Add roles"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size="8"
+                    width="120"
+                  />
+                </div>
               </div>
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #rolesAdd
-                  [(availableItems)] = availableAddRoles
-                  [(selectedItems)] = selectedAddRoles
-                  id="addRoles"
-                  name="{{ rolesPickListNameAdd }}"
-                  allItemsText="Available Roles"
-                  header="Add roles"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-                  selectedItemsText="Selected Roles"
-                  size="8"
-                  width="120"
-                />
-              </div>
-            </div>
-            <div class="tr" style="height: 10px"></div>
-            <div class="tr">
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #rolesEdit
-                  [(availableItems)] = availableEditRoles
-                  [(selectedItems)] = selectedEditRoles
-                  id="editRoles"
-                  name="{{ rolesPickListNameEdit }}"
-                  allItemsText="Available Roles"
-                  header="Edit roles"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-                  selectedItemsText="Selected Roles"
-                  size="8"
-                  width="120" 
-                />
-              </div>
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #rolesDelete
-                  [(availableItems)] = availableDeleteRoles
-                  [(selectedItems)] = selectedDeleteRoles
-                  id="deleteRoles"
-                  name="{{ rolesPickListNameDelete }}"
-                  allItemsText="Available Roles"
-                  header="Delete roles"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-                  selectedItemsText="Selected Roles"
-                  size="8"
-                  width="120" 
-                />
+              <div class="tr" style="height: 10px"></div>
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #rolesEdit
+                    [(availableItems)] = availableEditRoles
+                    [(selectedItems)] = selectedEditRoles
+                    id="editRoles"
+                    name="{{ rolesPickListNameEdit }}"
+                    allItemsText="Available Roles"
+                    header="Edit roles"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #rolesDelete
+                    [(availableItems)] = availableDeleteRoles
+                    [(selectedItems)] = selectedDeleteRoles
+                    id="deleteRoles"
+                    name="{{ rolesPickListNameDelete }}"
+                    allItemsText="Available Roles"
+                    header="Delete roles"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </mat-tab>
+      </mat-tab>  
     }
     @if (showGroups) {
-    <mat-tab label="Groups">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
-          <div class="table">
-            <div class="tr">
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #groupsView
-                  [(availableItems)] = availableViewGroups
-                  [(selectedItems)] = selectedViewGroups
-                  id="viewGroups"
-                  name="{{ groupsPickListNameView }}"
-                  allItemsText="Available Groups"
-                  header="View Groups"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
-                  selectedItemsText="Selected Groups"
-                  size="8"
-                  width="120" 
-                />
+      <mat-tab label="Groups" class="mat-tab__tab">
+        <div class="mat-tab__container formSection">
+          <div class="formSectionContents center">
+            <div class="table">
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #groupsView
+                    [(availableItems)] = availableViewGroups
+                    [(selectedItems)] = selectedViewGroups
+                    id="viewGroups"
+                    name="{{ groupsPickListNameView }}"
+                    allItemsText="Available Groups"
+                    header="View Groups"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #groupsAdd
+                    [(availableItems)] = availableAddGroups
+                    [(selectedItems)] = selectedAddGroups
+                    id="addGroups"
+                    name="{{ groupsPickListNameAdd }}"
+                    allItemsText="Available Groups"
+                    header="Add Groups"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
               </div>
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #groupsAdd
-                  [(availableItems)] = availableAddGroups
-                  [(selectedItems)] = selectedAddGroups
-                  id="addGroups"
-                  name="{{ groupsPickListNameAdd }}"
-                  allItemsText="Available Groups"
-                  header="Add Groups"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
-                  selectedItemsText="Selected Groups"
-                  size="8"
-                  width="120" 
-                />
-              </div>
-            </div>
-            <div class="tr" style="height: 10px"></div>
-            <div class="tr" style="padding-top: 5px">
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #groupsEdit
-                  [(availableItems)] = availableEditGroups
-                  [(selectedItems)] = selectedEditGroups
-                  id="editGroups"
-                  name="{{ groupsPickListNameEdit }}"
-                  allItemsText="Available Groups"
-                  header="Edit Groups"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
-                  selectedItemsText="Selected Groups"
-                  size="8"
-                  width="120" 
-                />
-              </div>
-              <div class="td centerDiv">
-                <gw-core-pick-list
-                  #groupsDelete
-                  [(availableItems)] = availableDeleteGroups
-                  [(selectedItems)] = selectedDeleteGroups
-                  id="deleteGroups"
-                  name="{{ groupsPickListNameDelete }}"
-                  allItemsText="Available Groups"
-                  header="Delete Groups"
-                  [pickListTableContentsBackground] = "pickListTableContentsBackground"
-                  [pickListTableContentsFont] = "pickListTableContentsFont"
-                  [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
-                  pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
-                  selectedItemsText="Selected Groups"
-                  size="8"
-                  width="120" 
-                />
+              <div class="tr" style="height: 10px"></div>
+              <div class="tr" style="padding-top: 5px">
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #groupsEdit
+                    [(availableItems)] = availableEditGroups
+                    [(selectedItems)] = selectedEditGroups
+                    id="editGroups"
+                    name="{{ groupsPickListNameEdit }}"
+                    allItemsText="Available Groups"
+                    header="Edit Groups"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
+                <div class="td centerDiv">
+                  <gw-core-pick-list
+                    #groupsDelete
+                    [(availableItems)] = availableDeleteGroups
+                    [(selectedItems)] = selectedDeleteGroups
+                    id="deleteGroups"
+                    name="{{ groupsPickListNameDelete }}"
+                    allItemsText="Available Groups"
+                    header="Delete Groups"
+                    [pickListTableContentsBackground] = "pickListTableContentsBackground"
+                    [pickListTableContentsFont] = "pickListTableContentsFont"
+                    [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size="8"
+                    width="120" 
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </mat-tab>
+      </mat-tab>  
     }
-    <mat-tab label="Directory Information">
+    <mat-tab label="Directory Information" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+        <div class="formSectionContents">
           <div class="table">
             <div class="tr">
               <div class="td right">
@@ -414,9 +414,9 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Derived Roles">
+    <mat-tab label="Derived Roles" class="mat-tab__tab">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+        <div class="formSectionContents center">
           <div class="table">
             <div class="tr">
               <div class="td centerDiv">
@@ -499,22 +499,30 @@
   </div>
 </form>
 <ng-template #helpAction>
-  Note: Action should not have any special charactors.<br />
-  Once an action has been entered it can not be changed other than by direct
-  access to the data store.<br />
+  <p>
+    Note: Action should not have any special charactors.<br />
+    Once an action has been entered it can not be changed other than by direct
+    access to the data store.<br />
+  </p>
 </ng-template>
 <ng-template #helpSource>
-  Note: If specifing a page use the forward slash Ex:&nbsp;
-  /pages/common/mypage.aspx.<br />
+  <p>
+    Note: If specifing a page use the forward slash Ex:&nbsp;
+    /pages/common/mypage.aspx.<br />
+  </p>
 </ng-template>
 <ng-template #helpControl>
-  Note: Used for AngularJs implementations.<br />
+  <p>
+    Note: Used for AngularJs implementations.<br />
+  </p>
 </ng-template>
 <ng-template #helpPassword>
-  For security reasons passwords are not displayed but are retained.<br />
-  If you are editing the Function and do not want to change the password then<br />
-  simply leave it blank and the original will be kept.<br />
-  If this is a new Function or you wish to change the password then fill out
-  the<br />
-  the box provided.
+  <p>
+    For security reasons passwords are not displayed but are retained.<br />
+    If you are editing the Function and do not want to change the password then<br />
+    simply leave it blank and the original will be kept.<br />
+    If this is a new Function or you wish to change the password then fill out
+    the<br />
+    the box provided.
+  </p>
 </ng-template>
