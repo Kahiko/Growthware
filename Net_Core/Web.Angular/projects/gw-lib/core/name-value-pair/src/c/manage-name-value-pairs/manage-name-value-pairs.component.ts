@@ -32,6 +32,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 	private _Api_Nvp_Details_Search: string = '';
 	private _SearchCriteriaNVP!: ISearchCriteriaNVP;
 	private _nameValuePairWindowSize: WindowSize = new WindowSize(300, 400);
+	private _nameValuePairChildWindowSize: WindowSize = new WindowSize(200, 400);
 
 	activeParrentRowIndex: number = 0;
 	childConfigurationName: string = '';
@@ -40,7 +41,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 
 	nameValuePairColumns: Array<string> = ['Display', 'Description'];
 	nameValuePairParentData$ = signal<INvpParentProfile[]>([]);
-	nvpChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairWindowSize);
+	nvpChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairChildWindowSize);
 	nvpParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
 
 	constructor(
