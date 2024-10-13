@@ -30,7 +30,7 @@ export class SearchStatesComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'State';
 		this._TheApi = 'GrowthwareState/Search_States';
 		this._TheComponent = StateDetailsComponent;
-		this._TheWindowSize = new WindowSize(275,700);
+		this._TheWindowSize = new WindowSize(250,500);
 		this._TheService = theFeatureSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
