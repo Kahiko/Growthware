@@ -30,7 +30,7 @@ export class SearchfunctionsComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'Function';
 		this._TheApi = 'GrowthwareFunction/SearchFunctions';
 		this._TheComponent = FunctionDetailsComponent;
-		this._TheWindowSize = new WindowSize(660,900);
+		this._TheWindowSize = new WindowSize(660,950);
 		this._TheService = theFeatureSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
