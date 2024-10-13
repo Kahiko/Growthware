@@ -30,7 +30,7 @@ export class SearchGroupsComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'Group';
 		this._TheApi = 'GrowthwareGroup/SearchGroups';
 		this._TheComponent = GroupDetailsComponent;
-		this._TheWindowSize = new WindowSize(450,550);
+		this._TheWindowSize = new WindowSize(325,550);
 		this._TheService = theFeatureSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
