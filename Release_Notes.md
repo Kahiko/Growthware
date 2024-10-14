@@ -8,6 +8,7 @@
 - Updated the color scheme information in the ClientChoices to be more consistent and useful
 - Added the ClientChoices feature in order to access the ClientChoices object without causing a circular dependency in the GroupDetailsComponent and RoleDetailsComponent.
 - Can now change the event date in the Event Details Component
+- Standarized form layout (height/width)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
@@ -23,6 +24,7 @@
 - Fixed Log API call not getting the destination properties (was missing), the API now logs to both the database and the file.
 - Fixed when the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in
 - Fixed after DB has been created and an account logs on the app, clicking on a guarded link will result in being logged out
+- Added sort order to the Name Value Pair Details Component
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
