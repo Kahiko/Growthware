@@ -228,8 +228,9 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
             {
                 oracleConnection.Open();
             }
-            foreach (string mCommandText in mCommands)
+            foreach (string item in mCommands)
             {
+                string mCommandText = item.Replace(";", "").Trim();
                 if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText) && !mCommandText.Trim().StartsWith("--"))
                 {
                     try
