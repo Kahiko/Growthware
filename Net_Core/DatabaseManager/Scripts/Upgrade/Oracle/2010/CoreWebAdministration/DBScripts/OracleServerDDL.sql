@@ -5,7 +5,7 @@ GRANT CREATE ROLE to Foundation;
 
 connect Foundation/Foundation;
 
-CREATE OR REPLACE PACKAGE sqlserver_utilities AS
+CREATE OR REPLACE PACKAGE SQLSERVER_UTILITIES AS
 identity NUMBER(10);
 FUNCTION convert_(p_dataType IN VARCHAR2, p_expr IN VARCHAR2, p_style IN VARCHAR2 DEFAULT NULL) RETURN VARCHAR2;
 FUNCTION year_(p_date_str IN VARCHAR2) RETURN NUMBER;
@@ -37,11 +37,11 @@ FUNCTION ident_seed(p_sequence IN VARCHAR2) RETURN NUMBER;
 FUNCTION quotename(p_str IN VARCHAR2, p_delimiters IN VARCHAR2 DEFAULT '[]') RETURN VARCHAR2;
 FUNCTION str_to_date(p_date_expr IN VARCHAR2)  RETURN DATE;
 FUNCTION fetch_status(p_cursorfound IN BOOLEAN) RETURN NUMBER;
-END sqlserver_utilities;
+END SQLSERVER_UTILITIES;
 
 /
 
-CREATE OR REPLACE PACKAGE BODY sqlserver_utilities AS
+CREATE OR REPLACE PACKAGE BODY SQLSERVER_UTILITIES AS
 FUNCTION str_to_date(p_date_expr IN VARCHAR2) 
 RETURN DATE
 IS
@@ -938,7 +938,7 @@ EXCEPTION
     WHEN OTHERS THEN
        raise_application_error(-20000, DBMS_UTILITY.FORMAT_ERROR_STACK);
 END fetch_status;
-END sqlserver_utilities;
+END SQLSERVER_UTILITIES;
 
 /
 
@@ -1858,7 +1858,7 @@ BEGIN
 
    FETCH RetrieveChildren INTO v_V_SE_SEQ_ID,v_V_PARENT_SE_SEQ_ID;
 
-   WHILE ( sqlserver_utilities.fetch_status(RetrieveChildren%FOUND) = 0 )
+   WHILE ( SQLSERVER_UTILITIES.fetch_status(RetrieveChildren%FOUND) = 0 )
    LOOP
       BEGIN
          INSERT INTO tt_v_retFindChildren
@@ -1955,7 +1955,7 @@ BEGIN
 
       FETCH RetrieveReports INTO v_Report_ID,v_Report_ParentID;
 
-      WHILE ( sqlserver_utilities.fetch_status(RetrieveReports%FOUND) = 0 )
+      WHILE ( SQLSERVER_UTILITIES.fetch_status(RetrieveReports%FOUND) = 0 )
       LOOP
          BEGIN
             INSERT INTO tt_v_retParents
@@ -3751,7 +3751,7 @@ BEGIN
         ( DESCRIPTION, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_DESCRIPTION, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_UPDATED_BY, v_P_UPDATED_DATE );
 
-      v_P_STATUS_SEQ_ID := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_STATUS_SEQ_ID := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -3904,7 +3904,7 @@ BEGIN
         ( STATUS_SEQ_ID, ACCT, FIRST_NAME, LAST_NAME, MIDDLE_NAME, PREFERED_NAME, EMAIL, PASSWORD_LAST_SET, PWD, FAILED_ATTEMPTS, IS_SYSTEM_ADMIN, ADDED_BY, ADDED_DATE, LAST_LOGIN, TIME_ZONE, LOCATION, ENABLE_NOTIFICATIONS, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_STATUS_SEQ_ID, v_P_ACCOUNT, v_P_FIRST_NAME, v_P_LAST_NAME, v_P_MIDDLE_NAME, v_P_PREFERED_NAME, v_P_EMAIL, v_P_PASSWORD_LAST_SET, v_P_PWD, v_P_FAILED_ATTEMPTS, v_P_IS_SYSTEM_ADMIN, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_LAST_LOGIN, v_P_TIME_ZONE, v_P_LOCATION, v_P_ENABLE_NOTIFICATIONS, v_P_UPDATED_BY, v_P_UPDATED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
       IF v_P_PRIMARY_KEY > 0 THEN
@@ -4029,7 +4029,7 @@ BEGIN
         
         VALUES ( v_P_VERSION, v_P_Enable_Inheritance, v_P_ADD_UP_BY, SYSDATE, v_P_ADD_UP_BY, SYSDATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -4113,7 +4113,7 @@ BEGIN
         ( NAME, DESCRIPTION, TEMPLATE, IS_CONTENT, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_NAME, v_P_DESCRIPTION, v_P_TEMPLATE, v_P_IS_CONTENT, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -4181,7 +4181,7 @@ BEGIN
         ( DESCRIPTION, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_DESCRIPTION, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -4252,7 +4252,7 @@ BEGIN
         ( DESCRIPTION, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_DESCRIPTION, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_UPDATED_BY, v_P_UPDATED_DATE );
 
-      v_P_PERMISSIONS_ID := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PERMISSIONS_ID := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -4319,7 +4319,7 @@ BEGIN
         VALUES ( v_P_NAME, v_P_DESCRIPTION, v_P_URL, v_P_STATUS_SEQ_ID, v_P_DAL, v_P_DAL_NAME, v_P_DAL_NAME_SPACE, v_P_DAL_STRING, v_P_SKIN, v_P_STYLE, v_P_ENCRYPTION_TYPE, v_P_PARENT_SE_SEQ_ID );
 
       -- Get the IDENTITY value for the row just inserted.
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;
 
    END;
    END IF;
@@ -4413,7 +4413,7 @@ BEGIN
            ( NAME, DESCRIPTION, IS_SYSTEM, IS_SYSTEM_ONLY, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
            VALUES ( v_P_NAME, v_P_DESCRIPTION, v_P_IS_SYSTEM, v_P_IS_SYSTEM_ONLY, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-         v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+         v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
          
 
       END;
@@ -4516,7 +4516,7 @@ BEGIN
            ( NAME, DESCRIPTION, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
            VALUES ( v_P_NAME, v_P_DESCRIPTION, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-         v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+         v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
          
 
       END;
@@ -4842,7 +4842,7 @@ BEGIN
         ( NAME, DESCRIPTION, FUNCTION_TYPE_SEQ_ID, ALLOW_HTML_INPUT, ALLOW_COMMENT_HTML_INPUT, SOURCE, ENABLE_VIEW_STATE, IS_NAV, NAV_TYPE_ID, ACTION, PARENT_FUNCTION_SEQ_ID, NOTES, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_NAME, v_P_DESCRIPTION, v_P_FUNCTION_TYPE_SEQ_ID, v_P_ALLOW_HTML_INPUT, v_P_ALLOW_COMMENT_HTML_INPUT, v_P_SOURCE, v_P_ENABLE_VIEW_STATE, v_P_IS_NAV, v_P_NAV_TYPE_ID, v_P_ACTION, v_P_PARENT_FUNCTION_SEQ_ID, v_P_NOTES, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
       SELECT ( SELECT MAX(SORT_ORDER)
@@ -5105,7 +5105,7 @@ BEGIN
         ( SE_SEQ_ID, NAME, TITLE, DESCRIPTION, BODY, FORMAT_AS_HTML, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_SE_SEQ_ID, v_P_NAME, v_P_TITLE, v_P_DESCRIPTION, v_P_BODY, v_P_FORMAT_AS_HTML, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -9875,7 +9875,7 @@ BEGIN
         ( TABLE_NAME, DISPLAY, DESCRIPTION, ADDED_BY, ADDED_DATE, UPDATED_BY, UPDATED_DATE )
         VALUES ( v_P_TABLE_NAME, v_P_DISPLAY, v_P_DESCRIPTION, v_P_ADDED_BY, v_P_ADDED_DATE, v_P_ADDED_BY, v_P_ADDED_DATE );
 
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;-- Get the IDENTITY value for the row just inserted.
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;-- Get the IDENTITY value for the row just inserted.
       
 
    END;
@@ -9984,7 +9984,7 @@ BEGIN
         VALUES ( v_P_ORDER_ID, v_P_WORK_FLOW_NAME, v_P_FUNCTION_SEQ_ID );
 
       -- Get the IDENTITY value for the row just inserted.
-      v_P_PRIMARY_KEY := sqlserver_utilities.identity;
+      v_P_PRIMARY_KEY := SQLSERVER_UTILITIES.identity;
 
    END;
    END IF;
@@ -10632,7 +10632,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.ROLE_SEQ_ID := v_newVal;
   END IF;
@@ -10660,7 +10660,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.NAV_TYPE_SEQ_ID := v_newVal;
   END IF;
@@ -10688,7 +10688,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.CONTENT_SEQ_ID := v_newVal;
   END IF;
@@ -10716,7 +10716,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.GRPS_SE_SEQ_ID := v_newVal;
   END IF;
@@ -10744,7 +10744,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.Rating_id := v_newVal;
   END IF;
@@ -10772,7 +10772,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.ACCT_SEQ_ID := v_newVal;
   END IF;
@@ -10800,7 +10800,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.FUNCTION_TYPE_SEQ_ID := v_newVal;
   END IF;
@@ -10828,7 +10828,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.RLS_SE_SEQ_ID := v_newVal;
   END IF;
@@ -10856,7 +10856,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.SE_SEQ_ID := v_newVal;
   END IF;
@@ -10884,7 +10884,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.MESSAGE_SEQ_ID := v_newVal;
   END IF;
@@ -10912,7 +10912,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.Information_SEQ_ID := v_newVal;
   END IF;
@@ -10940,7 +10940,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.NVP_SEQ_DET_ID := v_newVal;
   END IF;
@@ -10968,7 +10968,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.NVP_SEQ_ID := v_newVal;
   END IF;
@@ -10996,7 +10996,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.STATUS_SEQ_ID := v_newVal;
   END IF;
@@ -11024,7 +11024,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.GROUP_SEQ_ID := v_newVal;
   END IF;
@@ -11052,7 +11052,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.WORK_FLOW_ID := v_newVal;
   END IF;
@@ -11080,7 +11080,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.PERMISSIONS_ID := v_newVal;
   END IF;
@@ -11108,7 +11108,7 @@ BEGIN
       END LOOP;
     END IF;
     -- save this to emulate @@identity
-   sqlserver_utilities.identity := v_newVal; 
+   SQLSERVER_UTILITIES.identity := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
    :new.FUNCTION_SEQ_ID := v_newVal;
   END IF;
