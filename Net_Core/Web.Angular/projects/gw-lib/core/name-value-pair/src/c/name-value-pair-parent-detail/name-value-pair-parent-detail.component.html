@@ -1,82 +1,81 @@
-<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()">
-    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
-        <mat-tab label="Details">
-            <div class="mat-tab__container">
-                <div class="mat-tab__content formSectionContents containerSize">
-                    <div class="table">
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Schema Name:</span>
-                            </div>
-                            <div class="td middleCell">
-                                @if (getErrorMessage('schemaName')) {
-                                    <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
-                                }
-                            </div>
-                            <div class="td left">
-                                <input matInput readonly [readOnly]="isReadonly" type="text" formControlName="schemaName" class="Form_Field rounded" [ngClass]="{'disabled': isReadonly}">
-                                <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('schemaName')}}</mat-error>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Static Name:</span>
-                            </div>
-                            <div class="td middleCell">
-                                @if (getErrorMessage('staticName')) {
-                                    <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
-                                }
-                            </div>
-                            <div class="td left">
-                                <input matInput readonly [readOnly]="isReadonly" type="text" formControlName="staticName" class="Form_Field rounded" [ngClass]="{'disabled': isReadonly}">
-                                <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('schemaName')}}</mat-error>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Display:</span>
-                            </div>
-                            <div class="td middleCell">
-                                @if (getErrorMessage('display')) {
-                                    <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
-                                }
-                            </div>
-                            <div class="td left">
-                                <input matInput type="text" formControlName="display" class="Form_Field rounded">
-                                <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('display')}}</mat-error>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Description:</span>
-                            </div>
-                            <div class="td middleCell"></div>
-                            <div class="td left">
-                                <textarea matInput id="txtDescription" formControlName="description" #description class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
-                                <mat-hint align="end">{{description.value.length}}/256</mat-hint>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Status:</span>
-                            </div>
-                            <div class="td middleCell">&nbsp;</div>
-                            <div class="td left">
-                                <mat-select [(value)]="selectedStatus" class="Form_Field rounded" style="width: 150px;">
-                                    @for (item of validStatus; track item) {
-                                      <mat-option [value]="item.id">
-                                        {{item.name}}
-                                      </mat-option>
-                                    }
-                                  </mat-select>
-                            </div>
-                        </div>
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+      <mat-tab label="Details" class="mat-tab__tab">
+        <div class="div__tab-container formSection">
+          <div class="formSectionContents">
+            <div class="table">
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Schema Name:</span>
                     </div>
-                </div>    
+                    <div class="td middleCell">
+                        @if (getErrorMessage('schemaName')) {
+                            <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
+                        }
+                    </div>
+                    <div class="td left">
+                        <input matInput readonly [readOnly]="isReadonly" type="text" formControlName="schemaName" class="Form_Field rounded" [ngClass]="{'disabled': isReadonly}">
+                        <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('schemaName')}}</mat-error>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Static Name:</span>
+                    </div>
+                    <div class="td middleCell">
+                        @if (getErrorMessage('staticName')) {
+                            <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
+                        }
+                    </div>
+                    <div class="td left">
+                        <input matInput readonly [readOnly]="isReadonly" type="text" formControlName="staticName" class="Form_Field rounded" [ngClass]="{'disabled': isReadonly}">
+                        <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('schemaName')}}</mat-error>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Display:</span>
+                    </div>
+                    <div class="td middleCell">
+                        @if (getErrorMessage('display')) {
+                            <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
+                        }
+                    </div>
+                    <div class="td left">
+                        <input matInput type="text" formControlName="display" class="Form_Field rounded">
+                        <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('display')}}</mat-error>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Description:</span>
+                    </div>
+                    <div class="td middleCell"></div>
+                    <div class="td left">
+                        <textarea matInput id="txtDescription" formControlName="description" #description class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+                        <mat-hint align="end">{{description.value.length}}/256</mat-hint>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Status:</span>
+                    </div>
+                    <div class="td middleCell">&nbsp;</div>
+                    <div class="td left">
+                        <mat-select [(value)]="selectedStatus" class="Form_Field rounded" style="width: 150px;">
+                            @for (item of validStatus; track item) {
+                              <mat-option [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                            }
+                          </mat-select>
+                    </div>
+                </div>
             </div>
-        </mat-tab>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
-    <br/>
     <div class="buttonRow">
         @if (canSave) {
             <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
@@ -92,4 +91,4 @@
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
         </button>
     </div>
-</form>
+  </form>

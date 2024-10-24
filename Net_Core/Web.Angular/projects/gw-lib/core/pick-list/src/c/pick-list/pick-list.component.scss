@@ -8,7 +8,7 @@
     padding: 2px;
     font-family: verdana, arial;
     font-size: 1rem;
-    background-color: #DCDDDE;
+    background-color: white;
 }
 
 .pickListTableHeader td {
@@ -20,6 +20,7 @@
     text-align: center;
     vertical-align: middle;
     font-size: .8rem;
+    background-color: var(--pickListTableHeaderBackground);
 }
 
 .pickListTableHelp td {
@@ -27,9 +28,12 @@
     font-size: .5rem;
 }
 
+// TODO: need to implement the color as a property but for now we'll just use black
 .pickListTableContents {
     padding: 2px;
     font-size: .8rem;
+    background-color: var(--pickListTableContentsBackground);
+    color: var(--pickListTableContentsFont);
 }
 
 .help {

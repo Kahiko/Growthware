@@ -56,7 +56,7 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </example>
     public BNameValuePairs(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile can not be null (Nothing in Visual Basic)");
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile can not be null (Nothing in Visual Basic)");
         m_DNameValuePairs = (INameValuePairs)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DNameValuePairs");
         m_DNameValuePairs.ConnectionString = securityEntityProfile.ConnectionString;
     }

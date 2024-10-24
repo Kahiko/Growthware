@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
+import { IClientChoices, ClientChoices } from '@growthware/core/clientchoices';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
 // Feature
-import { IAccountInformation, AccountInformation } from './account-information.model';
+import { IAccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
-import { IClientChoices, ClientChoices } from './client-choices.model';
 import { ISelectedableAction } from './selectedable-action.model';
 import { SelectedRow } from './selected-row.model';
 
@@ -19,18 +19,16 @@ import { SelectedRow } from './selected-row.model';
 	providedIn: 'root'
 })
 export class AccountService extends BaseService {
-	public accountInformationChanged$: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
+	public authenticationResponse = signal<IAuthenticationResponse>(new AuthenticationResponse());
 	override addEditModalId: string = 'addEditAccountModal';
-	public authenticationResponse: IAuthenticationResponse = new AuthenticationResponse();
 	readonly anonymous = 'anonymous';
-	public clientChoices: IClientChoices = new ClientChoices();
+	public clientChoices = signal<IClientChoices>(new ClientChoices());
 	readonly forgotPasswordModalId = 'forgotPasswordModal';
 	readonly logInModalId = 'logInModal';
 	override modalReason: string = '';
 	override selectedRow: SelectedRow = new SelectedRow();
-	public updateMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+	public updateMenu$ = signal<boolean>(true);
 
-	private _AccountInformation = new AccountInformation;
 	private _ApiName: string = 'GrowthwareAccount/';
 	private _Api_ChangePassword = '';
 	private _Api_Authenticate: string = '';
@@ -82,22 +80,22 @@ export class AccountService extends BaseService {
 		// if account information is not null
 		// 	1.) Make the JWT token available VIA sessionStorage to avoid injecting the AccountService
 		let mTriggerMenuUpdates = false;
-		if(this._AccountInformation.authenticationResponse.account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
+		if (this.authenticationResponse().account.toLowerCase() !== accountInformation.authenticationResponse.account.toLowerCase()) {
 			mTriggerMenuUpdates = true;
 		}
-		this._AccountInformation = JSON.parse(JSON.stringify(accountInformation));
-		this.authenticationResponse = this._AccountInformation.authenticationResponse;
-		this.clientChoices = JSON.parse(JSON.stringify(this._AccountInformation.clientChoices));
-		const mClientChoicesString: string = JSON.stringify(this._AccountInformation.clientChoices);
+		const mClientChoicesString: string = JSON.stringify(accountInformation.clientChoices);
 		sessionStorage.setItem('clientChoices', mClientChoicesString);
-		this.accountInformationChanged$.next(this._AccountInformation);
-		if(mTriggerMenuUpdates || forceMenuUpdate) {
-			this.triggerMenuUpdates();			
+		this.authenticationResponse.set(JSON.parse(JSON.stringify(accountInformation.authenticationResponse)));
+		this.clientChoices.set(JSON.parse(mClientChoicesString));
+		if (mTriggerMenuUpdates || forceMenuUpdate) {
+			// The value isn't important the information we are conveying
+			// is that the menu needs to be updated so the value always changes.
+			this.updateMenu$.update(() => !this.updateMenu$());
 		}
-		if(this._AccountInformation.authenticationResponse.jwtToken !== null) {
-			sessionStorage.setItem('jwt', this._AccountInformation.authenticationResponse.jwtToken);
+		if (this.authenticationResponse().jwtToken !== null) {
+			sessionStorage.setItem('jwt', this.authenticationResponse().jwtToken);
 		}
-		if(this._AccountInformation !== null && this._AccountInformation.authenticationResponse.account.toLowerCase() !== this.anonymous) {
+		if (this.authenticationResponse() !== null && this.authenticationResponse().account.toLowerCase() !== this.anonymous) {
 			this.setRefreshTokenTimer();
 		} else {
 			this.stopRefreshTokenTimer();
@@ -169,14 +167,13 @@ export class AccountService extends BaseService {
 				headers: new HttpHeaders({
 					'Content-Type': 'text/plain',
 				}),
-				responseType: 'text' as 'json',
 				params: mQueryParameter,
 			};
 			this._HttpClient.post<{ item1: string; item2: IAuthenticationResponse }>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
 				next: (response) => {
 					// const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
 					if (response.item1.startsWith('Your password has been changed')) {
-						const mAccountInformation = { authenticationResponse: response.item2, clientChoices: this._AccountInformation.clientChoices };
+						const mAccountInformation = { authenticationResponse: response.item2, clientChoices: this.clientChoices() };
 						this.afterAuthentication(mAccountInformation);
 						this._LoggingSvc.toast(response.item1, 'Change password', LogLevel.Success);
 						resolve(true);
@@ -308,11 +305,11 @@ export class AccountService extends BaseService {
 		 */
 		return new Promise<boolean>((resolve, reject) => {
 			this.authenticate(account, password).then((response: boolean) => {
-				let mNavigationUrl: string = this._AccountInformation.clientChoices.action;
-				if (this._AccountInformation.authenticationResponse.status == 4) {
+				let mNavigationUrl: string = this.clientChoices().action;
+				if (this.authenticationResponse().status == 4) {
 					mNavigationUrl = '/accounts/change-password';
 				}
-				if(response === true) {
+				if (response === true) {
 					this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
 				}
 				if (!silent) {
@@ -347,7 +344,7 @@ export class AccountService extends BaseService {
 				if (!slient) {
 					this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
 				}
-				if(navigate) {
+				if (navigate) {
 					this._Router.navigate(['generic_home']);
 				}
 				this.stopRefreshTokenTimer();
@@ -366,13 +363,22 @@ export class AccountService extends BaseService {
 	 */
 	refreshToken(): Observable<IAuthenticationResponse> {
 		// 1.) get the refresh token response
-		return this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_RefreshToken, {}, { withCredentials: true })
-			.pipe(map((response) => {
-				// 2.) update information from the response
-				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
-				this.afterAuthentication(mAccountInformation);
-				return mAccountInformation.authenticationResponse;
-			}));
+		return new Observable<IAuthenticationResponse>((subscriber) => {
+			this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_RefreshToken, {}, { withCredentials: true }).subscribe({
+				next: (response) => {
+					const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+					this.afterAuthentication(mAccountInformation);
+					subscriber.next(mAccountInformation.authenticationResponse);
+				},
+				error: (error) => {
+					this.logout(true, true);
+					subscriber.error(error);
+				},
+				complete: () => {
+					subscriber.complete();
+				}
+			});
+		});
 	}
 
 	/**
@@ -394,10 +400,10 @@ export class AccountService extends BaseService {
 			mAccountToSave.lastName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.lastName);
 			mAccountToSave.middleName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.middleName);
 			mAccountToSave.preferredName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.preferredName);
-			this._HttpClient.post<{message: string}>(this._Api_RegisterAccount, mAccountToSave, mHttpOptions).subscribe({
-				next: (mReturnString: {message: string}) => {
+			this._HttpClient.post<{ message: string }>(this._Api_RegisterAccount, mAccountToSave, mHttpOptions).subscribe({
+				next: (mReturnString: { message: string }) => {
 					console.log('AccountService.registerAccount', mReturnString);
-					if(mReturnString.message.toLowerCase().indexOf('failed') > -1) {
+					if (mReturnString.message.toLowerCase().indexOf('failed') > -1) {
 						reject(mReturnString.message);
 					}
 					resolve(mReturnString.message);
@@ -429,7 +435,7 @@ export class AccountService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.put<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_ResetPassword, null, mHttpOptions).subscribe({
 				next: (response: { item1: IAuthenticationResponse, item2: IClientChoices }) => {
-					if(response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
+					if (response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
 						const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
 						this.afterAuthentication(mAccountInformation);
 						this._Router.navigate(['home']);
@@ -490,7 +496,7 @@ export class AccountService extends BaseService {
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.post<IClientChoices>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
 				next: (response: IClientChoices) => {
-					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: response };
+					const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse(), clientChoices: response };
 					this.afterAuthentication(mAccountInformation, true);
 					resolve(true);
 				},
@@ -510,7 +516,7 @@ export class AccountService extends BaseService {
 		// parse json object from base64 encoded jwt token
 		const mJasonWebToken = sessionStorage.getItem('jwt');
 		let mJwtBase64 = null;
-		if(mJasonWebToken != null) {
+		if (mJasonWebToken != null) {
 			mJwtBase64 = mJasonWebToken.split('.')[1];
 		}
 		if (mJwtBase64) {
@@ -541,7 +547,11 @@ export class AccountService extends BaseService {
 	 * @return {void} 
 	 */
 	public triggerMenuUpdates(): void {
-		this.updateMenu$.next(true);
+		// This isn't a great solution, but it works.
+		// At this point we should be looking into using signals instead.
+		// of afterAuthentication at all.
+		const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse(), clientChoices: this.clientChoices() };
+		this.afterAuthentication(mAccountInformation, true);
 	}
 
 	/**
@@ -551,7 +561,7 @@ export class AccountService extends BaseService {
 	 * @returns 
 	 */
 	public verifyAccount(verificationToken: string, email: string): void {
-		if(this._GWCommon.isNullOrEmpty(verificationToken)) {
+		if (this._GWCommon.isNullOrEmpty(verificationToken)) {
 			this._LoggingSvc.console('verificationToken can not be blank!', LogLevel.Error);
 			this._LoggingSvc.toast('Unable to verify account.', 'Verify Account', LogLevel.Error);
 			return;

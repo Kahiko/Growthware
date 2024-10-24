@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { GroupService } from '@growthware/core/group';
 import { ISecurityInfo } from '@growthware/core/security';
@@ -50,12 +48,11 @@ import { AccountService } from '../../account.service';
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss']
 })
-export class AccountDetailsComponent implements OnDestroy, OnInit {
+export class AccountDetailsComponent implements OnInit {
   private _AccountProfile!: IAccountProfile;
   private _SecurityInfoAccount: null | ISecurityInfo = null;
   private _SecurityInfoGroups: null | ISecurityInfo = null;
   private _SecurityInfoRoles: null | ISecurityInfo = null;
-  private _Subscription: Subscription = new Subscription();
 
   frmAccount!: FormGroup;
 
@@ -63,6 +60,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
+  derivedRoles: string[] = [];
   derivedRolesId: string = 'derivedRoles';
 
   groupsAvailable: Array<string> = [];
@@ -78,6 +76,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   litLastNameWarning: string = '';
   litStatusWarning: string = '';
 
+	pickListTableContentsBackground = this._AccountSvc.clientChoices().evenRow;
+	pickListTableContentsFont = this._AccountSvc.clientChoices().evenFont;
+	pickListTableHeaderBackground = this._AccountSvc.clientChoices().oddRow;
+
+  rolesAvailable: Array<string> = ['one', 'two'];
+  rolesSelected: Array<string> = [];
   rolesPickListName: string = 'roles';
 
   selectedStatus: number = 0;
@@ -120,22 +124,16 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   ];
 
   constructor(
-		private _AccountSvc: AccountService,
-		private _FormBuilder: FormBuilder,
-		private _DataSvc: DataService,
-		private _GroupSvc: GroupService,
-		private _GWCommon: GWCommon,
-		private _LoggingSvc: LoggingService,
-		private _ModalSvc: ModalService,
-		private _RoleSvc: RoleService,
-		private _Router: Router,
-		private _SecuritySvc: SecurityService
+    private _AccountSvc: AccountService,
+    private _FormBuilder: FormBuilder,
+    private _GroupSvc: GroupService,
+    private _GWCommon: GWCommon,
+    private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
+    private _RoleSvc: RoleService,
+    private _Router: Router,
+    private _SecuritySvc: SecurityService
   ) { }
-
-  ngOnDestroy(): void {
-    // console.log('AccountDetailsComponent.ngOnDestroy called', this._AccountProfile);
-    this._Subscription.unsubscribe();
-  }
 
   ngOnInit(): void {
     let mDesiredAccount: string = '';
@@ -150,7 +148,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         break;
       case '/accounts/edit-my-account':
         this._AccountSvc.modalReason = 'EditProfile';
-        mDesiredAccount = this._AccountSvc.authenticationResponse.account;
+        mDesiredAccount = this._AccountSvc.authenticationResponse().account;
         this.canDelete = false;
         break;
       case '/accounts/register':
@@ -164,19 +162,15 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         break;
     }
     this._GroupSvc.getGroups().then((groups) => {                         // Request and Response Handler #1 (getGroups)
-      // TODO: this would indicate that the pick-list component isn't loaded at this point
-      // and we are simply adding a delay to give it time... need to find a better way
-      // such as a different lifecycle hook?
       if(groups != null) {
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
+        this.groupsAvailable = groups;
       }
       return this._RoleSvc.getRoles();                                    // Request #2 (getRoles)
     }).catch((error) => {                                                 // Error Handler #1 (getGroups)
       this._LoggingSvc.toast('Error getting groups:\r\n' + error, 'Account Details:', LogLevel.Error);
     }).then((roles) => {                                                  // Response Handler #2 (getRoles)
       if(roles != null) {
-        // TODO: Same issue as Request #1
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
+        this.rolesAvailable = roles;
       }
       return this._SecuritySvc.getSecurityInfo('Accounts');               // Request #3 (getSecurityInfo('Accounts'))
     }).catch((error) => {                                                 // Error Handler #2 (getRoles)
@@ -208,13 +202,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         let mRoles: string[] = [];
         let mGroups: string[] = [];
         this.isSysAdmin = this._AccountProfile.isSystemAdmin;
-        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.assignedRoles)) {
-          mRoles = this._AccountProfile.assignedRoles!;
-          setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
+        if(this._AccountProfile && this._AccountProfile.assignedRoles) {
+          this.rolesSelected = this._AccountProfile.assignedRoles;
         }
-        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.groups)) {
+        if(this._AccountProfile && this._AccountProfile.groups) {
           mGroups = this._AccountProfile.groups!;
-          setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
+          this.groupsSelected = mGroups;
         }
         this.applySecurity();
         this.populateForm();
@@ -350,7 +343,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           this._LoggingSvc.toast('Error saving account!', 'Save Account', LogLevel.Error);
         });          
       } else {
-        console.log('AccountProfile', this._AccountProfile);
+        // console.log('AccountProfile', this._AccountProfile);
         this._AccountSvc.registerAccount(this._AccountProfile).then((mMessage: string) => {
           this._LoggingSvc.toast(mMessage, 'Register Account', LogLevel.Success);
           this.closeModal();
@@ -366,7 +359,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
       this.selectedStatus = this._AccountProfile.status;
       this.selectedTimeZone = this._AccountProfile.timeZone;
-      this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
+      this.derivedRoles = this._AccountProfile.derivedRoles;
       if(!this.isRegistration) {
         this.frmAccount = this._FormBuilder.group({
           account: [this._AccountProfile.account, [Validators.required]],
@@ -374,7 +367,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           enableNotifications: [this._AccountProfile.enableNotifications],
           failedAttempts: [this._AccountProfile.failedAttempts],
           firstName: [this._AccountProfile.firstName],
-          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
           lastName: [this._AccountProfile.lastName],
           location: [this._AccountProfile.location],
           middleName: [this._AccountProfile.middleName],
@@ -389,7 +382,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           enableNotifications: [this._AccountProfile.enableNotifications],
           failedAttempts: [this._AccountProfile.failedAttempts],
           firstName: [this._AccountProfile.firstName, [Validators.required]],
-          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
           lastName: [this._AccountProfile.lastName, [Validators.required]],
           location: [this._AccountProfile.location],
           middleName: [this._AccountProfile.middleName],
@@ -406,7 +399,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         enableNotifications: [false],
         failedAttempts: [0],
         firstName: [''],
-        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse().isSystemAdmin}],
         lastName: [''],
         location: [''],
         middleName: [''],
@@ -422,12 +415,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     if(this.isRegistration) {
       this._AccountProfile.account = this.controls['email'].getRawValue();
     }
-    // this._AccountProfile.assignedRoles = '';
+    this._AccountProfile.assignedRoles = JSON.parse(JSON.stringify(this.rolesSelected));
     this._AccountProfile.email = this.controls['email'].getRawValue();
     this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
     this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
     this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
-    // this._AccountProfile.groups = '';
+    this._AccountProfile.groups = JSON.parse(JSON.stringify(this.groupsSelected));
     this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();
     this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
     this._AccountProfile.location = this.controls['location'].getRawValue();

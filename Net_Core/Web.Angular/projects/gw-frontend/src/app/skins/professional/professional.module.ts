@@ -14,7 +14,6 @@ import { LoaderComponent } from '@growthware/core/loader';
 import { HorizontalComponent } from '@growthware/core/navigation';
 // import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
 import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
-// import { HierarchicalHorizontalFlyoutComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { ProfessionalRoutingModule } from './professional-routing.module';
@@ -45,7 +44,6 @@ import { ProfessionalLayoutComponent } from './professional-layout/professional-
 		HorizontalComponent,
 		// HierarchicalHorizontalComponent,
 		HierarchicalVerticalComponent,
-		// HierarchicalHorizontalFlyoutComponent,
 		VerticalComponent,
 		// Modules/Components
 		ProfessionalRoutingModule,

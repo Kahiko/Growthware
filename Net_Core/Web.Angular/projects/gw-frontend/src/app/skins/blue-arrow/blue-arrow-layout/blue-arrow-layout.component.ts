@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, computed, ViewEncapsulation } from '@angular/core';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { GWCommon } from '@growthware/common/services';
 
@@ -11,17 +10,13 @@ import { GWCommon } from '@growthware/common/services';
 	styleUrls: ['./blue-arrow-layout.component.scss'],
 	encapsulation: ViewEncapsulation.None,
 })
-export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
+export class BlueArrowLayoutComponent {
 
-	private _Subscription: Subscription = new Subscription();
-
-	accountName: string = '';
-	applicationName: string = '';
-	environment: string = 'Development';
+	environment = computed(() => this._ConfigurationSvc.environment());
 	navDescription: string = '';
-	securityEntity: string = '';
-	securityEntityTranslation: string = '';
-	version: string = '';
+	securityEntityName = computed(() => this._AccountSvc.clientChoices().securityEntityName);
+	securityEntityTranslation = computed(() => this._ConfigurationSvc.securityEntityTranslation());
+	version = computed(() => this._ConfigurationSvc.version());
 
 	constructor(
     private _AccountSvc: AccountService,
@@ -30,42 +25,4 @@ export class BlueArrowLayoutComponent implements OnDestroy, OnInit {
 	) {
 		// do nothing atm
 	}
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val;})
-		);    
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })      
-		);
-		this._Subscription.add(
-			// this._ConfigurationSvc.environment$.subscribe((val: string) => { this.environment = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
-			})
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { this.securityEntity = val.clientChoices.securityEntityName; })
-		);
-		// this._Subscription.add(
-		//   this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => { 
-		//     // console.log('ArcHeaderComponent.ngOnInit.description', val.description);
-		//     if(val.description.length > 0) {
-		//       this.navDescription = val.description; 
-		//     } else {
-		//       this.navDescription = 'Home';
-		//     }
-		//   })
-		// );
-	}
-
 }

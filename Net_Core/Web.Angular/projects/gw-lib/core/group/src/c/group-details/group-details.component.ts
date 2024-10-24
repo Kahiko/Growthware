@@ -1,8 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatLineModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
-import { DataService } from '@growthware/common/services';
+import { ClientChoicesService, IClientChoices } from '@growthware/core/clientchoices';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -38,43 +36,48 @@ import { IGroupProfile, GroupProfile } from '../../group-profile.model';
 	templateUrl: './group-details.component.html',
 	styleUrls: ['./group-details.component.scss']
 })
-export class GroupDetailsComponent implements OnDestroy, OnInit {
+export class GroupDetailsComponent implements OnInit {
 	private _GroupProfile: IGroupProfile = new GroupProfile();
-	private _Subscription: Subscription = new Subscription();
 
 	canDelete: boolean = false;
 	frmGroup!: FormGroup;
 	height: number = 350;
 	securityInfo!: ISecurityInfo;
 	showDerived: boolean = false;
-	rolesAvailable: Array<string> = [];
 	rolesPickListName: string = 'roles';
-	rolesSelected: Array<string> = [];
-  
+
+	availableRoles: Array<string> = [];
+	selectedRoles: Array<string> = [];
+
+	pickListTableContentsBackground = '#6699cc';
+	pickListTableContentsFont = 'White';
+	pickListTableHeaderBackground = '#b6cbeb';
+
 	constructor(
-    private _DataSvc: DataService,
-    private _FormBuilder: FormBuilder,
-    private _GroupSvc: GroupService,
-    private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
-    private _SearchSvc: SearchService,
-    private _SecuritySvc: SecurityService
+		private _ClientChoicesSvc: ClientChoicesService,
+		private _FormBuilder: FormBuilder,
+		private _GroupSvc: GroupService,
+		private _LoggingSvc: LoggingService,
+		private _ModalSvc: ModalService,
+		private _SearchSvc: SearchService,
+		private _SecuritySvc: SecurityService
 	) { }
 
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
 	ngOnInit(): void {
+		const mClientChoices: IClientChoices = this._ClientChoicesSvc.getClientChoices();
+		this.pickListTableContentsBackground = mClientChoices.evenRow;
+		this.pickListTableContentsFont = mClientChoices.evenFont;
+		this.pickListTableHeaderBackground = mClientChoices.oddRow;
+		
 		let mIdToGet = -1;
-		if(this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
+		if (this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
 			// console.log('selectedRow', this._GroupSvc.selectedRow);
 			mIdToGet = this._GroupSvc.selectedRow.GroupSeqId;
 		}
 		this._GroupSvc.getGroupForEdit(mIdToGet).then((response: IGroupProfile) => {
 			this._GroupProfile = response;
-			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', this._GroupProfile.rolesInGroup); }, 500);
-			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', this._GroupProfile.rolesNotInGroup); }, 500);
+			this.availableRoles = this._GroupProfile.rolesNotInGroup;
+			this.selectedRoles = this._GroupProfile.rolesInGroup;
 			this.populateForm();
 			return this._SecuritySvc.getSecurityInfo('Manage_Groups');
 		}).then((response: ISecurityInfo) => {
@@ -82,21 +85,11 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 			this.applySecurity();
 		});
 		this.populateForm();
-		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
-			// console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()). // used to determine the data name
-			switch (data.name.toLowerCase()) {
-			case 'roles':
-				this._GroupProfile.rolesInGroup = data.value;
-				break;
-			default:
-				break;
-			}
-		}));
 	}
 
 	applySecurity(): void {
 		this.canDelete = this.securityInfo.mayDelete;
-		if(this._GroupSvc.modalReason.toLowerCase() == 'newprofile') {
+		if (this._GroupSvc.modalReason.toLowerCase() == 'newprofile') {
 			this.canDelete = false;
 		}
 	}
@@ -106,20 +99,18 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	}
 
 	closeModal(): void {
-		// console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.modalReason);
-		// console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.addEditModalId);
 		this._ModalSvc.close(this._GroupSvc.addEditModalId);
 	}
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -161,13 +152,14 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 	private populateProfile(): void {
 		this._GroupProfile.name = this.controls['name'].getRawValue();
 		this._GroupProfile.description = this.controls['description'].getRawValue();
+		this._GroupProfile.rolesInGroup = this.selectedRoles;
 	}
 
 	updateSearch(): void {
 		const mSearchCriteria = this._SearchSvc.getSearchCriteria('Groups'); // from SearchAccountsComponent line 25
-		if(mSearchCriteria != null) {
+		if (mSearchCriteria != null) {
 			this._SearchSvc.setSearchCriteria('Groups', mSearchCriteria);
-		}    
+		}
 	}
 
 }

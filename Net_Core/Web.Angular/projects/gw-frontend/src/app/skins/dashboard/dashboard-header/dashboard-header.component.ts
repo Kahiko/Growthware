@@ -1,10 +1,9 @@
-import { Component, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 // Angular Material
 import { MatSidenav } from '@angular/material/sidenav';
 // Library
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { LoginComponent } from '@growthware/core/account';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
@@ -15,13 +14,11 @@ import { ConfigurationService } from '@growthware/core/configuration';
 	templateUrl: './dashboard-header.component.html',
 	styleUrls: ['./dashboard-header.component.scss']
 })
-export class DashboardHeaderComponent implements OnDestroy, OnInit {
-	private _Subscription: Subscription = new Subscription();
+export class DashboardHeaderComponent {
 
-	accountName: string = '';
-	applicationName: string = '';
-	isAuthenticated: boolean = false;
-	version: string = '';
+	accountName = computed(() => this._GWCommon.formatData(this._AccountSvc.authenticationResponse().account, "text:28"));
+	applicationName = computed<string>(() => this._ConfigurationSvc.applicationName());
+	isAuthenticated = computed<boolean>(() => this._AccountSvc.authenticationResponse().account.toLocaleLowerCase() != this._AccountSvc.anonymous.toLowerCase());
 
 	sidenav = input.required<MatSidenav>();
 
@@ -31,25 +28,6 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
 		private _GWCommon: GWCommon,
 		private _ModalSvc: ModalService,
 		private _Router: Router) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		this._Subscription.add(
-			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-		);
-		this._Subscription.add(
-			this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-		);
-		this._Subscription.add(
-			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-				this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
-				this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
-			})
-		);
-	}
 
 	onLogin(): void {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
@@ -61,7 +39,7 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onLogoClick(): void {
-		if (this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
+		if (this._AccountSvc.authenticationResponse().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
 			this._Router.navigate(['home']);
 		} else {
 			this._Router.navigate(['generic_home']);
@@ -69,7 +47,7 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
 	}
 
 	onModalOk() {
-
+		this._ModalSvc.close(this._AccountSvc.logInModalId);
 	}
 
 	onLogout(): void {

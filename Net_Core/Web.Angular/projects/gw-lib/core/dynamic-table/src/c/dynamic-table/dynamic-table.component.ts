@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, input, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, ViewChild } from '@angular/core';
 import { OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -11,8 +11,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { PagerComponent } from '@growthware/core/pager';
-import { DataService } from '@growthware/common/services';
-import { SearchService, ISearchResultsNVP, SearchCriteria } from '@growthware/core/search';
+import { SearchService, SearchCriteria } from '@growthware/core/search';
 import { ISearchCriteria } from '@growthware/core/search';
 
 // Interfaces/Models
@@ -42,10 +41,9 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	private _OnRowClickCallBackMethod?: CallbackMethod;
 	private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
 	private _SearchCriteria!: SearchCriteria;
+	// TODO: Leaving for now but should be converted to a signal
+	// will need to figure out how to implement debuncing with a signal first.
 	private _Subscriptions: Subscription = new Subscription();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private _TableDataSubject = new BehaviorSubject<any[]>([]);
-	private _TableData: Array<unknown> = [];
 
 	configurationName = input.required<string>();
 	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
@@ -61,14 +59,14 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	searchText: string = '';
 	showHelp: boolean = true;
 	tableConfiguration!: IDynamicTableConfiguration;
-	readonly tableData$ = this._TableDataSubject.asObservable();
+	tableData$ = computed(() => this._SearchSvc.searchDataChanged$().payLoad.data);
 	tableWidth: number = 200;
 	tableHeight: number = 206;
 	totalRecords: number = -1;
 	txtRecordsPerPage: number = 0;
 
 	public getRowData(rowNumber: number) {
-  		return this._TableData[rowNumber];
+		return this.tableData$()[rowNumber];
 	}
 
 	/**
@@ -95,12 +93,23 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 
 	constructor(
 		private _GWCommon: GWCommon,
-		private _DataSvc: DataService,
 		private _DynamicTableSvc: DynamicTableService,
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
 		private _SearchSvc: SearchService
-	) {}
+	) {
+		effect(() => {
+			const results = this._SearchSvc.searchDataChanged$();
+			if (this.configurationName().trim().toLowerCase() === results.name.trim().toLowerCase()) {
+				// update the local search criteria with the one used to perform the search
+				this._SearchCriteria = results.payLoad.searchCriteria;
+				// update the local data
+				this.totalRecords = results.payLoad.totalRecords;
+				// set the activeRow to -1 b/c if there was one selected it's no longer valid
+				this.activeRow = -1;
+			}
+		});
+	}
 
 	/**
 	 * Sets the onTopLeft, onTopRight, onBottomLeft and onBottomRight methods with
@@ -179,7 +188,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
-  	this._Subscriptions.unsubscribe();
+  		this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -204,22 +213,6 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 				this.tableWidth = mWidth;
 				this.tableHeight = this.tableConfiguration.tableHeight;
 			}
-			// subscribe to the data change event and update the local data
-			this._Subscriptions.add(
-				this._SearchSvc.searchDataChanged$.subscribe((results: ISearchResultsNVP) => {
-					if (this.configurationName().trim().toLowerCase() === results.name.trim().toLowerCase()) {
-						// update the local search criteria with the one used to perform the search
-						this._SearchCriteria = results.payLoad.searchCriteria;
-						// update the local data
-						this._TableData = results.payLoad.data;
-						this._TableDataSubject.next(results.payLoad.data);
-						// get the "TotalRecords" column if it exists from the first row and update the local totalRecords
-						this.totalRecords = results.payLoad.totalRecords;
-						// set the activeRow to -1 b/c if there was one selected it's no longer valid
-						this.activeRow = -1;
-					}
-				})
-			);
 		} else {
 			const mLogDestinations: Array<LogDestination> = [];
 			mLogDestinations.push(LogDestination.Console);

@@ -1,8 +1,9 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,7 +12,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { ConfigurationService } from '@growthware/core/configuration';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
@@ -30,6 +30,7 @@ import { IValidSecurityEntities } from '../../valid-security-entities.model';
 		FormsModule,
 		ReactiveFormsModule,
 		MatButtonModule,
+		MatFormFieldModule,
 		MatIconModule,
 		MatInputModule,
 		MatSelectModule,
@@ -45,7 +46,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	private _RegistrationInformation: IRegistrationInformation = new registrationInformation();
 
 	canEnterName: boolean = false;
-	securityEntityTranslation: string = 'Security Entity';
+	securityEntityTranslation = computed(() => this._ConfigurationSvc.securityEntityTranslation());
 	securityEntityName: string = '';
 
 	selectedDal: string = '';
@@ -95,7 +96,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	constructor(
 		private _FormBuilder: FormBuilder,
 		private _ConfigurationSvc: ConfigurationService,
-		dataSvc: DataService,
 		private _GWCommon: GWCommon,
 		loggingSvc: LoggingService,
 		modalSvc: ModalService,
@@ -103,7 +103,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		securitySvc: SecurityService
 	) {
 		super();
-		this._DataSvc = dataSvc;
 		this._LoggingSvc = loggingSvc;
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;
@@ -114,11 +113,6 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		// console.log('SecurityEntityDetailsComponent.ngOnInit.modalReason', this._ProfileSvc.modalReason);
 		// console.log('SecurityEntityDetailsComponent.ngOnInit.selectedRow', this._ProfileSvc.selectedRow);
 		// console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
-		this._Subscription.add(
-			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { 
-				this.securityEntityTranslation = val;
-			})
-		);
 		let mEditId = -1;
 		if(this._ProfileSvc.modalReason.toLocaleLowerCase() != 'newprofile') {
 			mEditId = this._ProfileSvc.selectedRow.SecurityEntitySeqId;

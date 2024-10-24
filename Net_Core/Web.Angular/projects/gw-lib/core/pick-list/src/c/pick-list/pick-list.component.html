@@ -21,7 +21,7 @@
             <tr>
               <td valign="top">
                 <select name="{{name()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
-                  @for (item of availableItems$ | async; track item; let rowIndex = $index) {
+                  @for (item of availableItems(); track item; let rowIndex = $index) {
                     <option [value]="item">
                       {{item}}
                     </option>
@@ -37,7 +37,7 @@
               <td valign="top">
                 <select name="{{name()}}_DstList" id="{{id()}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
                   <!-- <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
-                  @for (item of selectedItems$ | async; track item; let rowIndex = $index) {
+                  @for (item of selectedItems(); track item; let rowIndex = $index) {
                     <option [value]="item">
                       {{item}}
                     </option>
@@ -45,12 +45,6 @@
                 </select>
               </td>
               <td></td>
-              @if (!sortOnChange) {
-                <td valign="top">
-                  <input name="" value="▲" (click)="onMove('_DstList', 'up')" class="listPickerArrow" style="width: 50px" type="button"><br />
-                  <input name="" value="▼" (click)="onMove('_DstList', 'down')" class="listPickerArrow" style="width: 50px" type="button"><br />
-                </td>
-              }
             </tr>
           </tbody>
         </table>

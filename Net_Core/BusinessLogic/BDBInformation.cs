@@ -56,7 +56,7 @@ namespace GrowthWare.BusinessLogic
         /// </example>
         public BDBInformation(MSecurityEntity securityEntityProfile)
         {
-            if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+            if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
             this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
             this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
         }
@@ -82,7 +82,7 @@ namespace GrowthWare.BusinessLogic
         /// <remarks></remarks>
         public bool UpdateProfile(MDBInformation profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic)");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be null (Nothing in Visual Basic)");
             bool mRetVal = false;
             this.m_DDBInformation.Profile = profile;
             if (DatabaseIsOnline()) 

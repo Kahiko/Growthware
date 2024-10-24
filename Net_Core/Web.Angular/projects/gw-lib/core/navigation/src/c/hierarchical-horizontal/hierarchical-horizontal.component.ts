@@ -1,13 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 // Library
 import { AccountService } from '@growthware/core/account';
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
-import { BaseNavigationComponent } from '../../base-navigation.component';
-import { NavigationService } from '../../navigation.service';
+import { MenuTypes } from '../../menu-types.enum';
+import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 // import { INavLink } from '../../nav-link.model';
 
 @Component({
@@ -15,24 +14,10 @@ import { NavigationService } from '../../navigation.service';
 	standalone: true,
 	imports: [],
 	templateUrl: './hierarchical-horizontal.component.html',
-	styleUrls: ['./hierarchical-horizontal.component.scss']
+	styleUrls: ['./hierarchical-horizontal.component.scss'],
+	encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class HierarchicalHorizontalComponent extends BaseNavigationComponent {
-
-	@Input() override name: string = '';
-
-	constructor(
-		accountSvc: AccountService,
-		dataSvc: DataService,
-		gwCommon: GWCommon,
-		loggingSvc: LoggingService,
-		menuListSvc: NavigationService,
-	) {
-		super();
-		this._AccountSvc = accountSvc;
-		this._DataSvc = dataSvc;
-		this._GWCommon = gwCommon;
-		this._LoggingSvc = loggingSvc;
-		this._NavigationSvc = menuListSvc;
-	}
-}
+export class HierarchicalHorizontalComponent extends NavigationComponentBase {
+	@ViewChild('firstLevel', { static: false }) override firstLevel!: ElementRef<HTMLUListElement>;
+	override _MenuType: MenuTypes = MenuTypes.Hierarchical;
+  }

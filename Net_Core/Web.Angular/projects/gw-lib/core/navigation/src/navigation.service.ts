@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 // Library
-import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
@@ -21,15 +20,14 @@ export class NavigationService {
 	private _Api_GetMenuItems: string = '';
 	private _BaseURL: string = '';
 
-	private _CurrentNavLink = new BehaviorSubject<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
-	private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
+	// private _ShowNavText = signal<boolean>(true); // Sets the inital value in all controls
 
-	public currentNavLink$ = this._CurrentNavLink.asObservable();
-	public currentUrl = new BehaviorSubject<string>('');
-	readonly showNavText$ = this._ShowNavText.asObservable();
+	public currentNavLink$ = signal<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
+
+	public currentUrl = signal<string>('');
+	readonly showNavText$ = signal<boolean>(true);
 
 	constructor(
-    private _DataSvc: DataService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
@@ -47,13 +45,13 @@ export class NavigationService {
 		this._Router.events.subscribe({
 			next: (event) => {
 				if (event instanceof NavigationEnd) {
-					this.currentUrl.next(event.urlAfterRedirects);
+					this.currentUrl.update(() => event.urlAfterRedirects);
 				}
 			},
 		});
 	}
 
-	public getMenuData(menuType: MenuTypes, configuarionName: string): void {
+	public getMenuData(menuType: MenuTypes, configuarionName: string): Promise<any[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -62,20 +60,23 @@ export class NavigationService {
 			}),
 			params: mQueryParameter
 		};
-		this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
-			next: (response: INavLink[]) => {
-				this._DataSvc.notifyDataChanged(configuarionName, response);
-			},
-			error: (error) => {
-				this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
-			},
-			complete: () => {
-				// here as example
-			}
+		return new Promise<INavLink[]>((resolve, reject) => {
+			this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
+				next: (response: any[]) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
+					reject(error);
+				},
+				complete: () => {
+					// here as example
+				}
+			});
 		});
 	}
 
-	public getNavLinks(menuType: MenuTypes, configuarionName: string): void {
+	public getNavLinks(menuType: MenuTypes, configuarionName: string = ''): Promise<INavLink[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -84,27 +85,31 @@ export class NavigationService {
 			}),
 			params: mQueryParameter
 		};
-		this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
-			next: (response: INavLink[]) => {
-				this._DataSvc.notifyDataChanged(configuarionName, response);
-			},
-			error: (error) => {
-				this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
-			},
-			complete: () => {
-				// here as example
-			}
+		return new Promise<INavLink[]>((resolve, reject) => {
+			this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
+				next: (response: INavLink[]) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
+					reject(error);
+				},
+				complete: () => {
+					// here as example
+				}
+			});	
 		});
 	}
 
 	getShowNavText(): boolean {
-		return this._ShowNavText.getValue();
+		return this.showNavText$();
 	}
+
 	navigateTo(arg: INavLink | string): void {
 		// console.log('NavigationService.navigateTo', navLink);
 		if (typeof arg === 'object') {
-			this._CurrentNavLink.next(arg);
 			if (!arg.children || !arg.children.length) {
+				this.currentNavLink$.update(() => arg);
 				switch (arg.linkBehavior) {
 				case LinkBehaviors.Internal:
 					this._Router.navigate([arg.action.toLowerCase()]);
@@ -133,6 +138,6 @@ export class NavigationService {
 
 
 	setShowNavText(value: boolean): void {
-		this._ShowNavText.next(value);
+		this.showNavText$.update(() => value);
 	}
 }

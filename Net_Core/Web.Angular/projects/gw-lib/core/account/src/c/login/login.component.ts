@@ -67,19 +67,18 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 				console.log('LoginComponent.ngOnInit.params.resetToken', params['resetToken']);
 			}
 		}));
-		this._Subscription.add(this._ConfigurationSvc.environment$.subscribe((environment) => {
-			if (environment.toLocaleLowerCase() === 'development') {
-				this.loginForm = this._FormBuilder.group({
-					account: ['Developer', [Validators.required]],
-					password: ['none', [Validators.required, Validators.minLength(4)]]
-				});
-			} else {
-				this.loginForm = this._FormBuilder.group({
-					account: ['', [Validators.required]],
-					password: ['', [Validators.required, Validators.minLength(4)]]
-				});
-			}
-		}));
+		const mEnvironment = this._ConfigurationSvc.environment();
+		if (mEnvironment.toLocaleLowerCase() !== 'development'){
+			this.loginForm = this._FormBuilder.group({
+				account: ['', [Validators.required]],
+				password: ['', [Validators.required, Validators.minLength(4)]]
+			});
+		} else {
+			this.loginForm = this._FormBuilder.group({
+				account: ['Developer', [Validators.required]],
+				password: ['none', [Validators.required, Validators.minLength(4)]]
+			});			
+		}
 	}
 
 	getErrorMessage(fieldName: string) {

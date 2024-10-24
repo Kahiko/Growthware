@@ -5,14 +5,14 @@
   <span class="spacer">
     <div style="display: inline-block; text-transform: uppercase; color: #fed189; font-weight: 300; font-size: 22px;">
       Growthware&nbsp;
-      <span (click)="onLogoClick()" class="lite">{{applicationName}}</span>
+      <span (click)="onLogoClick()" class="lite">{{applicationName()}}</span>
     </div>
   </span>
   <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #bdbdbd;">
     <mat-icon>person_outline</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    @if (!isAuthenticated) {
+    @if (!isAuthenticated()) {
       <div>
         <button (click)="onLogin()" mat-menu-item>
           <mat-icon>login</mat-icon>
@@ -20,9 +20,9 @@
         </button>
       </div>
     }
-    @if (isAuthenticated) {
+    @if (isAuthenticated()) {
       <div>
-        <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}
+        <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName()}}
         </div>
         <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
           <mat-icon>settings</mat-icon><span>Edit Profile</span>

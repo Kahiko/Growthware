@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
@@ -12,22 +11,17 @@ import { IDBInformation, DBInformation } from './db-information.model';
 	providedIn: 'root'
 })
 export class ConfigurationService {
-	private _ApplicationName = new BehaviorSubject('');
 	private _ApiName: string = 'GrowthwareAPI/';
 	private _ApiAppSettingsURL: string = '';
 	private _ApiGetDBInformationURL: string = '';
 	private _ApiSetDBInformationURL: string = '';
-	private _Environment = new BehaviorSubject('not set');
 	private _Loaded: boolean = false;
-	private _LogPriority = new BehaviorSubject('Debug');
-	private _SecurityEntityTranslation = new BehaviorSubject('Security Entity');
-	private _Version = new BehaviorSubject('0.0.0.0');
 
-	readonly applicationName$ = this._ApplicationName.asObservable();
-	readonly environment$ = this._Environment.asObservable();
-	readonly logPriority$ = this._LogPriority.asObservable();
-	readonly securityEntityTranslation$ = this._SecurityEntityTranslation.asObservable();
-	readonly version$ = this._Version.asObservable();
+	readonly applicationName = signal<string>('');
+	readonly environment = signal<string>('');
+	readonly logPriority = signal<string>('');
+	readonly securityEntityTranslation = signal<string>('');
+	readonly version = signal<string>('');
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -67,11 +61,11 @@ export class ConfigurationService {
 			const mUrl = this._ApiAppSettingsURL;
 			this._HttpClient.get<IAppSettings>(mUrl).subscribe({
 				next: (response: IAppSettings) => {
-					if (response.name) { this._ApplicationName.next(response.name); }
-					if (response.environment) { this._Environment.next(response.environment); }
-					if (response.logPriority) { this._LogPriority.next(response.logPriority); }
-					if (response.version) { this._Version.next(response.version); }
-					if (response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
+					if (response.name) { this.applicationName.set(response.name); }
+					if (response.environment) { this.environment.set(response.environment); }
+					if (response.logPriority) { this.logPriority.set(response.logPriority); }
+					if (response.securityEntityTranslation) { this.securityEntityTranslation.set(response.securityEntityTranslation); }
+					if (response.version) { this.version.set(response.version); }
 					this._Loaded = true;
 				},
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -58,8 +58,8 @@ public class DAccounts : DSearch, IAccount
             {
                 String mStoredProcedure = "ZGWSecurity.Get_Account_By_Refresh_Token";
                 SqlParameter[] mParameters = {
-                        GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
-                    };
+                    GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
+                };
                 return base.GetDataRow(mStoredProcedure, mParameters);
             }
         }
@@ -221,25 +221,25 @@ public class DAccounts : DSearch, IAccount
             }
             SqlParameter[] mParameters = [
                 GetSqlParameter("@P_AccountSeqId", m_Profile.Id, ParameterDirection.InputOutput),
-                    new("@P_StatusSeqId", m_Profile.Status),
-                    new("@P_Account", this.Cleanup(m_Profile.Account)),
-                    new("@P_First_Name", this.Cleanup(m_Profile.FirstName)),
-                    new("@P_Last_Name", this.Cleanup(m_Profile.LastName)),
-                    new("@P_Middle_Name", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
-                    new("@P_Preferred_Name", !string.IsNullOrWhiteSpace(m_Profile.PreferredName) ? m_Profile.PreferredName : DBNull.Value),
-                    new("@P_Email", m_Profile.Email),
-                    new("@P_Password", m_Profile.Password),
-                    new("@P_Password_Last_Set", m_Profile.PasswordLastSet),
-                    new("@P_ResetToken", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
-                    new("@P_ResetTokenExpires", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetTokenExpires : DBNull.Value),
-                    new("@P_Failed_Attempts", m_Profile.FailedAttempts),
-                    new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
-                    new("@P_Last_Login", m_Profile.LastLogOn),
-                    new("@P_Time_Zone", m_Profile.TimeZone),
-                    new("@P_Location", m_Profile.Location),
-                    new("@P_Enable_Notifications", m_Profile.EnableNotifications),
-                    new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
-                    new("@P_VerificationToken", !string.IsNullOrWhiteSpace(m_Profile.VerificationToken) ? m_Profile.VerificationToken : DBNull.Value)
+                new("@P_StatusSeqId", m_Profile.Status),
+                new("@P_Account", this.Cleanup(m_Profile.Account)),
+                new("@P_First_Name", this.Cleanup(m_Profile.FirstName)),
+                new("@P_Last_Name", this.Cleanup(m_Profile.LastName)),
+                new("@P_Middle_Name", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
+                new("@P_Preferred_Name", !string.IsNullOrWhiteSpace(m_Profile.PreferredName) ? m_Profile.PreferredName : DBNull.Value),
+                new("@P_Email", m_Profile.Email),
+                new("@P_Password", m_Profile.Password),
+                new("@P_Password_Last_Set", m_Profile.PasswordLastSet),
+                new("@P_ResetToken", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
+                new("@P_ResetTokenExpires", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetTokenExpires : DBNull.Value),
+                new("@P_Failed_Attempts", m_Profile.FailedAttempts),
+                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
+                new("@P_Last_Login", m_Profile.LastLogOn),
+                new("@P_Time_Zone", m_Profile.TimeZone),
+                new("@P_Location", m_Profile.Location),
+                new("@P_Enable_Notifications", m_Profile.EnableNotifications),
+                new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+                new("@P_VerificationToken", !string.IsNullOrWhiteSpace(m_Profile.VerificationToken) ? m_Profile.VerificationToken : DBNull.Value)
             ];
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
             mRetInt = int.Parse(GetParameterValue("@P_AccountSeqId", mParameters), CultureInfo.InvariantCulture);

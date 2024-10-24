@@ -112,6 +112,7 @@ export class LoggingService {
    * @memberof LoggingService
    */
   public log(options: ILogOptions): void {
+    let mSentToAPI = false;
     options.destination.forEach((element) => {
       /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
       switch (LogDestination[element]) {
@@ -120,7 +121,13 @@ export class LoggingService {
           break;
         case 'DB':
         case 'File':
-          this._LogToAPI(options);
+          // Since there are two destinations that will result in calling the API
+          // we only want to call the API once!  The API will log to both destinations
+          // in a single call.
+          if (!mSentToAPI) {
+            mSentToAPI = true;
+            this._LogToAPI(options);
+          }
           break;
         case 'Toast':
           this._LogToast(options);
@@ -247,6 +254,9 @@ export class LoggingService {
       options.methodName,
       options.msg,
     );
+    if (options.destination) {
+      mData.destination = options.destination;
+    }
     mData.logDate = new Date().toISOString();
     this._HttpClient
       .post<boolean>(this._Api_Log, mData, mHttpOptions)
@@ -301,7 +311,7 @@ export class LoggingService {
         mToastMessage.eventType = EventType.Info;
         break;
     }
-    this._ToastSvc.showToast(mToastMessage);
+    this._ToastSvc.addOrUpdateToasts(mToastMessage);
   }
 
   /**

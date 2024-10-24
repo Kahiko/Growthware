@@ -1,37 +1,39 @@
-<div class="containerSize">
-    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
-        <mat-tab label="Line Count">
-            <div class="mat-tab__container formSection">
-                <div class="mat-tab__content formSectionContents">
-                    <div class="table" style="padding: 5px">
-                        <div class="tr"><!--Account/Status-->
-                            <div class="td right">
-                              <span class="Form_LabelText">Exclusion Pattern: </span>
-                            </div>
-                            <div class="td left">
-                                <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.excludePattern" class="Form_Field rounded"></textarea>
-                            </div>
+<div class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+      <mat-tab label="Line Count" class="mat-tab__tab">
+        <div class="div__tab-container formSection">
+          <div class="formSectionContents">
+            <div style="padding-top: 10px;">
+                <div class="table" style="padding: 5px;">
+                    <div class="tr">
+                        <div class="td right">
+                          <span class="Form_LabelText">Exclusion Pattern: </span>
                         </div>
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">Files: </span>
-                            </div>
-                            <div class="td left">
-                                <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.includeFiles" class="Form_Field rounded"></textarea>
-                            </div>                
-                        </div>
-                        <div class="tr">
-                            <div class="td right">
-                                <span class="Form_LabelText">Directory: </span>
-                            </div>
-                            <div class="td left">
-                                <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.theDirectory" class="Form_Field rounded"></textarea>
-                            </div>                
+                        <div class="td left">
+                            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.excludePattern" class="Form_Field rounded"></textarea>
                         </div>
                     </div>
-                </div>
+                    <div class="tr">
+                        <div class="td right">
+                            <span class="Form_LabelText">Files: </span>
+                        </div>
+                        <div class="td left">
+                            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.includeFiles" class="Form_Field rounded"></textarea>
+                        </div>                
+                    </div>
+                    <div class="tr">
+                        <div class="td right">
+                            <span class="Form_LabelText">Directory: </span>
+                        </div>
+                        <div class="td left">
+                            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.theDirectory" class="Form_Field rounded"></textarea>
+                        </div>                
+                    </div>
+                </div>    
             </div>
-        </mat-tab>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
     <div class="buttonRow">
         <button mat-button class="Form_Button" (click)="onBtnCount()" color="primary">
@@ -41,8 +43,8 @@
     <div class="table" style="padding: 5px;">
         <div class="tr">
             <div class="td left lineCount" style="overflow: hidden;">
-                <textarea id="txtLineCount" type="text" TextMode="MultiLine" [innerHTML]="lineCount" class="lineCount"></textarea>
+                <textarea id="txtLineCount" type="text" TextMode="MultiLine" [innerHTML]="lineCount" class="lineCount" style="width: 835px; "></textarea>
             </div>
         </div>
     </div>
-</div>
+  </div>

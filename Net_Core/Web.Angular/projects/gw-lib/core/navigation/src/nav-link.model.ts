@@ -15,6 +15,7 @@ export interface INavLink {
   'linkText': string;
   'isRouterLink': boolean;
   'styleClass': string;
+  'parentId': number;
   'routerLinkActive': string;
   'children': INavLink[];
 }
@@ -34,6 +35,7 @@ export class NavLink implements INavLink {
     public linkText: string,
     public isRouterLink: boolean = true,
     public styleClass: string = '',
+    public parentId: number = -1,
     public routerLinkActive: string = '',
     public children:INavLink[] = [],
 	) {}

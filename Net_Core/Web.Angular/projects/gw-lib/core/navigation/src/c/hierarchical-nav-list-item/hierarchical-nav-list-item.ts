@@ -1,7 +1,6 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, HostBinding, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -15,13 +14,13 @@ import { NavigationService } from '../../navigation.service';
 	standalone: true,
 	imports: [
 		CommonModule,
+		RouterModule,
+		// Angular Material
 		MatIconModule,
-		MatListModule,
-
-		RouterModule
+		MatListModule
 	],
-	templateUrl: './vertical-list-item.component.html',
-	styleUrls: ['./vertical-list-item.component.scss'],
+	templateUrl: './hierarchical-nav-list-item.html',
+	styleUrls: ['./hierarchical-nav-list-item.scss'],
 	animations: [
 		trigger('indicatorRotate', [
 			state('collapsed', style({ transform: 'rotate(0deg)' })),
@@ -32,32 +31,15 @@ import { NavigationService } from '../../navigation.service';
 		])
 	]
 })
-export class VerticalListItemComponent implements OnDestroy, OnInit {
+export class HierarchicalNavListItemComponent {
+	private _NavigationSvc = inject(NavigationService);
+	private _Router = inject(Router);
+
 	expanded!: boolean;
-	showSideNavLinkText!: boolean;
+	showSideNavLinkText = computed(() =>this._NavigationSvc.showNavText$());
 	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
-	@Input() depth!: number;
-	@Input() item!: INavLink;
-
-	private _Subscription: Subscription = new Subscription();
-
-	constructor(
-		private _NavigationSvc: NavigationService,
-		public _Router: Router
-	) { }
-
-	ngOnDestroy(): void {
-		this._Subscription.unsubscribe();
-	}
-
-	ngOnInit(): void {
-		if (this.depth === undefined) {
-			this.depth = 0;
-		}
-		this._Subscription.add(
-			this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
-		);
-	}
+	depth = input<number>(0);
+	item = input.required<INavLink>();
 
 	onItemSelected(item: INavLink) {
 		if (item.children && item.children.length) {

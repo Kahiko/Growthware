@@ -6,7 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { AccountService, IClientChoices } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
+import { IClientChoices } from '@growthware/core/clientchoices'
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { SecurityEntityService } from '../../security-entity.service';
@@ -40,7 +41,7 @@ export class SelectSecurityEntityComponent implements OnInit {
 		this._SecurityEntitySvc.getValidSecurityEntities().then((securityEntities: IValidSecurityEntities[]) => { 
 			// console.log('SelectSecurityEntityComponent.ngOnInit', securityEntities);
 			this.validSecurityEntities = securityEntities;
-			this.selectedSecurityEntity = this._AccountSvc.clientChoices.securityEntityID;
+			this.selectedSecurityEntity = this._AccountSvc.clientChoices().securityEntityId;
 		}).catch(() => { 
 			this._LoggingSvc.toast('Error calling the API', 'Select Security Entity', LogLevel.Error);
 		});
@@ -48,8 +49,8 @@ export class SelectSecurityEntityComponent implements OnInit {
 
 	public onSave(): void {
 		// console.log('SelectSecurityEntityComponent.onSave');
-		const mClientChoices: IClientChoices = JSON.parse(JSON.stringify(this._AccountSvc.clientChoices));
-		mClientChoices.securityEntityID = this.selectedSecurityEntity;
+		const mClientChoices: IClientChoices = JSON.parse(JSON.stringify(this._AccountSvc.clientChoices()));
+		mClientChoices.securityEntityId = this.selectedSecurityEntity;
 		this._AccountSvc.saveClientChoices(mClientChoices).then(() => {
 			this._LoggingSvc.toast('Selection saved', 'Select Security Entity', LogLevel.Success);
 		}).catch(() => {

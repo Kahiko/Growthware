@@ -10,12 +10,14 @@
         </button>
       </div>
       <div class="td middle_right">
-        <gw-core-hierarchical-horizontal-flyout
+        <gw-core-hierarchical-horizontal
+          flyout="true"
           backgroundColor="#525252"
           fontColor="#fff"
           height="52px"
           hoverBackgroundColor="#2c3e50"
           name="hierarchicalVerticalFlyout"
+          id="hierarchicalVerticalFlyout"
         />
       </div>
     </div>
@@ -24,7 +26,7 @@
         <mat-icon>person_outline</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        @if (!isAuthenticated) {
+        @if (!isAuthenticated()) {
           <div>
             <button (click)="onLogin()" mat-menu-item>
               <mat-icon>login</mat-icon>
@@ -32,9 +34,9 @@
             </button>
           </div>
         }
-        @if (isAuthenticated) {
+        @if ((isAuthenticated())) {
           <div>
-            <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
+            <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName()}}</div>
             <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
               <mat-icon>settings</mat-icon><span>Edit Profile</span>
             </a>

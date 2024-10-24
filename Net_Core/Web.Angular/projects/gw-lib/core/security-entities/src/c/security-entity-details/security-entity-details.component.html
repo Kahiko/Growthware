@@ -1,12 +1,12 @@
-<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" novalidate>
-  <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
-    <mat-tab label="Details">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" class="formSize">
+  <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+    <mat-tab label="General" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents">
           <div class="table">
             <div class="tr">
               <div class="td top right">
-                <span class="Form_LabelText">{{securityEntityTranslation}}:</span>
+                <span class="Form_LabelText">{{securityEntityTranslation()}}:</span>
               </div>
               <div class="td left">
                 @if (!canEnterName) {
@@ -179,22 +179,24 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Registration Information">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+    <mat-tab label="Registration Information" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents center">
           <div class="table">
             <div class="tr">
               <div class="td top right">
                 <span class="Form_LabelText">Security Entity:</span>
               </div>
               <div class="td left" matTooltip="The security entity the roles and groups are associated with" [matTooltipPosition]="'left'">
-                <mat-select [(value)]="selectedSecurityEntity" class="rounded">
-                  @for (item of validSecurityEntities; track item) {
-                    <mat-option [value]="item.id">
-                      {{ item.name }}
-                    </mat-option>
-                  }
-                </mat-select>
+                <mat-form-field style="width: 98%;">
+                  <mat-select [(value)]="selectedSecurityEntity" class="rounded">
+                    @for (item of validSecurityEntities; track item.id) {
+                      <mat-option [value]="item.id">
+                        {{ item.name }}
+                      </mat-option>
+                    }
+                  </mat-select>  
+                </mat-form-field>
               </div>
             </div>
             <div class="tr">
@@ -246,5 +248,5 @@
     <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
     </button>
-  </div>  
+  </div>
 </form>

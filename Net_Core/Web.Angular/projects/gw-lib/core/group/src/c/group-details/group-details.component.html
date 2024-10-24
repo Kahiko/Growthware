@@ -1,8 +1,8 @@
-<form [formGroup]="frmGroup" (ngSubmit)="onSubmit(frmGroup)">
-  <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px; min-width: 400px;">
-    <mat-tab label="General">
-      <div class="mat-tab__container formSection containerSize">
-        <div class="mat-tab__container formSection containerSize">
+<form [formGroup]="frmGroup" (ngSubmit)="onSubmit(frmGroup)" class="formSize">
+  <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+    <mat-tab label="General" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents center">
           <div class="table" style="padding: 5px; width: 100%;">
             <div class="tr">
               <div class="td left">
@@ -38,14 +38,19 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Roles">
-      <div class="mat-tab__container formSection containerSize">
-        <div class="mat-tab__container formSection containerSize">
+    <mat-tab label="Roles" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents center" style="padding-top: 8px;">
           <gw-core-pick-list #rolePickList
+            [(availableItems)] = availableRoles
+            [(selectedItems)] = selectedRoles
             id="roles"
             name="{{rolesPickListName}}"
             allItemsText="Available Roles"
             header="Assign roles"
+            [pickListTableContentsBackground] = "pickListTableContentsBackground"
+            [pickListTableContentsFont] = "pickListTableContentsFont"
+            [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
             pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
             selectedItemsText="Selected Roles"
             size=8

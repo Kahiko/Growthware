@@ -198,9 +198,9 @@ public abstract class AbstractFileController : ControllerBase
     [HttpGet("GetFile")]
     public IActionResult GetFile(string action, string selectedPath, string fileName)
     {
-        if (action == null) throw new ArgumentNullException("action", "action cannot be a null reference (Nothing in Visual Basic)!");
-        if (selectedPath == null) throw new ArgumentNullException("selectedPath", "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
-        if (fileName == null) throw new ArgumentNullException("fileName", "fileName cannot be a null reference (Nothing in Visual Basic)!");
+        if (action == null) throw new ArgumentNullException(nameof(action), "action cannot be a null reference (Nothing in Visual Basic)!");
+        if (selectedPath == null) throw new ArgumentNullException(nameof(selectedPath), "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
+        if (fileName == null) throw new ArgumentNullException(nameof(fileName), "fileName cannot be a null reference (Nothing in Visual Basic)!");
 
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);

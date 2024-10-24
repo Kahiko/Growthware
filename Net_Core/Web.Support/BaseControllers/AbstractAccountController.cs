@@ -50,15 +50,18 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("ChangePassword")]
     public ActionResult<Tuple<string, AuthenticationResponse>> ChangePassword(string oldPassword, string newPassword)
     {
-        UIChangePassword mChangePassword = new UIChangePassword();
-        mChangePassword.OldPassword = oldPassword;
-        mChangePassword.NewPassword = newPassword;
-        // if (mChangePassword. <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        UIChangePassword mChangePassword = new()
+        {
+            OldPassword = oldPassword,
+            NewPassword = newPassword
+        };
         if (mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
         if (mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
-        string mRetString = AccountUtility.ChangePassword(mChangePassword);
-        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(AccountUtility.CurrentProfile);
-        return Ok(Tuple.Create(mRetString, mAuthenticationResponse));
+        Tuple<string, MAccountProfile> mChangePasswordResult = AccountUtility.ChangePassword(mChangePassword, ipAddress());
+        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mChangePasswordResult.Item2);
+        setTokenCookie(mAuthenticationResponse.RefreshToken);
+        Tuple<string, AuthenticationResponse> mRetVal = Tuple.Create(mChangePasswordResult.Item1, mAuthenticationResponse);
+        return Ok(mRetVal);
     }
 
     /// <summary>
@@ -74,7 +77,7 @@ public abstract class AbstractAccountController : ControllerBase
         // it is possible for data to be associated with an account outside the realms of this
         // application and deleting it here could be quite an issue
 
-        if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        if (accountSeqId < 1) throw new ArgumentNullException(nameof(accountSeqId), " must be a positive number!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -163,7 +166,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         if (String.IsNullOrWhiteSpace(account)) 
         {
-            ArgumentNullException mArgumentNullException = new ("account", " account can not be null or empty");
+            ArgumentNullException mArgumentNullException = new (nameof(account), " account can not be null or empty");
             m_Logger.Error(mArgumentNullException);
             return StatusCode(StatusCodes.Status400BadRequest, mArgumentNullException.Message);
 
@@ -277,7 +280,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetSelectableActions")]
     public List<UISelectedableAction> GetSelectableActions()
     {
-        List<string> mExcludedActions = new List<string>() { "favorite", "logoff", "logon" };
+        List<string> mExcludedActions = new List<string>() { "api", "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
         IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
@@ -461,7 +464,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("Register")]
     public IActionResult Register(MAccountProfile accountProfile)
     {
-        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
@@ -556,7 +559,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         // requesting profile same as 
         bool mRetVal = false;
-        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Account)) throw new ArgumentNullException("Account", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
@@ -614,25 +617,30 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("SaveClientChoices")]
     public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
     {
-        if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
+        if (accountChoices == null) throw new ArgumentNullException(nameof(accountChoices), "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
             MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
-            mClientChoicesState[MClientChoices.AccountName] = accountChoices.Account;
+
+            mClientChoicesState[MClientChoices.Account] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
-            mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor ?? mDefaultClientChoicesState[MClientChoices.AlternatingRowBackColor];
-            mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor ?? mDefaultClientChoicesState[MClientChoices.BackColor];
-            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme ?? mDefaultClientChoicesState[MClientChoices.ColorScheme];
-            mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor ?? mDefaultClientChoicesState[MClientChoices.HeadColor];
-            mClientChoicesState[MClientChoices.HeaderForeColor] = accountChoices.HeaderForeColor ?? mDefaultClientChoicesState[MClientChoices.HeaderForeColor];
-            mClientChoicesState[MClientChoices.LeftColor] = accountChoices.LeftColor ?? mDefaultClientChoicesState[MClientChoices.LeftColor];
-            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString() ?? mDefaultClientChoicesState[MClientChoices.RecordsPerPage];
-            mClientChoicesState[MClientChoices.RowBackColor] = accountChoices.RowBackColor ?? mDefaultClientChoicesState[MClientChoices.RowBackColor];
-            mClientChoicesState[MClientChoices.SecurityEntityID] = mSecurityEntity.Id.ToString();
+            mClientChoicesState[MClientChoices.SecurityEntityId] = mSecurityEntity.Id.ToString();
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
-            mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
+            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString() ?? mDefaultClientChoicesState[MClientChoices.RecordsPerPage];
+
+            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme ?? mDefaultClientChoicesState[MClientChoices.ColorScheme];
+            mClientChoicesState[MClientChoices.EvenRow] = accountChoices.EvenRow ?? mDefaultClientChoicesState[MClientChoices.EvenRow];
+            mClientChoicesState[MClientChoices.EvenFont] = accountChoices.EvenFont ?? mDefaultClientChoicesState[MClientChoices.EvenFont];
+
+            mClientChoicesState[MClientChoices.OddRow] = accountChoices.OddRow ?? mDefaultClientChoicesState[MClientChoices.OddRow];
+            mClientChoicesState[MClientChoices.OddFont] = accountChoices.OddFont ?? mDefaultClientChoicesState[MClientChoices.OddFont];
+
+            mClientChoicesState[MClientChoices.HeaderRow] = accountChoices.HeaderRow ?? mDefaultClientChoicesState[MClientChoices.HeaderRow];
+            mClientChoicesState[MClientChoices.HeaderFont] = accountChoices.HeaderFont ?? mDefaultClientChoicesState[MClientChoices.HeaderFont];
+
+            mClientChoicesState[MClientChoices.Background] = accountChoices.Background ?? mDefaultClientChoicesState[MClientChoices.Background];
             ClientChoicesUtility.Save(mClientChoicesState);
             AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
             UIAccountChoices mRetVal = new(mClientChoicesState);

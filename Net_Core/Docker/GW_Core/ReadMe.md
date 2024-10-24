@@ -39,6 +39,10 @@ You will need to edit the GrowthWare.json changes to find the file use your expl
                 Example:
                         "/growthware/Net_Core/Web.Api/Logs/"
 
+You will need to update the: 
+        1.) "Manage Cachedependency" function's "Directory" on the "Directory Information" tab to CacheDependency/
+        2.) "Manage Logs" function's "Directory" on the "Directory Information" tab to Logs/
+
 If this is your first time running the container you should need to create the database
     1.) Start VS Code
     2.) From the "Run and Debug" tab. (CTRL + SHIFT + D)

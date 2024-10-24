@@ -1,5 +1,7 @@
+// Library
+import { IClientChoices, ClientChoices } from '@growthware/core/clientchoices';
+// Feature
 import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
-import { IClientChoices, ClientChoices } from './client-choices.model';
 
 export interface IAccountInformation {
     authenticationResponse: IAuthenticationResponse;

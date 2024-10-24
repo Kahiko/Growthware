@@ -19,7 +19,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The records per page.</value>
         public static string RecordsPerPage
         {
-            get { return "recordsPerPage"; }
+            get { return "RecordsPerPage"; }
         }
 
         /// <summary>
@@ -41,25 +41,25 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the name of the account.
+        /// Gets the name of the account column.
         /// </summary>
         /// <value>The name of the account.</value>
-        public static string AccountName
+        public static string Account
         {
-            get { return "ACCT"; }
+            get { return "Account"; }
         }
 
         /// <summary>
-        /// Gets the security entity ID.
+        /// Gets the security entity Id column.
         /// </summary>
         /// <value>The security entity ID.</value>
-        public static string SecurityEntityID
+        public static string SecurityEntityId
         {
-            get { return "SecurityEntityID"; }
+            get { return "SecurityEntityId"; }
         }
 
         /// <summary>
-        /// Gets the name of the security entity.
+        /// Gets the name of the security entity column.
         /// </summary>
         /// <value>The name of the security entity.</value>
         public static string SecurityEntityName
@@ -71,67 +71,67 @@ namespace GrowthWare.Framework.Models
         /// Gets the color of the back.
         /// </summary>
         /// <value>The color of the back.</value>
-        public static string BackColor
+        public static string Background
         {
-            get { return "BackColor"; }
+            get { return "Background"; }
         }
 
         /// <summary>
-        /// Gets the color of the left.
-        /// </summary>
-        /// <value>The color of the left.</value>
-        public static string LeftColor
-        {
-            get { return "LeftColor"; }
-        }
-
-        /// <summary>
-        /// Gets the color of the head.
+        /// Gets the "header" row column.
         /// </summary>
         /// <value>The color of the head.</value>
-        public static string HeadColor
+        public static string HeaderRow
         {
-            get { return "HeadColor"; }
+            get { return "HeaderRow"; }
         }
 
         /// <summary>
-        /// Gets the color of the header fore.
+        /// Gets the "header" row font column.
         /// </summary>
         /// <value>The color of the header fore.</value>
-        public static string HeaderForeColor
+        public static string HeaderFont
         {
-            get { return "HeaderForeColor"; }
+            get { return "HeaderFont"; }
         }
 
         /// <summary>
-        /// Gets the color of the subhead.
-        /// </summary>
-        /// <value>The color of the subhead.</value>
-        public static string SubheadColor
-        {
-            get { return "SubHeadColor"; }
-        }
-
-        /// <summary>
-        /// Gets the color of the row back.
+        /// Gets the "even" row column.
         /// </summary>
         /// <value>The color of the row back.</value>
-        public static string RowBackColor
+        public static string EvenRow
         {
-            get { return "RowBackColor"; }
+            get { return "EvenRow"; }
         }
 
         /// <summary>
-        /// Gets the color of the alternating row back.
+        /// Gets the "even" row font column.
+        /// </summary>
+        /// <value>The color of the row back.</value>
+        public static string EvenFont
+        {
+            get { return "EvenFont"; }
+        }
+
+        /// <summary>
+        /// Gets the "odd" row column.
         /// </summary>
         /// <value>The color of the alternating row back.</value>
-        public static string AlternatingRowBackColor
+        public static string OddRow
         {
-            get { return "AlternatingRowBackColor"; }
+            get { return "OddRow"; }
         }
 
         /// <summary>
-        /// Gets the color scheme.
+        /// Gets the "odd" row font column.
+        /// </summary>
+        /// <value>The color of the alternating row back.</value>
+        public static string OddFont
+        {
+            get { return "OddFont"; }
+        }
+
+        /// <summary>
+        /// Gets the color scheme column.
         /// </summary>
         /// <value>The color scheme.</value>
         public static string ColorScheme
@@ -140,7 +140,7 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Gets the action.
+        /// Gets the action column.
         /// </summary>
         /// <value>The action.</value>
         public static string Action

@@ -33,7 +33,7 @@ public static class SecurityEntityUtility
                     MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
                     if (mClientChoicesState != null)
                     {
-                        int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
+                        int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
                         mRetProfile = GetProfile(mSecurityEntity);
                     }
                 }

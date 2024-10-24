@@ -1,22 +1,22 @@
-<div class="containerSize">
-    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px">
-        <mat-tab label="Generate Random GUID">
-            <div class="mat-tab__container formSection">
-                <div class="mat-tab__content formSectionContents">
-                    <div class="table" style="padding: 5px">
-                        <div class="tr">
-                            <div class="td right">
-                                Result:
-                            </div>
-                            <div class="td left" style="width: 500px;">
-                                <!-- <span style="margin-left: 5px;">{{guidText}}</span> -->
-                                <textarea id="txtProcessed" name="txtProcessed" rows="1" cols="40" [(ngModel)]="guidText" class="rounded" #txtProcessed></textarea>
-                            </div>
-                        </div>
+<form  class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+      <mat-tab label="Generate Random GUID" class="mat-tab__tab">
+        <div class="div__tab-container formSection">
+          <div class="formSectionContents">
+            <div class="table" style="margin-top: 10px; padding: 5px;">
+                <div class="tr">
+                    <div class="td right">
+                        Result:
+                    </div>
+                    <div class="td left" style="width: 500px;">
+                        <!-- <span style="margin-left: 5px;">{{guidText}}</span> -->
+                        <textarea id="txtProcessed" name="txtProcessed" rows="1" cols="40" [(ngModel)]="guidText" class="rounded" #txtProcessed></textarea>
                     </div>
                 </div>
             </div>
-        </mat-tab>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
     <div class="buttonRow">
         <button mat-button class="Form_Button" (click)="onGuid()" color="primary">
@@ -26,4 +26,4 @@
             <i style="padding-right: 3px" class="Form_Button_Icon material-icons">file_copy</i>Copy Text
         </button>
     </div>
-</div>
+  </form>

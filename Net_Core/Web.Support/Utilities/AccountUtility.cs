@@ -86,8 +86,8 @@ public static class AccountUtility
     /// <returns>MAccountProfile or null</returns>
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password), "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
         MAccountProfile mRetVal = null;
         if (account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
@@ -162,66 +162,36 @@ public static class AccountUtility
     /// </summary>
     /// <param name="changePassword">UIChangePassword</param>
     /// <returns></returns>
-    public static string ChangePassword(UIChangePassword changePassword)
+    public static Tuple<string, MAccountProfile> ChangePassword(UIChangePassword changePassword, string ipAddress)
     {
-        string mRetVal = string.Empty;
         MMessage mMessageProfile = new MMessage();
         MAccountProfile mAccountProfile = CurrentProfile;
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        string mCurrentPassword = mAccountProfile.Password;
-        CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
-        if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
+        CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
+        bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
+        bool mCheckOldPassword = mAccountProfile.Status != (int)SystemStatus.ChangePassword;
+        if(!mCheckOldPassword)
         {
-            if (changePassword.OldPassword == mCurrentPassword)
-            {
-                mAccountProfile.PasswordLastSet = System.DateTime.Now;
-                mAccountProfile.Status = (int)SystemStatus.Active;
-                mAccountProfile.FailedAttempts = 0;
-                // mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                string mEncryptedPassword;
-                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                mAccountProfile.Password = mEncryptedPassword;
-                try
-                {
-                    Save(mAccountProfile, false, false, false);
-                    mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
-                }
-                catch (System.Exception)
-                {
-                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-                }
-            }
-            else
-            {
-                mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
-            }
+            mPasswordVerifed = true;
         }
-        else
+        if(mPasswordVerifed)
         {
+            setChangePasswordProperties(changePassword, mAccountProfile, mSecurityEntity, ipAddress);
             try
             {
-                mAccountProfile.PasswordLastSet = System.DateTime.Now;
-                mAccountProfile.Status = (int)SystemStatus.Active;
-                mAccountProfile.FailedAttempts = 0;
-                CryptoUtility.TryEncrypt(changePassword.NewPassword, out string mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                mAccountProfile.Password = mEncryptedPassword;
-                try
-                {
-                    Save(mAccountProfile, false, false, false);
-                    mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
-                }
-                catch (System.Exception)
-                {
-                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-                }
+                Save(mAccountProfile, true, false, false);
+                mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
             }
-            catch (Exception)
+            catch (System.Exception)
             {
                 mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
             }
+        } 
+        else 
+        {
+            mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
         }
-        mRetVal = mMessageProfile.Body;
-        return mRetVal;
+        return new Tuple<string, MAccountProfile>(mMessageProfile.Body, mAccountProfile);
     }
 
     /// <summary>
@@ -270,7 +240,7 @@ public static class AccountUtility
     /// <exception cref="ArgumentNullException"></exception>
     public static string GetMenuData(string account, MenuType menuType)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         string mMenuName = menuType.ToString() + "_" + account + "_Menu_Data";
         string mRetVal = getFromCacheOrSession<string>(account, mMenuName);
         if (mRetVal != default)
@@ -296,7 +266,7 @@ public static class AccountUtility
     /// <exception cref="ArgumentNullException">he type of menu (e.g., Hierarchical, Horizontal, or Vertical) to retrieve the menu items for.</exception>
     public static IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
         string mMenuName = menuType.ToString() + "_" + account + "_Menu";
         mRetVal = getFromCacheOrSession<IList<MMenuTree>>(account, mMenuName);
@@ -720,6 +690,44 @@ public static class AccountUtility
         return accountProfile;
     }
 
+    /// <summary>
+    /// Sets the properties for a password change on a given profile.
+    /// </summary>
+    /// <param name="changePassword">The UIChangePassword containing the new password to set.</param>
+    /// <param name="mAccountProfile">The account profile to update.</param>
+    /// <param name="mSecurityEntity">The current security entity.</param>
+    /// <param name="ipAddress">The IP address of the user changing the password.</param>
+    /// <remarks>
+    /// This method encrypts the new password with the security entity's encryption type
+    /// and sets the following properties on the account profile:
+    /// <list type="bullet">
+    ///     <item>PasswordLastSet to DateTime.Now</item>
+    ///     <item>Status to Active</item>
+    ///     <item>FailedAttempts to 0</item>
+    ///     <item>Password to the encrypted new password</item>
+    ///     <item>Token to a new JWT token</item>
+    ///     <item>Added a new refresh token to RefreshTokens</item>
+    /// </list>
+    /// In memory information is also updated (removed/added).
+    /// </remarks>
+    private static void setChangePasswordProperties(UIChangePassword changePassword, MAccountProfile mAccountProfile, MSecurityEntity mSecurityEntity, string ipAddress)
+    {
+        mAccountProfile.PasswordLastSet = System.DateTime.Now;
+        mAccountProfile.Status = (int)SystemStatus.Active;
+        mAccountProfile.FailedAttempts = 0;
+        string mEncryptedPassword;
+        CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+        mAccountProfile.Password = mEncryptedPassword;
+        // password change successful so generate jwt and refresh tokens
+        mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
+        mAccountProfile.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, mAccountProfile.Id));
+        // remove old refresh tokens from account
+        removeOldRefreshTokens(mAccountProfile);
+        // update the in-memory information
+        RemoveInMemoryInformation(mAccountProfile.Account);
+        addOrUpdateCacheOrSession(mAccountProfile.Account, mAccountProfile);
+    }
+    
     /// <summary>
     /// Verifies an account by checking if the provided verification token exists in the database and matches the email address.
     /// </summary>

@@ -1,6 +1,6 @@
 <div>
   <gw-core-toaster />
-  @if ((skin$ | async); as layout) {
+  @if ((skin()); as layout) {
     @switch (layout) {
       @case ('arc') {
         <gw-frontend-arc-layout />

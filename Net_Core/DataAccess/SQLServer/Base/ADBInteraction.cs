@@ -411,7 +411,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
         else
         {
-            throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         return mAdded_Updated_By;
     }
@@ -564,7 +564,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         }
         else
         {
-            throw new ArgumentNullException("parameters", "parameters cannot be a null reference (Nothing in Visual Basic)!");
+            throw new ArgumentNullException(nameof(parameters), "parameters cannot be a null reference (Nothing in Visual Basic)!");
         }
         return mRetVal;
     }

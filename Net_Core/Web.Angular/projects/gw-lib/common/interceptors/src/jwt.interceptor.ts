@@ -17,7 +17,7 @@ class JwtHandler {
 	}
 
 	intercept(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-		const mAuthenticationResponse = this._AccountSvc.authenticationResponse;
+		const mAuthenticationResponse = this._AccountSvc.authenticationResponse();
 		const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.anonymous;
 		if(mIsLoggedIn)
 		{

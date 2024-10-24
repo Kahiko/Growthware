@@ -4,7 +4,7 @@ Growthware is an idea dedicated to producing reusable and extendable core techno
 
 <b>Welcome to the Growthware source control site.</b>
 <p>
-    The Growthware code base is in essence used to produce a functioning web application/site handling Role based security.  The web application/site code provides the ability to manage Roles, Groups, Accounts, Functions and Security Entities.  Supported middle tier technologies are .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
+    The Growthware code base is in essence used to produce a functioning web application/site handling Role based security.  The web application/site code provides the ability to manage Roles, Groups, Accounts, Functions and Security Entities.  Supported middle tier technologies are written with both .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
 </p>
 <p>
 The framework was developed to provide a data store independent/generic code base where SQL Server has been implemented.
@@ -30,14 +30,14 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Registration - Internal</td>
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Registration - Google</td>
@@ -78,7 +78,7 @@ The following is a summary of the features available.
             <td>Authentication - Internal</td>
             <td>X</td>
             <td>X</td>
-            <td> </td>
+            <td>X</td>
             <td>ASPX, Angular JS, Angular</td>
         </tr>
         <tr>
@@ -116,7 +116,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Roles by SE</td>
@@ -124,7 +124,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Groups by SE</td>
@@ -132,7 +132,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Add, Edit, Delete, Functions</td>
@@ -140,7 +140,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Associate Roles/Groups to Functions/Pages</td>
@@ -148,7 +148,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Associate Roles/Groups to Accounts</td>
@@ -156,7 +156,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
     </tbody>
 </table>
@@ -195,7 +195,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Logging - File</td>
@@ -219,7 +219,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Multi-Tenant</td>
@@ -227,7 +227,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>Multiple datastore technology</td>
@@ -235,7 +235,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>File Manager</td>
@@ -243,7 +243,7 @@ The following is a summary of the features available.
             <td>X</td>
             <td>X</td>
             <td>X</td>
-            <td>ASPX, Angular JS, Angular 17</td>
+            <td>ASPX, Angular JS, Angular 18.2</td>
         </tr>
         <tr>
             <td>In-memory storage (Cache/Session)</td>

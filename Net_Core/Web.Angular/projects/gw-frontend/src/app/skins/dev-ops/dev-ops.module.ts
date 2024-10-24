@@ -11,10 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
 import { LoaderComponent } from '@growthware/core/loader';
 // Library Standalone
-// import { HorizontalComponent } from '@growthware/core/navigation';
-// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
-// import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
-import { HierarchicalHorizontalFlyoutComponent } from '@growthware/core/navigation';
+import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { DevOpsRoutingModule } from './dev-ops-routing.module';
@@ -42,7 +39,7 @@ import { DevOpsLayoutComponent } from './dev-ops-layout/dev-ops-layout.component
 		// Library Modules
 		LoaderComponent,
 		// Library Standalone
-		HierarchicalHorizontalFlyoutComponent,
+		HierarchicalHorizontalComponent,
 		VerticalComponent,
 		// Modules/Components
 		DevOpsRoutingModule

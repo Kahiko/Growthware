@@ -1,0 +1,23 @@
+<form [formGroup]="theForm" (ngSubmit)="onSubmit(theForm)" class="formSize">
+  <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+    <mat-tab label="First Tab" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents center">
+          First Tab Content
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Second Tab" class="mat-tab__tab">
+      <div class="div__tab-container formSection">
+        <div class="formSectionContents center">
+          Second Tab Content
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="buttonRow">
+    <button type="submit" [disabled]="theForm.invalid" mat-button class="Form_Button" color="primary">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+    </button>
+  </div>
+</form>

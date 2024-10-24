@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-
 // Library
 import { BaseSearchComponent } from '@growthware/core/base/components';
 import { DynamicTableService, DynamicTableComponent } from '@growthware/core/dynamic-table';
-import { DataService } from '@growthware/common/services';
 import { SearchService } from '@growthware/core/search';
 import { ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
@@ -23,7 +21,6 @@ export class SearchGroupsComponent extends BaseSearchComponent {
 
 	constructor(
 		theFeatureSvc: GroupService,
-		dataSvc: DataService,
 		dynamicTableSvc: DynamicTableService,
 		modalSvc: ModalService,
 		searchSvc: SearchService,
@@ -33,9 +30,8 @@ export class SearchGroupsComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'Group';
 		this._TheApi = 'GrowthwareGroup/SearchGroups';
 		this._TheComponent = GroupDetailsComponent;
-		this._TheWindowSize = new WindowSize(450,550);
+		this._TheWindowSize = new WindowSize(325,550);
 		this._TheService = theFeatureSvc;
-		this._DataSvc = dataSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
 		this._SearchSvc = searchSvc;

@@ -23,7 +23,7 @@ namespace GrowthWare.DataAccess.SQLServer
         DataRow IClientChoices.GetChoices(string account)
         {
             string mStoredProcedure = "ZGWCoreWeb.Get_Account_Choice";
-            if (String.IsNullOrEmpty(account)) { throw new ArgumentException("Must set the Account property", "account"); };
+            if (String.IsNullOrEmpty(account)) { throw new ArgumentException("Must set the Account property", nameof(account)); };
             SqlParameter[] myParameters =
 			{
 				new SqlParameter("@P_ACCOUNT", account)
@@ -33,7 +33,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         void IClientChoices.Save(Hashtable clientChoicesStateHashtable)
         {
-            if (clientChoicesStateHashtable == null || clientChoicesStateHashtable.Count == 0) { throw new ArgumentNullException("clientChoicesStateHashtable", "Must set the clientChoicesStateHashTable property"); };
+            if (clientChoicesStateHashtable == null || clientChoicesStateHashtable.Count == 0) { throw new ArgumentNullException(nameof(clientChoicesStateHashtable), "Must set the clientChoicesStateHashTable property"); };
             string mStoredProcedure = "ZGWCoreWeb.Set_Account_Choices";
             IEnumerator HashKeyEnum = ((IEnumerable)clientChoicesStateHashtable.Keys).GetEnumerator();
             IEnumerator HashValEnum = ((IEnumerable)clientChoicesStateHashtable.Values).GetEnumerator();

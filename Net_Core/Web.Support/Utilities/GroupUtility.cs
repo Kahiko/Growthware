@@ -101,7 +101,7 @@ public static class GroupUtility
     /// <param name="profile"></param>
     public static void Delete(MGroupProfile profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in VB) or empty!");
         if(profile.Id != -1) 
         {
             bool success = false;

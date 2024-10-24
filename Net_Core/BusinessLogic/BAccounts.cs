@@ -74,7 +74,7 @@ namespace GrowthWare.BusinessLogic
         /// </example>
         public BAccounts(MSecurityEntity securityEntityProfile)
         {
-            if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+            if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts");
             m_DAccounts.ConnectionString = securityEntityProfile.ConnectionString;
             m_DAccounts.SecurityEntitySeqId = securityEntityProfile.Id;
@@ -354,7 +354,7 @@ namespace GrowthWare.BusinessLogic
         /// </example>
         public void Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts.Profile = profile;
             if (DatabaseIsOnline()) 
             {

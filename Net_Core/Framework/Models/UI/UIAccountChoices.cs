@@ -22,135 +22,108 @@ public class UIAccountChoices : AbstractBaseModel
     /// <param name="clientChoicesState">State of the client choices.</param>
     public UIAccountChoices(MClientChoicesState clientChoicesState)
     {
-        if (clientChoicesState[MClientChoices.AccountName] != null) 
-        {
-            AccountName = clientChoicesState[MClientChoices.AccountName].ToString(CultureInfo.InvariantCulture);
-            Account = AccountName;
-        }
-        if (clientChoicesState[MClientChoices.Action] != null)
-            Action = clientChoicesState[MClientChoices.Action].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.AlternatingRowBackColor] != null)
-            AlternatingRowBackColor = clientChoicesState[MClientChoices.AlternatingRowBackColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.BackColor] != null)
-            BackColor = clientChoicesState[MClientChoices.BackColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.ColorScheme] != null)
-            ColorScheme = clientChoicesState[MClientChoices.ColorScheme].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.HeadColor] != null)
-            HeadColor = clientChoicesState[MClientChoices.HeadColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.HeaderForeColor] != null)
-            HeaderForeColor = clientChoicesState[MClientChoices.HeaderForeColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.LeftColor] != null)
-            LeftColor = clientChoicesState[MClientChoices.LeftColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.RecordsPerPage] != null)
-            RecordsPerPage = int.Parse(clientChoicesState[MClientChoices.RecordsPerPage].ToString(CultureInfo.InvariantCulture));
-        if (clientChoicesState[MClientChoices.RowBackColor] != null)
-            RowBackColor = clientChoicesState[MClientChoices.RowBackColor].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.SecurityEntityID] != null)
-            SecurityEntityID = int.Parse(clientChoicesState[MClientChoices.SecurityEntityID].ToString(CultureInfo.InvariantCulture));
+        if (clientChoicesState[MClientChoices.Account] != null) 
+            Account = clientChoicesState[MClientChoices.Account].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.SecurityEntityId] != null)
+            SecurityEntityId = int.Parse(clientChoicesState[MClientChoices.SecurityEntityId].ToString(CultureInfo.InvariantCulture));
+
         if (clientChoicesState[MClientChoices.SecurityEntityName] != null)
             SecurityEntityName = clientChoicesState[MClientChoices.SecurityEntityName].ToString(CultureInfo.InvariantCulture);
-        if (clientChoicesState[MClientChoices.SubheadColor] != null)
-            SubheadColor = clientChoicesState[MClientChoices.SubheadColor].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.Action] != null)
+            Action = clientChoicesState[MClientChoices.Action].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.RecordsPerPage] != null)
+            RecordsPerPage = int.Parse(clientChoicesState[MClientChoices.RecordsPerPage].ToString(CultureInfo.InvariantCulture));
+
+        if (clientChoicesState[MClientChoices.ColorScheme] != null)
+            ColorScheme = clientChoicesState[MClientChoices.ColorScheme].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.EvenRow] != null)
+            EvenRow = clientChoicesState[MClientChoices.EvenRow].ToString(CultureInfo.InvariantCulture);
+        if (clientChoicesState[MClientChoices.EvenFont] != null)
+            EvenFont = clientChoicesState[MClientChoices.EvenFont].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.OddRow] != null)
+            OddRow = clientChoicesState[MClientChoices.OddRow].ToString(CultureInfo.InvariantCulture);
+        if (clientChoicesState[MClientChoices.OddFont] != null)
+            OddFont = clientChoicesState[MClientChoices.OddFont].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.Background] != null)
+            Background = clientChoicesState[MClientChoices.Background].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.HeaderRow] != null)
+            HeaderRow = clientChoicesState[MClientChoices.HeaderRow].ToString(CultureInfo.InvariantCulture);
+        if (clientChoicesState[MClientChoices.HeaderFont] != null)
+            HeaderFont = clientChoicesState[MClientChoices.HeaderFont].ToString(CultureInfo.InvariantCulture);
+
+        if (clientChoicesState[MClientChoices.Background] != null)
+            Background = clientChoicesState[MClientChoices.Background].ToString(CultureInfo.InvariantCulture);
     }
-
-    /// <summary>
-    /// Gets or sets the name of the account.
-    /// </summary>
-    /// <value>The name of the account.</value>
-    public string AccountName { get; set; }
-
-    /// <summary>
-    /// Gets or sets the action.
-    /// </summary>
-    /// <value>The action.</value>
-    public string Action { get; set; }
-
-    /// <summary>
-    /// Gets or sets the color of the back.
-    /// </summary>
-    /// <value>The color of the back.</value>
-    public string BackColor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the color scheme.
-    /// </summary>
-    /// <value>The color scheme.</value>
-    public string ColorScheme { get; set; }
-
-    /// <summary>
-    /// Gets or sets the environment.
-    /// </summary>
-    /// <value>The environment.</value>
-    public string Environment { get; set; }
-
-    /// <summary>
-    /// Gets or sets the color of the head.
-    /// </summary>
-    /// <value>The color of the head.</value>
-    public string HeadColor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the color of the header foreground color.
-    /// </summary>
-    /// <value>The color of the header foreground color.</value>
-    public string HeaderForeColor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the color of the left.
-    /// </summary>
-    /// <value>The color of the left.</value>
-    public string LeftColor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the records per page.
-    /// </summary>
-    /// <value>The records per page.</value>
-    public int RecordsPerPage { get; set; }
 
     /// <summary>
     /// Gets or sets the account.
     /// </summary>
-    /// <value>The account.</value>
     public string Account { get; set; }
 
     /// <summary>
-    /// Gets or sets the security entity ID.
+    /// Gets or sets the security entity identifier.
     /// </summary>
-    /// <value>The security entity ID.</value>
-    public int SecurityEntityID { get; set; }
+    public int SecurityEntityId { get; set; }
 
     /// <summary>
-    /// Gets or sets the version.
+    /// Gets or sets the security entity name.
     /// </summary>
-    /// <value>The version.</value>
-    public string Version { get; set; }
-
-    /// <summary>
-    /// Gets or sets the framework version.
-    /// </summary>
-    /// <value>The version.</value>
-    public string FrameWorkVersion { get; set; }
-    /// <summary>
-    /// Gets or sets the name of the security entity.
-    /// </summary>
-    /// <value>The name of the security entity.</value>
     public string SecurityEntityName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the favorite action.
+    /// </summary>
+    public string Action { get; set; }
 
     /// <summary>
-    /// Gets or sets the color of the subhead.
+    /// Gets or sets the records per page.
     /// </summary>
-    /// <value>The color of the subhead.</value>
-    public string SubheadColor { get; set; }
+    public int RecordsPerPage { get; set; }
 
     /// <summary>
-    /// Gets or sets the color of the row background color.
+    /// Gets or sets the color scheme.
     /// </summary>
-    /// <value>The color of the row background color.</value>
-    public string RowBackColor { get; set; }
+    public string ColorScheme { get; set; }
 
     /// <summary>
-    /// Gets or sets the color of the alternating row background color.
+    /// Gets or sets the even row background color.
     /// </summary>
-    /// <value>The color of the alternating row background color.</value>
-    public string AlternatingRowBackColor { get; set; }
+    public string EvenRow { get; set; }
+
+    /// <summary>
+    /// Gets or sets the even row font color.
+    /// </summary>
+    public string EvenFont { get; set; }
+
+    /// <summary>
+    /// Gets or sets the odd row background color.
+    /// </summary>
+    public string OddRow { get; set; }
+
+    /// <summary>
+    /// Gets or sets the odd row font color.
+    /// </summary>
+    public string OddFont { get; set; }
+
+    /// <summary>
+    /// Gets or sets the header row background color.
+    /// </summary>
+    public string HeaderRow { get; set; }
+
+    /// <summary>
+    /// Gets or sets the header row font color.
+    /// </summary>
+    public string HeaderFont { get; set; }
+
+    /// <summary>
+    /// Gets or sets the background color.
+    /// </summary>
+    public string Background { get; set; }
 }

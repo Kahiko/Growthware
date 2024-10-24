@@ -229,6 +229,63 @@ export class GWCommon {
       typeof e[k] === 'number' || e[k] === k || e[e[k]]?.toString() !== k
     ) as Array<keyof T>;
   }
+
+
+  /**
+	 * Gets the stack trace of the calling code, stripping out any irrelevant
+	 * stack frames. The stack trace is returned as a string with each caller
+	 * separated by ' => '.
+	 *
+	 * @return {string} the stack trace
+	 */
+  public getStackTrace(): string {
+    const mStackLines = new Error('').stack?.split('\n') ?? [];
+    if (
+      this.isNullOrUndefined(mStackLines) ||
+			mStackLines.length === 0
+    ) {
+      return '';
+    }
+    const mOurCallStack = [];
+    let mRetVal: string = '';
+    try {
+      for (let x = 0; x <= mStackLines.length; x++) {
+        const mLine = mStackLines[x];
+        if (mLine != 'Error' && !this.isNullOrUndefined(mLine)) {
+          // Don't need the first line
+          const mParts = mLine.split(' ');
+          if ((mParts.length === 7)) {
+            const mCaller = mParts[5];
+            if (
+              mCaller.indexOf('_next') === -1 &&
+							mCaller.indexOf('callH') === -1
+            ) {
+              // we can stop b/c we have gotten all of our codes stack
+              if (mCaller.indexOf('LoggingService') === -1) {
+                // Don't include this class in the stack
+                const mCallStackObj = { caller: mCaller, file: mParts[6] };
+                mOurCallStack.push(mCallStackObj);
+              }
+            } else {
+              break;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in LoggingService.getStackTrace:\n');
+      console.error(error);
+    }
+    if (
+      !this.isNullOrUndefined(mOurCallStack) &&
+			mOurCallStack.length !== 0
+    ) {
+      mOurCallStack.forEach((element) => {
+        mRetVal += element.caller + ' => ';
+      });
+    }
+    return mRetVal;
+  }
   
   /**
 	 * Get the total number of records from the given data array.

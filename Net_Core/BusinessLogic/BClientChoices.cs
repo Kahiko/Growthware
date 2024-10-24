@@ -152,7 +152,7 @@ public class BClientChoices : AbstractBusinessLogic
         }
         else
         {
-            throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!");
+            throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!");
         }
     }
 }

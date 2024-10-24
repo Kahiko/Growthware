@@ -10,7 +10,7 @@
             <div class="table header_firstRow_right__div__table">
                 <div class="tr">
                     <div class="td header_firstRow_right__div__table__td">
-                        <span id="spSecurityEntity">{{securityEntityTranslation}}:&nbsp;&nbsp;{{securityEntity}}</span>
+                        <span id="spSecurityEntity">{{securityEntityTranslation()}}:&nbsp;&nbsp;{{securityEntityName()}}</span>
                     </div>
                     <div class="td">
                         <span id="spEnvironment">
@@ -20,10 +20,10 @@
                 </div>
                 <div class="tr">
                     <div class="td">
-                        <span id="spEnvironment">Version:&nbsp;&nbsp;{{version}}</span>
+                        <span id="spEnvironment">Version:&nbsp;&nbsp;{{version()}}</span>
                     </div>
                     <div class="td">
-                        <span id="spName">Name:&nbsp;&nbsp;{{name}}</span>
+                        <span id="spName">Name:&nbsp;&nbsp;{{name()}}</span>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="table">
                 <div class="tr">
                     <div class="td">
-                        <gw-core-horizontal name="horizontal" />
+                        <gw-core-horizontal id="horizontal" />
                     </div>
                     <div class="td right">
                         Search:<input type="text" style="height: 8px; width: 200px;" />&nbsp;Go&nbsp;&nbsp;&nbsp;

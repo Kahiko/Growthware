@@ -4,7 +4,7 @@ ALTER TABLE [ZGWSecurity].[Accounts] ALTER COLUMN [ResetToken] VARCHAR(MAX);
 
 DECLARE 
 	@V_FunctionSeqId int,
-	@V_MessageSeqId INT = (SELECT [MessageSeqId] from [ZGWCoreWeb].[Messages] where [Name] = 'RequestNewPassword'),
+	@V_MessageSeqId INT = (SELECT [MessageSeqId] FROM [ZGWCoreWeb].[Messages] WHERE [SecurityEntitySeqId] = 1 AND [Name] = 'RequestNewPassword'),
 	@V_MyAction VARCHAR(256) = '/accounts/forgot-password',
 	@V_ErrorCode int;
 

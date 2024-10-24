@@ -99,6 +99,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   
   .center {
+    display: flex; 
+    justify-content: center;
     text-align: center;
   }
   
@@ -194,9 +196,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   
   /* Tabs */
-  .mat-tab__container {
-    // min-height: 350px;
-    // min-height: calc(100vh - 355px);
+  .div__tab-container {
     border-bottom: 1px solid lightgray;
     border-left: 1px solid lightgray;
     border-right: 1px solid lightgray;

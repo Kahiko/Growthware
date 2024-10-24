@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -31,9 +30,8 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnDestroy, OnInit {
+export class CalendarComponent implements OnInit {
   private _Action: string = '';
-  private _Subscriptions: Subscription = new Subscription();
   // public calendar: CalendarDay[] = [];
   public calendar: IMonth = new Month();
   public displayMonth: string = '';
@@ -47,18 +45,8 @@ export class CalendarComponent implements OnDestroy, OnInit {
     private _Router: Router
   ) { 
     this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
-  }
-
-  ngOnDestroy(): void {
-    this._Subscriptions.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    // Set the first day of the week
-    // TODO: Add the first day of the week to the clientChoices
-    this._CalendarSvc.setFirstDayOfWeek(NamesOfDays.Sunday);
-    this._Subscriptions.add(this._CalendarSvc.calendarData$.subscribe((data: IMonth) => {
-      this.calendar = data;
+    effect(() => {
+      this.calendar = this._CalendarSvc.calendarData$();
       this.displayMonth = this._CalendarSvc.selectedDate.toLocaleString('default', { month: 'long' });
       this.displayYear = this._CalendarSvc.selectedDate.getFullYear();
       setTimeout(() => {
@@ -74,9 +62,15 @@ export class CalendarComponent implements OnDestroy, OnInit {
               inline: 'nearest'
             });
           }
-        }  
+        }
       }, 500);
-    }));
+    });
+  }
+
+  ngOnInit(): void {
+    // Set the first day of the week
+    // TODO: Add the first day of the week to the clientChoices
+    this._CalendarSvc.setFirstDayOfWeek(NamesOfDays.Sunday);
     // Set the data for the calendar header
     this.getWeekDayNames();
     // console.log('CalendarComponent.ngOnInit.weekDayNames', this.weekDayNames);

@@ -60,19 +60,21 @@ public static class ClientChoicesUtility
          */
         string mJsonString = jsonData;
         DataTable mDataTable = new DataTable();
-        mDataTable.Columns.Add("ACCT");
+        mDataTable.Columns.Add("Account");
         mDataTable.Columns.Add("SecurityEntityID");
         mDataTable.Columns.Add("SecurityEntityName");
-        mDataTable.Columns.Add("BackColor");
-        mDataTable.Columns.Add("LeftColor");
-        mDataTable.Columns.Add("HeadColor");
-        mDataTable.Columns.Add("HeaderForeColor");
-        mDataTable.Columns.Add("SubHeadColor");
-        mDataTable.Columns.Add("RowBackColor");
-        mDataTable.Columns.Add("AlternatingRowBackColor");
-        mDataTable.Columns.Add("ColorScheme");
         mDataTable.Columns.Add("FavoriteAction");
-        mDataTable.Columns.Add("recordsPerPage");
+        mDataTable.Columns.Add("RecordsPerPage");
+
+        mDataTable.Columns.Add("ColorScheme");
+        mDataTable.Columns.Add("EvenRow");
+        mDataTable.Columns.Add("EvenFont");
+        mDataTable.Columns.Add("OddRow");
+        mDataTable.Columns.Add("OddFont");
+        mDataTable.Columns.Add("HeaderRow");
+        mDataTable.Columns.Add("HeaderFont");
+        mDataTable.Columns.Add("Background");
+
         mDataTable.Rows.Add(mDataTable.NewRow());
         // Remove unnecessary characters from the JSON string
         mJsonString = mJsonString.Replace("[", "").Replace("]", "").Replace("\"", "");
@@ -121,7 +123,7 @@ public static class ClientChoicesUtility
             }
             if(ConfigSettings.SecurityEntityFromUrl)
             {
-                mRetVal[MClientChoices.SecurityEntityID] = SecurityEntityUtility.CurrentProfile.Id.ToString();
+                mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile.Id.ToString();
                 mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
             }            
             return mRetVal;
@@ -141,7 +143,7 @@ public static class ClientChoicesUtility
         MClientChoicesState mRetVal = getFromCacheOrSession(forAccount);
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            mRetVal[MClientChoices.SecurityEntityID] = SecurityEntityUtility.CurrentProfile.Id.ToString();
+            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile.Id.ToString();
             mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
         }
         return mRetVal;
@@ -166,10 +168,10 @@ public static class ClientChoicesUtility
     /// <remarks>Calls getClientChoicesState to ensure the Session/Cache matches for the given account.</remarks>
     public static void Save(MClientChoicesState clientChoicesState)
     {
-        if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
+        if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
         BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
         mBusinessLayer.Save(clientChoicesState);
-        getClientChoicesState(clientChoicesState.AccountName);
+        getClientChoicesState(clientChoicesState.Account);
     }
 
     /// <summary>
@@ -178,7 +180,7 @@ public static class ClientChoicesUtility
     /// <param name="forAccount"></param>
     public static void SynchronizeContext(string forAccount)
     {
-        if(CurrentState.AccountName.ToLowerInvariant() != forAccount.ToLowerInvariant())
+        if(CurrentState.Account.ToLowerInvariant() != forAccount.ToLowerInvariant())
         {
             MClientChoicesState mClientChoicesState = getClientChoicesState(forAccount);            
         }

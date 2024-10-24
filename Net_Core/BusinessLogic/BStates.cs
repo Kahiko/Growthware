@@ -54,7 +54,7 @@ public class BStates: AbstractBusinessLogic
     {
         if (securityEntityProfile == null)
         {
-            throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState");
         m_DStates.ConnectionString = securityEntityProfile.ConnectionString;

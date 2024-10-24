@@ -106,6 +106,11 @@ export class NameValuePairChildDetailComponent extends BaseDetailComponent imple
           return 'Required';
         }
         break;
+        case 'sortOrder':
+          if (this.controls['sortOrder'].hasError('required')) {
+            return 'Required';
+          }
+          break;
       default:
         break;
     }

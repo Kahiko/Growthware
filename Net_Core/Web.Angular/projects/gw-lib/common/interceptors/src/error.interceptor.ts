@@ -24,7 +24,7 @@ class HandleError {
 			}
 			console.error('ErrorInterceptor.intercept', errorMsg);
 			// auto logout if 401 or 403 response returned from api
-			if ([401, 403].includes(err.status) && this._AccountSvc.authenticationResponse.account !== this._AccountSvc.anonymous) {
+			if ([401, 403].includes(err.status) && this._AccountSvc.authenticationResponse().account !== this._AccountSvc.anonymous) {
 				this._AccountSvc.logout();
 			}
 			return throwError(() => errorMsg);

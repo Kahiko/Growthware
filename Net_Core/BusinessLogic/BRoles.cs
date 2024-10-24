@@ -76,7 +76,7 @@ public class BRoles : AbstractBusinessLogic
     {
         if (securityEntityProfile == null)
         {
-            throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
         m_DRoles = (IRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
         m_DRoles.ConnectionString = securityEntityProfile.ConnectionString;
@@ -90,7 +90,7 @@ public class BRoles : AbstractBusinessLogic
     public int Save(MRole profile)
     {
         int mRetVal = -1;
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) mRetVal = m_DRoles.Save();
         return mRetVal;
@@ -103,7 +103,7 @@ public class BRoles : AbstractBusinessLogic
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
     public void DeleteRole(MRole profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) m_DRoles.DeleteRole();
     }
@@ -114,7 +114,7 @@ public class BRoles : AbstractBusinessLogic
     /// <param name="profile">The profile.</param>
     public MRole GetProfile(MRole profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         MRole mRetVal = new MRole();
         m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) mRetVal = new MRole(m_DRoles.ProfileData());
@@ -139,7 +139,7 @@ public class BRoles : AbstractBusinessLogic
     /// <returns>DataTable.</returns>
     public DataTable GetAccountsInRole(MRole profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         DataTable mRetVal = null;
         m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsInRole();
@@ -153,7 +153,7 @@ public class BRoles : AbstractBusinessLogic
     /// <returns>DataTable.</returns>
     public DataTable GetAccountsNotInRole(MRole profile)
     {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         DataTable mRetVal = null;
         m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsNotInRole();
@@ -170,7 +170,7 @@ public class BRoles : AbstractBusinessLogic
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
     public bool UpdateAllAccountsForRole(int roleSeqId, int SecurityEntityID, string[] accounts, int accountSeqId)
     {
-        if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!!");
+        if (accounts == null) throw new ArgumentNullException(nameof(accounts), "accounts cannot be a null reference (Nothing in Visual Basic)!!");
         bool mRetVal = false;
         if (DatabaseIsOnline()) mRetVal = m_DRoles.UpdateAllAccountsForRole(roleSeqId, SecurityEntityID, accounts, accountSeqId);
         return mRetVal;

@@ -37,7 +37,7 @@ namespace GrowthWare.BusinessLogic
         /// <exception cref="ArgumentNullException"></exception>
         public void Save(MLoggingProfile profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
             if (DatabaseIsOnline())
             {
                 m_Logging.Save(profile);

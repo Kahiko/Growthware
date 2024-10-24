@@ -1,13 +1,32 @@
 # Release Notes
-## Net_Core Version x.x.x.x (yyyy-mm-dd)
+## Net_Core Version 5.1.0.x (2024-10-24)
 
 ### New Features
-- Added Oracle support to the Database Manager
+- Added a "Page" for testing logging
 
 ### Improvements
-- Added removeProperty to the Oracle Database Manager to remove a property
+- Updated the color scheme information in the ClientChoices to be more consistent and useful
+- Added the ClientChoices feature in order to access the ClientChoices object without causing a circular dependency in the GroupDetailsComponent and RoleDetailsComponent.
+- Can now change the event date in the Event Details Component
+- Standarized form layout (height/width)
 
-## Net_Core Version 5.0.1.x (YYYY-MM-DD)
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10
+
+### Bug Fixes
+- Fixed where "Delete roles" pick list allItemsText was blank
+- Set the color properties for the PickListComponent in AccountDetailsComponent, GroupDetailsComponent and RoleDetailsComponent.
+- Fixed "API" being displayed in the "Favorite Link" drop down of Select Preferences.
+- Fixed NG8109: securityEntityTranslation is a function in SecurityEntityDetailsComponent
+- Fixed NavigationComponentBase was doubling the flyout navigation
+- Fixed Setting @V_MessageSeqId in upgrade/downgrade Version_4_0_1_0.sql can return more than 1 entry in the sub query
+- Fixed Log API call not getting the destination properties (was missing), the API now logs to both the database and the file.
+- Fixed when the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in
+- Fixed after DB has been created and an account logs on the app, clicking on a guarded link will result in being logged out
+- Added sort order to the Name Value Pair Details Component
+
+## Net_Core Version 5.0.1.x (2024-09-26)
 
 ### New Features
 - No new features added
@@ -15,15 +34,29 @@
 ### Improvements
 - Changed SQL Server database manager to remove the database property from the connection in a more robust way
 - Updated Angular to 18.2
+- Updated the Docker files to use Angular 18.2
 - appInitializer now navigates to the clientChoices.action
 - Added iconName property to SnakeListComponent
 - Re-worked AccountService so that afterAuthentication is now called after authenticate, changePassword, logout, refreshToken, resetPassword, saveClientChoices and verifyAccount
 - Changed all gw- tages to self closing tags
+- Updated all @Input/@Output types to input/output in prep for being able to drop Zone.js
+- Re-Worked the navagation feature to reduce the number of components needed
+- The Toast feature now works on signals only
+- The Dynamic Table now uses ClientChoices.subHeadColor to set the header font color
+- Added color properties to ListComponent
+- Added color properties to PickListComponent
 
 ### Bug Fixes
 - Fixed NG0956: The configured tracking expression (track by identity) in file-list.component.html
 - Fixed Pager not displaying the correct number of pages
 - Fixed the "derived" roles not being displayed/populated
+- Fixed the "Blue Arrow" skin not displaying Envirnment correctly
+- Fixed Logoff so that it wouldn't through an error and sends back the Anonumous Profile
+
+- Fixed roles and groups not being saved in AccountDetailsComponent
+- Fixed roles and groups not being saved in FunctionDetailsComponent
+- Fixed roles not being saved in GroupDetailsComponent
+- Fixed Members not being saved in RoleDetailsComponent
 
 ## Net_Core Version 5.0.0.x (2024-08-31)
 

@@ -18,8 +18,8 @@ namespace GrowthWare.Framework
 
         public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
+            if (theDirectory == null) throw new ArgumentNullException(nameof(theDirectory), "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException(nameof(outputBuilder), "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
             DirectoryInfo[] subDirectories = null;
             try
             {
@@ -82,10 +82,10 @@ namespace GrowthWare.Framework
 
         public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
-            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)!");
-            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)!");
+            if (theDirectory == null) throw new ArgumentNullException(nameof(theDirectory), "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException(nameof(outputBuilder), "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
+            if (excludeList == null) throw new ArgumentNullException(nameof(excludeList), "excludeList cannot be a null reference (Nothing in Visual Basic)!");
+            if (fileArray == null) throw new ArgumentNullException(nameof(fileArray), "fileArray cannot be a null reference (Nothing in Visual Basic)!");
 
             Boolean writeDirectory = true;
             int FileLineCount = 0;
@@ -141,7 +141,7 @@ namespace GrowthWare.Framework
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException(nameof(directoryProfile), "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = null;
             mRetVal = "Successfully created the new directory!";

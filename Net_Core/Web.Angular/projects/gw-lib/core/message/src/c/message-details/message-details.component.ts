@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
@@ -20,7 +21,8 @@ import { IMessageProfile, MessageProfile } from '../../message-profile.model';
 		FormsModule,
 		ReactiveFormsModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		MatTabsModule
 	],
 	templateUrl: './message-details.component.html',
 	styleUrls: ['./message-details.component.scss']
@@ -34,11 +36,11 @@ export class MessageDetailsComponent implements OnInit {
 	frmMessage!: FormGroup;
 
 	constructor(
-    private _FormBuilder: FormBuilder,
-    private _LoggingSvc: LoggingService,
-    private _MessageSvc: MessageService,
-    private _ModalSvc: ModalService,
-    private _SecuritySvc: SecurityService,
+		private _FormBuilder: FormBuilder,
+		private _LoggingSvc: LoggingService,
+		private _MessageSvc: MessageService,
+		private _ModalSvc: ModalService,
+		private _SecuritySvc: SecurityService,
 	) { }
 
 	ngOnInit(): void {

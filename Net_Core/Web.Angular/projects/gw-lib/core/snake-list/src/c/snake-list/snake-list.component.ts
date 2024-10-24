@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Component, input, OnInit } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { INameDataPair } from '@growthware/common/interfaces';
-import { DataService, GWCommon } from '@growthware/common/services';
+import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 
 @Component({
@@ -19,32 +18,16 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 	templateUrl: './snake-list.component.html',
 	styleUrls: ['./snake-list.component.scss']
 })
-export class SnakeListComponent implements OnDestroy, OnInit {
+export class SnakeListComponent implements OnInit {
 
-	private _DataSubject = new BehaviorSubject<INameDataPair[]>([]);
-	private _Subscriptions: Subscription = new Subscription();
-
-	readonly data$ = this._DataSubject.asObservable();
+	items = input<Array<string>>([]);
 	iconName = input('');
 	id = input.required<string>();
 
-	constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
-
-	ngOnDestroy(): void {
-		this._Subscriptions.unsubscribe();
-	}
+	constructor(private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
 
 	ngOnInit(): void {
 		this.id.apply(this.id().trim());
-		if (this._GWCommon.isNullOrUndefined(this.id)) {
-			this._LoggingSvc.toast('The is can not be blank!', 'Snake List Component', LogLevel.Error);
-		} else {
-			this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
-				if (data.name.toLocaleLowerCase() === this.id().toLowerCase()) {
-					this._DataSubject.next(data.value);
-				}
-			}));
-		}
 	}
 
 }

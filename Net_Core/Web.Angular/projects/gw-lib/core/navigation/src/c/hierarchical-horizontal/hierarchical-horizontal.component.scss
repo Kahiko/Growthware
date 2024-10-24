@@ -1,0 +1,79 @@
+.flyout-nav {
+    height: var(--height);
+    display: inline-block;
+    margin: 0;
+    top: 0;
+    z-index: 9999;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--ulBackgroundColor);
+  }
+  
+  ul li {
+    z-index: 9999;
+    display: block;
+    position: relative;
+    float: left;
+    background: var(--ulLiBackgroundColor);
+  }
+  
+  // The CSS to hide the sub menus.
+  li ul {
+    display: none;
+  }
+  
+  ul li a {
+    bottom: 0px;
+    display: block;
+    padding: 1em;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--fontColor);
+  }
+  
+  ul li a:hover {
+    background: var(--hoverBackgroundColor);
+  }
+  
+  // Displays the dropdown menu on hover.
+  li:hover>ul {
+    display: block;
+    position: absolute;
+  }
+  
+  li:hover li {
+    float: none;
+  }
+  
+  li:hover a {
+    background: var(--ulLiBackgroundColor);
+  }
+  
+  li:hover li a:hover {
+    background: var(--hoverBackgroundColor);
+  }
+  
+  .main-navigation li ul li {
+    border-top: 0;
+  }
+  
+  // Displays second level dropdown menus to the right of the first level dropdown menu.
+  ul ul ul {
+    left: 100%;
+    top: 0;
+  }
+  
+  // Simple clearfix.
+  ul:before,
+  ul:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+  }
+  
+  ul:after {
+    clear: both;
+  }

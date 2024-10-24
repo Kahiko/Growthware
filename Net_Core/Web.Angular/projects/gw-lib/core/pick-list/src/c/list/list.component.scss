@@ -8,11 +8,10 @@
     padding: 2px;
     font-family: verdana, arial;
     font-size: 1rem;
-    background-color: #DCDDDE;
+    background-color: white;
 }
 
 .pickListTableHeader td {
-    background-color: #B2B2B2;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -20,6 +19,7 @@
     text-align: center;
     vertical-align: middle;
     font-size: .8rem;
+    background-color: var(--pickListTableHeaderBackground);
 }
 
 .pickListTableHelp td {
@@ -30,6 +30,7 @@
 .pickListTableContents {
     padding: 2px;
     font-size: .8rem;
+    background-color: var(--pickListTableContentsBackground);
 }
 
 .help {
@@ -40,4 +41,4 @@
 
 select.selectList {
     width: 250px;
-  }
+}
