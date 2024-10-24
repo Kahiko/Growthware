@@ -1,5 +1,5 @@
 # Release Notes
-## Net_Core Version 5.1.0.x (yyyy-mm-dd)
+## Net_Core Version 5.1.0.x (2024-10-24)
 
 ### New Features
 - Added a "Page" for testing logging
