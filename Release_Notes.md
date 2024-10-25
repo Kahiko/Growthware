@@ -1,4 +1,12 @@
 # Release Notes
+## Net_Core Version x.x.x.x (yyyy-mm-dd)
+
+### New Features
+- Added Oracle support to the Database Manager
+
+### Improvements
+- Added removeProperty to the Oracle Database Manager to remove a property
+
 ## Net_Core Version 5.1.0.x (2024-10-24)
 
 ### New Features
