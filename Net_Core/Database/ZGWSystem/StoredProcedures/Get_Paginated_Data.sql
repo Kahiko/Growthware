@@ -67,7 +67,7 @@ AS
 		BEGIN
 			SELECT TOP(1) @SplitId = [Id], @SplitData = [Data] FROM @V_TblSplitValues WHERE [Processed] = 0;
 			-- Check to see if @SplitData ends in "asc"
-			-- if it does then replase asc with "desc" else replase desc with "asc"
+			-- if it does then replace asc with "desc" else replace desc with "asc"
 			SET @SplitData = LTRIM(RTRIM(@SplitData));
 			--PRINT @SplitData;
 			SET @EndOfOrderByClause = UPPER(SUBSTRING(@SplitData, LEN(@SplitData) - 3, LEN(@SplitData)));
