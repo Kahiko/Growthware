@@ -1,5 +1,5 @@
 @if (flyout() === 'false') {
-  @for (item of menuData(); track item) {
+  @for (item of menuData(); track item.action) {
     <gw-core-vertical-list-item [item]="item" />
   }    
 } @else {

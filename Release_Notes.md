@@ -25,6 +25,7 @@
 - Fixed when the database has just been created and an account first logs on the authentication doesn't seem to get updated and you can not navigate to other links until you log out and back in
 - Fixed after DB has been created and an account logs on the app, clicking on a guarded link will result in being logged out
 - Added sort order to the Name Value Pair Details Component
+-- Fixed NG0956: The configured tracking expression in navigation
 
 ## Net_Core Version 5.0.1.x (2024-09-26)
 
