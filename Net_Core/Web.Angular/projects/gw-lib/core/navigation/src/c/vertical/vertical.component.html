@@ -1,4 +1,4 @@
-@for (item of menuData(); track item) {
+@for (item of menuData(); track item.action) {
   <div>
     <a mat-list-item (click)="onItemSelected(item)" data-title="{{ item.description }}" [ngStyle]="{'color': fontColor()}">{{ item.label }}</a>
   </div>

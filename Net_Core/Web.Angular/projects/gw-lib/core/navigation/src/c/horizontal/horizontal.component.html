@@ -1,4 +1,4 @@
-@for (item of menuData(); track item; let i = $index, mLast = $last) {
+@for (item of menuData(); track item.action; let i = $index, mLast = $last) {
   @if (!mLast) {
     <div style="display: inline-block; border-right: 1px solid;">
       <a (click)="onItemSelected(item)" data-title="{{ item.description }}" style="cursor: grab; padding-left: 10px;" [ngStyle]="{'color': fontColor}">
