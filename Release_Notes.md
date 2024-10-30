@@ -1,4 +1,15 @@
 # Release Notes
+## Net_Core Version 5.1.1.x (YYYY-MM-DD)
+
+### New Features
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10
+
+### Bug Fixes
+- 
+
 ## Net_Core Version 5.1.0.x (2024-10-24)
 
 ### New Features
