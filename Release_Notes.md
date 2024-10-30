@@ -8,7 +8,7 @@
 - The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10
 
 ### Bug Fixes
-- 
+- Fixed lable type-o in the Event Details Component from "Angular forms" to "Event Date"
 
 ## Net_Core Version 5.1.0.x (2024-10-24)
 
