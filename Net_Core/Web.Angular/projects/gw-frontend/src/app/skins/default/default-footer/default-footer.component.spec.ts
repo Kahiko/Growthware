@@ -17,7 +17,7 @@ describe('DefaultFooterComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('(not yet implemented) should create', () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });
