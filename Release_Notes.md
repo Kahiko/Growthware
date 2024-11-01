@@ -9,6 +9,16 @@
 
 ### Bug Fixes
 - Fixed lable type-o in the Event Details Component from "Angular forms" to "Event Date"
+- Fixed Editing your account information in the Account Details Component
+- Fixed Saving an account
+    UI elements will now displaying correctly in the Account Details Component
+    When the "action" is "accounts/edit-my-account"
+        The "Status" field and "System Administrator" row is hidden
+    The "System Administrator" and "Failed Logon Attempts" row will not display if the roles are not displayed
+    "System Administrator" field is disabled if the client is not a system administrator
+    - In the API call (SaveAccount)
+        Will now save if the requesting account is the same as the account being saved
+        FailedAttempts and Status can not be changed by the "same" account
 
 ## Net_Core Version 5.1.0.x (2024-10-24)
 

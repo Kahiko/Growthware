@@ -335,9 +335,14 @@ export class AccountDetailsComponent implements OnInit {
       this.submitted = true;
       this.populateProfile();
       if(!this.isRegistration) {
-        this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
-          this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-          this.closeModal();
+        this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
+          if (response) {
+            this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+            this.closeModal();  
+          } else {
+            this._LoggingSvc.toast('Account was not saved', 'Save Account', LogLevel.Error);
+            this.closeModal();
+          }
         }).catch((error: unknown) => {
           console.log('error', error);
           this._LoggingSvc.toast('Error saving account!', 'Save Account', LogLevel.Error);
@@ -418,15 +423,19 @@ export class AccountDetailsComponent implements OnInit {
     this._AccountProfile.assignedRoles = JSON.parse(JSON.stringify(this.rolesSelected));
     this._AccountProfile.email = this.controls['email'].getRawValue();
     this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
-    this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
+    if (this.showRoles) {
+      this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();      
+      this._AccountProfile.status = this.selectedStatus;
+    }
     this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
     this._AccountProfile.groups = JSON.parse(JSON.stringify(this.groupsSelected));
-    this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();
+    if (this.isSysAdmin) {
+      this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();      
+    }
     this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
     this._AccountProfile.location = this.controls['location'].getRawValue();
     this._AccountProfile.middleName = this.controls['middleName'].getRawValue();
     this._AccountProfile.preferredName = this.controls['preferredName'].getRawValue();
-    this._AccountProfile.status = this.selectedStatus;
     this._AccountProfile.timeZone = this.selectedTimeZone;
   }
 }
