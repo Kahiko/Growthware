@@ -13,7 +13,7 @@ describe('ChangePasswordComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
     imports: [ChangePasswordComponent,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([]),
         NoopAnimationsModule],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })

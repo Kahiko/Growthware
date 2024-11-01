@@ -12,7 +12,7 @@ describe('SearchService', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
     declarations: [],
-    imports: [RouterTestingModule,
+    imports: [RouterTestingModule.withRoutes([]),
         NoopAnimationsModule],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();

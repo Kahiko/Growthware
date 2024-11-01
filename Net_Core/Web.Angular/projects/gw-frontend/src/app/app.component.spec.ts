@@ -59,7 +59,7 @@ describe('AppComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [],
 			imports: [AppComponent,
-				RouterTestingModule,
+				RouterTestingModule.withRoutes([]),
 				NoopAnimationsModule],
 			providers: [
 				{ provide: 'AccountService', useValue: dependencies.accountSvcMock },
