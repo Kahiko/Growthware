@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+// import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -59,7 +59,7 @@ describe('AppComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [],
 			imports: [AppComponent,
-				RouterTestingModule,
+				// RouterTestingModule,
 				NoopAnimationsModule],
 			providers: [
 				{ provide: 'AccountService', useValue: dependencies.accountSvcMock },
