@@ -19,6 +19,7 @@
     - In the API call (SaveAccount)
         Will now save if the requesting account is the same as the account being saved
         FailedAttempts and Status can not be changed by the "same" account
+- Fixed app.component.spec.ts to work correctly with signals
 
 ## Net_Core Version 5.1.0.x (2024-10-24)
 

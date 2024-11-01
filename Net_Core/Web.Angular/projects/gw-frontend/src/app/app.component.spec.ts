@@ -10,6 +10,7 @@ import { AccountInformation, IAccountInformation } from '@growthware/core/accoun
 import { ISecurityEntityProfile, SecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { signal } from '@angular/core';
 
 class MockAccountService {
 	private _AccountInformationChangedSubject = new BehaviorSubject<IAccountInformation>(new AccountInformation);
@@ -17,12 +18,11 @@ class MockAccountService {
 }
 
 class MockConfigurationService {
-	private _ApplicationNameSubject = new BehaviorSubject<string>('');
-	public applicationName$ = this._ApplicationNameSubject.asObservable();
-	public version$ = new Subject<string>();
+	public applicationName = signal<string>('');
+	public version = signal<string>('');
 
 	public changeApplicationName(applicationName: string): void {
-		this._ApplicationNameSubject.next(applicationName);
+		this.applicationName.set(applicationName);
 	}
 }
 
@@ -86,8 +86,8 @@ describe('AppComponent', () => {
 
 	it('should render title `CS Angular.io`', inject([ConfigurationService], (mockConfigSvc: MockConfigurationService) => {
 		const mNewValue = 'CS Angular.io';
-		fixture.detectChanges();
 		mockConfigSvc.changeApplicationName(mNewValue);
+		fixture.detectChanges(); // the signal is dirty and we need to call detectChanges
 		expect(component.title).toEqual(mNewValue);
 	}));
 });
