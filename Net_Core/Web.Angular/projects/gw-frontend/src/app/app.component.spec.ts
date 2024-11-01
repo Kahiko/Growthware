@@ -29,12 +29,12 @@ class MockConfigurationService {
 class MockSecurityEntityService {
 	private _SecurityEntityProfile = new SecurityEntityProfile();
 
-	constructor() { 
+	constructor() {
 		const mSecurityEntityProfile = new SecurityEntityProfile();
 		mSecurityEntityProfile.id = 1;
 		mSecurityEntityProfile.name = 'System';
 		mSecurityEntityProfile.skin = 'default';
-		this.changeSecurityEntity(mSecurityEntityProfile);		
+		this.changeSecurityEntity(mSecurityEntityProfile);
 	}
 
 	public getSecurityEntity(): ISecurityEntityProfile {
@@ -57,24 +57,24 @@ describe('AppComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-    declarations: [],
-    imports: [AppComponent,
-        RouterTestingModule,
-        NoopAnimationsModule],
-    providers: [
-        { provide: 'AccountService', useValue: dependencies.accountSvcMock },
-        { provide: ConfigurationService, useValue: dependencies.configurationSvcMock },
-        { provide: SecurityEntityService, useValue: dependencies.securityEntitySvcMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-    ]
-}).compileComponents();
+			declarations: [],
+			imports: [AppComponent,
+				RouterTestingModule,
+				NoopAnimationsModule],
+			providers: [
+				{ provide: 'AccountService', useValue: dependencies.accountSvcMock },
+				{ provide: ConfigurationService, useValue: dependencies.configurationSvcMock },
+				{ provide: SecurityEntityService, useValue: dependencies.securityEntitySvcMock },
+				provideHttpClient(withInterceptorsFromDi()),
+				provideHttpClientTesting(),
+			]
+		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(AppComponent);
 		component = fixture.componentInstance;
-	  });
+	});
 
 	it('should create the app', () => {
 		expect(component).toBeTruthy();
