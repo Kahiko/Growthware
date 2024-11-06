@@ -48,9 +48,9 @@ class MockSecurityEntityService {
 }
 
 describe('AppComponent', () => {
-	let fixture: ComponentFixture<AppComponent>;
-	let component: AppComponent;
-	const dependencies = {
+	let _Fixture: ComponentFixture<AppComponent>;
+	let _Component: AppComponent;
+	const _Dependencies = {
 		'accountSvcMock': new MockAccountService(),
 		'configurationSvcMock': new MockConfigurationService(),
 		'securityEntitySvcMock': new MockSecurityEntityService()
@@ -63,32 +63,29 @@ describe('AppComponent', () => {
 				RouterTestingModule.withRoutes([]),
 				NoopAnimationsModule],
 			providers: [
-				{ provide: 'AccountService', useValue: dependencies.accountSvcMock },
-				{ provide: ConfigurationService, useValue: dependencies.configurationSvcMock },
-				{ provide: SecurityEntityService, useValue: dependencies.securityEntitySvcMock },
+				{ provide: 'AccountService', useValue: _Dependencies.accountSvcMock },
+				{ provide: ConfigurationService, useValue: _Dependencies.configurationSvcMock },
+				{ provide: SecurityEntityService, useValue: _Dependencies.securityEntitySvcMock },
 				provideHttpClient(withInterceptorsFromDi()),
 				provideHttpClientTesting(),
 			]
 		}).compileComponents();
-	});
-
-	beforeEach(() => {
-		fixture = TestBed.createComponent(AppComponent);
-		component = fixture.componentInstance;
+		_Fixture = TestBed.createComponent(AppComponent);
+		_Component = _Fixture.componentInstance;
 	});
 
 	it('should create the app', () => {
-		expect(component).toBeTruthy();
+		expect(_Component).toBeTruthy();
 	});
 
 	it('should have the \'gw-frontend\' title', () => {
-		expect(component.title).toEqual('gw-frontend');
+		expect(_Component.title).toEqual('gw-frontend');
 	});
 
 	it('should render title `CS Angular.io`', inject([ConfigurationService], (mockConfigSvc: MockConfigurationService) => {
 		const mNewValue = 'CS Angular.io';
 		mockConfigSvc.changeApplicationName(mNewValue);
-		fixture.detectChanges(); // the signal is dirty and we need to call detectChanges
-		expect(component.title).toEqual(mNewValue);
+		_Fixture.detectChanges(); // the signal is dirty and we need to call detectChanges
+		expect(_Component.title).toEqual(mNewValue);
 	}));
 });
