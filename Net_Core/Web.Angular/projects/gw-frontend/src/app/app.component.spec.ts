@@ -37,8 +37,10 @@ class MockSecurityEntityService {
 		this.changeSecurityEntity(mSecurityEntityProfile);
 	}
 
-	public getSecurityEntity(): ISecurityEntityProfile {
-		return this._SecurityEntityProfile;
+	public async getSecurityEntity(id: number): Promise<ISecurityEntityProfile> {
+		return new Promise<ISecurityEntityProfile>((resolve, reject) => {
+			resolve(this._SecurityEntityProfile);
+		});
 	}
 
 	public changeSecurityEntity(securityEntityProfile: ISecurityEntityProfile): void {

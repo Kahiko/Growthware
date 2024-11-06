@@ -20,6 +20,7 @@
         Will now save if the requesting account is the same as the account being saved
         FailedAttempts and Status can not be changed by the "same" account
 - Fixed app.component.spec.ts to work correctly with signals
+- Fixed ERROR: 'ERROR', TypeError: this._SecurityEntitySvc.getSecurityEntity(...).then is not a function in app.component.spec.ts
 
 ## Net_Core Version 5.1.0.x (2024-10-24)
 
