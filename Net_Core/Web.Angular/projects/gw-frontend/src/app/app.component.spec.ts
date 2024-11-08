@@ -2,18 +2,98 @@ import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { signal } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-import { AuthenticationResponse, IAuthenticationResponse } from '@growthware/core/account';
+import { AuthenticationResponse, IAccountInformation, IAuthenticationResponse } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { signal } from '@angular/core';
+import { ClientChoices, IClientChoices } from '@growthware/core/clientchoices';
 
 class MockAccountService {
 	public authenticationResponse = signal<IAuthenticationResponse>(new AuthenticationResponse());
+	public clientChoices = signal<IClientChoices>(new ClientChoices());
+
+	constructor() { 
+		this.setDeveloper();
+	}
+
+	public setDeveloper(): void {
+		const mAccountInformation: IAuthenticationResponse = {
+			"account":"Developer",
+			"created":"2024-10-10T12:07:00",
+			"email":"michael.regan@verizon.net",
+			"firstName":"System",
+			"id":3,"isSystemAdmin":true,
+			"isVerified":false,
+			"jwtToken":"",
+			"lastName":"Developer",
+			"location":"none",
+			"middleName":"",
+			"preferredName":"System-Developer",
+			"status":1,
+			"timeZone":-5,
+			"updated":"2024-11-08T10:44:22"
+		};
+		const mClientChoices: IClientChoices = {
+			"account": "Developer", 
+			"securityEntityId": 1, 
+			"securityEntityName": "System", 
+			"action": "accounts", 
+			"recordsPerPage": 10, 
+			"colorScheme": "Blue", 
+			"evenRow": "#6699cc", 
+			"evenFont": "White", 
+			"oddRow": "#b6cbeb", 
+			"oddFont": "Black", 
+			"headerRow": "#C7C7C7", 
+			"headerFont": "Black", 
+			"background": "#ffffff", 
+		};
+		
+		this.authenticationResponse.set(mAccountInformation);
+		this.clientChoices.set(mClientChoices);
+	}
+
+	public setMike(): void {
+		const mAccountInformation: IAuthenticationResponse = {
+			"account":"Mike",
+			"created":"2024-10-10T12:07:00",
+			"email":"michael.regan@verizon.net",
+			"firstName":"System",
+			"id":4,
+			"isSystemAdmin":false,
+			"isVerified":false,
+			"jwtToken":"",
+			"lastName":"Tester",
+			"location":"none",
+			"middleName":"",
+			"preferredName":"System-Tester",
+			"status":1,
+			"timeZone":-5,
+			"updated":"2024-11-01T06:44:33"
+		};
+		const mClientChoices: IClientChoices = {
+			"account":"Mike",
+			"securityEntityId":1,
+			"securityEntityName":"System",
+			"action":"home",
+			"recordsPerPage":10,
+			"colorScheme":"Blue",
+			"evenRow":"#6699cc",
+			"evenFont":"White",
+			"oddRow":"#b6cbeb",
+			"oddFont":"Black",
+			"headerRow":"#C7C7C7",
+			"headerFont":"Black",
+			"background":"#ffffff"
+		};
+		
+		this.authenticationResponse.set(mAccountInformation);
+		this.clientChoices.set(mClientChoices);		
+	}
 }
 
 class MockConfigurationService {
