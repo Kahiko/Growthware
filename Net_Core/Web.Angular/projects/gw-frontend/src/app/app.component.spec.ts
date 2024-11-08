@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { AppComponent } from './app.component';
 
-import { AccountInformation, AuthenticationResponse, IAccountInformation, IAuthenticationResponse } from '@growthware/core/account';
+import { AuthenticationResponse, IAuthenticationResponse } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
