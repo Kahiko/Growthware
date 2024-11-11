@@ -27,14 +27,14 @@ export class ModalService {
 	) { }
 
 	/**
-   * Closes a modal for the specified key.
-   *
-   * @param {string} key - The key of the modal to close.
-   */
+	 * Closes a modal for the specified key.
+	 *
+	 * @param {string} key - The key of the modal to close.
+	 */
 	public close(key: string) {
 		const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
 		if (mContentObj !== undefined) {
-			if(mContentObj.contentType === ContentType.Component) {
+			if (mContentObj.contentType === ContentType.Component) {
 				try {
 					// destroy child
 					this._ApplicationRef.detachView(mContentObj.payloadRef.hostView);
@@ -57,13 +57,13 @@ export class ModalService {
 	}
 
 	/**
-   * Opens a modal dialog with either string, ng-template or a component.
-   *
-   * @param {IModalOptions} options - The options for the modal dialog.
-   * @return {void} 
-   */
+	 * Opens a modal dialog with either string, ng-template or a component.
+	 *
+	 * @param {IModalOptions} options - The options for the modal dialog.
+	 * @return {void} 
+	 */
 	public open(options: IModalOptions): void {
-		if(this._GWCommon.isNullOrEmpty(options.modalId)) {
+		if (this._GWCommon.isNullOrEmpty(options.modalId)) {
 			this.logConsole('options.modalId can not be null or blank', 'Error');
 			// console.log('ModalService.open', options);
 			return;
@@ -77,7 +77,7 @@ export class ModalService {
 		// first, create the child
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mNgContent: any = mResolvedNgContent;
-		if(this._ContentType === ContentType.Component) {
+		if (this._ContentType === ContentType.Component) {
 			// get root nodes
 			mNgContent = (<EmbeddedViewRef<unknown>>mResolvedNgContent.hostView).rootNodes;
 		}
@@ -92,7 +92,7 @@ export class ModalService {
 		const mDialogElement = (<EmbeddedViewRef<unknown>>mModalComponentRef.hostView).rootNodes[0];
 		// setup a ContentObject to add to the array
 		const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
-		if(this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
+		if (this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
 			mContentObject.payloadRef = mResolvedNgContent;
 		}
 		this._ActiveModals.push(mContentObject);
@@ -104,41 +104,41 @@ export class ModalService {
 
 	private logConsole(msg: string, level: string): void {
 		const mMsg =
-				this._GWCommon.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
-				'\n  ' +
-				msg;
+			this._GWCommon.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
+			'\n  ' +
+			msg;
 		switch (level) {
-		  case 'Debug':
-			console.debug(mMsg);
-			break;
-		  case 'Error':
-		  case 'Fatal':
-			console.error(mMsg);
-			break;
-		  case 'Info':
-			console.info(mMsg);
-			break;
-		  case 'Warn':
-			console.warn(mMsg);
-			break;
-		  case 'Trace':
-			console.trace(mMsg);
-			break;
-		  case 'Success':
-		  default:
-			console.log(mMsg);
-			break;
+			case 'Debug':
+				console.debug(mMsg);
+				break;
+			case 'Error':
+			case 'Fatal':
+				console.error(mMsg);
+				break;
+			case 'Info':
+				console.info(mMsg);
+				break;
+			case 'Warn':
+				console.warn(mMsg);
+				break;
+			case 'Trace':
+				console.trace(mMsg);
+				break;
+			case 'Success':
+			default:
+				console.log(mMsg);
+				break;
 		}
-	  }
+	}
 
 	/**
-   * Resolves the ngContent of a given Content object.
-   *
-   * @template T - The type of the content.
-   * @param {Content<T>} content - The content to resolve.
-   * @return {any} - The resolved ngContent.
-   * @memberof ModalDirective
-   */  
+	 * Resolves the ngContent of a given Content object.
+	 *
+	 * @template T - The type of the content.
+	 * @param {Content<T>} content - The content to resolve.
+	 * @return {any} - The resolved ngContent.
+	 * @memberof ModalDirective
+	 */
 	private resolveNgContent<T>(content: Content<T>) {
 		this._ContentType = ContentType.String;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -161,13 +161,13 @@ export class ModalService {
 		}
 		return mRetVal;
 	}
-  
+
 	/**
-   * Sets up the ModalComponents callback methods as defined in the modal options.
-   *
-   * @param {IModalOptions} modalOptions - The modal options.
-   * @param {ModalComponent} mModalComponentInstance - The instace of the ModalComponent
-   */
+	 * Sets up the ModalComponents callback methods as defined in the modal options.
+	 *
+	 * @param {IModalOptions} modalOptions - The modal options.
+	 * @param {ModalComponent} mModalComponentInstance - The instace of the ModalComponent
+	 */
 	private setupModalCallbacks(modalOptions: IModalOptions, mModalComponentInstance: ModalComponent) {
 		if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
 			mModalComponentInstance.cancelCallBackMethod = modalOptions.buttons.cancelButton.callbackMethod;
@@ -191,5 +191,4 @@ export class ModalService {
 			}
 		}
 	}
-
 }
