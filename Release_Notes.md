@@ -6,6 +6,7 @@
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
 - The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
+- File manager does not populate the file list upon initial load
 
 ### Bug Fixes
 - Fixed lable type-o in the Event Details Component from "Angular forms" to "Event Date"
