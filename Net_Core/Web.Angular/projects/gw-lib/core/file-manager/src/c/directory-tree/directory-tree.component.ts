@@ -107,6 +107,7 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
 		});
+		this._FileManagerSvc.getFiles(this._Action, this.selectedPath);
 	}
 
 	/**
