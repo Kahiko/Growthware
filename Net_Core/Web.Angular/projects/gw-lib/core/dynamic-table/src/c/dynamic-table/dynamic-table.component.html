@@ -118,7 +118,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (row of tableData$(); track row; let rowIndex = $index, isEven = $even) {
+            @for (row of tableData(); track row; let rowIndex = $index, isEven = $even) {
               <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight, 'color': isEven ? clientChoices.evenFont : (!isEven ? clientChoices.oddFont : null), 'background-color': isEven ? clientChoices.evenRow : (!isEven ? clientChoices.oddRow : null) }" [class.active-row]="rowIndex == activeRow">
                 @for (column of tableConfiguration.columns; track column) {
                   <td>

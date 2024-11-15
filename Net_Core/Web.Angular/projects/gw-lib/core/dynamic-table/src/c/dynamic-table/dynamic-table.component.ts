@@ -59,14 +59,14 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	searchText: string = '';
 	showHelp: boolean = true;
 	tableConfiguration!: IDynamicTableConfiguration;
-	tableData$ = computed(() => this._SearchSvc.searchDataChanged$().payLoad.data);
+	tableData = computed(() => this._SearchSvc.searchDataChanged$().payLoad.data);
 	tableWidth: number = 200;
 	tableHeight: number = 206;
 	totalRecords: number = -1;
 	txtRecordsPerPage: number = 0;
 
 	public getRowData(rowNumber: number) {
-		return this.tableData$()[rowNumber];
+		return this.tableData()[rowNumber];
 	}
 
 	/**
