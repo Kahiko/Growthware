@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
@@ -21,7 +20,6 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 	standalone: true,
 	imports: [
 		CommonModule,
-		RouterOutlet,
 		// Library
 		ToasterComponent,
 		// Application Modules (UI Skins)
