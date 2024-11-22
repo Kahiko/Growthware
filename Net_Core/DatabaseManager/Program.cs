@@ -69,7 +69,7 @@ namespace GrowthWare.DatabaseManager
             {
                 if (mDatabaseManager.Exists())
                 {
-                    Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
+                    Console.WriteLine(String.Format("The '{0}' database exists.", mDatabaseManager.DatabaseName));
                 }
                 else
                 {
