@@ -26,7 +26,16 @@ Script directory structure:
 Naming:
     The file names should file the xx_x.x.x.x.sql, the processing code (program.cs/Main) will
     split the file name buy the underscore then remove the '.sql' and create Version objects
-    for each of the files in the given upgrade or downgrade directory for the databsase technology
+    for each of the files in the given upgrade or downgrade directory for the databsase technology.
+
+    When creating a new version of a SQL server database and going from 2.0.0.0 to 3.0.0.0 then you need to create two files both named Version_3.0.0.0.sql, one in the Upgrade directory and one in the Downgrade directory.
+
+    Downgrade/SQLServer/Version_3.0.0.0.sql contains any sql code that is needed to downgrade the database and updates the [Version] column in the [ZGWSystem].[Database_Information] table to the previous version.  The previous version value can always be found the next lower version file.  In our example the version number you need would be found in Downgrade/SQLServer/Version_2.0.0.0.sql (the version can also be deduced by the version number in the name of the file as well).
+
+    Upgrade/SQLServer/Version_3.0.0.0.sql contains any sql code that is needed to upgrade the database and updates the [Version] column in the [ZGWSystem].[Database_Information] table to the desired version.  In our example the version number would be 3.0.0.0.
+
+    When upgrading or downgrading the database be sure to your scripts are defensive in that will not create an error if ran multiple times.  Check for the existing object before creating or dropping it.  Check existing data before inserting new data.  Personally I will open both the upgrade and downgrade scripts in SSMS and run them in order multiple times.  Remember you have no idea who will decide to run they once that leave your development environment.
+
 
 Versioning:
     Upgrade example:
