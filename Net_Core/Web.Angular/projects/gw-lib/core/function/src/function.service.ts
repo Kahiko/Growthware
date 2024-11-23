@@ -9,7 +9,7 @@ import { IKeyDataPair, IKeyValuePair } from '@growthware/common/interfaces';
 import { ISearchCriteria, SearchService } from '@growthware/core/search';
 // Feature
 import { IFunctionProfile } from './function-profile.model';
-import { SelectedRow } from './selected-row..angular';
+import { SelectedRow } from './selected-row.model';
 import { IFunctionMenuOrder } from './function-menu-order.model';
 
 @Injectable({
