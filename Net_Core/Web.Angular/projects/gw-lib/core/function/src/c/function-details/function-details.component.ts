@@ -29,7 +29,6 @@ import { RoleService } from '@growthware/core/role';
 import { PickListComponent } from '@growthware/core/pick-list';
 import { ListComponent } from '@growthware/core/pick-list';
 import { SecurityService } from '@growthware/core/security';
-import { SnakeListComponent } from '@growthware/core/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
@@ -43,7 +42,6 @@ import { IFunctionMenuOrder } from '../../function-menu-order.model';
 		ReactiveFormsModule,
 		ListComponent,
 		PickListComponent,
-		SnakeListComponent,
 		MatButtonModule,
 		MatCheckboxModule,
 		MatFormFieldModule,
