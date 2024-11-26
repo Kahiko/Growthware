@@ -133,6 +133,13 @@ Library: (core) From Web.Angular
 		ng generate component c/baseSearch 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
 		ng generate component c/baseDetail 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
 		ng generate service base            --path=projects/gw-lib/core/base/services/src --project gw-lib
+	Feedback:
+		ng generate interface --path=projects/gw-lib/core/feedback/src feedback --type model --project gw-lib
+		ng generate interface --path=projects/gw-lib/core/feedback/src selectedRow --type model --project gw-lib
+		ng generate service   --path=projects/gw-lib/core/feedback/src feedback --project gw-lib
+		ng generate component --path=projects/gw-lib/core/feedback/src c/Feedback --standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/feedback/src c/FeedbackDetails --standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/feedback/src c/SearchFeedbacks --standalone --style scss --project gw-lib
 	Search:
 		ng generate interface 				--path=projects/gw-lib/core/search/src SearchCriteria --type model --project gw-lib
 		ng generate service search 			--path=projects/gw-lib/core/search/src --project gw-lib

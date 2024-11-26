@@ -5,6 +5,23 @@ SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
+-- Remove the functions
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/edit')
+	BEGIN
+		DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/edit';
+	END
+--END IF
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbacks')
+	BEGIN
+		DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbacks';
+	END
+--END IF
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/feedback')
+	BEGIN
+		DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/feedback';
+	END
+--END IF
+
 /****** Start: View [ZGWOptional].[vwHistoryFeedback] ******/
 IF EXISTS (SELECT * FROM sys.views WHERE [name] = 'ZGWOptional.vwHistoryFeedback')
     BEGIN
@@ -51,6 +68,46 @@ IF EXISTS(SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].
 --END IF
 GO
 /****** End: Sequence [ZGWOptional].[FeedbackCounter] ******/
+-- Put the sort order back to the way it was before the upgrade
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 13)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 0 WHERE [FunctionSeqId] = 13;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 16)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 16;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 24)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 24;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 17)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 3 WHERE [FunctionSeqId] = 17;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 23)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 4 WHERE [FunctionSeqId] = 23;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 67)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 5 WHERE [FunctionSeqId] = 67;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 20)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 6 WHERE [FunctionSeqId] = 20;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 76)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 76;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 77)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 77;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 78)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 78;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 79)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 79;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 85)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 85;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 88)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 88;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 24)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 25;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 26)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 26;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 27)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 27;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 28)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 28;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 31)
+	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 31;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 64)
+UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 64;
+
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]

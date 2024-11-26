@@ -241,5 +241,35 @@
     "showHelp": true,
     "showSearch": false,
     "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"          , "name": "FeedbackId"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Assignee"      , "name": "Assignee"        , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Details"       , "name": "Details"         , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Found In"      , "name": "FoundInVersion"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Notes"         , "name": "Notes"           , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Severity"      , "name": "Severity"        , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Status"        , "name": "Status"          , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Target Version", "name": "TargetVersion"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Type"          , "name": "Type"            , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Verified By"   , "name": "VerifiedBy"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Search_Feedbacks",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": false,
+    "tableHeight": 286
   }
 ]

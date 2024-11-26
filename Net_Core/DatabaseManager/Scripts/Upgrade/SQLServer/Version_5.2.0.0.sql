@@ -418,8 +418,208 @@ RETURN 0
 
 GO
 /****** End: Procedure [ZGWOptional].[Get_Feedback] ******/
+/****** Start: Adding Feedback Actions ******/
+DECLARE @V_FunctionSeqId INT = -1
+    ,@V_Name VARCHAR(30) = 'Manage Feedbacks'
+    ,@V_Description VARCHAR(512) = 'Search feedbacks/issues for editing'
+    ,@V_FunctionTypeSeqId INT = 1
+    ,@V_Source VARCHAR(512) = ''
+    ,@V_Controller VARCHAR(512) = ''
+    ,@V_Resolve VARCHAR(MAX) = ''
+    ,@V_Enable_View_State INT = 0
+    ,@V_Enable_Notifications INT = 0
+    ,@V_Redirect_On_Timeout INT = 0
+    ,@V_Is_Nav INT = 1
+    ,@V_Link_Behavior INT = 1
+    ,@V_NO_UI INT = 0
+    ,@V_NAV_TYPE_ID INT = 3
+    ,@V_Action VARCHAR(256) = 'feedbacks'
+    ,@V_Meta_Key_Words VARCHAR(512) = ''
+    ,@V_ParentSeqId INT = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SystemAdministration')
+    ,@V_Notes VARCHAR(512) = 'Used to search feedbacks/issues for editing'
+    ,@V_Debug INT = 0
+    ,@V_SystemID INT = 1
+    ,@V_ViewPermission INT;
 
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbacks')
+    BEGIN
+        PRINT 'Adding Manage Feedbacks';
 
+        EXEC ZGWSecurity.Set_Function 
+              @V_FunctionSeqId       -- FunctionSeqId (-1 indicates new record)
+            , @V_Name                -- Name
+            , @V_Description         -- Description
+            , @V_FunctionTypeSeqId   -- FunctionTypeSeqId
+            , @V_Source              -- Source
+            , @V_Controller          -- Controller
+            , NULL                   -- Resolve
+            , 0                      -- Enable_View_State
+            , 0                      -- Enable_Notifications
+            , 0                      -- Redirect_On_Timeout
+            , 1                      -- Is_Nav
+            , 1                      -- Link_Behavior (Internal)
+            , 0                      -- NO_UI
+            , 3                      -- NVP_DetailSeqId (Hierarchical)
+            , @V_Action              -- Action
+            , @V_META_KEY_WORDS      -- Meta_Key_Words
+            , @V_ParentSeqId         -- ParentSeqId
+            , @V_Notes               -- Notes
+            , @V_SystemID            -- Added_By
+            , @V_Debug               -- Debug flag
+        
+        UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 5 WHERE [Action] = @V_Action;
+
+        SET @V_FunctionSeqId = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE action = @V_Action);
+
+        SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM [ZGWSecurity].[Permissions] WHERE NVP_Detail_Value = 'View');
+
+        EXEC [ZGWSecurity].[Set_Function_Roles] 
+            @V_FunctionSeqId   -- FunctionSeqId
+            ,1                  -- SecurityEntitySeqId
+            ,'Developer'        -- Roles
+            ,@V_ViewPermission  -- PermissionsNVPDetailSeqId
+            ,@V_SystemID        -- AccountSeqId for the 'System Administrator'
+            ,@V_Debug;          -- Debug flag
+    END
+--END IF
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/edit')
+    BEGIN
+        PRINT 'Edit Feedback/Issue';
+
+        SET @V_FunctionSeqId = -1;
+        SET @V_Name = 'Edit Feedback';
+        SET @V_Description = 'Edit Feedback/Issue';
+        SET @V_FunctionTypeSeqId = 1;
+        SET @V_Is_Nav = 0;
+        SET @V_Action = 'feedbacks/edit';
+        SET @V_ParentSeqId = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbacks');
+        SET @V_Notes = 'Used to edit feedbacks/issues';
+        SET @V_Debug = 0;
+
+        EXEC ZGWSecurity.Set_Function 
+              @V_FunctionSeqId       -- FunctionSeqId (-1 indicates new record)
+            , @V_Name                -- Name
+            , @V_Description         -- Description
+            , @V_FunctionTypeSeqId   -- FunctionTypeSeqId
+            , @V_Source              -- Source
+            , @V_Controller          -- Controller
+            , NULL                   -- Resolve
+            , 0                      -- Enable_View_State
+            , 0                      -- Enable_Notifications
+            , 0                      -- Redirect_On_Timeout
+            , 1                      -- Is_Nav
+            , 1                      -- Link_Behavior (Internal)
+            , 0                      -- NO_UI
+            , 3                      -- NVP_DetailSeqId (Hierarchical)
+            , @V_Action              -- Action
+            , @V_META_KEY_WORDS      -- Meta_Key_Words
+            , @V_ParentSeqId         -- ParentSeqId
+            , @V_Notes               -- Notes
+            , @V_SystemID            -- Added_By
+            , @V_Debug               -- Debug flag
+
+        SET @V_FunctionSeqId = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE action = @V_Action);
+
+        SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM [ZGWSecurity].[Permissions] WHERE NVP_Detail_Value = 'View');
+
+        EXEC [ZGWSecurity].[Set_Function_Roles] 
+            @V_FunctionSeqId   -- FunctionSeqId
+            ,1                  -- SecurityEntitySeqId
+            ,'Anonymous'        -- Roles
+            ,@V_ViewPermission  -- PermissionsNVPDetailSeqId
+            ,@V_SystemID        -- AccountSeqId for the 'System Administrator'
+            ,@V_Debug;          -- Debug flag
+    END
+--END IF
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbacks/feedback')
+    BEGIN
+        PRINT 'Add a Feedback/Issue';
+
+        SET @V_FunctionSeqId = -1;
+        SET @V_Name = 'Feedback';
+        SET @V_Description = 'Add a Feedback/Issue';
+        SET @V_FunctionTypeSeqId = 1;
+        SET @V_Is_Nav = 1;
+        SET @V_Action = 'feedbacks/feedback';
+        SET @V_ParentSeqId = 1;
+        SET @V_Notes = 'Add a Feedback/Issue';
+        SET @V_Debug = 0;
+
+        EXEC ZGWSecurity.Set_Function 
+              @V_FunctionSeqId       -- FunctionSeqId (-1 indicates new record)
+            , @V_Name                -- Name
+            , @V_Description         -- Description
+            , @V_FunctionTypeSeqId   -- FunctionTypeSeqId
+            , @V_Source              -- Source
+            , @V_Controller          -- Controller
+            , NULL                   -- Resolve
+            , 0                      -- Enable_View_State
+            , 0                      -- Enable_Notifications
+            , 0                      -- Redirect_On_Timeout
+            , 1                      -- Is_Nav
+            , 1                      -- Link_Behavior (Internal)
+            , 0                      -- NO_UI
+            , 1                      -- NVP_DetailSeqId (Horizontal)
+            , @V_Action              -- Action
+            , @V_META_KEY_WORDS      -- Meta_Key_Words
+            , @V_ParentSeqId         -- ParentSeqId
+            , @V_Notes               -- Notes
+            , @V_SystemID            -- Added_By
+            , @V_Debug               -- Debug flag
+
+        SET @V_FunctionSeqId = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE action = @V_Action);
+
+        SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM [ZGWSecurity].[Permissions] WHERE NVP_Detail_Value = 'View');
+
+        EXEC [ZGWSecurity].[Set_Function_Roles] 
+            @V_FunctionSeqId   -- FunctionSeqId
+            ,1                  -- SecurityEntitySeqId
+            ,'Authenticated'    -- Roles
+            ,@V_ViewPermission  -- PermissionsNVPDetailSeqId
+            ,@V_SystemID        -- AccountSeqId for the 'System Administrator'
+            ,@V_Debug;          -- Debug flag
+    END
+--END IF
+/****** Done: Adding Feedback Actions ******/
+-- Update the sort order
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 13)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 0 WHERE [FunctionSeqId] = 13;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 24)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 24;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 31)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 2 WHERE [FunctionSeqId] = 31;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 76)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 3 WHERE [FunctionSeqId] = 76;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 77)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 77;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 78)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 78;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 85)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 85;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 17)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 2 WHERE [FunctionSeqId] = 17;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 23)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 3 WHERE [FunctionSeqId] = 23;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 20)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 4 WHERE [FunctionSeqId] = 20;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 67)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 5 WHERE [FunctionSeqId] = 67;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 16)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 6 WHERE [FunctionSeqId] = 16;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 79)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 7 WHERE [FunctionSeqId] = 79;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 25)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 8 WHERE [FunctionSeqId] = 25;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 26)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 9 WHERE [FunctionSeqId] = 26;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 64)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 10 WHERE [FunctionSeqId] = 64;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 27)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 11 WHERE [FunctionSeqId] = 27;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 28)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 12 WHERE [FunctionSeqId] = 28;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 88)
+    UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 13 WHERE [FunctionSeqId] = 88;
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '5.2.0.0'
