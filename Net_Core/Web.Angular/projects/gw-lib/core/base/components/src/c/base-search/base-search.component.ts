@@ -71,7 +71,7 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onRowClick (rowNumber: number): void {
   	// Do nothing ATM just leaving as an example
-  	// const mMessage = 'hi from SearchAccountsComponent.onRowClick row "' + rowNumber + '" was clicked';
+  	// const mMessage = 'hi from BaseSearchComponent.onRowClick row "' + rowNumber + '" was clicked';
   	// this._LoggingSvc.toast(mMessage, 'onRowClick', LogLevel.Info);
   }
 
