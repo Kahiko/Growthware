@@ -11,7 +11,9 @@ import { FeedbackService } from '../../feedback.service';
 @Component({
   selector: 'gw-core-search-feedbacks',
   standalone: true,
-  imports: [],
+  imports: [
+	DynamicTableComponent
+  ],
   templateUrl: './search-feedbacks.component.html',
   styleUrl: './search-feedbacks.component.scss'
 })
