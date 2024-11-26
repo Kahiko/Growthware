@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ITotalRecords } from '@growthware/common/interfaces';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 // Feature
