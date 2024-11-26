@@ -26,6 +26,7 @@ class JwtHandler {
 				this._BaseUrl + 'GrowthwareAccount',
 				this._BaseUrl + 'GrowthwareAPI',
 				this._BaseUrl + 'GrowthwareCalendar',
+				this._BaseUrl + 'GrowthwareFeedback',
 				this._BaseUrl + 'GrowthwareFile',
 				this._BaseUrl + 'GrowthwareFunction',
 				this._BaseUrl + 'GrowthwareGroup',

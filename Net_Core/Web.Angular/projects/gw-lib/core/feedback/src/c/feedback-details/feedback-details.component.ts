@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
@@ -14,13 +15,14 @@ import { IFeedback, Feedback } from '../../feedback.model';
   imports: [
 		FormsModule,
 		ReactiveFormsModule,
+    MatButtonModule,
     MatTabsModule
   ],
   templateUrl: './feedback-details.component.html',
   styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
-  private _FormBuilder!: FormBuilder;
+  private _FormBuilder: FormBuilder = inject(FormBuilder);
   private _Profile: IFeedback = new Feedback();
 
   ngOnInit(): void {

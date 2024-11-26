@@ -10,6 +10,7 @@ const PROXY_CONFIG = [
 			'/GrowthwareAccount',
 			'/GrowthwareAPI',
 			'/GrowthwareCalendar',
+			'/GrowthwareFeedback',
 			'/GrowthwareFile',
 			'/GrowthwareFunction',
 			'/GrowthwareGroup',

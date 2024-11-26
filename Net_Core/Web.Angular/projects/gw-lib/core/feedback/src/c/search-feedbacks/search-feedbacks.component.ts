@@ -29,9 +29,9 @@ export class SearchFeedbacksComponent extends BaseSearchComponent {
 		super();
 		this.configurationName = 'Search_Feedbacks';
 		this._TheFeatureName = 'Feedbacks';
-		this._TheApi = 'GrowthwareFunction/SearchFunctions';
+		this._TheApi = 'GrowthwareFeedback/SearchFeedbacks';
 		this._TheComponent = FeedbackDetailsComponent;
-		this._TheWindowSize = new WindowSize(565,950);
+		this._TheWindowSize = new WindowSize(400,400);
 		this._TheService = theFeatureSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
