@@ -105,6 +105,7 @@ GO
 ALTER VIEW ZGWOptional.vwHistoryFeedback AS
     SELECT 
           [FeedbackId]
+        , [AssigneeId] = [Assignee]
         , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
         , [Details]
         , [FoundInVersion]
@@ -113,6 +114,7 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [Status]
         , [TargetVersion]
         , [Type]
+        , [VerifiedById] = [VerifiedBy]
         , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedBy])
         , [Start_Date]
         , [End_Date]
@@ -130,6 +132,7 @@ GO
 ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
     SELECT 
           [FeedbackId]
+        , [AssigneeId] = [Assignee]
         , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
         , [Details]
         , [FoundInVersion]
@@ -138,6 +141,7 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [Status]
         , [TargetVersion]
         , [Type]
+        , [VerifiedById] = [VerifiedBy]
         , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedBy])
         , [Start_Date]
         , [End_Date]
