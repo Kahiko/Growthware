@@ -3,21 +3,30 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library MISC
 import { AuthGuard } from '@growthware/common/services';
+// Library Components
+import { AccountDetailsComponent } from '@growthware/core/account';
+import { ChangePasswordComponent } from '@growthware/core/account';
+import { ForgotPasswordComponent } from '@growthware/core/account/src/c/forgot-password/forgot-password.component';
+import { LoginComponent } from '@growthware/core/account';
+import { LogoutComponent } from '@growthware/core/account';
+import { SearchAccountsComponent } from '@growthware/core/account';
+import { SelectPreferencesComponent } from '@growthware/core/account';
+// import { UpdateAnonymousProfileComponent } from '@growthware/core/account';
+import { VerifyAccountComponent } from '@growthware/core/account';
 
-const mAccountPath = '@growthware/core/account';
 const childRoutes: Routes = [
-	{ path: '', loadComponent: () => import(mAccountPath).then(m => m.SearchAccountsComponent), canActivate: [AuthGuard]},
-	{ path: 'edit-account', loadComponent: () => import(mAccountPath).then(m => m.AccountDetailsComponent), canActivate: [AuthGuard] },
-	{ path: 'edit-my-account', loadComponent: () => import(mAccountPath).then(m => m.AccountDetailsComponent), canActivate: [AuthGuard] },
-	{ path: 'register', loadComponent: () => import(mAccountPath).then(m => m.AccountDetailsComponent) },
-	{ path: 'selectpreferences', loadComponent: () => import(mAccountPath).then(m => m.SelectPreferencesComponent), canActivate: [AuthGuard] },
-	// { path: 'updateanonymousprofile', loadComponent: () => import(mAccountPath).then(m => m.UpdateAnonymousProfileComponent), canActivate: [AuthGuard] },
-	{ path: 'logon', loadComponent: () => import(mAccountPath).then(m => m.LoginComponent) },
-	{ path: 'change-password', loadComponent: () => import(mAccountPath).then(m => m.ChangePasswordComponent) },
-	{ path: 'reset-password', loadComponent: () => import(mAccountPath).then(m => m.ChangePasswordComponent) },
-	{ path: 'logout', loadComponent: () => import(mAccountPath).then(m => m.LogoutComponent) },
-	{ path: 'forgot-password', loadComponent: () => import(mAccountPath).then(m => m.ForgotPasswordComponent) },
-	{ path: 'verify-account', loadComponent: () => import(mAccountPath).then(m => m.VerifyAccountComponent) },
+	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
+	{ path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+	{ path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+	{ path: 'register', component: AccountDetailsComponent },
+	{ path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
+	// { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
+	{ path: 'logon', component: LoginComponent},
+	{ path: 'change-password', component: ChangePasswordComponent },
+	{ path: 'reset-password', component: ChangePasswordComponent },
+	{ path: 'logout', component: LogoutComponent },
+	{ path: 'forgot-password', component: ForgotPasswordComponent },
+	{ path: 'verify-account', component: VerifyAccountComponent },
 ];
 
 
