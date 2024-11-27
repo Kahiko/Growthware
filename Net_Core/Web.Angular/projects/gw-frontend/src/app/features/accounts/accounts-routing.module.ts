@@ -6,7 +6,7 @@ import { AuthGuard } from '@growthware/common/services';
 // Library Components
 import { AccountDetailsComponent } from '@growthware/core/account';
 import { ChangePasswordComponent } from '@growthware/core/account';
-import { ForgotPasswordComponent } from '@growthware/core/account/src/c/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from '@growthware/core/account';
 import { LoginComponent } from '@growthware/core/account';
 import { LogoutComponent } from '@growthware/core/account';
 import { SearchAccountsComponent } from '@growthware/core/account';
