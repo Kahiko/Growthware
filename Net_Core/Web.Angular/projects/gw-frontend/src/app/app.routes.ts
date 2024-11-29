@@ -10,7 +10,7 @@ export const routes: Routes = [
 	{ path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
 	{ path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
 	{ path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
-	{ path: 'feedbacks', loadChildren: () => import('./features/feedbacks/feedback.module').then(m => m.FeedbackModule), canActivate: [AuthGuard]  },
+	{ path: 'feedbacks', loadChildren: () => import('@growthware/core/feedback').then(m => m.feedbackRoutes), canActivate: [AuthGuard]  },
 	{ path: 'functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule), canActivate: [AuthGuard]  },  
 	{ path: 'search_name_value_pairs', loadChildren: () => import('./features/name-value-pairs/name-value-pairs.module').then(m => m.NameValuePairsModule), canActivate: [AuthGuard]  },  
 	{ path: 'search_states', loadChildren: () => import('./features/states/states-routing.module').then(m => m.StatesRoutingModule), canActivate: [AuthGuard]  },  
