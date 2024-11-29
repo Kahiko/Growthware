@@ -116,6 +116,7 @@ export abstract class NavigationComponentBase implements OnInit {
       description: navItem.description,
       disabled: false,
       icon: '',
+      id: -1,
       isActive: false,
       label: navItem.label,
       link: navItem.action,
