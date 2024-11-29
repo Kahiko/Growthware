@@ -1,5 +1,5 @@
 # Release Notes
-## Net_Core Version 5.1.1.x (YYYY-MM-DD)
+## Net_Core Version x.x.x.x (YYYY-MM-DD)
 
 ### New Features
 - Added Feedback support
