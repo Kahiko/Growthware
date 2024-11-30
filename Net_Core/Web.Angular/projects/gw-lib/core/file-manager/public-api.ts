@@ -3,4 +3,5 @@
  */
 
 export * from './src/c/file-manager/file-manager.component';
+export * from './src/file-manager.routes';
 export * from './src/file-manager.service';
