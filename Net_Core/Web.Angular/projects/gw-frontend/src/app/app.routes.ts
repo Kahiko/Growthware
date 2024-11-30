@@ -7,7 +7,8 @@ export const routes: Routes = [
 	{ path: 'naturalsort', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.NaturalSortComponent), canActivate: [AuthGuard] },
 	{ path: 'selectasecurityentity', loadComponent: () => import('@growthware/core/security-entities').then(m => m.SelectSecurityEntityComponent), canActivate: [AuthGuard] },
 	{ path: 'update', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
-	{ path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
+	// { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
+	{ path: 'accounts', loadChildren: () => import('@growthware/core/account').then(m => m.accountRoutes)  },
 	{ path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
 	{ path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
 	{ path: 'feedbacks', loadChildren: () => import('@growthware/core/feedback').then(m => m.feedbackRoutes), canActivate: [AuthGuard]  },
@@ -20,9 +21,9 @@ export const routes: Routes = [
 	{ path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
 	{ path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },
 	{ path: 'sys_admin', loadChildren: () => import('./features/sys-admin/sys-admin.module').then(m => m.SysAdminModule)  },
-	{ path: 'communitycalendar', loadComponent: () => import('@growthware/core/community-calendar').then(m => m.CalendarComponent)  },
+	// { path: 'communitycalendar', loadComponent: () => import('@growthware/core/community-calendar').then(m => m.CalendarComponent)  },
+	{ path: 'communitycalendar', loadChildren: () => import('@growthware/core/community-calendar').then(m => m.communityCalendarRoutes)  },
 	{ path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
 	{ path: 'setloglevel', loadChildren: () => import('./features/logging/logging.module').then(m => m.LoggingModule)  },
 	{ path: 'logging/test-logging', loadComponent: () => import('@growthware/core/logging').then(m => m.TestLoggingComponent)  },
 ];
-// export const routes: Routes = [];
