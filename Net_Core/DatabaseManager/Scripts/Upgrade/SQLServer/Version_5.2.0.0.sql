@@ -624,6 +624,8 @@ IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 28)
     UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 12 WHERE [FunctionSeqId] = 28;
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 88)
     UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 13 WHERE [FunctionSeqId] = 88;
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 28)
+    UPDATE [ZGWSecurity].[Functions] SET [Action] = '/logging/SetLogLevel' WHERE FunctionSeqId = 28
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '5.2.0.0'

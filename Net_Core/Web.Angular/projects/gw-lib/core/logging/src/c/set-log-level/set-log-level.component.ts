@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Feature
-import { LoggingService } from '@growthware/core/logging';
+import { LoggingService } from '../../logging.service';
 
 @Component({
 	selector: 'gw-core-set-log-level',
