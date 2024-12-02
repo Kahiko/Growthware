@@ -5,4 +5,5 @@
 export * from './src/c/group-details/group-details.component';
 export * from './src/c/search-groups/search-groups.component';
 export * from './src/group-profile.model';
+export * from './src/group.routes';
 export * from './src/group.service';
