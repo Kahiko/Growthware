@@ -7,11 +7,12 @@ import { AccountService, IAccountInformation } from '@growthware/core/account';
 import { IClientChoices } from '@growthware/core/clientchoices';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
+// Application Components (UI Skins)
+import { ArcLayoutComponent } from './skins/arc/arc-layout/arc-layout.component';
+import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/blue-arrow-layout.component';
 // Application Modules (UI Skins)
-import { ArcModule } from './skins/arc/arc.module';
 import { DashboardModule } from './skins/dashboard/dashboard.module';
 import { DefaultModule } from './skins/default/default.module';
-import { BlueArrowModule } from './skins/blue-arrow/blue-arrow.module';
 import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
 import { ProfessionalModule } from './skins/professional/professional.module';
 
@@ -23,10 +24,10 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 		// Library
 		ToasterComponent,
 		// Application Modules (UI Skins)
-		ArcModule,
+		ArcLayoutComponent,
 		DashboardModule,
 		DefaultModule,
-		BlueArrowModule,
+		BlueArrowLayoutComponent,
 		DevOpsModule,
 		ProfessionalModule
 	],

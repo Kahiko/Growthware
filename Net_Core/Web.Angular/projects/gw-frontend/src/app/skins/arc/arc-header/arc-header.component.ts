@@ -4,12 +4,16 @@ import { Router } from '@angular/router';
 import { AccountService } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
 import { ConfigurationService } from '@growthware/core/configuration';
-import { INavLink, NavigationService } from '@growthware/core/navigation';
+import { HorizontalComponent, INavLink, NavigationService } from '@growthware/core/navigation';
 
 @Component({
 	selector: 'gw-frontend-arc-header',
+	standalone: true,
 	templateUrl: './arc-header.component.html',
-	styleUrls: ['./arc-header.component.scss']
+	styleUrls: ['./arc-header.component.scss'],
+	imports: [
+		HorizontalComponent,
+	]
 })
 export class ArcHeaderComponent {
 
