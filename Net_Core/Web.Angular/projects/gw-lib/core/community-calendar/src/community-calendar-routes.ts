@@ -3,5 +3,5 @@ import { Routes } from '@angular/router';
 import { CalendarComponent } from './c/calendar/calendar.component';
 
 export const communityCalendarRoutes: Routes = [
-    { path: 'communitycalendar', component: CalendarComponent },
+    { path: '', loadComponent: () => import('./c/calendar/calendar.component').then(m => m.CalendarComponent) } ,
 ]
