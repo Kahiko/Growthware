@@ -110,6 +110,11 @@ IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 64)
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 28)
     UPDATE [ZGWSecurity].[Functions] SET [Action] = 'SetLogLevel' WHERE FunctionSeqId = 28
 
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 16)
+    UPDATE [ZGWSecurity].[Functions] SET [Action] = 'search_security_entities' WHERE FunctionSeqId = 16
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 63)
+    UPDATE [ZGWSecurity].[Functions] SET [Action] = 'SelectASecurityEntity' WHERE FunctionSeqId = 63
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '5.1.0.0'

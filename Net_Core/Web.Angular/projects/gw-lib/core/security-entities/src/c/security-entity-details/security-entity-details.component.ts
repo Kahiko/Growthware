@@ -120,7 +120,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			this.canEnterName = true;
 		}
 		// console.log('SecurityEntityDetailsComponent.ngOnInit.mEditId', mEditId);
-		this._SecuritySvc.getSecurityInfo('search_security_entities').then((securityInfo) => {  // #1 Request/Handler getSecurityInfo
+		this._SecuritySvc.getSecurityInfo('securityEntity').then((securityInfo) => {  // #1 Request/Handler getSecurityInfo
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.securityInfo', securityInfo);
 			this._SecurityInfo = securityInfo;
 			return this._ProfileSvc.getValidParents(mEditId);                                   // #2 Request getValidParents

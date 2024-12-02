@@ -420,6 +420,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Actions_EditRoles", true); }
         }
 
+        public static string Actions_EditSecurityEntities
+        {
+            get { return GetAppSettingValue("Actions_EditSecurityEntity", true); }
+        }
+
         /// <summary>
         /// Returns DB_Status from the CONFIG file
         /// </summary>

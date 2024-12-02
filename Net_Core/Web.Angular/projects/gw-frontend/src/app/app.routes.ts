@@ -5,7 +5,10 @@ import { AuthGuard } from '@growthware/common/services';
 export const routes: Routes = [
 	{ path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
 	{ path: 'naturalsort', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.NaturalSortComponent), canActivate: [AuthGuard] },
-	{ path: 'selectasecurityentity', loadComponent: () => import('@growthware/core/security-entities').then(m => m.SelectSecurityEntityComponent), canActivate: [AuthGuard] },
+	// { path: 'selectasecurityentity', loadComponent: () => import('@growthware/core/security-entities').then(m => m.SelectSecurityEntityComponent), canActivate: [AuthGuard] },
+
+	{ path: 'securityentity', loadChildren: () => import('@growthware/core/security-entities').then(m => m.securityEntityRoutes), canActivate: [AuthGuard] },
+
 	{ path: 'update', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
 	// { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
 	{ path: 'accounts', loadChildren: () => import('@growthware/core/account').then(m => m.accountRoutes)  },
@@ -21,7 +24,7 @@ export const routes: Routes = [
 	{ path: 'search_states', loadChildren: () => import('./features/states/states-routing.module').then(m => m.StatesRoutingModule), canActivate: [AuthGuard]  },  
 	// { path: 'security', loadChildren: () => import('./features/security/security.module').then(m => m.SecurityModule)  },
 	{ path: 'security', loadChildren: () => import('@growthware/core/security').then(m => m.secutiryRoutes)  },
-	{ path: 'search_security_entities', loadChildren: () => import('./features/security-entities/security-entities.module').then(m => m.SecurityEntitiesModule)  },
+	// { path: 'search_security_entities', loadChildren: () => import('./features/security-entities/security-entities.module').then(m => m.SecurityEntitiesModule)  },
 	// { path: 'manage_groups', loadChildren: () => import('./features/groups/groups.module').then(m => m.GroupsModule), canActivate: [AuthGuard]  },
 	{ path: 'manage_groups', loadChildren: () => import('@growthware/core/group').then(m => m.groupRoutes), canActivate: [AuthGuard]  },
 	// { path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
