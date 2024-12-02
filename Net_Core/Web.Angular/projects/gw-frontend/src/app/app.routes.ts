@@ -4,12 +4,14 @@ import { AuthGuard } from '@growthware/common/services';
 
 export const routes: Routes = [
 	{ path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
-	{ path: 'naturalsort', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.NaturalSortComponent), canActivate: [AuthGuard] },
+	{ path: 'naturalsort', loadChildren: () => import('@growthware/core/sys-admin').then(m => m.sysAdminRoutes), canActivate: [AuthGuard] },
 	// { path: 'selectasecurityentity', loadComponent: () => import('@growthware/core/security-entities').then(m => m.SelectSecurityEntityComponent), canActivate: [AuthGuard] },
 
 	{ path: 'securityentity', loadChildren: () => import('@growthware/core/security-entities').then(m => m.securityEntityRoutes), canActivate: [AuthGuard] },
 
-	{ path: 'update', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
+	// update not needed so commented it out will remove later
+	// { path: 'update', loadComponent: () => import('@growthware/core/sys-admin').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
+
 	// { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
 	{ path: 'accounts', loadChildren: () => import('@growthware/core/account').then(m => m.accountRoutes)  },
 	// { path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
@@ -32,7 +34,8 @@ export const routes: Routes = [
 	{ path: 'search_roles', loadChildren: () => import('@growthware/core/role').then(m => m.roleRoutes), canActivate: [AuthGuard]  },
 	// { path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },
 	{ path: 'search_messages', loadChildren: () => import('@growthware/core/message').then(m => m.messagesRoutes), canActivate: [AuthGuard]  },
-	{ path: 'sys_admin', loadChildren: () => import('./features/sys-admin/sys-admin.module').then(m => m.SysAdminModule)  },
+	// { path: 'sys_admin', loadChildren: () => import('./features/sys-admin/sys-admin.module').then(m => m.SysAdminModule)  },
+	{ path: 'sys_admin', loadChildren: () => import('@growthware/core/sys-admin').then(m => m.sysAdminRoutes)  },
 	// { path: 'communitycalendar', loadComponent: () => import('@growthware/core/community-calendar').then(m => m.CalendarComponent)  },
 	{ path: 'communitycalendar', loadChildren: () => import('@growthware/core/community-calendar').then(m => m.communityCalendarRoutes)  },
 	{ path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
