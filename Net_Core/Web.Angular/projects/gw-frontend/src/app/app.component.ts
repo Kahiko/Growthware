@@ -10,8 +10,8 @@ import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/
 // Application Components (UI Skins)
 import { ArcLayoutComponent } from './skins/arc/arc-layout/arc-layout.component';
 import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/blue-arrow-layout.component';
+import { DashboardLayoutComponent } from './skins/dashboard/dashboard-layout/dashboard-layout.component';
 // Application Modules (UI Skins)
-import { DashboardModule } from './skins/dashboard/dashboard.module';
 import { DefaultModule } from './skins/default/default.module';
 import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
 import { ProfessionalModule } from './skins/professional/professional.module';
@@ -25,7 +25,7 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 		ToasterComponent,
 		// Application Modules (UI Skins)
 		ArcLayoutComponent,
-		DashboardModule,
+		DashboardLayoutComponent,
 		DefaultModule,
 		BlueArrowLayoutComponent,
 		DevOpsModule,

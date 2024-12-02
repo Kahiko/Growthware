@@ -17,16 +17,16 @@ import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Skin - Modules/Components
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardFooterComponent } from './dashboard-footer/dashboard-footer.component';
-import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.component';
-import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
+// import { DashboardFooterComponent } from './dashboard-footer/dashboard-footer.component';
+// import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.component';
+// import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
 
 
 @NgModule({
 	declarations: [
-		DashboardFooterComponent,
-		DashboardHeaderComponent,
-		DashboardLayoutComponent
+		// DashboardFooterComponent,
+		// DashboardHeaderComponent,
+		// DashboardLayoutComponent
 	],
 	imports: [
 		CommonModule,
@@ -48,7 +48,7 @@ import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.co
 		DashboardRoutingModule
 	],
 	exports: [
-		DashboardLayoutComponent,
+		// DashboardLayoutComponent,
 	]
 })
 export class DashboardModule { }
