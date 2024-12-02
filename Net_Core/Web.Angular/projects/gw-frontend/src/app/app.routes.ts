@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from '@growthware/common/services';
 
 export const routes: Routes = [
-	{ path: '',							loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
+	{ path: '',							loadChildren: () => import('./features/home/home.routes').then(m => m.homeRoutes) },
 	{ path: 'naturalsort',				loadChildren: () => import('@growthware/core/sys-admin').then(m => m.sysAdminRoutes), canActivate: [AuthGuard] },
 	{ path: 'sys_admin', 				loadChildren: () => import('@growthware/core/sys-admin').then(m => m.sysAdminRoutes)  },
 	{ path: 'securityentity',			loadChildren: () => import('@growthware/core/security-entities').then(m => m.securityEntityRoutes), canActivate: [AuthGuard] },

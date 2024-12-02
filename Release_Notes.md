@@ -10,6 +10,7 @@
 
 ### Bug Fixes
 - Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.
+- Removed the ngModule from the gw-frontend/features/home
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
