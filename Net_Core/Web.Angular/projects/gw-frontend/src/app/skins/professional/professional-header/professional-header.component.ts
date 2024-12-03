@@ -3,11 +3,17 @@ import { Subscription } from 'rxjs';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
+import { HorizontalComponent } from '@growthware/core/navigation';
+
 
 @Component({
 	selector: 'gw-frontend-professional-header',
+	standalone: true,
 	templateUrl: './professional-header.component.html',
-	styleUrls: ['./professional-header.component.scss']
+	styleUrls: ['./professional-header.component.scss'],
+	imports: [
+		HorizontalComponent,
+	],
 })
 export class ProfessionalHeaderComponent {
 

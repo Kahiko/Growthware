@@ -13,8 +13,7 @@ import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/b
 import { DashboardLayoutComponent } from './skins/dashboard/dashboard-layout/dashboard-layout.component';
 import { DefaultLayoutComponent } from './skins/default/default-layout/default-layout.component';
 import { DevOpsLayoutComponent } from './skins/dev-ops/dev-ops-layout/dev-ops-layout.component';
-// Application Modules (UI Skins)
-import { ProfessionalModule } from './skins/professional/professional.module';
+import { ProfessionalLayoutComponent } from './skins/professional/professional-layout/professional-layout.component';
 
 @Component({
 	selector: 'gw-frontend-root',
@@ -29,7 +28,7 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 		DefaultLayoutComponent,
 		BlueArrowLayoutComponent,
 		DevOpsLayoutComponent,
-		ProfessionalModule
+		ProfessionalLayoutComponent
 	],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'
