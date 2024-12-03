@@ -12,8 +12,8 @@ import { ArcLayoutComponent } from './skins/arc/arc-layout/arc-layout.component'
 import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/blue-arrow-layout.component';
 import { DashboardLayoutComponent } from './skins/dashboard/dashboard-layout/dashboard-layout.component';
 import { DefaultLayoutComponent } from './skins/default/default-layout/default-layout.component';
+import { DevOpsLayoutComponent } from './skins/dev-ops/dev-ops-layout/dev-ops-layout.component';
 // Application Modules (UI Skins)
-import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
 import { ProfessionalModule } from './skins/professional/professional.module';
 
 @Component({
@@ -28,7 +28,7 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 		DashboardLayoutComponent,
 		DefaultLayoutComponent,
 		BlueArrowLayoutComponent,
-		DevOpsModule,
+		DevOpsLayoutComponent,
 		ProfessionalModule
 	],
 	templateUrl: './app.component.html',
