@@ -11,8 +11,8 @@ import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/
 import { ArcLayoutComponent } from './skins/arc/arc-layout/arc-layout.component';
 import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/blue-arrow-layout.component';
 import { DashboardLayoutComponent } from './skins/dashboard/dashboard-layout/dashboard-layout.component';
+import { DefaultLayoutComponent } from './skins/default/default-layout/default-layout.component';
 // Application Modules (UI Skins)
-import { DefaultModule } from './skins/default/default.module';
 import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
 import { ProfessionalModule } from './skins/professional/professional.module';
 
@@ -26,7 +26,7 @@ import { ProfessionalModule } from './skins/professional/professional.module';
 		// Application Modules (UI Skins)
 		ArcLayoutComponent,
 		DashboardLayoutComponent,
-		DefaultModule,
+		DefaultLayoutComponent,
 		BlueArrowLayoutComponent,
 		DevOpsModule,
 		ProfessionalModule
