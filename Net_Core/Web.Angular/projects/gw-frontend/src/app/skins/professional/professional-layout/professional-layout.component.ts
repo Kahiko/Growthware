@@ -1,12 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
-import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 // Library Standalone
 import { LoaderComponent } from '@growthware/core/loader';
-import { HorizontalComponent } from '@growthware/core/navigation';
 import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
 import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
