@@ -12,6 +12,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractFeedbackController : ControllerBase
 {
+    private Logger m_Logger = Logger.Instance();
 
     public UIFeedbackResult GetFeedbackForEdit(int feedbackId)
     {
@@ -35,10 +36,11 @@ public abstract class AbstractFeedbackController : ControllerBase
 
             if(mRetVal != feedbackResult && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
             {
-
+                return Ok(mRetVal);
             }
         }
-        return Ok(mRetVal);
+        this.m_Logger.Error(mRequestingProfile.Account + " does not have permissions to 'Save Feedback'");
+        return Ok("The account does not have permissions to 'Save Feedback'");
     }
 
     /// <summary>
