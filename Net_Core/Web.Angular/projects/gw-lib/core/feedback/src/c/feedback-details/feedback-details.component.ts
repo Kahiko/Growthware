@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 // Feature
 import { IFeedback, Feedback } from '../../feedback.model';
+import { AccountService } from '@growthware/core/account';
 
 @Component({
   selector: 'gw-core-feedback-details',
@@ -22,11 +23,12 @@ import { IFeedback, Feedback } from '../../feedback.model';
   styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
+  private _AccountSvc: AccountService = inject(AccountService);
   private _FormBuilder: FormBuilder = inject(FormBuilder);
-  private _Profile: IFeedback = new Feedback();
+  private _Profile: IFeedback = new Feedback('Anonymous', '');
 
   ngOnInit(): void {
-		this._Profile = new Feedback();
+		this._Profile = new Feedback('Anonymous', '');
 		this.createForm();
   }
 
@@ -36,7 +38,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 
   createForm(): void {
     this.frmProfile = this._FormBuilder.group({
-      description: [this._Profile.description, [Validators.required]],
+      details: [this._Profile.details, [Validators.required]],
     });
   }
 

@@ -425,6 +425,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Actions_EditSecurityEntity", true); }
         }
 
+        public static string Actions_EditFeedback
+        {
+            get { return GetAppSettingValue("Actions_EditFeedback", true); }
+        }
+
         /// <summary>
         /// Returns DB_Status from the CONFIG file
         /// </summary>

@@ -1,24 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
-using Microsoft.AspNetCore.StaticFiles;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
 [CLSCompliant(false)]
 public abstract class AbstractFeedbackController : ControllerBase
 {
+
+    public UIFeedbackResult GetFeedbackForEdit(int feedbackId)
+    {
+        UIFeedbackResult mRetVal = new();
+        HttpContext.Session.Remove("EditId");
+
+        HttpContext.Session.SetInt32("EditId", mRetVal.FeedbackId);
+        return mRetVal;
+    }
+
+    public ActionResult<UIFeedbackResult> SaveFeedback(UIFeedbackResult feedbackResult)
+    {
+        UIFeedbackResult mRetVal = new();
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        var mEditId = HttpContext.Session.GetInt32("EditId");
+        if (mEditId != null)
+        {
+            // we don't want to save the properties from the UI so we get the profile from the DB
+
+            if(mRetVal != feedbackResult && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+            {
+
+            }
+        }
+        return Ok(mRetVal);
+    }
 
     /// <summary>
     /// Performs a search for feecbacks based on the provided search criteria.
@@ -27,7 +48,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// <returns></returns>
     [Authorize("feedbacks")]
     [HttpPost("SearchFeedbacks")]
-    public String SearchFeedbacks(UISearchCriteria searchCriteria)
+    public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FeedbackId], [Assignee], [Details], [FoundInVersion], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy], [Start_Date], [End_Date]";
@@ -48,6 +69,14 @@ public abstract class AbstractFeedbackController : ControllerBase
 
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
         }
-        return mRetVal;
+        return Ok(mRetVal);
     }
+
+    public ActionResult<UIFeedbackResult> SubmitFeedback(UIFeedbackResult feedbackResult)
+    {
+        UIFeedbackResult mRetVal = new();
+
+        return Ok(mRetVal);
+    }
+
 }

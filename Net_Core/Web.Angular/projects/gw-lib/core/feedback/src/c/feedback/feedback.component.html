@@ -25,10 +25,10 @@
                             <div class="td left">
                                 <mat-form-field class="full-width">
                                     <mat-label>Please describe your feedback/issue</mat-label>
-                                    <textarea matInput formControlName="description" #description class="Form_Field rounded" style="height: 155px;"></textarea>
-                                    <mat-hint>Charactors: {{ description.value.length }}</mat-hint>
-                                    @if (controls['description'].invalid && controls['description'].touched) {
-                                    <mat-error style="display: inline-block; padding-left: 5px">{{getErrorMessage('description')}}</mat-error>
+                                    <textarea matInput formControlName="details" #details class="Form_Field rounded" style="height: 155px;"></textarea>
+                                    <mat-hint>Charactors: {{ details.value.length }}</mat-hint>
+                                    @if (controls['details'].invalid && controls['details'].touched) {
+                                    <mat-error style="display: inline-block; padding-left: 5px">{{getErrorMessage('details')}}</mat-error>
                                     }    
                                 </mat-form-field>
                             </div>

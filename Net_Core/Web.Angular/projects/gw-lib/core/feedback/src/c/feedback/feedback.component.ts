@@ -35,6 +35,7 @@ export class FeedbackComponent implements OnInit {
   private _AccountSvc: AccountService = inject(AccountService);
   private _FormBuilder: FormBuilder = inject(FormBuilder);
 
+  // This was necessary b/c this.frmSubmit.reset(); was not working
   @ViewChild('frm') theNgForm: FormGroupDirective | undefined;
   
   // areaOccurred = new FormControl<ISelectedableAction | null>(null, Validators.required);
@@ -58,15 +59,15 @@ export class FeedbackComponent implements OnInit {
   createForm(): void {
     this.frmSubmit = this._FormBuilder.group({
       areaOccurred: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
-      description: ['', [Validators.required]],
+      details: ['', [Validators.required]],
     });
   }
 
   getErrorMessage(fieldName: string) {
     switch (fieldName) {
-      case 'description':
-        if (this.frmSubmit.get('description')?.hasError('required')) {
-          return 'The Description is required.';
+      case 'details':
+        if (this.frmSubmit.get('details')?.hasError('required')) {
+          return 'The Details are required.';
         }
         break;
       case 'actionControl':
@@ -93,7 +94,7 @@ export const canLeaveFeedbackPage: CanDeactivateFn<FeedbackComponent> = (compone
   if (component.submitted || component.frmSubmit.pristine) {
     return true;
   }
-  if (component.frmSubmit.get('description')?.dirty || component.frmSubmit.get('areaOccurred')?.dirty) {
+  if (component.frmSubmit.get('details')?.dirty || component.frmSubmit.get('areaOccurred')?.dirty) {
     return window.confirm('Do you really want to leave? You will lose the entered data.')
   }
   return true;
