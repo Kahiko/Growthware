@@ -16,8 +16,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
 	CREATE TABLE [ZGWOptional].[Feedbacks] (
         [FeedbackId] [INT] NOT NULL,
         [Assignee] [INT] NOT NULL,
-        [Date_Opened] DATETIME NOT NULL,
         [Date_Closed] DATETIME NULL,
+        [Date_Opened] DATETIME NOT NULL,
         [Details] [NVARCHAR](MAX) NOT NULL,
         [FoundInVersion] VARCHAR(32) NOT NULL,
         [FunctionSeqId] VARCHAR(32) NOT NULL,
@@ -85,11 +85,11 @@ GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Details' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The details of the feedback/issue from the submitter' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Details';
 GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Date_Opened' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The date the feedback/issue was opened' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Date_Opened';
-GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Date_Closed' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The date the feedback/issue was closed' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Date_Closed';
+GO
+IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Date_Opened' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The date the feedback/issue was opened' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Date_Opened';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'FoundInVersion' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The version of the system the feedback/issue was found in' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FoundInVersion';
@@ -201,8 +201,8 @@ Usage:
 	DECLARE 
         @P_FeedbackId INT = -1,
         @P_Assignee INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System'),
-        @P_Date_Closed [DATETIME] = GETDATE(),
-        @P_Date_Opened [DATETIME] = NULL,
+        @P_Date_Closed [DATETIME] = NULL,
+        @P_Date_Opened [DATETIME] = GETDATE(),
         @P_Details NVARCHAR(MAX) = 'The details',
         @P_FoundInVersion VARCHAR(32) = 'x.x.x.x',
         @P_FunctionSeqId INT = 4,
@@ -214,7 +214,7 @@ Usage:
         @P_Type [NVARCHAR](128) = 'Needs Classification', -- Feature Request, Bug, General, Needs Classification
         @P_VerifiedBy INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
         @P_Primary_Key INT = null,
-        @P_Debug INT = 0;
+        @P_Debug INT = 1;
     
     EXECUTE [ZGWOptional].[Set_Feedback]
         @P_FeedbackId,
@@ -231,11 +231,12 @@ Usage:
         @P_TargetVersion,
         @P_Type,
         @P_VerifiedBy,
-        @P_Primary_Key,
+        @P_Primary_Key OUTPUT,
         @P_Debug;
 
     SET @P_FeedbackId = @P_Primary_Key;
-    SET @P_Assignee = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Assignee');
+	PRINT '@P_FeedbackId: ' + CONVERT(VARCHAR(MAX), @P_FeedbackId);
+    SET @P_Assignee = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
     SET @P_Details = 'Changed details';
     SET @P_FoundInVersion = '5.2.0.1023';
     SET @P_Notes = 'Notes from the developer';
@@ -260,7 +261,7 @@ Usage:
         @P_TargetVersion,
         @P_Type,
         @P_VerifiedBy,
-        @P_Primary_Key,
+        @P_Primary_Key OUTPUT,
         @P_Debug;
 */
 -- =============================================
@@ -271,8 +272,8 @@ Usage:
 ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
      @P_FeedbackId INT
     ,@P_Assignee INT = -1
-    ,@P_Date_Opened DATETIME
     ,@P_Date_Closed DATETIME
+    ,@P_Date_Opened DATETIME
     ,@P_Details NVARCHAR(MAX)
     ,@P_FoundInVersion VARCHAR(32)
     ,@P_FunctionSeqId VARCHAR(32)
@@ -315,8 +316,8 @@ AS
     INSERT INTO [ZGWOptional].[Feedbacks] (
         [FeedbackId],
         [Assignee],
-        [Date_Opened],
         [Date_Closed],
+        [Date_Opened],
         [Details],
         [FoundInVersion],
         [FunctionSeqId],
@@ -332,8 +333,8 @@ AS
     ) VALUES (
         @V_FeedbackId,
         @P_Assignee,
-        @P_Date_Opened,
         @P_Date_Closed,
+        @P_Date_Opened,
         @P_Details,
         @P_FoundInVersion,
         @P_FunctionSeqId,
@@ -400,6 +401,7 @@ AS
             */
             UPDATE [ZGWOptional].[Feedbacks] SET [End_Date] = @V_Now WHERE FeedbackId = @P_FeedbackId AND [End_Date] IS NULL;
             INSERT INTO [ZGWOptional].[Feedbacks] ( 
+                [FeedbackId],
                 [Assignee],
                 [Date_Closed],
                 [Date_Opened],
@@ -409,6 +411,7 @@ AS
                 [Notes],
                 [Severity],
                 [Status],
+                [SubmittedBy],
                 [TargetVersion],
                 [Type],
                 [VerifiedBy],
@@ -416,6 +419,7 @@ AS
                 [End_Date]
             )
             SELECT 
+                FBs.[FeedbackId],
                 FBs.[Assignee],
                 FBs.[Date_Closed],
                 FBs.[Date_Opened],
@@ -425,6 +429,7 @@ AS
                 FBs.[Notes],
                 FBs.[Severity],
                 FBs.[Status],
+                FBs.[SubmittedBy],
                 FBs.[TargetVersion],
                 FBs.[Type],
                 FBs.[VerifiedBy],
