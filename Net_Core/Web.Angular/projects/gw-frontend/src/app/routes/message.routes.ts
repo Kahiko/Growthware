@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 // Library Services
 import { AuthGuard } from '@growthware/common/services';
+import { SearchMessagesComponent } from '@growthware/core/message';
 
 export const messagesRoutes: Routes = [
-	{ path: '', loadComponent: () => import('./c/search-messages/search-messages.component').then(m => m.SearchMessagesComponent), canActivate: [AuthGuard] },
+	{ path: '', component: SearchMessagesComponent, canActivate: [AuthGuard] },
 ];

@@ -6,6 +6,8 @@
 - Converted the Arc "skin" to standalone
 - Converted the Blue Arrow "skin" to standalone
 - Converted the Dashboard "skin" to standalone
+- Lazy loading has been implemented properly and moved back to the gw-front-end project
+    Added a readme.md to the gw-front-end/src/app/routes folder
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

@@ -3,7 +3,6 @@
  */
 
 // export * from './src/c/role-details/role-details.component';
-// export * from './src/c/search-roles/search-roles.component';
+export * from './src/c/search-roles/search-roles.component';
 // export * from './src/role-profile.model';
-export * from './src/role.routes';
 export * from './src/role.service';

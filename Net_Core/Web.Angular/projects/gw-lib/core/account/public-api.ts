@@ -13,6 +13,5 @@ export * from './src/c/update-anonymous-profile/update-anonymous-profile.compone
 export * from './src/c/verify-account/verify-account.component';
 export * from './src/account-information.model';
 export * from './src/account-profile.model';
-export * from './src/account-routes';
 export * from './src/account.service';
 export * from './src/authentication-response.model';
