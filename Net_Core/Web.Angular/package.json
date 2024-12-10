@@ -28,6 +28,7 @@
     "@angular/router": "^18.2.2",
     "@auth0/angular-jwt": "^5.2.0",
     "eslint-plugin-html": "^8.0.0",
+    "roboto-fontface": "^0.10.0",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
