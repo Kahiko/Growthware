@@ -14,6 +14,8 @@ public abstract class AbstractFeedbackController : ControllerBase
 {
     private Logger m_Logger = Logger.Instance();
 
+    [Authorize("feedbacks")]
+    [HttpPost("GetFeedbackForEdit")]
     public UIFeedbackResult GetFeedbackForEdit(int feedbackId)
     {
         UIFeedbackResult mRetVal = new();
@@ -23,6 +25,8 @@ public abstract class AbstractFeedbackController : ControllerBase
         return mRetVal;
     }
 
+    [Authorize("feedbacks")]
+    [HttpPost("SaveFeedback")]
     public ActionResult<UIFeedbackResult> SaveFeedback(UIFeedbackResult feedbackResult)
     {
         UIFeedbackResult mRetVal = new();
@@ -74,6 +78,8 @@ public abstract class AbstractFeedbackController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [Authorize("feedbacks")]
+    [HttpPost("SubmitFeedback")]
     public ActionResult<UIFeedbackResult> SubmitFeedback(UIFeedbackResult feedbackResult)
     {
         UIFeedbackResult mRetVal = new();
