@@ -36,28 +36,40 @@ AS
             */
             UPDATE [ZGWOptional].[Feedbacks] SET [End_Date] = @V_Now WHERE FeedbackId = @P_FeedbackId AND [End_Date] IS NULL;
             INSERT INTO [ZGWOptional].[Feedbacks] ( 
-                [Assignee],
+                [FeedbackId],
+                [AssigneeId],
+                [Date_Closed],
+                [Date_Opened],
                 [Details],
-                [FoundInVersion],
+                [Found_In_Version],
+                [FunctionSeqId],
                 [Notes],
                 [Severity],
                 [Status],
+                [SubmittedById],
                 [TargetVersion],
                 [Type],
-                [VerifiedBy],
+                [UpdatedById],
+                [VerifiedById],
                 [Start_Date],
                 [End_Date]
             )
             SELECT 
-                FBs.[Assignee],
+                FBs.[FeedbackId],
+                FBs.[AssigneeId],
+                FBs.[Date_Closed],
+                FBs.[Date_Opened],
                 FBs.[Details],
-                FBs.[FoundInVersion],
+                FBs.[Found_In_Version],
+                FBs.[FunctionSeqId],
                 FBs.[Notes],
                 FBs.[Severity],
                 FBs.[Status],
+                FBs.[SubmittedById],
                 FBs.[TargetVersion],
                 FBs.[Type],
-                FBs.[VerifiedBy],
+                FBs.[UpdatedById],
+                FBs.[VerifiedById],
                 @V_Now,
                 @V_Now
             FROM

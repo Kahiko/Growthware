@@ -1,57 +1,75 @@
 /*
 Usage:
 	DECLARE 
-        @P_FeedbackId int = -1,
-        @P_Assignee int = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System'),
+        @P_FeedbackId INT = -1,
+        @P_AssigneeId INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System'),
+        @P_Date_Closed [DATETIME] = NULL,
+        @P_Date_Opened [DATETIME] = GETDATE(),
         @P_Details NVARCHAR(MAX) = 'The details',
-        @P_FoundInVersion VARCHAR(32) = 'x.x.x.x',
+        @P_Found_In_Version VARCHAR(32) = 'x.x.x.x',
+        @P_FunctionSeqId INT = 4,
         @P_Notes NVARCHAR(MAX) = null,
         @P_Severity VARCHAR(32) = 'Needs Classification', -- ???
-        @P_Status VARCHAR(32) = 'Open', -- Under Review, In Progress, Closed, Closed-Not Fixed, Closed-Could not Reproduce
+        @P_Status VARCHAR(32) = 'Submitted', -- Under Review, In Progress, Closed, Closed-Not Fixed, Closed-Could not Reproduce
+		@P_SubmittedById INT = 1,
         @P_TargetVersion VARCHAR(32) = NULL,
         @P_Type [NVARCHAR](128) = 'Needs Classification', -- Feature Request, Bug, General, Needs Classification
-        @P_VerifiedBy int = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
-        @P_Primary_Key INT = null,
-        @P_Debug INT = 0
+        @P_UpdatedById INT = 1,
+        @P_VerifiedById INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
+		@P_Primary_Key INT = null,
+        @P_Debug INT = 1;
     
     EXECUTE [ZGWOptional].[Set_Feedback]
-        @P_FeedbackId,
-        @P_Assignee,
-        @P_Details,
-        @P_FoundInVersion,
-        @P_Notes,
-        @P_Severity,
-        @P_Status,
-        @P_TargetVersion,
-        @P_Type,
-        @P_VerifiedBy,
-        @P_Primary_Key,
-        @P_Debug
+		 @P_FeedbackId
+		,@P_AssigneeId
+		,@P_Date_Closed
+		,@P_Date_Opened
+		,@P_Details
+		,@P_Found_In_Version
+		,@P_FunctionSeqId
+		,@P_Notes
+		,@P_Severity
+		,@P_Status
+		,@P_SubmittedById
+		,@P_TargetVersion
+		,@P_Type
+		,@P_UpdatedById
+		,@P_VerifiedById
+		,@P_Primary_Key OUTPUT
+		,@P_Debug;
 
-    SET @P_FeedbackId = @P_Primary_Key;
-    SET @P_Assignee = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Assignee');
+	SET @P_FeedbackId = @P_Primary_Key;
+	PRINT '@P_FeedbackId: ' + CONVERT(VARCHAR(MAX), @P_FeedbackId);
+    SET @P_FeedbackId = @P_Primary_Key
+	SET @P_AssigneeId = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
     SET @P_Details = 'Changed details';
-    SET @P_FoundInVersion = '5.2.0.1023';
+    SET @P_Found_In_Version = '5.2.0.1023';
     SET @P_Notes = 'Notes from the developer';
     SET @P_Severity = '???';
     SET @P_Status = 'Closed-Could not Reproduce';
     SET @P_TargetVersion = '5.2.0';
     SET @P_Type = 'Feature request';
-    SET @P_VerifiedBy = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
+    SET @P_UpdatedById =(SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
+    SET @P_VerifiedById = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
 
     EXECUTE [ZGWOptional].[Set_Feedback]
-        @P_FeedbackId,
-        @P_Assignee,
-        @P_Details,
-        @P_FoundInVersion,
-        @P_Notes,
-        @P_Severity,
-        @P_Status,
-        @P_TargetVersion,
-        @P_Type,
-        @P_VerifiedBy,
-        @P_Primary_Key,
-        @P_Debug
+		 @P_FeedbackId
+		,@P_AssigneeId
+		,@P_Date_Closed
+		,@P_Date_Opened
+		,@P_Details
+		,@P_Found_In_Version
+		,@P_FunctionSeqId
+		,@P_Notes
+		,@P_Severity
+		,@P_Status
+		,@P_SubmittedById
+		,@P_TargetVersion
+		,@P_Type
+		,@P_UpdatedById
+		,@P_VerifiedById
+		,@P_Primary_Key OUTPUT
+		,@P_Debug;
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -59,24 +77,33 @@ Usage:
 -- Description:	Inserts or updates [ZGWOptional].[Set_Feedback]
 -- =============================================
 CREATE PROCEDURE [ZGWOptional].[Set_Feedback]
-     @P_FeedbackId int
-    ,@P_Assignee int
+     @P_FeedbackId INT
+    ,@P_AssigneeId INT = -1
+    ,@P_Date_Closed DATETIME
+    ,@P_Date_Opened DATETIME
     ,@P_Details NVARCHAR(MAX)
-    ,@P_FoundInVersion VARCHAR(32)
+    ,@P_Found_In_Version VARCHAR(32)
+    ,@P_FunctionSeqId INT
     ,@P_Notes NVARCHAR(MAX)
     ,@P_Severity VARCHAR(32) = 'Needs Classification'
     ,@P_Status VARCHAR(32) = 'Unassigned'
+    ,@P_SubmittedById INT
     ,@P_TargetVersion VARCHAR(32) = NULL
-    ,@P_Type [NVARCHAR](128) = 'Needs Classification'
-    ,@P_VerifiedBy int = -1
-    ,@P_Primary_Key INT OUTPUT
+    ,@P_Type NVARCHAR(128) = 'Needs Classification'
+    ,@P_UpdatedById INT
+    ,@P_VerifiedById INT = 1
+	,@P_Primary_Key INT OUTPUT
     ,@P_Debug INT = 0
 AS
 	SET NOCOUNT ON;
 	IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Set_Feedback';
-    IF @P_VerifiedBy = -1 SET @P_VerifiedBy = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous')
+    IF @P_VerifiedById = -1 SET @P_VerifiedById = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous')
     DECLARE @V_Now DATETIME = GETDATE()
-            , @V_FeedbackId INT = @P_FeedbackId;
+            , @V_FeedbackId INT = @P_FeedbackId
+            , @V_AnonymousSeqId INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous');
+
+    IF @P_AssigneeId = -1 SET @P_AssigneeId = @V_AnonymousSeqId;
+    IF @P_VerifiedById = -1 SET @P_VerifiedById = @V_AnonymousSeqId;
 
     IF EXISTS (SELECT TOP(1) NULL FROM [ZGWOptional].[Feedbacks] WHERE FeedbackId = @P_FeedbackId)
         BEGIN -- Update the End_Date for the "current" feedback record
@@ -95,32 +122,68 @@ AS
     --END IF
     -- We are always creating a new record with a null End_Date (null End_Date indicaes it is the current record)
     INSERT INTO [ZGWOptional].[Feedbacks] (
-        [Assignee],
+        [FeedbackId],
+        [AssigneeId],
+        [Date_Closed],
+        [Date_Opened],
         [Details],
-        [FoundInVersion],
+        [Found_In_Version],
+        [FunctionSeqId],
         [Notes],
         [Severity],
         [Status],
+        [SubmittedById],
         [TargetVersion],
         [Type],
-        [VerifiedBy],
-        [Start_Date],
-        [End_Date]
+        [UpdatedById],
+        [VerifiedById],
+		[Start_Date],
+		[End_Date]
     ) VALUES (
-        @P_Assignee,
+        @V_FeedbackId,
+        @P_AssigneeId,
+        @P_Date_Closed,
+        @P_Date_Opened,
         @P_Details,
-        @P_FoundInVersion,
+        @P_Found_In_Version,
+        @P_FunctionSeqId,
         @P_Notes,
         @P_Severity,
         @P_Status,
+        @P_SubmittedById,
         @P_TargetVersion,
         @P_Type,
-        @P_VerifiedBy,
+        @P_UpdatedById,
+        @P_VerifiedById,
         @V_Now,
         NULL
     )
-    -- Set the return "primary" key value.
-    SELECT @P_Primary_Key = @V_FeedbackId;
+	-- Set the return primary key
+	SET @P_Primary_Key = @V_FeedbackId;
+    -- Return the current record..
+    SELECT
+        [FeedbackId]
+        ,[Action]
+        ,[Assignee]
+        ,[AssigneeId]
+        ,[Date_Closed]
+        ,[Date_Opened]
+        ,[Details]
+        ,[Found_In_Version]
+        ,[FunctionSeqId]
+        ,[Notes]
+        ,[Severity]
+        ,[Status]
+        ,[SubmittedBy]
+        ,[SubmittedById]
+        ,[TargetVersion]
+        ,[Type]
+        ,[UpdatedBy]
+        ,[UpdatedById]
+        ,[VerifiedBy]
+        ,[VerifiedById]
+    FROM [ZGWOptional].[vwCurrentFeedbacks]
+    WHERE [FeedbackId] = @V_FeedbackId
 
     IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Set_Feedback';
 RETURN 0
