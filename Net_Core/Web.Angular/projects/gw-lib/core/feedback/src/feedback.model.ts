@@ -1,26 +1,29 @@
 export interface IFeedback {
     feedbackId: number;
-    areaFound: string;
-    assigneeId: number;
+    action: string;
     assignee: string;
+    assigneeId: number;
     dateClosed: string;
     dateOpened: string;
     details: string;
     foundInVersion: string;
+    functionSeqId: number;
     notes: string;
     severity: string;
     status: string;
     submittedBy: string;
+    submittedById: number;
     targetVersion: string;
     type: string;
-    verifiedById: number;
+    updatedBy: string;
+    updatedById: number;
     verifiedBy: string;
-    start_Date: string;
-    end_Date: string;
+    verifiedById: number;
 }
 
 export class Feedback implements IFeedback {
     feedbackId = -1;
+    action = '';
     areaFound = '';
     assigneeId = 1;
     assignee = 'Anonymous';
@@ -28,17 +31,18 @@ export class Feedback implements IFeedback {
     dateOpened = new Date().toString();
     details = '';
     foundInVersion = '';
+    functionSeqId = -1;
     notes = '';
     severity = '';
     status = '';
     submittedBy = '';
+    submittedById = -1;
     targetVersion = '';
     type = '';
-    verifiedById = 1;
+    updatedBy = '';
+    updatedById = -1;
     verifiedBy = '';
-    start_Date = new Date().toString();
-    end_Date = '';
-
+    verifiedById = 1;
     constructor (areaFound: string, details: string) {
         this.areaFound = areaFound;
         this.details = details;

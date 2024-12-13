@@ -15,31 +15,35 @@ public abstract class AbstractFeedbackController : ControllerBase
     private Logger m_Logger = Logger.Instance();
 
     [Authorize("feedbacks")]
-    [HttpPost("GetFeedbackForEdit")]
-    public UIFeedbackResult GetFeedbackForEdit(int feedbackId)
+    [HttpGet("GetFeedbackForEdit")]
+    public UIFeedback GetFeedbackForEdit(int feedbackId)
     {
-        UIFeedbackResult mRetVal = new();
+        UIFeedback mRetVal = new();
         HttpContext.Session.Remove("EditId");
 
         HttpContext.Session.SetInt32("EditId", mRetVal.FeedbackId);
+        mRetVal = FeedbackUtility.GetFeedback(feedbackId);
         return mRetVal;
     }
 
     [Authorize("feedbacks")]
     [HttpPost("SaveFeedback")]
-    public ActionResult<UIFeedbackResult> SaveFeedback(UIFeedbackResult feedbackResult)
+    public ActionResult<UIFeedback> SaveFeedback(UIFeedback feedback)
     {
-        UIFeedbackResult mRetVal = new();
+        UIFeedback mRetVal = new();
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
-            // we don't want to save the properties from the UI so we get the profile from the DB
-
-            if(mRetVal != feedbackResult && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+            // what is saved in the DB isn't the same that is passed in from th UI
+            MFeedback mFeedbackToSave = new(feedback);
+            mFeedbackToSave.UpdatedById = mRequestingProfile.Id;
+            mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+            if(mRetVal != feedback && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
             {
+                mRetVal = FeedbackUtility.SaveFeedback(mFeedbackToSave);
                 return Ok(mRetVal);
             }
         }
@@ -57,7 +61,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
-        string mColumns = "[FeedbackId], [Assignee], [Details], [FoundInVersion], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy], [Start_Date], [End_Date]";
+        string mColumns = "[FeedbackId], [Assignee], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
         if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
@@ -80,9 +84,9 @@ public abstract class AbstractFeedbackController : ControllerBase
 
     [Authorize("feedbacks")]
     [HttpPost("SubmitFeedback")]
-    public ActionResult<UIFeedbackResult> SubmitFeedback(UIFeedbackResult feedbackResult)
+    public ActionResult<UIFeedback> SubmitFeedback(UIFeedback feedbackResult)
     {
-        UIFeedbackResult mRetVal = new();
+        UIFeedback mRetVal = new();
 
         return Ok(mRetVal);
     }

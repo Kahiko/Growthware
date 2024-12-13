@@ -13,9 +13,7 @@ export interface ISelectedRow extends ITotalRecords {
     Type: string;
     VerifiedById: number;
     VerifiedBy: string;
-    Start_Date: string;
     TotalRecords: number;
-    End_Date: string;
 }
 
 export class SelectedRow implements ISelectedRow {
@@ -31,7 +29,5 @@ export class SelectedRow implements ISelectedRow {
     Type: string = '';
     VerifiedById: number = -1;
     VerifiedBy: string = '';
-    Start_Date: string = '';
     TotalRecords: number = -1;
-    End_Date: string = '';
 }

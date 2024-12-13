@@ -42,6 +42,11 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   ngOnInit(): void {
+    this._ProfileSvc.getFeedback(this._ProfileSvc.selectedRow.FeedbackId).then((profile: IFeedback) => {  // Request/Handler #1
+      this._Profile = profile;
+      console.log('FeedbackDetailsComponent.ngOnInit._Profile', this._Profile);
+      this.createForm();
+    });
 		this._Profile = new Feedback('Anonymous', '');
 		this.createForm();
   }

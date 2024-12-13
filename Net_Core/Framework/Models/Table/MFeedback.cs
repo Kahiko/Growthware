@@ -1,79 +1,94 @@
-using GrowthWare.Framework.Enumerations;
-using GrowthWare.Framework.Interfaces;
-using GrowthWare.Framework.Models.Base;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
 
 /// <summary>
-/// Properties for an Feedback.
+/// Class MFeedback is used to transport data to the Data Access Layer for storage in the data store.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class UIFeedback : AbstractDatabaseFunctions 
+public class MFeedback : AbstractDatabaseFunctions
 {
-    public UIFeedback() { }
 
-    public UIFeedback(DataRow dataRow) 
+    public MFeedback()
+    {
+        this.DefaultDateTime = new(1900, 1, 1);
+    }
+
+    public MFeedback(UIFeedback feedback) 
     { 
-        this.Initialize(dataRow);
+        this.DefaultDateTime = new(1900, 1, 1);
+        DateTime mNow = DateTime.Now;
+        this.FeedbackId = feedback.FeedbackId;
+        this.AssigneeId = feedback.AssigneeId;
+        this.DateClosed = feedback.DateClosed;
+        this.DateOpened = feedback.DateOpened;
+        this.Details = feedback.Details;
+        this.FoundInVersion = feedback.FoundInVersion;
+        this.Notes = feedback.Notes;
+        this.Severity = feedback.Severity;
+        this.Status = feedback.Status;
+        this.SubmittedById = feedback.SubmittedById;
+        this.TargetVersion = feedback.TargetVersion;
+        this.Type = feedback.Type;
+        this.UpdatedById = feedback.UpdatedById;
+        this.VerifiedById = feedback.VerifiedById;
+    }
+
+    public MFeedback(DataRow detailRow)
+    {
+        this.Initialize(detailRow);
     }
 
     #region "Protected Methods"
-        /// <summary>
-        /// Populates direct properties as well as passing the DataRow to the abstract class
-        /// for the population of the base properties.
-        /// </summary>
-        /// <param name="dataRow">DataRow</param>
-        protected void Initialize(DataRow dataRow)
+        private void Initialize(DataRow dataRow)
         {
+            DateTime mNow = DateTime.Now;
             this.FeedbackId = base.GetInt(dataRow, "FeedbackId");
-            this.Action = base.GetString(dataRow, "Action");
-            this.Assignee = base.GetString(dataRow, "Assignee");
             this.AssigneeId = base.GetInt(dataRow, "AssigneeId");
-            this.DateClosed = base.GetDateTime(dataRow, "Date_Closed", DateTime.Now);
-            this.DateOpened = base.GetDateTime(dataRow, "Date_Opened", DateTime.Now);
+            this.DateClosed = base.GetDateTime(dataRow, "Date_Closed", this.DefaultDateTime);
+            this.DateOpened = base.GetDateTime(dataRow, "Date_Opened", mNow);
             this.Details = base.GetString(dataRow, "Details");
             this.FoundInVersion = base.GetString(dataRow, "Found_In_Version");
             this.FunctionSeqId = base.GetInt(dataRow, "FunctionSeqId");
             this.Notes = base.GetString(dataRow, "Notes");
             this.Severity = base.GetString(dataRow, "Severity");
             this.Status = base.GetString(dataRow, "Status");
-            this.SubmittedBy = base.GetString(dataRow, "SubmittedBy");
             this.SubmittedById = base.GetInt(dataRow, "SubmittedById");
             this.TargetVersion = base.GetString(dataRow, "TargetVersion");
             this.Type = base.GetString(dataRow, "Type");
-            this.UpdatedBy = base.GetString(dataRow, "UpdatedBy");
             this.UpdatedById = base.GetInt(dataRow, "UpdatedById");
-            this.VerifiedBy = base.GetString(dataRow, "VerifiedBy");
             this.VerifiedById = base.GetInt(dataRow, "VerifiedById");
-        }    
+        }
     #endregion
+
+    #region "Private Methods"
+        private void setKeyAndTable()
+        {
+            this.m_ForeignKeyIsNumber = true;
+            this.m_ForeignKeyName = "";
+            this.m_PrimaryKeyName = "[FeedbackId]";
+            this.m_TableName = "[ZGWOptional].[Feedbacks]";
+        }
+    #endregion
+
     #region Public Properties
         public int FeedbackId { get; set; }
-        public string Action { get; set; }
-        public string Assignee { get; set; }
         public int AssigneeId { get; set; }
         public DateTime DateClosed { get; set; }
         public DateTime DateOpened { get; set; }
+		public readonly DateTime DefaultDateTime;
         public string Details { get; set; }
         public string FoundInVersion { get; set; }
-        /// <summary>
-        /// The "FunctionSeqId" should be looked up using the "Action" value.
-        /// </summary>
         public int FunctionSeqId { get; set; }
         public string Notes { get; set; }
         public string Severity { get; set; }
         public string Status { get; set; }
-        public string SubmittedBy { get; set; }
         public int SubmittedById { get; set; }
         public string TargetVersion { get; set; }
         public string Type { get; set; }
-        public string UpdatedBy { get; set; }
         public int UpdatedById { get; set; }
-        public string VerifiedBy { get; set; }
         public int VerifiedById { get; set; }
-    #endregion
+    #endregion    
 }
