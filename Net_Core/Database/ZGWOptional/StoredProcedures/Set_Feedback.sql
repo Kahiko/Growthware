@@ -104,7 +104,11 @@ AS
 
     IF @P_AssigneeId = -1 SET @P_AssigneeId = @V_AnonymousSeqId;
     IF @P_VerifiedById = -1 SET @P_VerifiedById = @V_AnonymousSeqId;
-
+	IF CONVERT(DATETIME, '1/1/1900 12:00:00 AM') = @P_Date_Closed
+		BEGIN
+			SET @P_Date_Closed = NULL;
+		END
+	--END IF
     IF EXISTS (SELECT TOP(1) NULL FROM [ZGWOptional].[Feedbacks] WHERE FeedbackId = @P_FeedbackId)
         BEGIN -- Update the End_Date for the "current" feedback record
             PRINT 'Updating feedback';
