@@ -19,7 +19,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         [Date_Closed] DATETIME NULL,
         [Date_Opened] DATETIME NOT NULL,
         [Details] [NVARCHAR](MAX) NOT NULL,
-        [FoundInVersion] VARCHAR(32) NOT NULL,
+        [Found_In_Version] VARCHAR(32) NOT NULL,
         [FunctionSeqId] VARCHAR(32) NOT NULL,
         [Notes] [NVARCHAR](MAX) NULL,
         [Severity] VARCHAR(32) NULL,
@@ -93,8 +93,8 @@ GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Date_Opened' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The date the feedback/issue was opened' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Date_Opened';
 GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'FoundInVersion' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The version of the system the feedback/issue was found in' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FoundInVersion';
+IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Found_In_Version' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The version of the system the feedback/issue was found in' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Found_In_Version';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'FunctionSeqId' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The area the feedback/issue was found FK from [ZGWSecurity].[Functions].[FunctionSeqId]' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FunctionSeqId';
@@ -145,7 +145,7 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
-        , [FoundInVersion]
+        , [Found_In_Version]
         , [FunctionSeqId]
         , [Notes]
         , [Severity]
@@ -179,7 +179,7 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
-        , [FoundInVersion]
+        , [Found_In_Version]
         , [FunctionSeqId]
         , [Notes]
         , [Severity]
@@ -215,7 +215,7 @@ Usage:
         @P_Date_Closed [DATETIME] = NULL,
         @P_Date_Opened [DATETIME] = GETDATE(),
         @P_Details NVARCHAR(MAX) = 'The details',
-        @P_FoundInVersion VARCHAR(32) = 'x.x.x.x',
+        @P_Found_In_Version VARCHAR(32) = 'x.x.x.x',
         @P_FunctionSeqId INT = 4,
         @P_Notes NVARCHAR(MAX) = null,
         @P_Severity VARCHAR(32) = 'Needs Classification', -- ???
@@ -234,7 +234,7 @@ Usage:
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
-        @P_FoundInVersion,
+        @P_Found_In_Version,
         @P_FunctionSeqId,
         @P_Notes,
         @P_Severity,
@@ -251,7 +251,7 @@ Usage:
 	PRINT '@P_FeedbackId: ' + CONVERT(VARCHAR(MAX), @P_FeedbackId);
     SET @P_AssigneeId = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
     SET @P_Details = 'Changed details';
-    SET @P_FoundInVersion = '5.2.0.1023';
+    SET @P_Found_In_Version = '5.2.0.1023';
     SET @P_Notes = 'Notes from the developer';
     SET @P_Severity = '???';
     SET @P_Status = 'Closed-Could not Reproduce';
@@ -266,7 +266,7 @@ Usage:
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
-        @P_FoundInVersion,
+        @P_Found_In_Version,
         @P_FunctionSeqId,
         @P_Notes,
         @P_Severity,
@@ -290,7 +290,7 @@ ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
     ,@P_Date_Closed DATETIME
     ,@P_Date_Opened DATETIME
     ,@P_Details NVARCHAR(MAX)
-    ,@P_FoundInVersion VARCHAR(32)
+    ,@P_Found_In_Version VARCHAR(32)
     ,@P_FunctionSeqId VARCHAR(32)
     ,@P_Notes NVARCHAR(MAX)
     ,@P_Severity VARCHAR(32) = 'Needs Classification'
@@ -335,7 +335,7 @@ AS
         [Date_Closed],
         [Date_Opened],
         [Details],
-        [FoundInVersion],
+        [Found_In_Version],
         [FunctionSeqId],
         [Notes],
         [Severity],
@@ -353,7 +353,7 @@ AS
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
-        @P_FoundInVersion,
+        @P_Found_In_Version,
         @P_FunctionSeqId,
         @P_Notes,
         @P_Severity,
@@ -424,7 +424,7 @@ AS
                 [Date_Closed],
                 [Date_Opened],
                 [Details],
-                [FoundInVersion],
+                [Found_In_Version],
                 [FunctionSeqId],
                 [Notes],
                 [Severity],
@@ -443,7 +443,7 @@ AS
                 FBs.[Date_Closed],
                 FBs.[Date_Opened],
                 FBs.[Details],
-                FBs.[FoundInVersion],
+                FBs.[Found_In_Version],
                 FBs.[FunctionSeqId],
                 FBs.[Notes],
                 FBs.[Severity],
