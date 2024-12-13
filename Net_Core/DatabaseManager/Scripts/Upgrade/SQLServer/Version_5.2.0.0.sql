@@ -15,7 +15,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]') AND type in (N'U'))
 	CREATE TABLE [ZGWOptional].[Feedbacks] (
         [FeedbackId] [INT] NOT NULL,
-        [Assignee] [INT] NOT NULL,
+        [AssigneeId] [INT] NOT NULL,
         [Date_Closed] DATETIME NULL,
         [Date_Opened] DATETIME NOT NULL,
         [Details] [NVARCHAR](MAX) NOT NULL,
@@ -46,9 +46,9 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'D' AND [name] LIKE 'DF_ZG
     END
 --END IF
 GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_Asignee]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_AssigneeId]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
     BEGIN
-        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_Asignee] FOREIGN KEY([Assignee])
+        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_AssigneeId] FOREIGN KEY([AssigneeId])
         REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -79,8 +79,8 @@ GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'FeedbackId' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A unique identifier for the feedback/issue (not the row).' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FeedbackId';
 GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Assignee' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A FK from [ZGWSecurity].[Accounts].[AccountSeqId].' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Assignee';
+IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'AssigneeId' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A FK from [ZGWSecurity].[Accounts].[AccountSeqId].' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'AssigneeId';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Details' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The details of the feedback/issue from the submitter' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Details';
@@ -135,8 +135,8 @@ GO
 ALTER VIEW ZGWOptional.vwHistoryFeedback AS
     SELECT 
           [FeedbackId]
-        , [AssigneeId] = [Assignee]
-        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
+        , [AssigneeId] = [AssigneeId]
+        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
@@ -145,7 +145,7 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [Notes]
         , [Severity]
         , [Status]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
+        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
         , [TargetVersion]
         , [Type]
         , [VerifiedById]
@@ -166,8 +166,8 @@ GO
 ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
     SELECT 
           [FeedbackId]
-        , [AssigneeId] = [Assignee]
-        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
+        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
+        , [AssigneeId]
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
@@ -176,7 +176,7 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [Notes]
         , [Severity]
         , [Status]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
+        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
         , [TargetVersion]
         , [Type]
         , [VerifiedById]
@@ -200,7 +200,7 @@ GO
 Usage:
 	DECLARE 
         @P_FeedbackId INT = -1,
-        @P_Assignee INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System'),
+        @P_AssigneeId INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System'),
         @P_Date_Closed [DATETIME] = NULL,
         @P_Date_Opened [DATETIME] = GETDATE(),
         @P_Details NVARCHAR(MAX) = 'The details',
@@ -218,7 +218,7 @@ Usage:
     
     EXECUTE [ZGWOptional].[Set_Feedback]
         @P_FeedbackId,
-        @P_Assignee,
+        @P_AssigneeId,
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
@@ -236,7 +236,7 @@ Usage:
 
     SET @P_FeedbackId = @P_Primary_Key;
 	PRINT '@P_FeedbackId: ' + CONVERT(VARCHAR(MAX), @P_FeedbackId);
-    SET @P_Assignee = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
+    SET @P_AssigneeId = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
     SET @P_Details = 'Changed details';
     SET @P_FoundInVersion = '5.2.0.1023';
     SET @P_Notes = 'Notes from the developer';
@@ -248,7 +248,7 @@ Usage:
 
     EXECUTE [ZGWOptional].[Set_Feedback]
         @P_FeedbackId,
-        @P_Assignee,
+        @P_AssigneeId,
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
@@ -271,7 +271,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
      @P_FeedbackId INT
-    ,@P_Assignee INT = -1
+    ,@P_AssigneeId INT = -1
     ,@P_Date_Closed DATETIME
     ,@P_Date_Opened DATETIME
     ,@P_Details NVARCHAR(MAX)
@@ -294,7 +294,7 @@ AS
             , @V_FeedbackId INT = @P_FeedbackId
             , @V_AnonymousSeqId INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous');
 
-    IF @P_Assignee = -1 SET @P_Assignee = @V_AnonymousSeqId;
+    IF @P_AssigneeId = -1 SET @P_AssigneeId = @V_AnonymousSeqId;
     IF @P_VerifiedById = -1 SET @P_VerifiedById = @V_AnonymousSeqId;
 
     IF EXISTS (SELECT TOP(1) NULL FROM [ZGWOptional].[Feedbacks] WHERE FeedbackId = @P_FeedbackId)
@@ -315,7 +315,7 @@ AS
     -- We are always creating a new record with a null End_Date (null End_Date indicaes it is the current record)
     INSERT INTO [ZGWOptional].[Feedbacks] (
         [FeedbackId],
-        [Assignee],
+        [AssigneeId],
         [Date_Closed],
         [Date_Opened],
         [Details],
@@ -332,7 +332,7 @@ AS
 		[End_Date]
     ) VALUES (
         @V_FeedbackId,
-        @P_Assignee,
+        @P_AssigneeId,
         @P_Date_Closed,
         @P_Date_Opened,
         @P_Details,
@@ -402,7 +402,7 @@ AS
             UPDATE [ZGWOptional].[Feedbacks] SET [End_Date] = @V_Now WHERE FeedbackId = @P_FeedbackId AND [End_Date] IS NULL;
             INSERT INTO [ZGWOptional].[Feedbacks] ( 
                 [FeedbackId],
-                [Assignee],
+                [AssigneeId],
                 [Date_Closed],
                 [Date_Opened],
                 [Details],
@@ -420,7 +420,7 @@ AS
             )
             SELECT 
                 FBs.[FeedbackId],
-                FBs.[Assignee],
+                FBs.[AssigneeId],
                 FBs.[Date_Closed],
                 FBs.[Date_Opened],
                 FBs.[Details],
