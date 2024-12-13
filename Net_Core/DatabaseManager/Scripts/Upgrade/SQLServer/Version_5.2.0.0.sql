@@ -20,7 +20,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         [Date_Opened] DATETIME NOT NULL,
         [Details] [NVARCHAR](MAX) NOT NULL,
         [Found_In_Version] VARCHAR(32) NOT NULL,
-        [FunctionSeqId] VARCHAR(32) NOT NULL,
+        [FunctionSeqId] INT NOT NULL,
         [Notes] [NVARCHAR](MAX) NULL,
         [Severity] VARCHAR(32) NULL,
         [Status] VARCHAR(32) NULL,
@@ -176,6 +176,7 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
           [FeedbackId]
         , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
         , [AssigneeId]
+        , [Action] = (SELECT [Action] FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = [FunctionSeqId])
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
@@ -291,7 +292,7 @@ ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
     ,@P_Date_Opened DATETIME
     ,@P_Details NVARCHAR(MAX)
     ,@P_Found_In_Version VARCHAR(32)
-    ,@P_FunctionSeqId VARCHAR(32)
+    ,@P_FunctionSeqId INT
     ,@P_Notes NVARCHAR(MAX)
     ,@P_Severity VARCHAR(32) = 'Needs Classification'
     ,@P_Status VARCHAR(32) = 'Unassigned'
