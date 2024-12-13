@@ -24,7 +24,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         [Notes] [NVARCHAR](MAX) NULL,
         [Severity] VARCHAR(32) NULL,
         [Status] VARCHAR(32) NULL,
-        [SubmittedBy] INT NOT NULL,
+        [SubmittedById] INT NOT NULL,
         [TargetVersion] VARCHAR(32) NULL,
         [Type] [NVARCHAR](128) NULL,
         [VerifiedById] INT NULL,
@@ -63,9 +63,9 @@ IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGW
         ON DELETE NO ACTION
     END
 --END IF
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_SubmittedBy]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_SubmittedById]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
     BEGIN
-        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_SubmittedBy] FOREIGN KEY([SubmittedBy])
+        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_SubmittedById] FOREIGN KEY([SubmittedById])
         REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -106,8 +106,8 @@ GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Status' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The status of the feedback/issue, submitted/open/open-in progress/closed/closed-cannot reproduce/closed-works as designed' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Status';
 GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SubmittedBy' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The person submitting the feedback/issue' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'SubmittedBy';
+IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SubmittedById' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The person submitting the feedback/issue' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'SubmittedById';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'TargetVersion' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The version of the system the feedback/issue was released in' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'TargetVersion';
@@ -145,7 +145,8 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [Notes]
         , [Severity]
         , [Status]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
+        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
+        , [SubmittedById]
         , [TargetVersion]
         , [Type]
         , [VerifiedById]
@@ -176,7 +177,8 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [Notes]
         , [Severity]
         , [Status]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
+        , [SubmittedById]
+        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
         , [TargetVersion]
         , [Type]
         , [VerifiedById]
@@ -209,7 +211,7 @@ Usage:
         @P_Notes NVARCHAR(MAX) = null,
         @P_Severity VARCHAR(32) = 'Needs Classification', -- ???
         @P_Status VARCHAR(32) = 'Submitted', -- Under Review, In Progress, Closed, Closed-Not Fixed, Closed-Could not Reproduce
-		@P_SubmittedBy INT = 1,
+		@P_SubmittedById INT = 1,
         @P_TargetVersion VARCHAR(32) = NULL,
         @P_Type [NVARCHAR](128) = 'Needs Classification', -- Feature Request, Bug, General, Needs Classification
         @P_VerifiedById INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
@@ -227,7 +229,7 @@ Usage:
         @P_Notes,
         @P_Severity,
         @P_Status,
-		@P_SubmittedBy,
+		@P_SubmittedById,
         @P_TargetVersion,
         @P_Type,
         @P_VerifiedById,
@@ -257,7 +259,7 @@ Usage:
         @P_Notes,
         @P_Severity,
         @P_Status,
-		@P_SubmittedBy,
+		@P_SubmittedById,
         @P_TargetVersion,
         @P_Type,
         @P_VerifiedById,
@@ -280,7 +282,7 @@ ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
     ,@P_Notes NVARCHAR(MAX)
     ,@P_Severity VARCHAR(32) = 'Needs Classification'
     ,@P_Status VARCHAR(32) = 'Unassigned'
-    ,@P_SubmittedBy INT
+    ,@P_SubmittedById INT
     ,@P_TargetVersion VARCHAR(32) = NULL
     ,@P_Type NVARCHAR(128) = 'Needs Classification'
     ,@P_VerifiedById INT = 1
@@ -324,7 +326,7 @@ AS
         [Notes],
         [Severity],
         [Status],
-        [SubmittedBy],
+        [SubmittedById],
         [TargetVersion],
         [Type],
         [VerifiedById],
@@ -341,7 +343,7 @@ AS
         @P_Notes,
         @P_Severity,
         @P_Status,
-        @P_SubmittedBy,
+        @P_SubmittedById,
         @P_TargetVersion,
         @P_Type,
         @P_VerifiedById,
@@ -411,7 +413,7 @@ AS
                 [Notes],
                 [Severity],
                 [Status],
-                [SubmittedBy],
+                [SubmittedById],
                 [TargetVersion],
                 [Type],
                 [VerifiedById],
@@ -429,7 +431,7 @@ AS
                 FBs.[Notes],
                 FBs.[Severity],
                 FBs.[Status],
-                FBs.[SubmittedBy],
+                FBs.[SubmittedById],
                 FBs.[TargetVersion],
                 FBs.[Type],
                 FBs.[VerifiedById],
