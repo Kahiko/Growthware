@@ -27,7 +27,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         [SubmittedBy] INT NOT NULL,
         [TargetVersion] VARCHAR(32) NULL,
         [Type] [NVARCHAR](128) NULL,
-        [VerifiedBy] INT NULL,
+        [VerifiedById] INT NULL,
 		[Start_Date] DATETIME NOT NULL,
 		[End_Date] DATETIME NULL,
         CONSTRAINT [UK_Feedback] UNIQUE CLUSTERED ([Start_Date] DESC, [End_Date] DESC, [FeedbackId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
@@ -55,9 +55,9 @@ IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGW
     END
 --END IF
 GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_VerifiedBy]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Accounts_Feedbacks_VerifiedById]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Feedbacks]'))
     BEGIN
-        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_VerifiedBy] FOREIGN KEY([VerifiedBy])
+        ALTER TABLE [ZGWOptional].[Feedbacks] WITH CHECK ADD CONSTRAINT [FK_Accounts_Feedbacks_VerifiedById] FOREIGN KEY([VerifiedById])
         REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -115,8 +115,8 @@ GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Type' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The type of issue/feedback, bug/feature-change/feature-request.  Where bugs are issues that cause a problem, feature-change is when the request is to change an existing feature, and feature-request is when the request is to add a new feature' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Type';
 GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'VerifiedBy' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A FK from [ZGWSecurity].[Accounts].[AccountSeqId].' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'VerifiedBy';
+IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'VerifiedById' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A FK from [ZGWSecurity].[Accounts].[AccountSeqId].' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'VerifiedById';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Start_Date' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The date the record was created in the database.  Used in conjunction with End_Date and FeedbackId in order to maintain an "inline" history. The oldest Start_Date is when the feedback/issue was created.' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'Start_Date';
@@ -148,8 +148,8 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
         , [TargetVersion]
         , [Type]
-        , [VerifiedById] = [VerifiedBy]
-        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedBy])
+        , [VerifiedById]
+        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
         , [Start_Date]
         , [End_Date]
     FROM 
@@ -179,8 +179,8 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Assignee])
         , [TargetVersion]
         , [Type]
-        , [VerifiedById] = [VerifiedBy]
-        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedBy])
+        , [VerifiedById]
+        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
         , [Start_Date]
         , [End_Date]
     FROM 
@@ -212,7 +212,7 @@ Usage:
 		@P_SubmittedBy INT = 1,
         @P_TargetVersion VARCHAR(32) = NULL,
         @P_Type [NVARCHAR](128) = 'Needs Classification', -- Feature Request, Bug, General, Needs Classification
-        @P_VerifiedBy INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
+        @P_VerifiedById INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
         @P_Primary_Key INT = null,
         @P_Debug INT = 1;
     
@@ -230,7 +230,7 @@ Usage:
 		@P_SubmittedBy,
         @P_TargetVersion,
         @P_Type,
-        @P_VerifiedBy,
+        @P_VerifiedById,
         @P_Primary_Key OUTPUT,
         @P_Debug;
 
@@ -244,7 +244,7 @@ Usage:
     SET @P_Status = 'Closed-Could not Reproduce';
     SET @P_TargetVersion = '5.2.0';
     SET @P_Type = 'Feature request';
-    SET @P_VerifiedBy = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
+    SET @P_VerifiedById = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
 
     EXECUTE [ZGWOptional].[Set_Feedback]
         @P_FeedbackId,
@@ -260,7 +260,7 @@ Usage:
 		@P_SubmittedBy,
         @P_TargetVersion,
         @P_Type,
-        @P_VerifiedBy,
+        @P_VerifiedById,
         @P_Primary_Key OUTPUT,
         @P_Debug;
 */
@@ -283,19 +283,19 @@ ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
     ,@P_SubmittedBy INT
     ,@P_TargetVersion VARCHAR(32) = NULL
     ,@P_Type NVARCHAR(128) = 'Needs Classification'
-    ,@P_VerifiedBy INT = 1
+    ,@P_VerifiedById INT = 1
     ,@P_Primary_Key INT OUTPUT
     ,@P_Debug INT = 0
 AS
 	SET NOCOUNT ON;
 	IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Set_Feedback';
-    IF @P_VerifiedBy = -1 SET @P_VerifiedBy = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous')
+    IF @P_VerifiedById = -1 SET @P_VerifiedById = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous')
     DECLARE @V_Now DATETIME = GETDATE()
             , @V_FeedbackId INT = @P_FeedbackId
             , @V_AnonymousSeqId INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous');
 
     IF @P_Assignee = -1 SET @P_Assignee = @V_AnonymousSeqId;
-    IF @P_VerifiedBy = -1 SET @P_VerifiedBy = @V_AnonymousSeqId;
+    IF @P_VerifiedById = -1 SET @P_VerifiedById = @V_AnonymousSeqId;
 
     IF EXISTS (SELECT TOP(1) NULL FROM [ZGWOptional].[Feedbacks] WHERE FeedbackId = @P_FeedbackId)
         BEGIN -- Update the End_Date for the "current" feedback record
@@ -327,7 +327,7 @@ AS
         [SubmittedBy],
         [TargetVersion],
         [Type],
-        [VerifiedBy],
+        [VerifiedById],
 		[Start_Date],
 		[End_Date]
     ) VALUES (
@@ -344,7 +344,7 @@ AS
         @P_SubmittedBy,
         @P_TargetVersion,
         @P_Type,
-        @P_VerifiedBy,
+        @P_VerifiedById,
         @V_Now,
         NULL
     )
@@ -414,7 +414,7 @@ AS
                 [SubmittedBy],
                 [TargetVersion],
                 [Type],
-                [VerifiedBy],
+                [VerifiedById],
                 [Start_Date],
                 [End_Date]
             )
@@ -432,7 +432,7 @@ AS
                 FBs.[SubmittedBy],
                 FBs.[TargetVersion],
                 FBs.[Type],
-                FBs.[VerifiedBy],
+                FBs.[VerifiedById],
                 @V_Now,
                 @V_Now
             FROM
