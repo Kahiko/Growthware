@@ -15,6 +15,8 @@ import { IFeedback } from './feedback.model';
 export class FeedbackService extends BaseService {
   private _ApiName: string = 'GrowthwareFeedback/';
   private _Api_GetFeedbackForEdit: string = '';
+  private _Api_GetNewFeedback: string = '';
+  private _Api_SaveFeedback: string = '';
   private _Reason: string = '';
 
   readonly addEditModalId: string = 'addEditFeedbackModal';
@@ -32,10 +34,26 @@ export class FeedbackService extends BaseService {
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
-		private _SearchSvc: SearchService,    
   ) { 
     super();
     this._Api_GetFeedbackForEdit = this._GWCommon.baseURL + this._ApiName + 'GetFeedbackForEdit';
+    this._Api_GetNewFeedback = this._GWCommon.baseURL + this._ApiName + 'GetNewFeedback';
+    this._Api_SaveFeedback = this._GWCommon.baseURL + this._ApiName + 'SaveFeedback';
+  }
+
+  getNewFeedback(): Promise<IFeedback> {
+    return new Promise<IFeedback>((resolve, reject) => {
+      this._HttpClient.get<IFeedback>(this._Api_GetNewFeedback).subscribe({
+        next: (response: IFeedback) => {
+          resolve(response);
+        },
+        error: (error) => {
+          this._LoggingSvc.errorHandler(error, 'FeedbackService', 'getFeedback');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
   }
 
   getFeedback(feedbackId: number): Promise<IFeedback> {
@@ -52,7 +70,27 @@ export class FeedbackService extends BaseService {
           resolve(response);
         },
         error: (error) => {
-          this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
+          this._LoggingSvc.errorHandler(error, 'FeedbackService', 'getFeedback');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  save(feedback: IFeedback): Promise<boolean> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<boolean>(this._Api_SaveFeedback, feedback, mHttpOptions).subscribe({
+        next: (response: boolean) => {
+          resolve(response);
+        },
+        error: (error) => {
+          this._LoggingSvc.errorHandler(error, 'FeedbackService', 'saveFeedback');
           reject('Failed to call the API');
         },
         // complete: () => {}

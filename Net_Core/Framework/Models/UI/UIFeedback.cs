@@ -1,10 +1,6 @@
-using GrowthWare.Framework.Enumerations;
-using GrowthWare.Framework.Interfaces;
-using GrowthWare.Framework.Models.Base;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
 

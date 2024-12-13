@@ -24,11 +24,10 @@ export interface IFeedback {
 export class Feedback implements IFeedback {
     feedbackId = -1;
     action = '';
-    areaFound = '';
     assigneeId = 1;
     assignee = 'Anonymous';
-    dateClosed = '';
-    dateOpened = new Date().toString();
+    dateClosed = '1900-01-01T00:00:00';
+    dateOpened = '1900-01-01T00:00:00';
     details = '';
     foundInVersion = '';
     functionSeqId = -1;
@@ -44,7 +43,7 @@ export class Feedback implements IFeedback {
     verifiedBy = '';
     verifiedById = 1;
     constructor (areaFound: string, details: string) {
-        this.areaFound = areaFound;
+        this.action = areaFound;
         this.details = details;
     }
 }

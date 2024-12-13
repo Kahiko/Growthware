@@ -25,7 +25,7 @@
                             <div class="td left">
                                 <mat-form-field class="full-width">
                                     <mat-label>Please describe your feedback/issue</mat-label>
-                                    <textarea matInput formControlName="details" #details class="Form_Field rounded" style="height: 155px;"></textarea>
+                                    <textarea matInput formControlName="details" #details class="Form_Field rounded" style="height: 300px;"></textarea>
                                     <mat-hint>Charactors: {{ details.value.length }}</mat-hint>
                                     @if (controls['details'].invalid && controls['details'].touched) {
                                     <mat-error style="display: inline-block; padding-left: 5px">{{getErrorMessage('details')}}</mat-error>

@@ -26,29 +26,55 @@ public abstract class AbstractFeedbackController : ControllerBase
         return mRetVal;
     }
 
-    [Authorize("feedbacks")]
-    [HttpPost("SaveFeedback")]
-    public ActionResult<UIFeedback> SaveFeedback(UIFeedback feedback)
+    [AllowAnonymous]
+    [HttpGet("GetNewFeedback")]
+    public UIFeedback GetNewFeedback()
     {
         UIFeedback mRetVal = new();
+        return mRetVal;
+    }
+
+    [Authorize("feedbacks")]
+    [HttpPost("SaveFeedback")]
+    public ActionResult<bool> SaveFeedback(UIFeedback feedback)
+    {
+        bool mRetVal = false;
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
-            // what is saved in the DB isn't the same that is passed in from th UI
-            MFeedback mFeedbackToSave = new(feedback);
-            mFeedbackToSave.UpdatedById = mRequestingProfile.Id;
-            mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
-            if(mRetVal != feedback && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+            if(feedback != new UIFeedback()  && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
             {
-                mRetVal = FeedbackUtility.SaveFeedback(mFeedbackToSave);
-                return Ok(mRetVal);
+                MFeedback mFeedbackToSave = new(feedback);
+                mFeedbackToSave.UpdatedById = mRequestingProfile.Id;
+                // set the properties that may not have been set by the UI/Requestor
+                if(feedback.FeedbackId == -1)
+                {
+                    mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                    mFeedbackToSave.DateOpened = DateTime.Now;
+                    mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultDateTime;
+                    mFeedbackToSave.SubmittedById = mRequestingProfile.Id;
+                    mFeedbackToSave.FoundInVersion = ConfigSettings.Version;
+                }
+                try
+                {
+                    UIFeedback mSavedFeedback = FeedbackUtility.SaveFeedback(mFeedbackToSave);
+                    if (mSavedFeedback != null)
+                    {
+                        mRetVal = true;
+                        return Ok(mRetVal);
+                    }                    
+                } catch (Exception ex)
+                {
+                    m_Logger.Error(ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not save the feedback!");
+                }
             }
         }
         this.m_Logger.Error(mRequestingProfile.Account + " does not have permissions to 'Save Feedback'");
-        return Ok("The account does not have permissions to 'Save Feedback'");
+        return StatusCode(StatusCodes.Status401Unauthorized, "The account does not have permissions to 'Save Feedback'");
     }
 
     /// <summary>

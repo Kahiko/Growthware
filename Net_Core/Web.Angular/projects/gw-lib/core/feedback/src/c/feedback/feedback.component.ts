@@ -10,6 +10,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CanDeactivateFn } from '@angular/router';
 // Library
 import { AccountService } from '@growthware/core/account';
+import { LoggingService, LogLevel } from '@growthware/core/logging';
+// Feature
+import { FeedbackService } from '../../feedback.service';
+import { Feedback, IFeedback } from '../../feedback.model';
 
 interface ISelectedableAction {
   action: string;
@@ -33,7 +37,10 @@ interface ISelectedableAction {
 })
 export class FeedbackComponent implements OnInit {
   private _AccountSvc: AccountService = inject(AccountService);
+  private _LoggingSvc: LoggingService = inject(LoggingService);
+  private _FeedbackSvc: FeedbackService = inject(FeedbackService);
   private _FormBuilder: FormBuilder = inject(FormBuilder);
+  private _Profile: IFeedback = new Feedback('', '');
 
   // This was necessary b/c this.frmSubmit.reset(); was not working
   @ViewChild('frm') theNgForm: FormGroupDirective | undefined;
@@ -52,6 +59,8 @@ export class FeedbackComponent implements OnInit {
   ngOnInit(): void {
     this._AccountSvc.getSelectableActions().then((actions) => {
       this.validLinks = actions;
+    }).catch((error) => {                                         // Error Handler #1 (getSelectableActions);
+      console.log(error);
     });
     this.createForm();
   }
@@ -86,6 +95,26 @@ export class FeedbackComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.frmSubmit);
+    this.populateProfile();
+    this.save();
+  }
+
+  populateProfile(): void {
+    this._Profile.details = this.frmSubmit.controls['details'].value;
+    this._Profile.action = this.frmSubmit.controls['areaOccurred'].value;
+    this._Profile.submittedById = this._AccountSvc.authenticationResponse().id;
+  }
+
+  save(): void {
+    this._FeedbackSvc.save(this._Profile).then((respnse: boolean) => {
+      if (respnse) {
+        this._LoggingSvc.toast('Feedback has been submitted', 'Submit Feedback:', LogLevel.Success);
+      } else {
+        this._LoggingSvc.toast('Feedback could not be submitted!', 'Submit Feedback:', LogLevel.Error);
+      }
+    }).catch(() => {
+      this._LoggingSvc.toast('Feedback could not be submitted!', 'Submit Feedback:', LogLevel.Error);
+    });
     this.onCancel();
   }
 }

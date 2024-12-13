@@ -29,7 +29,7 @@ public static class FeedbackUtility
     public static UIFeedback SaveFeedback(MFeedback feedback)
     {
         UIFeedback mRetVal = null;
-        // mRetVal = getBusinessLogic.SaveFeedback(feedback);
+        mRetVal = getBusinessLogic.SaveFeedback(feedback);
         return mRetVal;
     }
 

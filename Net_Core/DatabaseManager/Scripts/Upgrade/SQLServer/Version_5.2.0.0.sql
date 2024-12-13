@@ -1,5 +1,5 @@
 -- Upgrade from 5.1.0.0 to 5.2.0.0
-USE [YourDatabaseName];
+--USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
@@ -225,31 +225,32 @@ Usage:
         @P_Type [NVARCHAR](128) = 'Needs Classification', -- Feature Request, Bug, General, Needs Classification
         @P_UpdatedById INT = 1,
         @P_VerifiedById INT = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Anonymous'),
-        @P_Primary_Key INT = null,
+		@P_Primary_Key INT = null,
         @P_Debug INT = 1;
     
     EXECUTE [ZGWOptional].[Set_Feedback]
-        @P_FeedbackId,
-        @P_AssigneeId,
-        @P_Date_Closed,
-        @P_Date_Opened,
-        @P_Details,
-        @P_Found_In_Version,
-        @P_FunctionSeqId,
-        @P_Notes,
-        @P_Severity,
-        @P_Status,
-		@P_SubmittedById,
-        @P_TargetVersion,
-        @P_Type,
-        @P_UpdatedById,
-        @P_VerifiedById,
-        @P_Primary_Key OUTPUT,
-        @P_Debug;
+		 @P_FeedbackId
+		,@P_AssigneeId
+		,@P_Date_Closed
+		,@P_Date_Opened
+		,@P_Details
+		,@P_Found_In_Version
+		,@P_FunctionSeqId
+		,@P_Notes
+		,@P_Severity
+		,@P_Status
+		,@P_SubmittedById
+		,@P_TargetVersion
+		,@P_Type
+		,@P_UpdatedById
+		,@P_VerifiedById
+		,@P_Primary_Key OUTPUT
+		,@P_Debug;
 
-    SET @P_FeedbackId = @P_Primary_Key;
+	SET @P_FeedbackId = @P_Primary_Key;
 	PRINT '@P_FeedbackId: ' + CONVERT(VARCHAR(MAX), @P_FeedbackId);
-    SET @P_AssigneeId = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
+    SET @P_FeedbackId = @P_Primary_Key
+	SET @P_AssigneeId = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Developer');
     SET @P_Details = 'Changed details';
     SET @P_Found_In_Version = '5.2.0.1023';
     SET @P_Notes = 'Notes from the developer';
@@ -261,23 +262,23 @@ Usage:
     SET @P_VerifiedById = (SELECT AccountSeqId FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'Mike');
 
     EXECUTE [ZGWOptional].[Set_Feedback]
-        @P_FeedbackId,
-        @P_AssigneeId,
-        @P_Date_Closed,
-        @P_Date_Opened,
-        @P_Details,
-        @P_Found_In_Version,
-        @P_FunctionSeqId,
-        @P_Notes,
-        @P_Severity,
-        @P_Status,
-		@P_SubmittedById,
-        @P_TargetVersion,
-        @P_Type,
-        @P_UpdatedById,
-        @P_VerifiedById,
-        @P_Primary_Key OUTPUT,
-        @P_Debug;
+		 @P_FeedbackId
+		,@P_AssigneeId
+		,@P_Date_Closed
+		,@P_Date_Opened
+		,@P_Details
+		,@P_Found_In_Version
+		,@P_FunctionSeqId
+		,@P_Notes
+		,@P_Severity
+		,@P_Status
+		,@P_SubmittedById
+		,@P_TargetVersion
+		,@P_Type
+		,@P_UpdatedById
+		,@P_VerifiedById
+		,@P_Primary_Key OUTPUT
+		,@P_Debug;
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -300,7 +301,7 @@ ALTER PROCEDURE [ZGWOptional].[Set_Feedback]
     ,@P_Type NVARCHAR(128) = 'Needs Classification'
     ,@P_UpdatedById INT
     ,@P_VerifiedById INT = 1
-    ,@P_Primary_Key INT OUTPUT
+	,@P_Primary_Key INT OUTPUT
     ,@P_Debug INT = 0
 AS
 	SET NOCOUNT ON;
@@ -366,8 +367,32 @@ AS
         @V_Now,
         NULL
     )
-    -- Set the return "primary" key value.
-    SELECT @P_Primary_Key = @V_FeedbackId;
+	-- Set the return primary key
+	SET @P_Primary_Key = @V_FeedbackId;
+    -- Return the current record..
+    SELECT
+        [FeedbackId]
+        ,[Action]
+        ,[Assignee]
+        ,[AssigneeId]
+        ,[Date_Closed]
+        ,[Date_Opened]
+        ,[Details]
+        ,[Found_In_Version]
+        ,[FunctionSeqId]
+        ,[Notes]
+        ,[Severity]
+        ,[Status]
+        ,[SubmittedBy]
+        ,[SubmittedById]
+        ,[TargetVersion]
+        ,[Type]
+        ,[UpdatedBy]
+        ,[UpdatedById]
+        ,[VerifiedBy]
+        ,[VerifiedById]
+    FROM [ZGWOptional].[vwCurrentFeedbacks]
+    WHERE [FeedbackId] = @V_FeedbackId
 
     IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Set_Feedback';
 RETURN 0

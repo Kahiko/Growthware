@@ -1,5 +1,5 @@
 -- Downgrade from 5.2.0.0 to 5.1.0.0
-USE [YourDatabaseName];
+--USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;

@@ -33,7 +33,7 @@ public class BFeedbacks : AbstractBusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
         /// 
-        /// BFeedbacks mBAccount = BFeedbacks = New BFeedbacks(MSecurityEntity);
+        /// BFeedbacks mBusinessLogic = BFeedbacks = New BFeedbacks(MSecurityEntity);
         /// ]]>
         /// </code>
         /// <code language="VB.NET">
@@ -45,7 +45,7 @@ public class BFeedbacks : AbstractBusinessLogic
         /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
         /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
         /// 
-        /// Dim mBAccount As BFeedbacks = New BFeedbacks(MSecurityEntity)
+        /// Dim mBusinessLogic As BFeedbacks = New BFeedbacks(MSecurityEntity)
         /// ]]>
         /// </code>
         /// </example>
@@ -68,6 +68,17 @@ public class BFeedbacks : AbstractBusinessLogic
                 m_DataAccess.Profile = new MFeedback();
                 m_DataAccess.Profile.FeedbackId = feedbackId;
                 mRetVal = new UIFeedback(m_DataAccess.GetFeedback);
+            }
+            return mRetVal;
+        }
+
+        public UIFeedback SaveFeedback(MFeedback feedback)
+        {
+            UIFeedback mRetVal = null;
+            if (DatabaseIsOnline()) 
+            {
+                m_DataAccess.Profile = feedback;
+                mRetVal = new UIFeedback(m_DataAccess.SaveFeedback);
             }
             return mRetVal;
         }

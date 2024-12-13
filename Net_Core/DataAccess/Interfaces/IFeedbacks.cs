@@ -21,8 +21,13 @@ public interface IFeedbacks : IDBInteraction
 		int SecurityEntitySeqId { get; set; }
 
 		/// <summary>
-		/// Retrieves Retrieves the current feedback using the information provided in the Profile property.
+		/// Retrieves the current feedback using the information provided in the Profile property.
 		/// </summary>
 		/// <returns>DataRow</returns>
 		DataRow GetFeedback { get; }
+
+		/// <summary>
+		/// Saves the current feedback using the information provided in the Profile property.
+		/// </summary>
+		DataRow SaveFeedback { get; }
 }
