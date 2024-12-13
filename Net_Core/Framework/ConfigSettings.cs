@@ -3,6 +3,7 @@ using System.IO;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using GrowthWare.Framework.Enumerations;
+using System.Reflection;
 
 namespace GrowthWare.Framework
 {
@@ -13,6 +14,8 @@ namespace GrowthWare.Framework
         private static readonly string m_SettingsDirectory = string.Empty;
         private static string s_CentralManagement = string.Empty;
         private static bool m_CentralManagement;
+
+        private static string m_Version = string.Empty;
 
         static ConfigSettings()
         {
@@ -838,7 +841,17 @@ namespace GrowthWare.Framework
 
         public static string Version
         {
-            get { return GetAppSettingValue("Version"); }
+            /*
+             * To update the Version edit the GrowthWare.Framework.csproj
+             */
+            get 
+            { 
+                if (string.IsNullOrWhiteSpace(m_Version)) 
+                {
+                    m_Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
+                }
+                return m_Version;
+            }
         }
 
         public static string View_Account_Group_Tab
