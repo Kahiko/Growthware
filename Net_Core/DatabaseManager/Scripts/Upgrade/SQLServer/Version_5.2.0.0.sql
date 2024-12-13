@@ -140,8 +140,9 @@ GO
 ALTER VIEW ZGWOptional.vwHistoryFeedback AS
     SELECT 
           [FeedbackId]
-        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
-        , [AssigneeId] = [AssigneeId]
+        , [Action] = (SELECT TOP(1) [Action] FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = [FunctionSeqId])
+        , [Assignee] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
+        , [AssigneeId]
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
@@ -150,13 +151,13 @@ ALTER VIEW ZGWOptional.vwHistoryFeedback AS
         , [Notes]
         , [Severity]
         , [Status]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
+        , [SubmittedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
         , [SubmittedById]
         , [TargetVersion]
         , [Type]
-        , [UpdatedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [UpdatedById])
+        , [UpdatedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [UpdatedById])
         , [UpdatedById]
-        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
+        , [VerifiedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
         , [VerifiedById]
         , [Start_Date]
         , [End_Date]
@@ -174,9 +175,9 @@ GO
 ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
     SELECT 
           [FeedbackId]
-        , [Assignee] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
+        , [Action] = (SELECT TOP(1) [Action] FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = [FunctionSeqId])
+        , [Assignee] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
         , [AssigneeId]
-        , [Action] = (SELECT [Action] FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = [FunctionSeqId])
         , [Date_Closed]
         , [Date_Opened]
         , [Details]
@@ -185,16 +186,14 @@ ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
         , [Notes]
         , [Severity]
         , [Status]
+        , [SubmittedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
         , [SubmittedById]
-        , [SubmittedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
         , [TargetVersion]
         , [Type]
-        , [UpdatedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [UpdatedById])
+        , [UpdatedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [UpdatedById])
         , [UpdatedById]
-        , [VerifiedBy] = (SELECT [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
+        , [VerifiedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
         , [VerifiedById]
-        , [Start_Date]
-        , [End_Date]
     FROM 
         [ZGWOptional].[Feedbacks]
     WHERE 
