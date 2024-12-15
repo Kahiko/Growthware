@@ -19,18 +19,12 @@ public abstract class AbstractFeedbackController : ControllerBase
     public UIFeedback GetFeedbackForEdit(int feedbackId)
     {
         UIFeedback mRetVal = new();
+        // Remove the EditId from the session
         HttpContext.Session.Remove("EditId");
-
+        // Set the EditId in the session
         HttpContext.Session.SetInt32("EditId", mRetVal.FeedbackId);
+        // Get the feedback from the data store
         mRetVal = FeedbackUtility.GetFeedback(feedbackId);
-        return mRetVal;
-    }
-
-    [AllowAnonymous]
-    [HttpGet("GetNewFeedback")]
-    public UIFeedback GetNewFeedback()
-    {
-        UIFeedback mRetVal = new();
         return mRetVal;
     }
 
