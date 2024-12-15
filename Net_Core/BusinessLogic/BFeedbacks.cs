@@ -57,7 +57,6 @@ public class BFeedbacks : AbstractBusinessLogic
             }
             m_DataAccess = (IFeedbacks)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFeedbacks");
             m_DataAccess.ConnectionString = securityEntityProfile.ConnectionString;
-            m_DataAccess.SecurityEntitySeqId = securityEntityProfile.Id;
         }
 
         public UIFeedback GetFeedback(int feedbackId)

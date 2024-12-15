@@ -11,7 +11,6 @@ public class DFeedbacks : AbstractDBInteraction, IFeedbacks
 {
     #region Private Field
         private MFeedback m_Profile = null;
-        private int m_SecurityEntitySeqID = -2;
     #endregion
 
     #region Public Properties
@@ -19,12 +18,6 @@ public class DFeedbacks : AbstractDBInteraction, IFeedbacks
         {
             get { return this.m_Profile; }
             set { this.m_Profile = value; }
-        }
-
-        int IFeedbacks.SecurityEntitySeqId
-        {
-            get { return m_SecurityEntitySeqID; }
-            set { m_SecurityEntitySeqID = value; }
         }
     #endregion
 
