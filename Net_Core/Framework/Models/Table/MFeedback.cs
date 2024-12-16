@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using GrowthWare.Framework.Interfaces;
 using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
@@ -8,16 +9,18 @@ namespace GrowthWare.Framework.Models;
 /// Class MFeedback is used to transport data to the Data Access Layer for storage in the data store.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MFeedback : AbstractDatabaseFunctions
+public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
 {
 
     public MFeedback()
     {
+        setKeyAndTable();
         this.DefaultDateTime = new(1900, 1, 1);
     }
 
     public MFeedback(UIFeedback feedback) 
     { 
+        setKeyAndTable();
         this.DefaultDateTime = new(1900, 1, 1);
         DateTime mNow = DateTime.Now;
         this.FeedbackId = feedback.FeedbackId;
@@ -38,6 +41,7 @@ public class MFeedback : AbstractDatabaseFunctions
 
     public MFeedback(DataRow detailRow)
     {
+        setKeyAndTable();
         this.Initialize(detailRow);
     }
 
