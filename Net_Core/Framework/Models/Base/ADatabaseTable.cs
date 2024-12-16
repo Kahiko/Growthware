@@ -26,6 +26,9 @@ public class ColumnNameAttribute : Attribute
     }
 }
 
+/// <summary>
+/// A Base class to contain common properties and methods for a database tables
+/// </summary>
 public abstract class ADatabaseTable : IDatabaseTable
 {
 
