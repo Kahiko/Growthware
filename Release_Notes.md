@@ -24,6 +24,7 @@
 - Removed the ngModule from the gw-frontend/features/home
 - Updated the /* Form */ section was missing formSectionContents for the Professional "Skin"
 - Fixed not being able save the "IsSysAdmin" property in AccountDetailsComponent
+- Fixed DAccounts not saving ResetTokenExpires and MiddleName correctly
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
