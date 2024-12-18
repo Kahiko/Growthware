@@ -429,9 +429,7 @@ export class AccountDetailsComponent implements OnInit {
     }
     this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
     this._AccountProfile.groups = JSON.parse(JSON.stringify(this.groupsSelected));
-    if (this.isSysAdmin) {
-      this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();      
-    }
+    this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();      
     this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
     this._AccountProfile.location = this.controls['location'].getRawValue();
     this._AccountProfile.middleName = this.controls['middleName'].getRawValue();
