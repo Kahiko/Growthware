@@ -262,20 +262,18 @@ public class DAccounts : AbstractDBInteraction, IAccount
 
         void IAccount.SaveRefreshTokens()
         {
-            bool mDoDelete = true;
-            var mRefreshTokens = this.m_Profile.RefreshTokens.ToArray();
-            IDatabaseFunctions mFirstObj = (IDatabaseFunctions)mRefreshTokens.FirstOrDefault();
+            MRefreshToken[] mRefreshTokens = this.m_Profile.RefreshTokens.ToArray();
+            MRefreshToken mFirstObj = mRefreshTokens.FirstOrDefault();
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
             bool mIncludePrimaryKey = false;
-            string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
-            DataTable mDataTable = mFirstObj.GetEmptyTable(mTempTableName, mIncludePrimaryKey);
+            string mPrimaryKeyName = MRefreshToken.GetPrimaryKeyName<MRefreshToken>();
 
             DTO_BulkInsert_Parameters mBulkInsertParameters = new()
             {
-                DestinationTableName = mFirstObj.GetTableName(),
-                DoDelete = mDoDelete,
-                EmptyTable = mFirstObj.GetEmptyTable(mTempTableName, mIncludePrimaryKey),
-                ForeignKeyName = mFirstObj.GetForeignKeyName(),
+                DestinationTableName = mFirstObj.TableName,
+                DoDelete = true,
+                EmptyTable = MRefreshToken.GenerateEmptyTable<MRefreshToken>(mTempTableName, mIncludePrimaryKey),
+                ForeignKeyName = mFirstObj.ForeignKeyName,
                 IncludePrimaryKey = mIncludePrimaryKey,
                 ListOfProfiles = mRefreshTokens,
                 NumberOfProfiles = mRefreshTokens.Count(),

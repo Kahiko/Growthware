@@ -527,7 +527,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    static string GetPrimaryKeyName<T>() where T : ADatabaseTable
+    public static string GetPrimaryKeyName<T>() where T : ADatabaseTable
     {
         PropertyInfo mPrimaryKeyProperty = getPropertiesFromType<T>().FirstOrDefault(propertyInfo => 
             propertyInfo.IsDefined(typeof(DBPrimaryKey), false)

@@ -45,6 +45,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         if (bulkInsertParameters.ListOfProfiles != null && bulkInsertParameters.ListOfProfiles.Any())
         {
             DataTable mDataTable = bulkInsertParameters.EmptyTable.Clone();
+            DataColumnCollection mColumns = mDataTable.Columns;
             string mCommandText = string.Empty;
 
             // Populate mDataTable with the data from the listOfIDatabaseFunctions
@@ -67,7 +68,13 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
                     }
                     if (!bulkInsertParameters.IncludePrimaryKey)
                     {
-                        if (bulkInsertParameters.PrimaryKeyName.Replace("[", "").Replace("]", "").ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
+                        string mPrimaryKeyName = bulkInsertParameters.PrimaryKeyName;
+                        if (mPrimaryKeyName.StartsWith('[')) 
+                        {
+                            mPrimaryKeyName = mPrimaryKeyName.Replace("[", "").Replace("]", "");
+                        }
+                        bool mNotMatched = !string.Equals(mPropertyItem.Name, mPrimaryKeyName, StringComparison.OrdinalIgnoreCase);
+                        if (mNotMatched && mColumns.Contains(mPropertyItem.Name))
                         {
                             mRow[mPropertyItem.Name] = mValue;
                         }
