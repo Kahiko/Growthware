@@ -7,10 +7,12 @@ namespace GrowthWare.Framework.Models;
 /// Properties for a calendar event.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MCalendarEvent : AbstractBaseModel
+public class MCalendarEvent : AAddedUpdated
 {
     #region Public Properties
         public bool AllDay {get; set;}
+
+        public int CalendarSeqId {get; set;}
 
         public string Color {get; set;}
 
@@ -21,10 +23,15 @@ public class MCalendarEvent : AbstractBaseModel
         /// </summary>
         public string End {get; set;}
 
+        [DBPrimaryKey]
+        [DBColumnName("CalendarEventSeqId")]
+        public int Id {get; set;}
+
         public string Link {get; set;}
 
         public string Location {get; set;}
 
+        [DBIgnoreProperty]
         public string Owner {get; set;}
 
         /// <summary>
@@ -35,30 +42,39 @@ public class MCalendarEvent : AbstractBaseModel
         public string Title {get; set;}
     #endregion
 
-    public MCalendarEvent()
-    {
-        this.IdColumnName = "CalendarEventSeqId";
-        this.NameColumnName = "Name";
-    }
+    #region Constructors
+        public MCalendarEvent()
+        {
+            SetupClass();
+        }
 
-    public MCalendarEvent(DataRow detailRow)
-    {
-        this.IdColumnName = "CalendarEventSeqId";
-        this.NameColumnName = "Name";
-        this.Initialize(detailRow);
-    }
+        public MCalendarEvent(DataRow detailRow)
+        {
+            SetupClass();
+            this.Initialize(detailRow);
+        }
+    #endregion
 
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
         this.AllDay = base.GetBool(dataRow, "AllDay");
+        this.CalendarSeqId = base.GetInt(dataRow, "CalendarSeqId");
         this.Color = base.GetString(dataRow, "Color");
         this.Description = base.GetString(dataRow, "Description");
         this.End = base.GetDateTime(dataRow, "End", DateTime.Now).ToString();
+        this.Id = base.GetInt(dataRow, "CalendarEventSeqId");
         this.Link = base.GetString(dataRow, "Link");
         this.Location = base.GetString(dataRow, "Location");
         this.Owner = base.GetString(dataRow, "Owner");
         this.Start = base.GetDateTime(dataRow, "Start", DateTime.Now).ToString();
         this.Title = base.GetString(dataRow, "Title");
+    }
+
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        base.m_IsForeignKeyNumeric = true;
+        m_TableName = "[ZGWOptional].[Calendar_Events]";
     }
 }
