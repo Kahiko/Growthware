@@ -7,26 +7,26 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-     public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
-     {
+    public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
+    {
         private int m_CalendarSeqId = -2;
         private int m_SecurityEntitySeqId = -2;
 
-        int ICommunityCalendar.CalendarSeqId { get{return this.m_CalendarSeqId;} set{this.m_CalendarSeqId = value;} }
-        int ICommunityCalendar.SecurityEntitySeqId { get{return this.m_SecurityEntitySeqId;} set{this.m_SecurityEntitySeqId = value;} }
+        int ICommunityCalendar.CalendarSeqId { get { return this.m_CalendarSeqId; } set { this.m_CalendarSeqId = value; } }
+        int ICommunityCalendar.SecurityEntitySeqId { get { return this.m_SecurityEntitySeqId; } set { this.m_SecurityEntitySeqId = value; } }
 
-        bool ICommunityCalendar.DeleteCalendar(int calendarSeqId) 
+        bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
         {
             this.checkValid();
 
             return true;
         }
 
-		bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId) 
+        bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
         {
             this.checkValid();
             string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
-            SqlParameter[] mParameters = 
+            SqlParameter[] mParameters =
             {
                 new ("@P_CalendarEventSeqId", calendarEventSeqId),
             };
@@ -37,11 +37,11 @@ namespace GrowthWare.DataAccess.SQLServer
             catch (System.Exception)
             {
                 throw;
-            }            
+            }
             return true;
         }
 
-        bool ICommunityCalendar.GetCalendar(int calendarSeqId) 
+        bool ICommunityCalendar.GetCalendar(int calendarSeqId)
         {
             this.checkValid();
             return true;
@@ -51,7 +51,7 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             this.checkValid();
             string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
-            SqlParameter[] mParameters = 
+            SqlParameter[] mParameters =
             {
                 new ("@P_CalendarEventSeqId", calendarEventSeqId),
             };
@@ -65,16 +65,16 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-		DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate) 
+        DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
         {
             this.checkValid();
             string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Events]";
             SqlParameter[] mParameters =
-			 {
-                    new ("@P_FunctionSeqId", functionSeqId),
-                    new ("@P_Start_Date", startDate),
-                    new ("@P_End_Date", endDate),
-			 };
+            {
+                new ("@P_FunctionSeqId", functionSeqId),
+                new ("@P_Start_Date", startDate),
+                new ("@P_End_Date", endDate),
+            };
             try
             {
                 return base.GetDataTable(mStoredProcedure, mParameters);
@@ -85,12 +85,12 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-		DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent) 
+        DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
         {
             this.checkValid();
             string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
             SqlParameter[] mParameters =
-			 {
+             {
                 new ("@P_CalendarEventSeqId", calendarEvent.Id),
                 new ("@P_FunctionSeqId", functionSeqId),
                 new ("@P_Title", calendarEvent.Title),
@@ -102,7 +102,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new ("@P_Link", calendarEvent.Link),
                 new ("@P_Location", calendarEvent.Location),
                 new ("@P_Added_Updated_By", calendarEvent.AddedBy),
-			 };
+             };
             try
             {
                 return base.GetDataRow(mStoredProcedure, mParameters);
@@ -113,19 +113,19 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-#region "Private Methods"
+        #region "Private Methods"
         private void checkValid()
         {
             base.IsValid();
-            if(this.m_CalendarSeqId == -2)
+            if (this.m_CalendarSeqId == -2)
             {
                 throw new DataAccessLayerException("CalendarSeqId property must be set before calling methods from this class");
             }
-            if(this.m_SecurityEntitySeqId == -2)
+            if (this.m_SecurityEntitySeqId == -2)
             {
                 throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
             }
         }
-     }
-#endregion
+    }
+    #endregion
 }
