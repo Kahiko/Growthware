@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using GrowthWare.Framework.Interfaces;
 using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
@@ -9,19 +8,17 @@ namespace GrowthWare.Framework.Models;
 /// Class MFeedback is used to transport data to the Data Access Layer for storage in the data store.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
+public class MFeedback : ADatabaseTable
 {
 
     public MFeedback()
     {
-        setKeyAndTable();
-        this.DefaultDateTime = new(1900, 1, 1);
+        SetupClass();
     }
 
     public MFeedback(UIFeedback feedback) 
     { 
-        setKeyAndTable();
-        this.DefaultDateTime = new(1900, 1, 1);
+        SetupClass();
         DateTime mNow = DateTime.Now;
         this.FeedbackId = feedback.FeedbackId;
         this.AssigneeId = feedback.AssigneeId;
@@ -41,7 +38,7 @@ public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
 
     public MFeedback(DataRow detailRow)
     {
-        setKeyAndTable();
+        SetupClass();
         this.Initialize(detailRow);
     }
 
@@ -51,7 +48,7 @@ public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
             DateTime mNow = DateTime.Now;
             this.FeedbackId = base.GetInt(dataRow, "FeedbackId");
             this.AssigneeId = base.GetInt(dataRow, "AssigneeId");
-            this.DateClosed = base.GetDateTime(dataRow, "Date_Closed", this.DefaultDateTime);
+            this.DateClosed = base.GetDateTime(dataRow, "Date_Closed", base.DefaultSystemDateTime);
             this.DateOpened = base.GetDateTime(dataRow, "Date_Opened", mNow);
             this.Details = base.GetString(dataRow, "Details");
             this.FoundInVersion = base.GetString(dataRow, "Found_In_Version");
@@ -64,26 +61,30 @@ public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
             this.Type = base.GetString(dataRow, "Type");
             this.UpdatedById = base.GetInt(dataRow, "UpdatedById");
             this.VerifiedById = base.GetInt(dataRow, "VerifiedById");
+            this.StartDate = base.GetDateTime(dataRow, "Start_Date", base.DefaultSystemDateTime);
+            this.EndDate = base.GetDateTime(dataRow, "End_Date", base.DefaultSystemDateTime);
         }
     #endregion
 
     #region "Private Methods"
-        private void setKeyAndTable()
+        protected override void SetupClass()
         {
-            this.m_ForeignKeyIsNumber = true;
-            this.m_ForeignKeyName = "";
-            this.m_PrimaryKeyName = "[FeedbackId]";
-            this.m_TableName = "[ZGWOptional].[Feedbacks]";
+            base.m_ForeignKeyName = "NOT_USED";
+            base.m_IsForeignKeyNumeric = true;
+            m_TableName = "[ZGWOptional].[Feedbacks]";
         }
     #endregion
 
     #region Public Properties
+        [DBPrimaryKey]
         public int FeedbackId { get; set; }
         public int AssigneeId { get; set; }
+        [DBColumnName("Date_Closed")]
         public DateTime DateClosed { get; set; }
+        [DBColumnName("Date_Opened")]
         public DateTime DateOpened { get; set; }
-		public readonly DateTime DefaultDateTime;
         public string Details { get; set; }
+        [DBColumnName("Found_In_Version")]
         public string FoundInVersion { get; set; }
         public int FunctionSeqId { get; set; }
         public string Notes { get; set; }
@@ -94,5 +95,11 @@ public class MFeedback : AbstractDatabaseFunctions, IDatabaseFunctions
         public string Type { get; set; }
         public int UpdatedById { get; set; }
         public int VerifiedById { get; set; }
+        [DBIgnoreProperty]
+        [DBColumnName("Start_Date")]
+        public DateTime StartDate { get; set; }
+        [DBIgnoreProperty]
+        [DBColumnName("End_Date")]
+        public DateTime EndDate { get; set; }
     #endregion    
 }
