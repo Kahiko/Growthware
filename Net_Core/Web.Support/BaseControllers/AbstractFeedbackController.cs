@@ -101,14 +101,4 @@ public abstract class AbstractFeedbackController : ControllerBase
         }
         return Ok(mRetVal);
     }
-
-    [Authorize("feedbacks")]
-    [HttpPost("SubmitFeedback")]
-    public ActionResult<UIFeedback> SubmitFeedback(UIFeedback feedbackResult)
-    {
-        UIFeedback mRetVal = new();
-
-        return Ok(mRetVal);
-    }
-
 }
