@@ -91,17 +91,17 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
             SqlParameter[] mParameters =
 			 {
-                    new ("@P_CalendarEventSeqId", calendarEvent.Id),
-                    new ("@P_FunctionSeqId", functionSeqId),
-                    new ("@P_Title", calendarEvent.Title),
-                    new ("@P_Start", DateTime.Parse(calendarEvent.Start)),
-                    new ("@P_End", DateTime.Parse(calendarEvent.End)),
-                    new ("@P_AllDay", calendarEvent.AllDay),
-                    new ("@P_Description", calendarEvent.Description),
-                    new ("@P_Color", calendarEvent.Color),
-                    new ("@P_Link", calendarEvent.Link),
-                    new ("@P_Location", calendarEvent.Location),
-                    new ("@P_Added_Updated_By", calendarEvent.AddedBy),
+                new ("@P_CalendarEventSeqId", calendarEvent.Id),
+                new ("@P_FunctionSeqId", functionSeqId),
+                new ("@P_Title", calendarEvent.Title),
+                new ("@P_Start", DateTime.Parse(calendarEvent.Start)),
+                new ("@P_End", DateTime.Parse(calendarEvent.End)),
+                new ("@P_AllDay", calendarEvent.AllDay),
+                new ("@P_Description", calendarEvent.Description),
+                new ("@P_Color", calendarEvent.Color),
+                new ("@P_Link", calendarEvent.Link),
+                new ("@P_Location", calendarEvent.Location),
+                new ("@P_Added_Updated_By", calendarEvent.AddedBy),
 			 };
             try
             {
