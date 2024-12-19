@@ -416,6 +416,27 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         return mAdded_Updated_By;
     }
 
+    protected static int GetAddedUpdatedBy(IAddedUpdated profile, int id)
+    {
+        int mAdded_Updated_By = 0;
+        if (profile != null)
+        {
+            if (id == -1)
+            {
+                mAdded_Updated_By = profile.AddedBy;
+            }
+            else
+            {
+                mAdded_Updated_By = profile.UpdatedBy;
+            }
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        }
+        return mAdded_Updated_By;
+    }
+
     /// <summary>
     /// Returns a DataRow given the command text and sql parameters
     /// </summary>

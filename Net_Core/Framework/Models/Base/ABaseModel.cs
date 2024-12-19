@@ -8,6 +8,7 @@ namespace GrowthWare.Framework.Models.Base
     /// Base class for profile objects.
     /// </summary>
     [Serializable()]
+    [Obsolete("Please use AAddedUpdated instead.", false)]
     public abstract class AbstractBaseModel : AbstractDatabaseFunctions, IBaseModel
     {
 

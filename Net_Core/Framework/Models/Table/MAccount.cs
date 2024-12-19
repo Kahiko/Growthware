@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
+public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
 {
 
     #region "Member fields"
@@ -95,12 +95,13 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <param name="dataRow">DataRow</param>
     protected new void Initialize(DataRow dataRow)
     {
-        base.NameColumnName = "ACCT";
-        base.IdColumnName = "ACCT_SEQ_ID";
+        // base.NameColumnName = "ACCT";
+        // base.IdColumnName = "ACCT_SEQ_ID";
         base.Initialize(dataRow);
-        Account = base.Name;
+        Account = base.GetString(dataRow, "ACCT");
         this.Email = base.GetString(dataRow, "EMAIL");
         this.EnableNotifications = base.GetBool(dataRow, "ENABLE_NOTIFICATIONS");
+        this.Id = base.GetInt(dataRow, "ACCT_SEQ_ID");
         this.IsSystemAdmin = base.GetBool(dataRow, "IS_SYSTEM_ADMIN");
         this.Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
         this.Password = base.GetString(dataRow, "PWD");
@@ -116,6 +117,13 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         this.TimeZone = base.GetInt(dataRow, "TIME_ZONE");
         this.VerificationToken = base.GetString(dataRow, "VerificationToken");
     }
+
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        base.m_IsForeignKeyNumeric = true;
+        m_TableName = "[ZGWSecurity].[Accounts]";
+    }
     #endregion
 
     #region "Public Methods"
@@ -126,11 +134,12 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <remarks></remarks>
     public MAccountProfile()
     {
-
+        SetupClass();
     }
 
     public MAccountProfile(int requestingAccountId)
     {
+        SetupClass();
         Collection<string> mDefaultRoles = new Collection<string>(){"Authenticated"};
         this.AddedBy = requestingAccountId;
         this.AddedDate = DateTime.Now;
@@ -150,8 +159,9 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
     public MAccountProfile(MAccountProfile accountProfile)
     {
-        base.NameColumnName = "ACCT";
-        base.IdColumnName = "ACCT_SEQ_ID";
+        SetupClass();
+        // base.NameColumnName = "ACCT";
+        // base.IdColumnName = "ACCT_SEQ_ID";
         this.Id = -1;
         this.Account = accountProfile.Account;
         this.Email = accountProfile.Email;
@@ -176,6 +186,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </remarks>
     public MAccountProfile(DataRow detailRow)
     {
+        SetupClass();
         this.Initialize(detailRow);
     }
 
@@ -192,6 +203,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </remarks>
     public MAccountProfile(DataRow detailRow, DataTable refreshTokens, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
     {
+        SetupClass();
         if (detailRow != null)
         {
             this.Initialize(detailRow);
@@ -227,6 +239,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Represents the roles that have been directly assigned to the account.
     /// </summary>
+    [DBIgnoreProperty]
     public Collection<String> AssignedRoles
     {
         get
@@ -242,6 +255,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Represents the groups that have been directly assigned to the account.
     /// </summary>
+    [DBIgnoreProperty]
     public Collection<String> Groups
     {
         get
@@ -257,6 +271,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Represents the roles that have been assigned either directly or through association of a role to a group.
     /// </summary>
+    [DBIgnoreProperty]
     public Collection<String> DerivedRoles
     {
         get
@@ -282,16 +297,23 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Used to determine if the client would like to receive notifications.
     /// </summary>
+    [DBColumnName("Enable_Notifications")]
     public bool EnableNotifications { get; set; }
+
+    [DBPrimaryKey]
+    [DBColumnName("AccountSeqId")]
+    public int Id { get; set; }
 
     /// <summary>
     /// Represents the status of the account
     /// </summary>
+    [DBColumnName("StatusSeqId")]
     public int Status { get; set; }
 
     /// <summary>
     /// Indicates the last time the account password was changed
     /// </summary>
+    [DBColumnName("Password_Last_Set")]
     public DateTime PasswordLastSet { get; set; }
 
     /// <summary>
@@ -312,11 +334,13 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// The number of failed logon attempts
     /// </summary>
+    [DBColumnName("Failed_Attempts")]
     public int FailedAttempts { get; set; }
 
     /// <summary>
     /// First name of the person for the account
     /// </summary>
+    [DBColumnName("First_Name")]
     public String FirstName { get; set; }
 
     /// <summary>
@@ -324,27 +348,36 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// prevent complete lockout when the roles have been
     /// damaged.
     /// </summary>
+    [DBColumnName("Is_System_Admin")]
     public bool IsSystemAdmin { get; set; }
 
     /// <summary>
     /// Last name of the person for the account
     /// </summary>
+    [DBColumnName("Last_Name")]
     public String LastName { get; set; }
 
     /// <summary>
     /// Middle name of the person for the account
     /// </summary>
+    [DBColumnName("Middle_Name")]
     public String MiddleName { get; set; }
+
+    [DBIgnoreProperty]
+    [DBColumnName("Account")]
+    public string Name { get; set; }
 
     /// <summary>
     /// Preferred or nick name of the person for the account
     /// </summary>
+    [DBColumnName("Preferred_Name")]
     public String PreferredName { get; set; }
 
     /// <summary>
     /// A list of refresh tokens
     /// </summary>
     /// <value></value>
+    [DBIgnoreProperty]
     public List<MRefreshToken> RefreshTokens 
     {
         get{ return m_RefreshTokens; }
@@ -366,11 +399,13 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// The timezone for the account
     /// </summary>
+    [DBColumnName("Time_Zone")]
     public int TimeZone { get; set; }
 
     /// <summary>
     /// Used in new AuthenticationResponse to set the JwtToken
     /// </summary>
+    [DBIgnoreProperty]
     public string Token { get; set; }
 
     /// <summary>
@@ -387,12 +422,14 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// The date and time the account was last logged on
     /// </summary>
+    [DBColumnName("Last_Login")]
     public DateTime LastLogOn { get; set; }
 
     /// <summary>
     /// Converts the collection of AssignedRoles to a comma Separated string.
     /// </summary>
     /// <returns>String</returns>
+    [DBIgnoreProperty]
     public String GetCommaSeparatedAssignedRoles
     {
         get { return getCommaSeparatedString(m_AssignedRoles); }
@@ -402,6 +439,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// Converts the collection of AssignedGroups to a comma Separated string.
     /// </summary>
     /// <returns>String</returns>
+    [DBIgnoreProperty]
     public String GetCommaSeparatedAssignedGroups
     {
         get { return getCommaSeparatedString(m_AssignedGroups); }
@@ -411,6 +449,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// Converts the collection of DerivedRoles to a comma Separated string.
     /// </summary>
     /// <returns>String</returns>
+    [DBIgnoreProperty]
     public String GetCommaSeparatedDerivedRoles
     {
         get { return getCommaSeparatedString(m_DerivedRoles); }
