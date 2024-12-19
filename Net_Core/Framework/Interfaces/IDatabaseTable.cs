@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Interfaces;
 
@@ -8,6 +9,11 @@ namespace GrowthWare.Framework.Interfaces;
 /// </summary>
 public interface IDatabaseTable : IDisposable
 {
+
+    /// <summary>
+    /// The default system date time of new(1753, 1, 1, 0, 0, 0)
+    /// </summary>
+    DateTime DefaultSystemDateTime { get; }
 
     /// <summary>
     /// The name of the foreign key used when performing bulk insert.
@@ -23,10 +29,4 @@ public interface IDatabaseTable : IDisposable
     /// The name of the database table
     /// </summary>
     string TableName { get; }
-
-    /// <summary>
-    /// Whether to use brackets around the column names
-    /// </summary>
-    bool UseBrackets { get; }
-    
 }

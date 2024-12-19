@@ -4,23 +4,24 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using GrowthWare.Framework.Interfaces;
 
 namespace GrowthWare.Framework.Models.Base;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class IgnorePropertyAttribute : Attribute { }
+public class IgnoreProperty : Attribute { } // [IgnoreProperty]
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-public class PrimaryKeyAttribute : Attribute { }
+public class PrimaryKey : Attribute { } // [ PrimaryKey]
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ColumnNameAttribute : Attribute
+public class ColumnName : Attribute // [ColumnName("The_Column_Name")]
 {
     public string Name { get; }
 
-    public ColumnNameAttribute(string name)
+    public ColumnName(string name)
     {
         Name = name;
     }
@@ -33,6 +34,11 @@ public abstract class ADatabaseTable : IDatabaseTable
 {
 
     #region Private Fields
+
+        private bool m_IsSetDefaultSystemDateTime = false;
+
+        private DateTime m_DefaultSystemDateTime;
+
         private bool m_DisposedValue;
 
         protected string m_ForeignKeyName = string.Empty;
@@ -47,13 +53,12 @@ public abstract class ADatabaseTable : IDatabaseTable
                 typeof(uint), typeof(float)// ,   typeof(BigInteger)
             };
 
-        protected static PropertyInfo[] m_PropertyInfoArray = null;
+        protected PropertyInfo[] m_PropertyInfoArray = null;
         
+        // The StringBuilder should be cleared after every use!
         static StringBuilder m_StringBuilder = new();
 
         protected static string m_TableName = string.Empty;
-
-        protected static bool m_UseBrackets = true;
     #endregion
 
     /// <summary>
@@ -89,13 +94,30 @@ public abstract class ADatabaseTable : IDatabaseTable
         GC.SuppressFinalize(this);
     }
 
-    [IgnorePropertyAttribute]
+    // Default System DateTime of 1/1/1753 12:00:00 AM
+    [IgnoreProperty]
+    public DateTime DefaultSystemDateTime
+    {
+        get 
+        { 
+            if (!m_IsSetDefaultSystemDateTime)
+            {
+                m_IsSetDefaultSystemDateTime = true;
+                m_DefaultSystemDateTime = new(1753, 1, 1, 0, 0, 0); // 1/1/1753 12:00:00 AM
+            }
+            return (DateTime)m_DefaultSystemDateTime; 
+        }
+    }
+
+    // The name of the foreign key used when performing bulk insert.
+    [IgnoreProperty]
     public string ForeignKeyName
     {
         get {return m_ForeignKeyName;}        
     }
 
-    [IgnorePropertyAttribute]
+    // Whether the foreign key is numeric only used in bulk inserts
+    [IgnoreProperty]
     public bool IsForeignKeyNumeric
     {
         get
@@ -104,7 +126,8 @@ public abstract class ADatabaseTable : IDatabaseTable
         }
     }
 
-    [IgnorePropertyAttribute]
+    // The name of the database table
+    [IgnoreProperty]
     public string TableName
     { 
         get
@@ -117,15 +140,6 @@ public abstract class ADatabaseTable : IDatabaseTable
         }
     }
 
-    [IgnorePropertyAttribute]
-    public bool UseBrackets
-    {
-        get
-        {
-            return m_UseBrackets;
-        }
-    }
-
     /// <summary>
     /// Helper method to format the values for SQL (handle strings, nulls, etc.)
     /// </summary>
@@ -134,11 +148,16 @@ public abstract class ADatabaseTable : IDatabaseTable
     private static string formatValue(object value)
     {
         if (value == null) return "NULL";
-        if (value is string || value is DateTime)
+        switch (value)
         {
-            return $"'{value.ToString().Replace("'", "''")}'"; // Escape single quotes
+            case string:
+            case DateTime:
+                return $"'{value.ToString().Replace("'", "''")}'"; // Escape single quotes
+            case bool:
+                return (bool)value ? "1" : "0"; // DB values are 0 or 1
+            default:
+                return value.ToString(); // For numbers or other types
         }
-        return value.ToString(); // For numbers or other types
     }
 
     /// <summary>
@@ -147,10 +166,10 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
     /// <param name="keyColumn"></param>
     /// <returns></returns>
-    public static string GenerateDeleteWithParameters<T>(string keyColumn) where T : ADatabaseTable
+    public static string GenerateDeleteWithParameters(string keyColumn, bool useBrackets)
     {
         string mWhereClause = $"WHERE [{keyColumn}] = @{keyColumn}";
-        if (!m_UseBrackets)
+        if (!useBrackets)
         { 
             mWhereClause = mWhereClause.Replace("[", "").Replace("]", "");
         }
@@ -159,20 +178,20 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    /// Generates a DELETE statement specifying the keyColumn, the keyColumn's is derived from the propeerty
+    /// Generates a DELETE statement specifying the keyColumn, the keyColumn's value is derived from the propeerty
     /// </summary>
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
     /// <param name="keyColumn"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    public string GenerateDeleteWithValues<T>(string keyColumn) where T : ADatabaseTable
+    public string GenerateDeleteWithValues<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
     {
-        string mKeyValue = getPropertyValue<T>(keyColumn);
+        string mKeyValue = GetPropertyValue<T>(keyColumn);
         if (string.IsNullOrWhiteSpace(mKeyValue)) 
         {
             throw new InvalidOperationException($"The keyColumn {keyColumn} has no value and cannot be deleted.");
         }
-        return GenerateDeleteWithValues<T>(keyColumn, mKeyValue);
+        return GenerateDeleteWithValues(keyColumn, mKeyValue, useBrackets);
     }
 
     /// <summary>
@@ -183,223 +202,14 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="keyValue"></param>
     /// <returns></returns>
     /// <remarks>keyValue should be single quoted if it is a string</remarks>
-    public string GenerateDeleteWithValues<T>(string keyColumn, string keyValue) where T : ADatabaseTable
+    public static string GenerateDeleteWithValues(string keyColumn, string keyValue, bool useBrackets)
     {
         string mWhereClause = $"WHERE [{keyColumn}] = {keyValue}";
-        if (!m_UseBrackets)
+        if (!useBrackets)
         { 
             mWhereClause = mWhereClause.Replace("[", "").Replace("]", "");
         }
         string mRetVal = $"DELETE FROM {m_TableName} {mWhereClause};";
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Static method to generate an INSERT statement with parameters
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="includePrimaryKey">Specifies whether to include the primary key.</param>
-    /// <returns></returns>
-    public static string GenerateInsertWithParameters<T>(bool includePrimaryKey = false) where T : ADatabaseTable
-    {
-        string mColumnNames = getColumnNames<T>(includePrimaryKey);
-        foreach (PropertyInfo mPropertyItem in getProperties<T>(includePrimaryKey))
-        {
-            m_StringBuilder.Append("@" + getColumnName(mPropertyItem) + ", ");
-        }
-        string mParameterNames = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
-        m_StringBuilder.Clear();
-        return $"INSERT INTO {m_TableName} ({mColumnNames}) VALUES ({mParameterNames});";
-    }
-
-    /// <summary>
-    /// Generates an INSERT SQL statement for the current instance with actual values from the properties.
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="includePrimaryKey">Specifies whether to include the primary key.</param>
-    /// <returns>A string representing the INSERT SQL statement with column names and their corresponding values.</returns>
-    public string GenerateInsertWithValues<T>(bool includePrimaryKey = false) where T : ADatabaseTable
-    {
-        string mColumnNames = getColumnNames<T>(includePrimaryKey);
-        string mValues = this.getPropertyValues<T>(includePrimaryKey);
-        return $"INSERT INTO {m_TableName} ({mColumnNames}) VALUES ({mValues});";
-    }
-
-    /// <summary>
-    /// Static method to generate an UPDATE statement using parameters
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="keyColumn"></param>
-    /// <returns></returns>
-    public static string GenerateUpdateWithParameters<T>(string keyColumn) where T : ADatabaseTable
-    {
-        var mSetClauses = string.Join(", ", getProperties<T>(false).Select(p => $"[{getColumnName(p)}] = @{getColumnName(p)}"));
-        if (!m_UseBrackets) 
-        { 
-            mSetClauses = mSetClauses.Replace("[", "").Replace("]", ""); 
-        }
-        return $"UPDATE {m_TableName} SET {mSetClauses} WHERE {keyColumn} = @{keyColumn};";
-    }
-
-    /// <summary>
-    /// Generates an UPDATE SQL statement for the current instance with actual values from the properties
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="keyColumn"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    public string GenerateUpdateWithValues<T>(string keyColumn) where T : ADatabaseTable
-    {
-        string mKeyValue = getPropertyValue<T>(keyColumn);
-        if (string.IsNullOrWhiteSpace(mKeyValue)) 
-        {
-            throw new InvalidOperationException($"The keyColumn {keyColumn} has no value and cannot be updated.");
-        }
-        return GenerateUpdateWithValues<T>(keyColumn, mKeyValue);
-    }
-
-    /// <summary>
-    /// Generates an UPDATE SQL statement for the current instance with actual values from the properties specifing the keyColumn and it's value
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="keyColumn"></param>
-    /// <param name="keyValue"></param>
-    /// <returns>string</returns>
-    /// <remarks>keyValue should be single quoted if it is a string</remarks>
-    public string GenerateUpdateWithValues<T>(string keyColumn, string keyValue) where T : ADatabaseTable
-    {
-        m_StringBuilder.Append($"UPDATE {m_TableName} SET ");
-        foreach (PropertyInfo mPropertyItem in getProperties<T>(false))
-        {
-            if (m_UseBrackets) 
-            {
-                m_StringBuilder.Append($"[{getColumnName(mPropertyItem)}] = {formatValue(mPropertyItem.GetValue(this))}, ");
-            } else 
-            {
-                m_StringBuilder.Append($"{getColumnName(mPropertyItem)} = {formatValue(mPropertyItem.GetValue(this))}, ");
-            }
-        }
-        string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
-        mRetVal += $" WHERE {keyColumn} = {keyValue};";
-        m_StringBuilder.Clear();
-        return mRetVal;
-    }
-
-    /// <summary>
-    ///Returns a boolean given the DataRow and Column name for either bit or int values.
-    /// </summary>
-    /// <param name="dataRow">The dataRow.</param>
-    /// <param name="columnName">Name of the column.</param>
-    /// <returns>Boolean.</returns>
-    /// <remarks>Integer or int values not equal to 0 are considered true</remarks>
-    protected static Boolean GetBool(DataRow dataRow, String columnName)
-    {
-        bool mRetVal = false;
-        if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
-        {
-            if (dataRow[columnName].ToString() == "1" || dataRow[columnName].ToString().ToUpper(CultureInfo.InvariantCulture) == "TRUE")
-            {
-                mRetVal = true;
-            }
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Helper method to get the column name from the attribute or property name
-    /// </summary>
-    /// <param name="property"></param>
-    /// <returns></returns>
-    private static string getColumnName(PropertyInfo property)
-    {
-        var attribute = property.GetCustomAttribute<ColumnNameAttribute>();
-        return attribute?.Name ?? property.Name; // Use the attribute name if available, otherwise use the property name
-    }
-
-    /// <summary>
-    /// Static method to get all the column names either from the attribute or property name if the attribute is not present
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static string GetColumnNames<T>() where T : ADatabaseTable
-    {
-        return getColumnNames<T>(true);
-    }
-
-    /// <summary>
-    /// Helper method to get all the column names either from the attribute or property name if the attribute is not present
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="properties"></param>
-    /// <returns></returns>
-    private static string getColumnNames<T>(bool includePrimaryKey) where T : ADatabaseTable
-    {
-        foreach (PropertyInfo mPropertyItem in getProperties<T>(includePrimaryKey))
-        {
-            if (m_UseBrackets) 
-            {
-                m_StringBuilder.Append("[" + getColumnName(mPropertyItem) + "], ");
-            } else 
-            {
-                m_StringBuilder.Append(getColumnName(mPropertyItem) + ", ");                
-            }            
-        }
-        string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
-        m_StringBuilder.Clear();
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Helper method to get the property's value given it's name
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="propertyName"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    private string getPropertyValue<T>(string propertyName) where T : ADatabaseTable
-    {
-        PropertyInfo mPropertyItem = getProperties<T>(true).FirstOrDefault(p => p.Name == propertyName);
-        string mRetVal = formatValue(mPropertyItem.GetValue(this));
-        if (string.IsNullOrWhiteSpace(mRetVal)) 
-        {
-            throw new InvalidOperationException($"The keyColumn {propertyName} has no value and cannot be updated.");
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Helper method to get the property values
-    /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="properties"></param>
-    /// <returns>string</returns>
-    private string getPropertyValues<T>(bool includePrimaryKey) where T : ADatabaseTable
-    {
-        foreach (PropertyInfo mPropertyItem in getProperties<T>(includePrimaryKey))
-        {
-            var value = mPropertyItem.GetValue(this, null);
-            m_StringBuilder.Append(formatValue(value) + " ,");
-        }
-        string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
-        m_StringBuilder.Clear();
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Returns a DateTime given the a DataRow and Column name and the default value.
-    /// </summary>
-    /// <param name="dataRow">DataRow</param>
-    /// <param name="columnName">String</param>
-    /// <param name="defaultDateTime">DateTime</param>
-    /// <returns>DateTime</returns>
-    /// <remarks></remarks>
-    protected static DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
-    {
-        DateTime mRetVal = defaultDateTime;
-        if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
-        {
-            mRetVal = DateTime.Parse(dataRow[columnName].ToString(), CultureInfo.CurrentCulture);
-        }
         return mRetVal;
     }
 
@@ -411,7 +221,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="includePrimaryKey">Specifies whether to include the primary key.</param>
     /// <returns>DataTable</returns>
     /// <exception cref="NullReferenceException"></exception>
-    public static DataTable GetEmptyTable<T>(string tableName, bool includePrimaryKey) where T : ADatabaseTable
+    public static DataTable GenerateEmptyTable<T>(string tableName, bool includePrimaryKey) where T : ADatabaseTable
     {
         DataTable mTempRetTable = null;
         DataTable mRetTable = null;
@@ -419,12 +229,12 @@ public abstract class ADatabaseTable : IDatabaseTable
         string mPrimaryKeyName = GetPrimaryKeyName<T>();
         if (includePrimaryKey && string.IsNullOrWhiteSpace(mPrimaryKeyName))
         {
-            throw new NullReferenceException("The includePrimaryKey prameter is true and PrimaryKeyAttribute has not been set for any property.");
+            throw new NullReferenceException("The includePrimaryKey prameter is true and PrimaryKey has not been set for any property.");
         }
         try
         {
             mTempRetTable.Locale = CultureInfo.InvariantCulture;
-            foreach (PropertyInfo mPropertyItem in getProperties<T>(includePrimaryKey))
+            foreach (PropertyInfo mPropertyItem in getPropertiesFromType<T>())
             {
                 var mPropertyType = mPropertyItem.PropertyType;
                 if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -455,13 +265,255 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
+    /// Static method to generate an INSERT statement with parameters
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="includePrimaryKey">Specifies whether to include the primary key.</param>
+    /// <returns></returns>
+    public static string GenerateInsertWithParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable
+    {
+        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where((propertyInfo) => 
+            (includePrimaryKey || !propertyInfo.IsDefined(typeof(PrimaryKey), false))
+        ).ToArray();
+        string mColumnNames = getColumnNames<T>(mPropertiesArray, useBrackets);
+        foreach (PropertyInfo mPropertyItem in mPropertiesArray)
+        {
+            m_StringBuilder.Append("@" + getColumnName(mPropertyItem) + ", ");
+        }
+        string mParameterNames = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        m_StringBuilder.Clear();
+        return $"INSERT INTO {m_TableName} ({mColumnNames}) VALUES ({mParameterNames});";
+    }
+
+    /// <summary>
+    /// Generates an INSERT SQL statement for the current instance with actual values from the properties.
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="includePrimaryKey">Specifies whether to include the primary key.</param>
+    /// <returns>A string representing the INSERT SQL statement with column names and their corresponding values.</returns>
+    public string GenerateInsertWithValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable
+    {
+        PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(includePrimaryKey);
+        string mColumnNames = getColumnNames<T>(mPropertiesArray, useBrackets);
+        foreach(PropertyInfo mPropertyItem in mPropertiesArray)
+        {
+            var value = mPropertyItem.GetValue(this, null);
+            m_StringBuilder.Append(formatValue(value) + " ,");
+        }
+        string mValues = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        m_StringBuilder.Clear();
+        return $"INSERT INTO {m_TableName} ({mColumnNames}) VALUES ({mValues});";
+    }
+
+    /// <summary>
+    /// Static method to generate an UPDATE statement using parameters
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="keyColumn"></param>
+    /// <returns></returns>
+    public static string GenerateUpdateWithParameters<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
+    {
+        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where(propertyInfo => 
+            !propertyInfo.IsDefined(typeof(PrimaryKey), false)
+        ).ToArray();
+        var mSetClauses = string.Join(", ", mPropertiesArray.Select(p => $"[{getColumnName(p)}] = @{getColumnName(p)}"));
+        if (!useBrackets) 
+        { 
+            mSetClauses = mSetClauses.Replace("[", "").Replace("]", ""); 
+        }
+        return $"UPDATE {m_TableName} SET {mSetClauses} WHERE {keyColumn} = @{keyColumn};";
+    }
+
+    /// <summary>
+    /// Generates an UPDATE SQL statement for the current instance with actual values from the properties
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="keyColumn"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public string GenerateUpdateWithValues<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
+    {
+        string mKeyValue = GetPropertyValue<T>(keyColumn);
+        if (string.IsNullOrWhiteSpace(mKeyValue)) 
+        {
+            throw new InvalidOperationException($"The keyColumn {keyColumn} has no value and cannot be updated.");
+        }
+        return GenerateUpdateWithValues<T>(keyColumn, mKeyValue, useBrackets);
+    }
+
+    /// <summary>
+    /// Generates an UPDATE SQL statement for the current instance with actual values from the properties specifing the keyColumn and it's value
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="keyColumn"></param>
+    /// <param name="keyValue"></param>
+    /// <returns>string</returns>
+    /// <remarks>keyValue should be single quoted if it is a string</remarks>
+    public string GenerateUpdateWithValues<T>(string keyColumn, string keyValue, bool useBrackets) where T : ADatabaseTable
+    {
+        m_StringBuilder.Append($"UPDATE {m_TableName} SET ");
+        foreach (PropertyInfo mPropertyItem in getPropertiesFromField<T>(false))
+        {
+            if (useBrackets) 
+            {
+                m_StringBuilder.Append($"[{getColumnName(mPropertyItem)}] = {formatValue(mPropertyItem.GetValue(this))}, ");
+            } else 
+            {
+                m_StringBuilder.Append($"{getColumnName(mPropertyItem)} = {formatValue(mPropertyItem.GetValue(this))}, ");
+            }
+        }
+        string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        mRetVal += $" WHERE {keyColumn} = {keyValue};";
+        m_StringBuilder.Clear();
+        return mRetVal;
+    }
+
+    /// <summary>
+    ///Returns a boolean given the DataRow and Column name for either bit or int values.
+    /// </summary>
+    /// <param name="dataRow">The dataRow.</param>
+    /// <param name="columnName">Name of the column.</param>
+    /// <returns>Boolean.</returns>
+    /// <remarks>
+    ///     Integer or int values not equal to 0 are considered true
+    /// </remarks>
+    #pragma warning disable CA1822 // Mark members as static
+    protected Boolean GetBool(DataRow dataRow, String columnName)
+    {
+        /*
+         * Not marked as static to give clarity of where the code exists when 
+         * reading it in the deriving class (eg. base.GetBool(dataRow, columnName))
+         * it is clear that the code resides in the abstract class.
+         */
+        bool mRetVal = false;
+        if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+        {
+            if (dataRow[columnName].ToString() == "1" || dataRow[columnName].ToString().ToUpper(CultureInfo.InvariantCulture) == "TRUE")
+            {
+                mRetVal = true;
+            }
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Helper method to get the column name from the attribute or property name
+    /// </summary>
+    /// <param name="property"></param>
+    /// <returns></returns>
+    private static string getColumnName(PropertyInfo property)
+    {
+        var attribute = property.GetCustomAttribute<ColumnName>();
+        return attribute?.Name ?? property.Name; // Use the attribute name if available, otherwise use the property name
+    }
+
+    /// <summary>
+    /// Static method to get all the column names either from the attribute or property name if the attribute is not present
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public string GetColumnNames<T>(bool useBrackets) where T : ADatabaseTable
+    {
+        PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(true);
+        return getColumnNames<T>(mPropertiesArray, useBrackets);
+    }
+
+    /// <summary>
+    /// Helper method to get all the column names either from the attribute or property name if the attribute is not present
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="propertiesArray"></param>
+    /// <returns></returns>
+    private static string getColumnNames<T>(PropertyInfo[] propertiesArray, bool useBrackets) where T : ADatabaseTable
+    {
+        foreach (PropertyInfo mPropertyItem in propertiesArray)
+        {
+            if (useBrackets) 
+            {
+                m_StringBuilder.Append("[" + getColumnName(mPropertyItem) + "], ");
+            } else 
+            {
+                m_StringBuilder.Append(getColumnName(mPropertyItem) + ", ");                
+            }            
+        }
+        string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        m_StringBuilder.Clear();
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Helper method to get a property from either the attribute or the property name
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
+    private PropertyInfo getProperty<T>(string propertyName, bool includePrimaryKey) where T : ADatabaseTable
+    {
+        PropertyInfo mRetVal = null;
+        PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(includePrimaryKey);
+        mRetVal = mPropertiesArray.FirstOrDefault(propertyInfo => 
+            propertyInfo.Name == propertyName || 
+            propertyInfo.GetCustomAttribute<ColumnName>()?.Name == propertyName
+        );
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Helper method to get the property's value given it's name
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public string GetPropertyValue<T>(string propertyName) where T : ADatabaseTable
+    {
+        PropertyInfo mPropertyItem = getProperty<T>(propertyName, true);
+        if (mPropertyItem == null) 
+        {
+            throw new InvalidOperationException($"The Property {propertyName} was not found.");
+        }
+        string mRetVal = formatValue(mPropertyItem.GetValue(this));
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a DateTime given the a DataRow and Column name and the default value.
+    /// </summary>
+    /// <param name="dataRow">DataRow</param>
+    /// <param name="columnName">String</param>
+    /// <param name="defaultDateTime">DateTime</param>
+    /// <returns>DateTime</returns>
+    /// <remarks></remarks>
+    #pragma warning disable CA1822 // Mark members as static
+    protected DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
+    {
+        /*
+         * Not marked as static to give clarity of where the code exists when 
+         * reading it in the deriving class (eg. base.GetDateTime(dataRow, columnName, defaultDateTime))
+         * it is clear that the code resides in the abstract class.
+         */
+        DateTime mRetVal = defaultDateTime;
+        if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+        {
+            mRetVal = DateTime.Parse(dataRow[columnName].ToString(), CultureInfo.CurrentCulture);
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
     /// Returns an int given the DataRow and Column name
     /// </summary>
     /// <param name="dataRow"></param>
     /// <param name="columnName"></param>
     /// <returns>-1 if no value was found</returns>
-    protected static Int32 GetInt(DataRow dataRow, String columnName)
+    #pragma warning disable CA1822 // Mark members as static
+    protected Int32 GetInt(DataRow dataRow, String columnName)
     {
+        /*
+         * Not marked as static to give clarity of where the code exists when 
+         * reading it in the deriving class (eg. base.GetInt(dataRow, columnName))
+         * it is clear that the code resides in the abstract class.
+         */
         int mRetVal = -1;
         if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
         {
@@ -470,9 +522,16 @@ public abstract class ADatabaseTable : IDatabaseTable
         return mRetVal;
     }
 
+    /// <summary>
+    /// Return the value of the primary key
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     static string GetPrimaryKeyName<T>() where T : ADatabaseTable
     {
-        PropertyInfo mPrimaryKeyProperty = getProperties<T>(true).Where(p => p.IsDefined(typeof(PrimaryKeyAttribute), false)).FirstOrDefault();
+        PropertyInfo mPrimaryKeyProperty = getPropertiesFromType<T>().FirstOrDefault(propertyInfo => 
+            propertyInfo.IsDefined(typeof(PrimaryKey), false)
+        );
         string mRetVal = string.Empty;
         if (mPrimaryKeyProperty != null)
         {
@@ -482,22 +541,36 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    /// Returns an array of PropertyInfo
+    /// Returns an array of PropertyInfo for the specified type
+    /// </summary>
+    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
+    /// <returns></returns>
+    private static PropertyInfo[] getPropertiesFromType<T>() where T : ADatabaseTable
+    {
+        Type mType = typeof(T);
+        return mType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where((propertyInfo) => 
+            propertyInfo.CanRead && 
+            !propertyInfo.IsDefined(typeof(IgnoreProperty), false)
+        ).ToArray();
+    }
+
+    /// <summary>
+    /// Returns an array of PropertyInfo for the specified type from a static memeber
     /// </summary>
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
     /// <param name="includePrimaryKey"></param>
     /// <returns></returns>
-    private static PropertyInfo[] getProperties<T>(bool includePrimaryKey) where T : ADatabaseTable
+    /// 
+    private PropertyInfo[] getPropertiesFromField<T>(bool includePrimaryKey) where T : ADatabaseTable
     {
         if (m_PropertyInfoArray == null)
         {
-            Type mType = typeof(T);
-            m_PropertyInfoArray = mType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToArray();
+            m_PropertyInfoArray = getPropertiesFromType<T>().ToArray();
         }
         PropertyInfo[] mPropertyInfoArray = m_PropertyInfoArray.Where(p => 
                 p.CanRead &&
-                !p.IsDefined(typeof(IgnorePropertyAttribute), false) &&
-                (includePrimaryKey || !p.IsDefined(typeof(PrimaryKeyAttribute), false))
+                !p.IsDefined(typeof(IgnoreProperty), false) &&
+                (includePrimaryKey || !p.IsDefined(typeof(PrimaryKey), false))
         ).ToArray();
         return mPropertyInfoArray;
     }
@@ -508,8 +581,13 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="dataRow"></param>
     /// <param name="columnName"></param>
     /// <returns>string value or empty</returns>
-    protected static String GetString(DataRow dataRow, String columnName)
+    protected String GetString(DataRow dataRow, String columnName)
     {
+        /*
+         * Not marked as static to give clarity of where the code exists when 
+         * reading it in the deriving class (eg. base.GetString(dataRow, columnName))
+         * it is clear that the code resides in the abstract class.
+         */
         String mRetVal = string.Empty;
         if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
         {
@@ -559,7 +637,6 @@ public abstract class ADatabaseTable : IDatabaseTable
     ///     <br/>m_ForeignKeyName - Only used for bulk inserts
     ///     <br/>m_IsForeignKeyNumeric - Only used for bulk inserts (Defaults to true)
     ///     <br/>m_TableName - The name of the table the class represents
-    ///     <br/>m_UseBrackets - Whether to use brackets or not in the column names (Defaults to true)
     /// </remarks>
     protected abstract void SetupClass();
 }
