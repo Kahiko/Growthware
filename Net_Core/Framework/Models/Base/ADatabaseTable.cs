@@ -60,6 +60,65 @@ public abstract class ADatabaseTable : IDatabaseTable
         protected static string m_TableName = string.Empty;
     #endregion
 
+    #region Public Fields
+        // Default System DateTime of 1/1/1753 12:00:00 AM
+        [DBIgnoreProperty]
+        public DateTime DefaultSystemDateTime
+        {
+            get 
+            { 
+                if (!m_IsSetDefaultSystemDateTime)
+                {
+                    m_IsSetDefaultSystemDateTime = true;
+                    m_DefaultSystemDateTime = new(1753, 1, 1, 0, 0, 0); // 1/1/1753 12:00:00 AM
+                }
+                return (DateTime)m_DefaultSystemDateTime; 
+            }
+        }
+
+        // The name of the foreign key used when performing bulk insert.
+        [DBIgnoreProperty]
+        public string ForeignKeyName
+        {
+            get {return m_ForeignKeyName;}        
+        }
+
+        // Whether the foreign key is numeric only used in bulk inserts
+        [DBIgnoreProperty]
+        public bool IsForeignKeyNumeric
+        {
+            get
+            {
+                return m_IsForeignKeyNumeric;
+            }
+        }
+
+        // The name of the database table
+        [DBIgnoreProperty]
+        public string TableName
+        { 
+            get
+            {
+                if (string.IsNullOrWhiteSpace(m_TableName))
+                {
+                    throw new InvalidOperationException($"The deriving class must set the m_TableName field.");
+                }
+                return m_TableName;
+            }
+        }
+    #endregion
+
+    /// <summary>
+    /// Implements Dispose
+    /// </summary>
+    /// <remarks></remarks>
+    public void Dispose()
+    {
+        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     /// <summary>
     /// Implements IDispose
     /// </summary>
@@ -80,63 +139,6 @@ public abstract class ADatabaseTable : IDatabaseTable
 
         }
         m_DisposedValue = true;
-    }
-
-    /// <summary>
-    /// Implements Dispose
-    /// </summary>
-    /// <remarks></remarks>
-    public void Dispose()
-    {
-        //Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    // Default System DateTime of 1/1/1753 12:00:00 AM
-    [DBIgnoreProperty]
-    public DateTime DefaultSystemDateTime
-    {
-        get 
-        { 
-            if (!m_IsSetDefaultSystemDateTime)
-            {
-                m_IsSetDefaultSystemDateTime = true;
-                m_DefaultSystemDateTime = new(1753, 1, 1, 0, 0, 0); // 1/1/1753 12:00:00 AM
-            }
-            return (DateTime)m_DefaultSystemDateTime; 
-        }
-    }
-
-    // The name of the foreign key used when performing bulk insert.
-    [DBIgnoreProperty]
-    public string ForeignKeyName
-    {
-        get {return m_ForeignKeyName;}        
-    }
-
-    // Whether the foreign key is numeric only used in bulk inserts
-    [DBIgnoreProperty]
-    public bool IsForeignKeyNumeric
-    {
-        get
-        {
-            return m_IsForeignKeyNumeric;
-        }
-    }
-
-    // The name of the database table
-    [DBIgnoreProperty]
-    public string TableName
-    { 
-        get
-        {
-            if (string.IsNullOrWhiteSpace(m_TableName))
-            {
-                throw new InvalidOperationException($"The deriving class must set the m_TableName field.");
-            }
-            return m_TableName;
-        }
     }
 
     /// <summary>
