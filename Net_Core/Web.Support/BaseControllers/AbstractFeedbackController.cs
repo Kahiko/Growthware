@@ -81,7 +81,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
-        string mColumns = "[FeedbackId], [Assignee], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
+        string mColumns = "[FeedbackId], [Assignee], [SubmittedBy], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
         if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
