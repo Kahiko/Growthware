@@ -26,8 +26,8 @@ export class Feedback implements IFeedback {
     action = '';
     assigneeId = 1;
     assignee = 'Anonymous';
-    dateClosed = '1900-01-01T00:00:00';
-    dateOpened = '1900-01-01T00:00:00';
+    dateClosed = '1753-01-01T00:00:00';
+    dateOpened = '1753-01-01T00:00:00';
     details = '';
     foundInVersion = '';
     functionSeqId = -1;
