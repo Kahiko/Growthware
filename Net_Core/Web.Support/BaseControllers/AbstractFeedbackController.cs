@@ -48,7 +48,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 {
                     mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
                     mFeedbackToSave.DateOpened = DateTime.Now;
-                    mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultDateTime;
+                    mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultSystemDateTime;
                     mFeedbackToSave.SubmittedById = mRequestingProfile.Id;
                     mFeedbackToSave.FoundInVersion = ConfigSettings.Version;
                 }
