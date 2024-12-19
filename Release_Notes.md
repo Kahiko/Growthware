@@ -14,6 +14,10 @@
 - Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions.
     - Making some of the methods and properties static
     - Added addtributes to the properties giving clairty to them
+Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
+- Converted the following to either ADatabaseTable or AAddedUpdated
+    - MAccountProfile   to AAddedUpdated
+    - MRefreshToken     to ADatabaseTable
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
