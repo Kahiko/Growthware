@@ -9,21 +9,31 @@ namespace GrowthWare.Framework.Models;
 [Serializable(), CLSCompliant(true)]
 public class MCalendarEvent : AbstractBaseModel
 {
-    public bool AllDay {get; set;}
-    public string Color {get; set;}
-    public string Description {get; set;}
-    /// <summary>
-    /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
-    /// </summary>
-    public string End {get; set;}
-    public string Link {get; set;}
-    public string Location {get; set;}
-    public string Owner {get; set;}
-    /// <summary>
-    /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
-    /// </summary>
-    public string Start {get; set;}
-    public string Title {get; set;}
+    #region Public Properties
+        public bool AllDay {get; set;}
+
+        public string Color {get; set;}
+
+        public string Description {get; set;}
+
+        /// <summary>
+        /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
+        /// </summary>
+        public string End {get; set;}
+
+        public string Link {get; set;}
+
+        public string Location {get; set;}
+
+        public string Owner {get; set;}
+
+        /// <summary>
+        /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
+        /// </summary>
+        public string Start {get; set;}
+
+        public string Title {get; set;}
+    #endregion
 
     public MCalendarEvent()
     {
