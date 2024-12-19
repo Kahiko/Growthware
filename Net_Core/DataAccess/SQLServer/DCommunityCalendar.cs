@@ -85,12 +85,6 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-        bool ICommunityCalendar.SaveCalendar(MCalendar calendar) 
-        {
-            this.checkValid();
-            return true;
-        }
-
 		DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent) 
         {
             this.checkValid();

@@ -11,11 +11,15 @@ namespace GrowthWare.DataAccess.Interfaces
         int SecurityEntitySeqId {get; set;}
 
         bool DeleteCalendar(int calendarSeqId);
-		bool DeleteEvent(int calendarEventSeqId);
+		
+        bool DeleteEvent(int calendarEventSeqId);
+        
         bool GetCalendar(int calendarSeqId);
-		DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
+		
+        DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
+        
         DataRow GetEvent(int calendarEventSeqId);
-        bool SaveCalendar(MCalendar calendar);
+        
 		DataRow SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent);
     }
 }
