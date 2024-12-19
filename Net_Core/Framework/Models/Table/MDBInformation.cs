@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models;
 /// Store procedures: 
 /// ZGWSystem.Set_DataBase_Information, ZGWSystem.Get_Database_Information
 /// </remarks>
-public class MDBInformation : AbstractBaseModel
+public class MDBInformation : AAddedUpdated
 {
     #region Constructors
         /// <summary>
@@ -19,6 +19,7 @@ public class MDBInformation : AbstractBaseModel
         /// </summary>
         public MDBInformation()
         {
+            this.SetupClass();
         }
 
         /// <summary>
@@ -27,24 +28,27 @@ public class MDBInformation : AbstractBaseModel
         /// <param name="dataRow">The dataRow.</param>
         public MDBInformation(DataRow dataRow)
         {
+            this.SetupClass();
             this.Initialize(dataRow);
         }
     #endregion
 
     #region Member Fields
-        private int mInformationSeqId = 1;
-        private string mVersion = string.Empty;
-        private int mEnableInheritance = 1;
+        private int m_InformationSeqId = 1;
+        private string m_Version = string.Empty;
+        private int m_EnableInheritance = 1;
     #endregion
 
     #region Public Fields
         /// <summary>
         /// The database information Sequence Identifier
         /// </summary>
+        [DBPrimaryKey]
+        [DBColumnName("Database_InformationSeqId")]
         public int DatabaseInformationSeqId
         {
-            get { return mInformationSeqId; }
-            set { mInformationSeqId = value; }
+            get { return m_InformationSeqId; }
+            set { m_InformationSeqId = value; }
         }
 
         /// <summary>
@@ -52,10 +56,10 @@ public class MDBInformation : AbstractBaseModel
         /// </summary>
         public string Version
         {
-            get { return mVersion.Trim(); }
+            get { return m_Version.Trim(); }
             set
             {
-                if (value != null) mVersion = value.Trim();
+                if (value != null) m_Version = value.Trim();
             }
         }
 
@@ -63,10 +67,11 @@ public class MDBInformation : AbstractBaseModel
         /// Determins if the database should use Inheritance when 
         /// calculating roles and or groups.
         /// </summary>
+        [DBColumnName("Enable_Inheritance")]
         public int EnableInheritance
         {
-            get { return mEnableInheritance; }
-            set { mEnableInheritance = value; }
+            get { return m_EnableInheritance; }
+            set { m_EnableInheritance = value; }
         }
     #endregion
 
@@ -78,12 +83,16 @@ public class MDBInformation : AbstractBaseModel
         /// <param name="dataRow">DataRow</param>
         protected new void Initialize(DataRow dataRow)
         {
-            base.NameColumnName = "VERSION";
-            base.IdColumnName = "Information_SEQ_ID";
             base.Initialize(dataRow);
-            mInformationSeqId = base.GetInt(dataRow, "Information_SEQ_ID");
-            mVersion = base.GetString(dataRow, "VERSION");
-            mEnableInheritance = base.GetInt(dataRow, "ENABLE_INHERITANCE");
+            m_InformationSeqId = base.GetInt(dataRow, "Information_SEQ_ID");
+            m_Version = base.GetString(dataRow, "VERSION");
+            m_EnableInheritance = base.GetInt(dataRow, "ENABLE_INHERITANCE");
+        }
+
+        protected override void SetupClass()
+        {
+            base.m_ForeignKeyName = "NOT_USED";
+            m_TableName = "[ZGWSystem].[Database_Information]";
         }
     #endregion
 }

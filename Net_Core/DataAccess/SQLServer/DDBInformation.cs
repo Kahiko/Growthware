@@ -24,11 +24,10 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             string mStoredProcedure = "ZGWSystem.Set_DataBase_Information";
             SqlParameter[] mParameters = { 
-                new SqlParameter("@P_Database_InformationSeqId", m_Profile.DatabaseInformationSeqId),
-                new SqlParameter("@P_Version", m_Profile.Version),
-                new SqlParameter("@P_Enable_Inheritance", m_Profile.EnableInheritance),
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
-
+                new ("@P_Database_InformationSeqId", m_Profile.DatabaseInformationSeqId),
+                new ("@P_Version", m_Profile.Version),
+                new ("@P_Enable_Inheritance", m_Profile.EnableInheritance),
+                new ("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.DatabaseInformationSeqId)),
                 GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.InputOutput)
             };
             try
