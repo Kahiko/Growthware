@@ -11,17 +11,17 @@ using GrowthWare.Framework.Interfaces;
 namespace GrowthWare.Framework.Models.Base;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class IgnoreProperty : Attribute { } // [IgnoreProperty]
+public class DBIgnoreProperty : Attribute { } // [DBIgnoreProperty]
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-public class PrimaryKey : Attribute { } // [ PrimaryKey]
+public class DBPrimaryKey : Attribute { } // [DBPrimaryKey]
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ColumnName : Attribute // [ColumnName("The_Column_Name")]
+public class DBColumnName : Attribute // [DBColumnName("The_Column_Name")]
 {
     public string Name { get; }
 
-    public ColumnName(string name)
+    public DBColumnName(string name)
     {
         Name = name;
     }
@@ -95,7 +95,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     // Default System DateTime of 1/1/1753 12:00:00 AM
-    [IgnoreProperty]
+    [DBIgnoreProperty]
     public DateTime DefaultSystemDateTime
     {
         get 
@@ -110,14 +110,14 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     // The name of the foreign key used when performing bulk insert.
-    [IgnoreProperty]
+    [DBIgnoreProperty]
     public string ForeignKeyName
     {
         get {return m_ForeignKeyName;}        
     }
 
     // Whether the foreign key is numeric only used in bulk inserts
-    [IgnoreProperty]
+    [DBIgnoreProperty]
     public bool IsForeignKeyNumeric
     {
         get
@@ -127,7 +127,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     // The name of the database table
-    [IgnoreProperty]
+    [DBIgnoreProperty]
     public string TableName
     { 
         get
@@ -273,7 +273,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     public static string GenerateInsertWithParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable
     {
         PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where((propertyInfo) => 
-            (includePrimaryKey || !propertyInfo.IsDefined(typeof(PrimaryKey), false))
+            (includePrimaryKey || !propertyInfo.IsDefined(typeof(DBPrimaryKey), false))
         ).ToArray();
         string mColumnNames = getColumnNames<T>(mPropertiesArray, useBrackets);
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
@@ -314,7 +314,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     public static string GenerateUpdateWithParameters<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
     {
         PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where(propertyInfo => 
-            !propertyInfo.IsDefined(typeof(PrimaryKey), false)
+            !propertyInfo.IsDefined(typeof(DBPrimaryKey), false)
         ).ToArray();
         var mSetClauses = string.Join(", ", mPropertiesArray.Select(p => $"[{getColumnName(p)}] = @{getColumnName(p)}"));
         if (!useBrackets) 
@@ -403,7 +403,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     private static string getColumnName(PropertyInfo property)
     {
-        var attribute = property.GetCustomAttribute<ColumnName>();
+        var attribute = property.GetCustomAttribute<DBColumnName>();
         return attribute?.Name ?? property.Name; // Use the attribute name if available, otherwise use the property name
     }
 
@@ -453,7 +453,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(includePrimaryKey);
         mRetVal = mPropertiesArray.FirstOrDefault(propertyInfo => 
             propertyInfo.Name == propertyName || 
-            propertyInfo.GetCustomAttribute<ColumnName>()?.Name == propertyName
+            propertyInfo.GetCustomAttribute<DBColumnName>()?.Name == propertyName
         );
         return mRetVal;
     }
@@ -530,7 +530,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     static string GetPrimaryKeyName<T>() where T : ADatabaseTable
     {
         PropertyInfo mPrimaryKeyProperty = getPropertiesFromType<T>().FirstOrDefault(propertyInfo => 
-            propertyInfo.IsDefined(typeof(PrimaryKey), false)
+            propertyInfo.IsDefined(typeof(DBPrimaryKey), false)
         );
         string mRetVal = string.Empty;
         if (mPrimaryKeyProperty != null)
@@ -550,7 +550,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         Type mType = typeof(T);
         return mType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where((propertyInfo) => 
             propertyInfo.CanRead && 
-            !propertyInfo.IsDefined(typeof(IgnoreProperty), false)
+            !propertyInfo.IsDefined(typeof(DBIgnoreProperty), false)
         ).ToArray();
     }
 
@@ -569,8 +569,8 @@ public abstract class ADatabaseTable : IDatabaseTable
         }
         PropertyInfo[] mPropertyInfoArray = m_PropertyInfoArray.Where(p => 
                 p.CanRead &&
-                !p.IsDefined(typeof(IgnoreProperty), false) &&
-                (includePrimaryKey || !p.IsDefined(typeof(PrimaryKey), false))
+                !p.IsDefined(typeof(DBIgnoreProperty), false) &&
+                (includePrimaryKey || !p.IsDefined(typeof(DBPrimaryKey), false))
         ).ToArray();
         return mPropertyInfoArray;
     }

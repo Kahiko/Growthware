@@ -14,25 +14,25 @@ public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated, IDatabaseTa
         /// <summary>
         /// Account ID used to add
         /// </summary>
-        [ColumnName("Added_By")]
+        [DBColumnName("Added_By")]
         public int AddedBy { get; set; }
 
         /// <summary>
         /// Date the row was added.
         /// </summary>
-        [ColumnName("Added_Date")]
+        [DBColumnName("Added_Date")]
         public DateTime AddedDate { get; set; }
 
         /// <summary>
         /// Account ID used to update
         /// </summary>
-        [ColumnName("Updated_By")]
+        [DBColumnName("Updated_By")]
         public int UpdatedBy { get; set; }
 
         /// <summary>
         /// The date lasted updated
         /// </summary>
-        [ColumnName("Updated_Date")]
+        [DBColumnName("Updated_Date")]
         public DateTime UpdatedDate { get; set; }
     #endregion
 
