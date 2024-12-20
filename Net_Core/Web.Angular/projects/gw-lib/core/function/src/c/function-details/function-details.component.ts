@@ -23,7 +23,7 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base
 import { IClientChoices } from '@growthware/core/clientchoices'
 import { GroupService } from '@growthware/core/group';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
-import { ModalService, IModalOptions, ModalOptions } from '@growthware/core/modal';
+import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { IKeyValuePair, KeyValuePair } from '@growthware/common/interfaces';
 import { RoleService } from '@growthware/core/role';
 import { PickListComponent } from '@growthware/core/pick-list';
@@ -63,6 +63,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	@ViewChild('helpControl') private _HelpControl!: TemplateRef<unknown>;
 	@ViewChild('helpSource') private _HelpSource!: TemplateRef<unknown>;
 	@ViewChild('helpPassword') private _HelpPassword!: TemplateRef<unknown>;
+	@ViewChild('helpImpersonation') private _HelpImpersonation!: TemplateRef<unknown>;
 
 	private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 	private _Profile: IFunctionProfile = new FunctionProfile();
@@ -290,6 +291,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	}
 
 	onHelp(controleName: string): void {
+		this._HelpOptions.windowSize = 1;
 		switch (controleName) {
 			case 'Action':
 				this._HelpOptions.contentPayLoad = this._HelpAction;
@@ -301,7 +303,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 				this._HelpOptions.contentPayLoad = this._HelpControl;
 				break;
 			case 'Passord':
+				this._HelpOptions.windowSize = new WindowSize(150, 480);
 				this._HelpOptions.contentPayLoad = this._HelpPassword;
+				break;
+			case 'impersonation':
+				this._HelpOptions.contentPayLoad = this._HelpImpersonation;
 				break;
 			default:
 				break;

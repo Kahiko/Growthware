@@ -251,7 +251,7 @@ public abstract class AbstractFunctionController : ControllerBase
                     if(mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
-                        mDirectoryProfile.FunctionSeqId = mProfileToSave.Id;
+                        mDirectoryProfile.Id = mProfileToSave.Id;
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.Impersonate = functionProfile.DirectoryData.Impersonate;
@@ -263,7 +263,7 @@ public abstract class AbstractFunctionController : ControllerBase
                             mDirectoryProfile.ImpersonatePassword = functionProfile.DirectoryData.ImpersonatePassword;
                         }
                     }
-                    mDirectoryProfile.Name = functionProfile.DirectoryData.Name;
+                    mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
                     DirectoryUtility.Save(mDirectoryProfile);
                 }

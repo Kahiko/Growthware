@@ -26,14 +26,21 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
             String mStoredProcedure = "ZGWOptional.Set_Directory";
+            String mImpersonateAccount = profile.ImpersonateAccount;
+            String mImpersonatePassword = profile.ImpersonatePassword;
+            if (!profile.Impersonate || string.IsNullOrWhiteSpace(profile.Directory))
+            {
+                mImpersonateAccount = string.Empty;
+                mImpersonatePassword = string.Empty;
+            }
             SqlParameter[] mParameters =
 			{
-			  new SqlParameter("@P_FunctionSeqId", profile.FunctionSeqId),
+			  new SqlParameter("@P_FunctionSeqId", profile.Id),
 			  new SqlParameter("@P_Directory", profile.Directory),
 			  new SqlParameter("@P_Impersonate", profile.Impersonate),
-			  new SqlParameter("@P_Impersonating_Account", profile.ImpersonateAccount),
-			  new SqlParameter("@P_Impersonating_Password", profile.ImpersonatePassword),
-			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
+			  new SqlParameter("@P_Impersonating_Account", mImpersonateAccount),
+			  new SqlParameter("@P_Impersonating_Password", mImpersonatePassword),
+			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
 			  GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)			
 			};
             base.ExecuteNonQuery(mStoredProcedure, mParameters);

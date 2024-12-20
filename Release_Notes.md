@@ -18,6 +18,11 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Converted the following to either ADatabaseTable or AAddedUpdated
     - MAccountProfile   to AAddedUpdated
     - MRefreshToken     to ADatabaseTable
+    - MCalendar         to AAddedUpdated
+    - MCalendarEvent    to AAddedUpdated
+    - MDirectoryProfile to AAddedUpdated
+    - MMessage          to AAddedUpdated
+    - MDirectoryProfile to AAddedUpdated
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
@@ -29,6 +34,7 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Updated the /* Form */ section was missing formSectionContents for the Professional "Skin"
 - Fixed not being able save the "IsSysAdmin" property in AccountDetailsComponent
 - Fixed DAccounts not saving ResetTokenExpires and MiddleName correctly
+- Fixed saving the directory profile where the ImpersonatePassword was not being handeled correctly.  If "Impersonate" is false then both the Password and ImpersonatePassword be saved as string.empty.  The password is no longer displayed in the UI as was desinged (leaving it blank with keep the same password)
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
