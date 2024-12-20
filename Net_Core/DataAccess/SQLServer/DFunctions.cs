@@ -46,10 +46,9 @@ namespace GrowthWare.DataAccess.SQLServer
             {
                 DataSet mDSFunctions = null;
                 checkValid();
-                SqlParameter[] mParameters =
-				{
+                SqlParameter[] mParameters = [
 					new SqlParameter("@P_FunctionSeqId", m_Profile.Id)
-				};
+                ];
                 try
                 {
                     string mStoredProcedure = "ZGWSecurity.Get_Function";
@@ -161,9 +160,8 @@ namespace GrowthWare.DataAccess.SQLServer
 
         int IFunction.Save()
         {
-            SqlParameter[] mParameters = 
-			{ 
-				GetSqlParameter("@P_FunctionSeqId", m_Profile.Id,ParameterDirection.InputOutput), 
+            SqlParameter[] mParameters = [ 
+				GetSqlParameter("@P_FunctionSeqId", m_Profile.Id, ParameterDirection.InputOutput), 
 				new SqlParameter("@P_Name", m_Profile.Name), 
 				new SqlParameter("@P_Description", m_Profile.Description ?? ""), 
 				new SqlParameter("@P_FunctionTypeSeqId", m_Profile.FunctionTypeSeqId), 
@@ -180,8 +178,8 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords ?? ""), 
 				new SqlParameter("@P_ParentSeqId", m_Profile.ParentId), 
 				new SqlParameter("@P_Notes", m_Profile.Notes ?? ""), 
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
-			};
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+			];
             String mStoreProc = "ZGWSecurity.Set_Function";
             base.ExecuteNonQuery(mStoreProc, mParameters);
             return int.Parse(GetParameterValue("@P_FunctionSeqId", mParameters), CultureInfo.InvariantCulture);
@@ -192,13 +190,13 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mCommaSeporatedString = m_Profile.GetCommaSeparatedGroups(permission);
             string mStoreProcedure = "ZGWSecurity.Set_Function_Groups";
-            SqlParameter[] mParameters = { 
-											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-											  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
-											  new SqlParameter("@P_Groups", mCommaSeporatedString), 
-											  new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
-										  };
+            SqlParameter[] mParameters = [
+                new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
+                new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
+                new SqlParameter("@P_Groups", mCommaSeporatedString), 
+                new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+            ];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
 
@@ -207,24 +205,24 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mCommaSeporatedString = m_Profile.GetCommaSeparatedAssignedRoles(permission);
             string mStoreProcedure = "ZGWSecurity.Set_Function_Roles";
-            SqlParameter[] mParameters = { 
-											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-											  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
-											  new SqlParameter("@P_Roles", mCommaSeporatedString), 
-											  new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
-										  };
+            SqlParameter[] mParameters = [ 
+                new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
+                new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
+                new SqlParameter("@P_Roles", mCommaSeporatedString), 
+                new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+            ];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
 
         void IFunction.UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile)
         {
             string mStoreProcedure = "ZGWSecurity.Set_Function_Sort";
-            SqlParameter[] mParameters = { 
+            SqlParameter[] mParameters = [ 
 				new SqlParameter("@P_Commaseparated_Ids", commaSeparated_Ids), 
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
 				GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
-			};
+			];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
         #endregion

@@ -16,13 +16,14 @@
     - Added addtributes to the properties giving clairty to them
 Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Converted the following to either ADatabaseTable or AAddedUpdated
-    - MAccountProfile   to AAddedUpdated
-    - MRefreshToken     to ADatabaseTable
-    - MCalendar         to AAddedUpdated
-    - MCalendarEvent    to AAddedUpdated
-    - MDirectoryProfile to AAddedUpdated
-    - MMessage          to AAddedUpdated
-    - MDirectoryProfile to AAddedUpdated
+    - MAccountProfile                       to AAddedUpdated
+    - MRefreshToken                         to ADatabaseTable
+    - MCalendar                             to AAddedUpdated
+    - MCalendarEvent                        to AAddedUpdated
+    - MDirectoryProfile                     to AAddedUpdated
+    - MMessage                              to AAddedUpdated
+    - MDirectoryProfile                     to AAddedUpdated
+    - AbstractGroupRolePermissionSecurity   to AAddedUpdated
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

@@ -21,7 +21,7 @@ namespace GrowthWare.Framework.Models
     /// roles from this class as well as the ones for yours.
     ///</remarks>
     [Serializable(), CLSCompliant(true)]
-    public abstract class AbstractGroupRolePermissionSecurity : AbstractBaseModel, IGroupRolePermissionSecurity
+    public abstract class AbstractGroupRolePermissionSecurity : AAddedUpdated, IGroupRolePermissionSecurity
     {
         private Collection<string> m_AssignedAddRoles = new Collection<string>();
         private Collection<string> m_AssignedDeleteRoles = new Collection<string>();
@@ -101,6 +101,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return assigned roles associated with the "Add" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> AssignedAddRoles
         {
             get { return m_AssignedAddRoles; }
@@ -109,6 +110,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return roles associated with the "Add" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> DerivedAddRoles
         {
             get { return m_DerivedAddRoles; }
@@ -117,6 +119,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return assigned roles associated with the "Delete" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> AssignedDeleteRoles
         {
             get { return m_AssignedDeleteRoles; }
@@ -125,6 +128,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return roles associated with the "Delete" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> DerivedDeleteRoles
         {
             get { return m_DerivedDeleteRoles; }
@@ -133,6 +137,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return roles associated with the "Edit" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> AssignedEditRoles
         {
             get { return m_AssignedEditRoles; }
@@ -141,6 +146,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return roles associated with the "Edit" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> DerivedEditRoles
         {
             get { return m_DerivedEditRoles; }
@@ -149,6 +155,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return assigned roles associated with the "View" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> AssignedViewRoles
         {
             get { return m_AssignedViewRoles; }
@@ -157,6 +164,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return roles associated with the "View" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> DerivedViewRoles
         {
             get { return m_DerivedViewRoles; }
@@ -165,6 +173,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return groups associated with the "Add" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> AddGroups
         {
             get { return m_AddGroups; }
@@ -173,6 +182,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return groups associated with the "Delete" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> DeleteGroups
         {
             get { return m_DeleteGroups; }
@@ -181,6 +191,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return groups associated with the "Edit" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> EditGroups
         {
             get { return m_EditGroups; }
@@ -189,6 +200,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Return groups associated with the "View" permission.
         /// </summary>
+        [DBIgnoreProperty]
         public Collection<string> ViewGroups
         {
             get { return m_ViewGroups; }
@@ -239,6 +251,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Represents the permission column name.
         /// </summary>
+        [DBIgnoreProperty]
         public string PermissionColumn
         {
             get { return m_PermissionColumn; }
@@ -252,6 +265,7 @@ namespace GrowthWare.Framework.Models
         /// <summary>
         /// Represents the role column name.
         /// </summary>
+        [DBIgnoreProperty]
         public string RoleColumn
         {
             get { return m_RoleColumn; }
