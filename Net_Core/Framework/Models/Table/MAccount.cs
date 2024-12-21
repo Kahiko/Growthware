@@ -15,7 +15,7 @@ namespace GrowthWare.Framework.Models;
 public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
 {
 
-    #region Member fields
+    #region Member Fields
         private Collection<string> m_AssignedRoles = new Collection<string>();
         private Collection<string> m_AssignedGroups = new Collection<string>();
         private Collection<string> m_DerivedRoles = new Collection<string>();
