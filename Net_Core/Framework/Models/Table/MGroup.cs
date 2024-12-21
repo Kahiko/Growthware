@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models;
 public class MGroupProfile : AbstractBaseModel
 {
 
-    #region Member Properties
+    #region Member Fields
         private string m_Description = string.Empty;
         private int m_SecurityEntityID = 1;
     #endregion
