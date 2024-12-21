@@ -159,7 +159,7 @@ public class BGroups : AbstractBusinessLogic
     public string[] GetSelectedRoles(MGroupRoles profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        ArrayList ClientRoles = new ArrayList();
+        ArrayList mRolesArray = new ArrayList();
         m_DGroups.GroupRolesProfile = profile;
         DataTable myDataTable = null;
         if (DatabaseIsOnline())
@@ -167,11 +167,9 @@ public class BGroups : AbstractBusinessLogic
             try
             {
                 myDataTable = m_DGroups.GroupRoles();
-                DataRow myDR = null;
-                foreach (DataRow myDR_loopVariable in myDataTable.Rows)
+                foreach (DataRow item in myDataTable.Rows)
                 {
-                    myDR = myDR_loopVariable;
-                    ClientRoles.Add(myDR["Role"].ToString());
+                    mRolesArray.Add(item["Role"].ToString());
                 }
             }
             catch (BusinessLogicLayerException)
@@ -179,7 +177,7 @@ public class BGroups : AbstractBusinessLogic
                 throw;
             }
         }
-        return (string[])ClientRoles.ToArray(typeof(string));
+        return (string[])mRolesArray.ToArray(typeof(string));
     }
 
     /// <summary>
