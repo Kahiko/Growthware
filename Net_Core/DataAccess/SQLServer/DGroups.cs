@@ -121,7 +121,14 @@ namespace GrowthWare.DataAccess.SQLServer
 
         private SqlParameter[] getInsertUpdateParameters()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_GroupSeqId", Profile.Id), new SqlParameter("@P_Name", Profile.Name), new SqlParameter("@P_Description", Profile.Description), new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)), GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) };
+            SqlParameter[] mParameters = [
+                new SqlParameter("@P_GroupSeqId", Profile.Id), 
+                new SqlParameter("@P_Name", Profile.Name), 
+                new SqlParameter("@P_Description", Profile.Description), 
+                new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile, Profile.Id)), 
+                GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) 
+            ];
             return mParameters;
         }
     }

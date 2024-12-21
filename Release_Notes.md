@@ -25,6 +25,7 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
     - MDirectoryProfile                     to AAddedUpdated
     - AbstractGroupRolePermissionSecurity   to AAddedUpdated
     - MFunctionTypeProfile                  to AAddedUpdated
+    - MGroupProfile                         to AAddedUpdated
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

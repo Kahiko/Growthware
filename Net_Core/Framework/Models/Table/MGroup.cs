@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Model object representing the GroupProfile
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MGroupProfile : AbstractBaseModel
+public class MGroupProfile : AAddedUpdated
 {
 
     #region Member Fields
@@ -18,16 +18,6 @@ public class MGroupProfile : AbstractBaseModel
 
     #region Public Properties
         /// <summary>
-        /// Gets or sets the security entity ID.
-        /// </summary>
-        /// <value>The security entity ID.</value>
-        public int SecurityEntityID
-        {
-            get { return m_SecurityEntityID; }
-            set { m_SecurityEntityID = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the description.
         /// </summary>
         /// <value>The description.</value>
@@ -35,6 +25,23 @@ public class MGroupProfile : AbstractBaseModel
         {
             get { return m_Description; }
             set { if (value != null) m_Description = value.Trim(); }
+        }
+
+        [DBPrimaryKey]
+        [DBColumnName("GroupSeqId")]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the security entity ID.
+        /// </summary>
+        /// <value>The security entity ID.</value>
+        [DBIgnoreProperty]
+        public int SecurityEntityID
+        {
+            get { return m_SecurityEntityID; }
+            set { m_SecurityEntityID = value; }
         }
     #endregion
 
@@ -45,6 +52,7 @@ public class MGroupProfile : AbstractBaseModel
         /// <remarks></remarks>
         public MGroupProfile()
         {
+            SetupClass();
         }
 
         /// <summary>
@@ -53,16 +61,22 @@ public class MGroupProfile : AbstractBaseModel
         /// <param name="profileDataRow">The profile data row.</param>
         public MGroupProfile(DataRow profileDataRow)
         {
+            SetupClass();
             this.Initialize(profileDataRow);
         }
     #endregion
 
     protected new void Initialize(DataRow dataRow)
     {
-        base.NameColumnName = "NAME";
-        base.IdColumnName = "GROUP_SEQ_ID";
         base.Initialize(dataRow);
+        this.Id = base.GetInt(dataRow, "GROUP_SEQ_ID");
+        this.Name = base.GetString(dataRow, "NAME");
         m_Description = base.GetString(dataRow, "DESCRIPTION");
     }
 
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWSecurity].[Groups]";
+    }
 }
