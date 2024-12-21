@@ -108,8 +108,7 @@ namespace GrowthWare.DataAccess.SQLServer
             }
             string mymStoreProcedure = "ZGWSecurity.Get_Group_Roles";
             SqlParameter[] mParameters = [ 
-                new SqlParameter("@P_SecurityEntitySeqId", 
-                GroupRolesProfile.SecurityEntityID), 
+                new SqlParameter("@P_SecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), 
                 new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId) 
             ];
             return base.GetDataTable(mymStoreProcedure, mParameters);
@@ -128,12 +127,10 @@ namespace GrowthWare.DataAccess.SQLServer
             }
             string mymStoreProcedure = "ZGWSecurity.Set_Group_Roles";
             SqlParameter[] mParameters = [
-                new SqlParameter("@P_GroupSeqId", 
-                GroupRolesProfile.GroupSeqId), 
-                new SqlParameter("@P_SecurityEntitySeqId", 
-                GroupRolesProfile.SecurityEntityID), new SqlParameter("@P_Roles", 
-                GroupRolesProfile.Roles), new SqlParameter("@P_Added_Updated_By", 
-                GetAddedUpdatedBy(GroupRolesProfile)) 
+                new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId), 
+                new SqlParameter("@P_SecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), 
+                new SqlParameter("@P_Roles", GroupRolesProfile.Roles), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile)) 
             ];
             base.ExecuteNonQuery(mymStoreProcedure, mParameters);
             return true;
