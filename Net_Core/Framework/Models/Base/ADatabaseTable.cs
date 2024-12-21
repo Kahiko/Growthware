@@ -60,7 +60,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         protected static string m_TableName = string.Empty;
     #endregion
 
-    #region Public Fields
+    #region Public Properties
         // Default System DateTime of 1/1/1753 12:00:00 AM
         [DBIgnoreProperty]
         public DateTime DefaultSystemDateTime
