@@ -114,10 +114,10 @@ public static class FunctionUtility
         if(m_FunctionTypes == null) 
         {
             BFunctions mBFunctions = getBusinessLogic();
-            DataTable mDataTable = mBFunctions.FunctionTypes();
+            var mDataTable = mBFunctions.FunctionTypes();
             m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
-                Key = int.Parse(item["FUNCTION_TYPE_SEQ_ID"].ToString()) ,
-                Value = item["Name"].ToString()
+                Key = item.Id,
+                Value = item.Name
             }).ToList() ;
 
         }

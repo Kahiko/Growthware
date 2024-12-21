@@ -87,9 +87,15 @@ namespace GrowthWare.BusinessLogic
         /// Gets the function types.
         /// </summary>
         /// <returns>DataTable.</returns>
-        public DataTable FunctionTypes()
+        public Collection<MFunctionTypeProfile> FunctionTypes()
         {
-            return m_DFunctions.FunctionTypes();
+            Collection<MFunctionTypeProfile> mRetVal = [];
+            DataTable mDTFunctionTypes = m_DFunctions.FunctionTypes();
+            foreach (DataRow item in mDTFunctionTypes.Rows)
+            {
+                mRetVal.Add(new MFunctionTypeProfile(item));
+            }
+            return mRetVal;
         }
 
         /// <summary>
