@@ -243,7 +243,7 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         /// <remarks></remarks>
         public MAccountProfile()
         {
-            SetupClass();
+            this.SetupClass();
         }
 
         public MAccountProfile(int requestingAccountId)
@@ -447,6 +447,7 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
 
     protected override void SetupClass()
     {
+        this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         base.m_IsForeignKeyNumeric = true;
         m_TableName = "[ZGWSecurity].[Accounts]";

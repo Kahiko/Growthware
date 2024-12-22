@@ -28,15 +28,11 @@ public class MCalendar : AAddedUpdated
     public MCalendar()
     {
         SetupClass();
-        // this.IdColumnName = "CalendarSeqId";
-        // this.NameColumnName = string.Empty;
     }
 
     public MCalendar(DataRow detailRow)
     {
         SetupClass();
-        // this.IdColumnName = "CalendarSeqId";
-        // this.NameColumnName = string.Empty;
         this.Initialize(detailRow);
         this.Active = base.GetBool(detailRow, "Active");
         this.Comment = base.GetString(detailRow, "Comment");
@@ -46,6 +42,7 @@ public class MCalendar : AAddedUpdated
 
     protected override void SetupClass()
     {
+        this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         m_TableName = "[ZGWOptional].[Calendars]";
     }

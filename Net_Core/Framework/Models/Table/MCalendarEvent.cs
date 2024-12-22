@@ -73,6 +73,7 @@ public class MCalendarEvent : AAddedUpdated
 
     protected override void SetupClass()
     {
+        this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         base.m_IsForeignKeyNumeric = true;
         m_TableName = "[ZGWOptional].[Calendar_Events]";

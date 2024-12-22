@@ -157,6 +157,7 @@ public class MMessage : AAddedUpdated, IMessage
 
     protected override void SetupClass() 
     {
+        this.Id = -1;
         m_TableName = "[ZGWCoreWeb].[Messages]";
     }
 

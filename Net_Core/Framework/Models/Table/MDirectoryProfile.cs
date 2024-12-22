@@ -19,7 +19,6 @@ public sealed class MDirectoryProfile : AAddedUpdated
         public MDirectoryProfile()
         {
             SetupClass();
-            Id = -1;
         }
 
         /// <summary>
@@ -130,6 +129,7 @@ public sealed class MDirectoryProfile : AAddedUpdated
 
     protected override void SetupClass()
     {
+        this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         base.m_IsForeignKeyNumeric = true;
         m_TableName = "[ZGWOptional].[Directories]";
