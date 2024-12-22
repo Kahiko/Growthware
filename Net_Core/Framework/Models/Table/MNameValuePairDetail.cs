@@ -2,63 +2,24 @@
 using System.Data;
 using GrowthWare.Framework.Models.Base;
 
-namespace GrowthWare.Framework.Models
+namespace GrowthWare.Framework.Models;
+
+/// <summary>
+/// Properties for an Name Value Pair Detail.
+/// </summary>
+[Serializable(), CLSCompliant(true)]
+public class MNameValuePairDetail : AbstractBaseModel
 {
-    /// <summary>
-    /// Properties for an Name Value Pair Detail.
-    /// </summary>
-    [Serializable(), CLSCompliant(true)]
-    public class MNameValuePairDetail : AbstractBaseModel
-    {
-#region "Member Properties"
+
+    #region Member Fields
         private int m_NameValuePairSeqId = -1;
         private string m_Text = string.Empty;
         private string m_Value = string.Empty;
         private int m_SortOrder = 0;
         private int m_Status = 1;
-#endregion
+    #endregion
 
-#region "Protected Methods"
-        /// <summary>
-        /// Initializes the specified dr.
-        /// </summary>
-        /// <param name="dataRow">The dr.</param>
-        protected new void Initialize(DataRow dataRow)
-        {
-            base.IdColumnName = "NVP_SEQ_DET_ID";
-            base.NameColumnName = "NVP_DET_TEXT";
-            base.Initialize(dataRow);
-            m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
-            m_Text = base.Name;
-            m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
-            m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
-            m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
-        }
-#endregion
-
-#region "Public Methods"
-        /// <summary>
-        /// Provides a new account profile with the default vaules
-        /// </summary>
-        /// <remarks></remarks>
-        public MNameValuePairDetail()
-        {
-        }
-
-        /// <summary>
-        /// Will populate values based on the contents of the data row.
-        /// </summary>
-        /// <param name="dataRow">Datarow containing base values</param>
-        /// <remarks>
-        /// Class should be inherited to extend to your project specific properties
-        /// </remarks>
-        public MNameValuePairDetail(DataRow dataRow)
-        {
-            this.Initialize(dataRow);
-        }
-#endregion
-
-#region "Public Properties"
+    #region Public Properties
         /// <summary>
         /// Gets or sets the Name Value Pair SeqId.
         /// </summary>
@@ -108,6 +69,43 @@ namespace GrowthWare.Framework.Models
             get { return m_Value; }
             set { if (!String.IsNullOrEmpty(value)) m_Value = value.Trim(); }
         }
-#endregion
+    #endregion
+
+    #region Constructors
+        /// <summary>
+        /// Provides a new account profile with the default vaules
+        /// </summary>
+        /// <remarks></remarks>
+        public MNameValuePairDetail()
+        {
+        }
+
+        /// <summary>
+        /// Will populate values based on the contents of the data row.
+        /// </summary>
+        /// <param name="dataRow">Datarow containing base values</param>
+        /// <remarks>
+        /// Class should be inherited to extend to your project specific properties
+        /// </remarks>
+        public MNameValuePairDetail(DataRow dataRow)
+        {
+            this.Initialize(dataRow);
+        }
+    #endregion
+
+    /// <summary>
+    /// Initializes the specified dr.
+    /// </summary>
+    /// <param name="dataRow">The dr.</param>
+    protected new void Initialize(DataRow dataRow)
+    {
+        base.IdColumnName = "NVP_SEQ_DET_ID";
+        base.NameColumnName = "NVP_DET_TEXT";
+        base.Initialize(dataRow);
+        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
+        m_Text = base.Name;
+        m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
+        m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
+        m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
     }
 }
