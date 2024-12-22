@@ -30,7 +30,6 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
 - The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
-- public ActionResult<UIGroupProfile> SaveGroup(UIGroupProfile groupProfile) is horribly messy and needs to be refactored
 
 ### Bug Fixes
 - Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.
@@ -40,6 +39,7 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Fixed DAccounts not saving ResetTokenExpires and MiddleName correctly
 - Fixed saving the directory profile where the ImpersonatePassword was not being handeled correctly.  If "Impersonate" is false then both the Password and ImpersonatePassword be saved as string.empty.  The password is no longer displayed in the UI as was desinged (leaving it blank with keep the same password)
 - Fixed bug where you couldn't save a group without roles
+- Cleaned up AbstractGroupController.SaveGroup(UIGroupProfile groupProfile)
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 

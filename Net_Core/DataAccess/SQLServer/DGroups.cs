@@ -130,7 +130,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId), 
                 new SqlParameter("@P_SecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), 
                 new SqlParameter("@P_Roles", GroupRolesProfile.Roles??""), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile, GroupRolesProfile.Id)) 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile, GroupRolesProfile.GroupSeqId)) 
             ];
             base.ExecuteNonQuery(mymStoreProcedure, mParameters);
             return true;

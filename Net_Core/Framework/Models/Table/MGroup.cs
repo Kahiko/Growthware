@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using GrowthWare.Framework.Models.Base;
+using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Framework.Models;
 
@@ -64,6 +65,14 @@ public class MGroupProfile : AAddedUpdated
             SetupClass();
             this.Initialize(profileDataRow);
         }
+
+        public MGroupProfile(UIGroupProfile uIGroupProfile)
+        {
+            SetupClass();
+            Name = uIGroupProfile.Name;
+            Description = uIGroupProfile.Description;
+            Id = uIGroupProfile.Id;
+        }
     #endregion
 
     protected new void Initialize(DataRow dataRow)
@@ -76,6 +85,7 @@ public class MGroupProfile : AAddedUpdated
 
     protected override void SetupClass()
     {
+        this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         m_TableName = "[ZGWSecurity].[Groups]";
     }

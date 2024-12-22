@@ -7,10 +7,15 @@ namespace GrowthWare.Framework.Models;
 /// Model object representing GroupRoles
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MGroupRoles : AbstractBaseModel
+public class MGroupRoles : AAddedUpdated
 {
+    /*
+     * Though this class inherits from the AAddedUpdated class, it does not make use of any of the 
+     * functions provided by that class only the AddedBy, AddedDate, UpdatedBy, and 
+     * UpdatedDate properties.
+     */
+
     #region Member Fields
-        private int m_AddedUpdatedBy;
 
         private int m_SecurityEntityID = -1;
 
@@ -20,26 +25,6 @@ public class MGroupRoles : AbstractBaseModel
     #endregion
 
     #region Public Properties
-        /// <summary>
-        /// Gets or Added Updated By id.
-        /// </summary>
-        /// <value>The Added Updated By id.</value>
-        public int AddedUpdatedBy
-        {
-            get { return m_AddedUpdatedBy; }
-            set { m_AddedUpdatedBy = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the Security Entity Id.
-        /// </summary>
-        /// <value>The Security Entity Id.</value>
-        public int SecurityEntityID
-        {
-            get { return m_SecurityEntityID; }
-            set { m_SecurityEntityID = value; }
-        }
-
         /// <summary>
         /// Gets or sets the Group Sequence Id.
         /// </summary>
@@ -59,5 +44,49 @@ public class MGroupRoles : AbstractBaseModel
             get { return m_Roles; }
             set { if (!String.IsNullOrEmpty(value)) m_Roles = value.Trim(); }
         }
+
+        /// <summary>
+        /// Gets or sets the Security Entity Id.
+        /// </summary>
+        /// <value>The Security Entity Id.</value>
+        public int SecurityEntityID
+        {
+            get { return m_SecurityEntityID; }
+            set { m_SecurityEntityID = value; }
+        }
+
     #endregion
+
+    #region Constructors
+        public MGroupRoles()
+        {
+            this.SetupClass();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MGroupRoles"/> class.
+        /// </summary>
+        /// <param name="roles">comma separated roles</param>
+        /// <param name="securityEntityID"></param>
+        public MGroupRoles(string roles, int securityEntityID)
+        {
+            this.SetupClass();
+            Roles = roles;
+            SecurityEntityID = securityEntityID;
+        }
+
+        public MGroupRoles(int groupSeqId, int securityEntityID)
+        {
+            this.SetupClass();
+            GroupSeqId = groupSeqId;
+            SecurityEntityID = securityEntityID;
+        }
+    #endregion
+
+    protected override void SetupClass()
+    {
+        GroupSeqId = -1;
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities]";
+    }
 }

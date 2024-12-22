@@ -8,6 +8,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Linq;
+using Microsoft.AspNetCore.Components;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -68,23 +69,29 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpPost("SaveGroup")]
     public ActionResult<UIGroupProfile> SaveGroup(UIGroupProfile groupProfile)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        MGroupProfile mProfileToSave = new MGroupProfile();
-        MGroupRoles mGroupRoles = new MGroupRoles();
-        mProfileToSave.SecurityEntityID = mSecurityEntity.Id;
-        mGroupRoles.SecurityEntityID = mProfileToSave.SecurityEntityID;
-        mGroupRoles.Roles = string.Join(",", groupProfile.RolesInGroup);
         if (HttpContext.Session.GetString("EditId") != null)
         {
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+            int mSecurityEntityId = SecurityEntityUtility.CurrentProfile.Id;
+
+            // Get the group profile populated with the parameter values
+            MGroupProfile mProfileToSave = new MGroupProfile(groupProfile);
+            mProfileToSave.SecurityEntityID = mSecurityEntityId;
+            // Get a commaseparated string of roles
+            string mRoles = string.Join(",", groupProfile.RolesInGroup);
+            // Get a MGroupRoles object
+            MGroupRoles mGroupRoles = new MGroupRoles(mRoles, mSecurityEntityId);
             if (int.Parse(HttpContext.Session.GetString("EditId")) == groupProfile.Id)
             {
+                // Check if this is an add or an update
                 if (groupProfile.Id > -1) 
                 {
+                    // Check if the requesting account has the correct permissions for an update/edit
                     if (mSecurityInfo.MayEdit)
                     {
+                        // update the updated by and updated date for the profiles
                         mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                         mProfileToSave.UpdatedDate = DateTime.Now;
                         mGroupRoles.UpdatedBy = mProfileToSave.UpdatedBy;
@@ -97,8 +104,10 @@ public abstract class AbstractGroupController : ControllerBase
                 } 
                 else 
                 {
+                    // Check if the requesting account has the correct permissions for an add
                     if (mSecurityInfo.MayAdd)
                     {
+                        // update the added by and added date for the profiles
                         mProfileToSave.AddedBy = mRequestingProfile.Id;
                         mProfileToSave.AddedDate = DateTime.Now;
                         mGroupRoles.AddedBy = mProfileToSave.AddedBy;
@@ -110,10 +119,7 @@ public abstract class AbstractGroupController : ControllerBase
                     }
                 }
             }
-            mProfileToSave.Name = groupProfile.Name;
-            mProfileToSave.Description = groupProfile.Description;
-            mProfileToSave.Id = groupProfile.Id;
-            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile.Id;
+            // Save the profiles
             UIGroupProfile mRetVal = GroupUtility.Save(mProfileToSave, mGroupRoles);
             return Ok(mRetVal);
         }
