@@ -88,14 +88,26 @@ namespace GrowthWare.DataAccess.SQLServer
         void INameValuePairs.UpdateGroups(int NVP_ID, int SecurityEntityID, string CommaSeparatedGroups, MNameValuePair nvpProfile)
         {
             string myStoreProcedure = "ZGWSecurity.Set_Name_Value_Pair_Groups";
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NVP_ID), new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), new SqlParameter("@P_Groups", CommaSeparatedGroups), new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
+            SqlParameter[] mParameters = [
+                new SqlParameter("@P_NVPSeqId", NVP_ID), 
+                new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
+                new SqlParameter("@P_Groups", CommaSeparatedGroups), 
+                new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+            ];
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
         }
 
         void INameValuePairs.UpdateRoles(int NVP_ID, int SecurityEntityID, string CommaSeparatedRoles, MNameValuePair nvpProfile)
         {
             string myStoreProcdure = "ZGWSecurity.Set_Name_Value_Pair_Roles";
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NVP_ID), new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), new SqlParameter("@P_Role", CommaSeparatedRoles), new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
+            SqlParameter[] mParameters = [
+                new SqlParameter("@P_NVPSeqId", NVP_ID), 
+                new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
+                new SqlParameter("@P_Role", CommaSeparatedRoles), 
+                new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+            ];
             base.ExecuteNonQuery(myStoreProcdure, mParameters);
         }
 
@@ -165,16 +177,16 @@ namespace GrowthWare.DataAccess.SQLServer
 
         private SqlParameter[] getInsertUpdateParameters()
         {
-            SqlParameter[] mParameters = { 
+            SqlParameter[] mParameters = [ 
 				new SqlParameter("@P_NVPSeqId", m_Profile.Id), 
 				new SqlParameter("@P_Schema_Name", m_Profile.SchemaName), 
 				new SqlParameter("@P_Static_Name", m_Profile.StaticName), 
 				new SqlParameter("@P_Display", m_Profile.Display), 
 				new SqlParameter("@P_Description", m_Profile.Description), 
 				new SqlParameter("@P_StatusSeqId", m_Profile.Status), 
-				new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile)), 
+				new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
 				GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) 
-			};
+            ];
             return mParameters;
         }
 
