@@ -129,8 +129,8 @@ namespace GrowthWare.DataAccess.SQLServer
             SqlParameter[] mParameters = [
                 new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId), 
                 new SqlParameter("@P_SecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), 
-                new SqlParameter("@P_Roles", GroupRolesProfile.Roles), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile)) 
+                new SqlParameter("@P_Roles", GroupRolesProfile.Roles??""), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile, GroupRolesProfile.Id)) 
             ];
             base.ExecuteNonQuery(mymStoreProcedure, mParameters);
             return true;
