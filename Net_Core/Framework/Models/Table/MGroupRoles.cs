@@ -1,20 +1,25 @@
 ﻿using System;
 using GrowthWare.Framework.Models.Base;
 
-namespace GrowthWare.Framework.Models
+namespace GrowthWare.Framework.Models;
+
+/// <summary>
+/// Model object representing GroupRoles
+/// </summary>
+[Serializable(), CLSCompliant(true)]
+public class MGroupRoles : AbstractBaseModel
 {
-    /// <summary>
-    /// Model object representing GroupRoles
-	/// </summary>
-	[Serializable(), CLSCompliant(true)]
-    public class MGroupRoles : AbstractBaseModel
-    {
+    #region Member Fields
         private int m_AddedUpdatedBy;
+
         private int m_SecurityEntityID = -1;
+
         private int m_GroupSeqId = -1;
 
         private string m_Roles;
+    #endregion
 
+    #region Public Properties
         /// <summary>
         /// Gets or Added Updated By id.
         /// </summary>
@@ -54,5 +59,5 @@ namespace GrowthWare.Framework.Models
             get { return m_Roles; }
             set { if (!String.IsNullOrEmpty(value)) m_Roles = value.Trim(); }
         }
-    }
+    #endregion
 }
