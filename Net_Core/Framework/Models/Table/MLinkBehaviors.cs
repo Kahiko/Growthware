@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Name Value Pair Detail.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MLinkBehaviors : AAddedUpdated
+public class MLinkBehaviors : MNameValuePairDetail
 {
 
     #region Member Fields
