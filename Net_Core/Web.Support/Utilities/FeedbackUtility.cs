@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
@@ -41,23 +42,26 @@ public static class FeedbackUtility
     private static void testProfile()
     {
         bool mUseBrackets = true;
-        string mPrimaryKeyName = "GroupSeqId";
-        MGroupProfile mProfile = GroupUtility.GetGroupProfile(1);
+        string mPrimaryKeyName = "NVP_DetailSeqId";
+        string mDataTableName = "Temp_Table";
+        MNameValuePair mNameValuePair = NameValuePairUtility.GetNameValuePairs().FirstOrDefault();
+        MNameValuePairDetail mProfile = NameValuePairUtility.GetNameValuePairDetail(mNameValuePair.Id, 1);
+        mProfile.SetTableName(mNameValuePair.SchemaName, mNameValuePair.StaticName, true);
 
         string mTableName = mProfile.TableName;
         
-        string mDeleteWithParameters = MGroupProfile.GenerateDeleteWithParameters(mPrimaryKeyName, mUseBrackets);
-        string mDeleteWithValues = mProfile.GenerateDeleteWithValues<MGroupProfile>(mPrimaryKeyName, mUseBrackets);
-        string mDeleteWithValuesSpecifyKeyValue = MGroupProfile.GenerateDeleteWithValues(mPrimaryKeyName, "'yaba'", mUseBrackets);
-        string mInsertWithParameters = MGroupProfile.GenerateInsertWithParameters<MGroupProfile>(mUseBrackets);
-        string mInsertWithValues = mProfile.GenerateInsertWithValues<MGroupProfile>(mUseBrackets);
-        string mUpdateWithParameters = MGroupProfile.GenerateUpdateWithParameters<MGroupProfile>(mPrimaryKeyName, mUseBrackets);
-        string mUpdateWithValues = mProfile.GenerateUpdateWithValues<MGroupProfile>(mPrimaryKeyName, mUseBrackets);
-        string mUpdateWithValuesSpecifyKeyValue = mProfile.GenerateUpdateWithValues<MGroupProfile>(mPrimaryKeyName, "'yaba'", mUseBrackets);
+        string mDeleteWithParameters = MNameValuePairDetail.GenerateDeleteWithParameters(mPrimaryKeyName, mUseBrackets);
+        string mDeleteWithValues = mProfile.GenerateDeleteWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        string mDeleteWithValuesSpecifyKeyValue = MNameValuePairDetail.GenerateDeleteWithValues(mPrimaryKeyName, "'yaba'", mUseBrackets);
+        string mInsertWithParameters = MNameValuePairDetail.GenerateInsertWithParameters<MNameValuePairDetail>(mUseBrackets);
+        string mInsertWithValues = mProfile.GenerateInsertWithValues<MNameValuePairDetail>(mUseBrackets);
+        string mUpdateWithParameters = MNameValuePairDetail.GenerateUpdateWithParameters<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        string mUpdateWithValues = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        string mUpdateWithValuesSpecifyKeyValue = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, "'yaba'", mUseBrackets);
 
-        DataTable mDataTable = MGroupProfile.GenerateEmptyTable<MGroupProfile>("Accounts", false);
+        DataTable mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, false);
         mDataTable = null;
-        mDataTable = MGroupProfile.GenerateEmptyTable<MGroupProfile>("Accounts", true);
+        mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, true);
         string mStop = string.Empty;
     }
 }
