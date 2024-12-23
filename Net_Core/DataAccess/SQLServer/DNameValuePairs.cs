@@ -169,7 +169,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 , new SqlParameter("@P_NVP_Detail_Value", profile.Value)
                 , new SqlParameter("@P_StatusSeqId", profile.Status)
                 , new SqlParameter("@P_Sort_Order", profile.SortOrder)
-                , new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(profile))
+                , new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(profile, profile.Id))
                 , GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) ];
             DataRow mRetVal = base.GetDataRow(myStoreProcedure, mParameters);
             return mRetVal;

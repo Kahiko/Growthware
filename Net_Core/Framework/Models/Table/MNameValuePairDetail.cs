@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Name Value Pair Detail.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MNameValuePairDetail : AbstractBaseModel
+public class MNameValuePairDetail : AAddedUpdated
 {
 
     #region Member Fields
@@ -20,10 +20,22 @@ public class MNameValuePairDetail : AbstractBaseModel
     #endregion
 
     #region Public Properties
+
+        [DBPrimaryKey]
+        [DBColumnName("NVP_DetailSeqId")]
+        public int Id { get; set; }
+
+        public string Name
+        {
+            get { return m_Text; }
+            set { if (!String.IsNullOrEmpty(value)) m_Text = value.Trim(); }
+        }
+
         /// <summary>
         /// Gets or sets the Name Value Pair SeqId.
         /// </summary>
         /// <value>The Name Value Pair SeqId.</value>
+        [DBColumnName("NVPSeqId")]
         public int NameValuePairSeqId
         {
             get { return m_NameValuePairSeqId; }
@@ -34,6 +46,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// Gets or sets the status.
         /// </summary>
         /// <value>The status.</value>
+        [DBColumnName("StatusSeqId")]
         public int Status
         {
             get { return m_Status; }
@@ -44,6 +57,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// Gets or sets the sort order.
         /// </summary>
         /// <value>The sort order.</value>
+        [DBColumnName("Sort_Order")]
         public int SortOrder
         {
             get { return m_SortOrder; }
@@ -54,6 +68,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
+        [DBColumnName("NVP_Detail_Name")]
         public string Text
         {
             get { return m_Text; }
@@ -64,6 +79,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
+        [DBColumnName("NVP_Detail_Value")]
         public string Value
         {
             get { return m_Value; }
@@ -78,6 +94,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// <remarks></remarks>
         public MNameValuePairDetail()
         {
+            this.SetupClass();
         }
 
         /// <summary>
@@ -89,6 +106,7 @@ public class MNameValuePairDetail : AbstractBaseModel
         /// </remarks>
         public MNameValuePairDetail(DataRow dataRow)
         {
+            this.SetupClass();
             this.Initialize(dataRow);
         }
     #endregion
@@ -99,13 +117,45 @@ public class MNameValuePairDetail : AbstractBaseModel
     /// <param name="dataRow">The dr.</param>
     protected new void Initialize(DataRow dataRow)
     {
-        base.IdColumnName = "NVP_SEQ_DET_ID";
-        base.NameColumnName = "NVP_DET_TEXT";
+        // base.IdColumnName = "NVP_SEQ_DET_ID";
+        // base.NameColumnName = "NVP_DET_TEXT";
         base.Initialize(dataRow);
-        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
-        m_Text = base.Name;
+        this.Id = base.GetInt(dataRow, "NVP_SEQ_DET_ID");
+        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID");
+        m_Text = base.GetString(dataRow, "NVP_DET_TEXT");
         m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
         m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
         m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
     }
+
+    protected override void SetupClass()
+    {
+        this.Id = -1;
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "Set table name using SetTableName(string schemaName, string tableName, bool useBrackets = false)";
+    }
+
+    /// <summary>
+    /// Sets the table name for the class, this becomes necessary because the class is generic
+    /// and works for any table that is created by the Name/Value Pair.
+    /// </summary>
+    /// <param name="schemaName">Can be retrieved in MNameValuePair.SchemaName</param>
+    /// <param name="tableName">Can be retrieved in MNameValuePair.StaticName</param>
+    /// <param name="useBrackets"></param>
+    public void SetTableName(string schemaName, string tableName, bool useBrackets = false)
+    {
+        /*
+         * At the time of this writing, the following tables are "Name/Value Pair" created tables:
+         *    [ZGWSecurity].[Navigation_Types]
+         *    [ZGWSecurity].[Permissions]
+         *    [ZGWCoreWeb].[Link_Behaviors]
+         *    [ZGWCoreWeb].[Work_Flows]
+         */
+        m_TableName = $"[{schemaName}].[{tableName}]";
+        if (!useBrackets) 
+        {
+            m_TableName = m_TableName.Replace("[", "").Replace("]", "");
+        }
+    }
+
 }
