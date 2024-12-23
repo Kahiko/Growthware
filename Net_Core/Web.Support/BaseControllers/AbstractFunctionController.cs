@@ -111,7 +111,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetLinkBehaviors();
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.LinkBehaviors;
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -124,7 +124,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetNavigationTypes();
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.NavigationTypes;
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
