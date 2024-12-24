@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Represents all of the prperties associated with a Security Entity.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MRegistrationInformation : AbstractBaseModel
+public class MRegistrationInformation : AAddedUpdated
 {
 
     #region Public Properties
@@ -27,6 +27,10 @@ public class MRegistrationInformation : AbstractBaseModel
         /// </summary>
         public string Groups { get; set; }
 
+        [DBPrimaryKey]
+        [DBColumnName("SecurityEntitySeqId")]
+        public int Id { get; set; }
+
         /// <summary>
         /// A comma separated list of roles
         /// </summary>
@@ -35,6 +39,7 @@ public class MRegistrationInformation : AbstractBaseModel
         /// <summary>
         /// The security entity id directly associated with the Roles and Groups
         /// </summary>
+        [DBColumnName("SecurityEntitySeqId_Owner")]
         public int SecurityEntitySeqIdOwner { get; set; }
     #endregion
 
@@ -45,7 +50,7 @@ public class MRegistrationInformation : AbstractBaseModel
         /// <remarks></remarks>
         public MRegistrationInformation()
         {
-            this.setNameandColumn();
+            this.SetupClass();
             // populate with default values
             this.Id = -1;
         }
@@ -60,7 +65,7 @@ public class MRegistrationInformation : AbstractBaseModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MRegistrationInformation(DataRow dataRow)
         {
-            this.setNameandColumn();
+            this.SetupClass();
             Initialize(dataRow);
         }
     #endregion
@@ -68,6 +73,7 @@ public class MRegistrationInformation : AbstractBaseModel
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
+        this.Id = base.GetInt(dataRow, "SecurityEntitySeqId");
         this.AccountChoices = base.GetString(dataRow, "AccountChoices");
         this.AddAccount = base.GetInt(dataRow, "AddAccount");
         this.Groups = base.GetString(dataRow, "Groups");
@@ -76,10 +82,11 @@ public class MRegistrationInformation : AbstractBaseModel
     }
 
     #pragma warning disable IDE1006 // Naming Styles
-    private void setNameandColumn()
+    protected override void SetupClass()
     {
-        base.NameColumnName = string.Empty;
-        base.IdColumnName = "SecurityEntitySeqId";
+        this.Id = -1;
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWSecurity].[Registration_Information]";
     }
 
 
