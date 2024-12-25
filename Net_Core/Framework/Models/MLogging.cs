@@ -3,51 +3,18 @@ using System;
 using System.Data;
 using GrowthWare.Framework.Models.Base;
 
-namespace GrowthWare.Framework.Models
+namespace GrowthWare.Framework.Models;
+/// <summary>
+/// Class MLoggingProfile
+/// </summary>
+[Serializable(), CLSCompliant(true)]
+public class MLoggingProfile : AbstractDatabaseFunctions
 {
-    /// <summary>
-    /// Class MLoggingProfile
-    /// </summary>
-    [Serializable(), CLSCompliant(true)]
-    public class MLoggingProfile : AbstractDatabaseFunctions
-    {
-        #region Member Objects
+    #region Member Objects
         string m_Account = "System";
-        #endregion
+    #endregion
 
-        #region Public Methods
-        /// <summary>
-        /// Will return a Function profile with the default values
-        /// </summary>
-        public MLoggingProfile()
-        {
-            LogSeqId = -1;
-        }
-
-        /// <summary>
-        /// Will return a fully populated logging profile.
-        /// </summary>
-        /// <param name="dataRow">A data row containing the log entry</param>
-        /// <remarks></remarks>
-        public MLoggingProfile(DataRow dataRow)
-        {
-            this.Account = base.GetString(dataRow, "Account");
-            this.ClassName = base.GetString(dataRow, "ClassName");
-            this.Component = base.GetString(dataRow, "Component");
-            this.Level = base.GetString(dataRow, "Level");
-            this.LogDate = base.GetDateTime(dataRow, "LogDate", DateTime.Now);
-            this.LogSeqId = base.GetInt(dataRow, "LogSeqId");
-            this.MethodName = base.GetString(dataRow, "MethodName");
-            this.Msg = base.GetString(dataRow, "Msg");
-        }
-
-        #endregion
-
-        #region Private methods
-
-        #endregion
-
-        #region Public Properties
+    #region Public Properties
         /// <summary>
         /// Indicates the account used when the log entry was made.
         /// </summary>
@@ -105,6 +72,34 @@ namespace GrowthWare.Framework.Models
         /// </summary>
         public string Msg { get; set; }
 
-        #endregion
+    #endregion
+
+    #region Constructors
+    /// <summary>
+    /// Will return a Function profile with the default values
+    /// </summary>
+    public MLoggingProfile()
+    {
+        LogSeqId = -1;
     }
+
+    /// <summary>
+    /// Will return a fully populated logging profile.
+    /// </summary>
+    /// <param name="dataRow">A data row containing the log entry</param>
+    /// <remarks></remarks>
+    public MLoggingProfile(DataRow dataRow)
+    {
+        this.Account = base.GetString(dataRow, "Account");
+        this.ClassName = base.GetString(dataRow, "ClassName");
+        this.Component = base.GetString(dataRow, "Component");
+        this.Level = base.GetString(dataRow, "Level");
+        this.LogDate = base.GetDateTime(dataRow, "LogDate", DateTime.Now);
+        this.LogSeqId = base.GetInt(dataRow, "LogSeqId");
+        this.MethodName = base.GetString(dataRow, "MethodName");
+        this.Msg = base.GetString(dataRow, "Msg");
+    }
+
+    #endregion
+
 }
