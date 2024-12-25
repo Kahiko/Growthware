@@ -15,8 +15,7 @@
     - Making some of the methods and properties static
     - Added addtributes to the properties giving clairty to them
 Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
-- Converted the following to either ADatabaseTable or AAddedUpdated
-    - MAccountProfile                       to AAddedUpdated
+- Converted the following to either ADatabaseTable or AAddedUpdatedAAddedUpdated
     - MRefreshToken                         to ADatabaseTable
     - MCalendar                             to AAddedUpdated
     - MCalendarEvent                        to AAddedUpdated
