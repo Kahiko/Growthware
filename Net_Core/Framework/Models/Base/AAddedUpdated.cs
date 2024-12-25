@@ -45,8 +45,7 @@ public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated, IDatabaseTa
         /// Sets AddedBy, AddedDate, UpdatedBy, UpdatedDate
         /// </remarks>
         protected virtual void Initialize(DataRow dataRow)
-        {
-            
+        {            
             this.AddedBy = base.GetInt(dataRow, "Added_By");
             this.AddedDate = base.GetDateTime(dataRow, "Added_Date", DateTime.Now);
             this.UpdatedBy = base.GetInt(dataRow, "Updated_By");
