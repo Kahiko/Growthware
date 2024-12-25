@@ -9,13 +9,14 @@ namespace GrowthWare.Framework.Models;
 /// Represents all of the prperties associated with a Security Entity.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MSecurityEntity : AbstractBaseModel
+public class MSecurityEntity : AAddedUpdated
 {
 
     #region Public Properties
         /// <summary>
         /// Represents the connection string
         /// </summary>
+        [DBColumnName("DAL_String")]
         public string ConnectionString { get; set; }
 
         /// <summary>
@@ -27,12 +28,14 @@ public class MSecurityEntity : AbstractBaseModel
         /// Represents the Data Access Layer.  
         /// SQLServer or Oracle or MySQL are examples of a data access.
         /// </summary>
+        [DBColumnName("DAL")]
         public string DataAccessLayer { get; set; }
 
         /// <summary>
         /// Represents the Data Access Layer's Assembly or DLL name.  
         /// GrowthWareFramework for example.
         /// </summary>
+        [DBColumnName("DAL_Name")]
         public string DataAccessLayerAssemblyName { get; set; }
 
         /// <summary>
@@ -40,16 +43,25 @@ public class MSecurityEntity : AbstractBaseModel
         /// GrowthWare.Framework.DataAccessLayer.SQLServer.V2000 or 
         /// GrowthWare.Framework.DataAccessLayer.SQLServer.V2008 are examples.
         /// </summary>
+        [DBColumnName("DAL_Name_Space")]
         public string DataAccessLayerNamespace { get; set; }
 
         /// <summary>
         /// Represends the Encrytion used by the security entity.
         /// </summary>
+        [DBColumnName("Encryption_Type")]
         public EncryptionType EncryptionType { get; set; }
+
+        [DBPrimaryKey]
+        [DBColumnName("SecurityEntitySeqId")]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
 
         /// <summary>
         /// Security Entities have a hierarchical relationship to each other and this represents the parent of this Security Entity.
         /// </summary>
+        [DBColumnName("ParentSecurityEntitySeqId")]
         public int ParentSeqId { get; set; }
 
         /// <summary>
@@ -82,6 +94,7 @@ public class MSecurityEntity : AbstractBaseModel
         /// <remarks></remarks>
         public MSecurityEntity()
         {
+            this.SetupClass();
             // populate with default values
             this.ConnectionString = ConfigSettings.ConnectionString;
             this.DataAccessLayer = ConfigSettings.DataAccessLayer;
@@ -105,6 +118,7 @@ public class MSecurityEntity : AbstractBaseModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MSecurityEntity(DataRow dataRow)
         {
+            this.SetupClass();
             Initialize(dataRow);
         }
     #endregion
@@ -115,10 +129,10 @@ public class MSecurityEntity : AbstractBaseModel
     /// <param name="dataRow">DataRow</param>
     protected new void Initialize(DataRow dataRow)
     {
-        base.NameColumnName = "Name";
-        base.IdColumnName = "SecurityEntityID";
         base.Initialize(dataRow);
         this.Description = base.GetString(dataRow, "Description");
+        this.Id = base.GetInt(dataRow, "SecurityEntityID");
+        this.Name = base.GetString(dataRow, "NAME");
         this.Url = base.GetString(dataRow, "URL");
         this.Skin = base.GetString(dataRow, "Skin");
         this.Style = base.GetString(dataRow, "Style");
@@ -131,5 +145,12 @@ public class MSecurityEntity : AbstractBaseModel
         EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
         CryptoUtility.TryDecrypt(this.ConnectionString, out string mConnectionString, this.EncryptionType);
         this.ConnectionString = mConnectionString;
+    }
+
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWSecurity].[Security_Entities]";
+        this.Id = -1;
     }
 }
