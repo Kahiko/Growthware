@@ -12,7 +12,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
+public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
 {
 
     #region Member Fields
@@ -243,12 +243,10 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         /// <remarks></remarks>
         public MAccountProfile()
         {
-            this.SetupClass();
         }
 
         public MAccountProfile(int requestingAccountId)
         {
-            SetupClass();
             Collection<string> mDefaultRoles = new Collection<string>() { "Authenticated" };
             this.AddedBy = requestingAccountId;
             this.AddedDate = DateTime.Now;
@@ -268,9 +266,8 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
         public MAccountProfile(MAccountProfile accountProfile)
         {
-            SetupClass();
-            // base.NameColumnName = "ACCT";
-            // base.IdColumnName = "ACCT_SEQ_ID";
+            base.NameColumnName = "ACCT";
+            base.IdColumnName = "ACCT_SEQ_ID";
             this.Id = -1;
             this.Account = accountProfile.Account;
             this.Email = accountProfile.Email;
@@ -295,7 +292,6 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         /// </remarks>
         public MAccountProfile(DataRow detailRow)
         {
-            SetupClass();
             this.Initialize(detailRow);
         }
 
@@ -312,7 +308,6 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         /// </remarks>
         public MAccountProfile(DataRow detailRow, DataTable refreshTokens, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
         {
-            SetupClass();
             if (detailRow != null)
             {
                 this.Initialize(detailRow);
@@ -443,14 +438,6 @@ public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
         {
             StringCollectionObject.Add(mRole.ToString());
         }
-    }
-
-    protected override void SetupClass()
-    {
-        this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        base.m_IsForeignKeyNumeric = true;
-        m_TableName = "[ZGWSecurity].[Accounts]";
     }
 }
 

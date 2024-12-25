@@ -234,7 +234,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
                 new("@P_ResetToken", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
                 new("@P_ResetTokenExpires", !string.IsNullOrWhiteSpace(m_Profile.ResetTokenExpires.ToString()) ? m_Profile.ResetTokenExpires : DBNull.Value),
                 new("@P_Failed_Attempts", m_Profile.FailedAttempts),
-                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)),
+                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
                 new("@P_Last_Login", m_Profile.LastLogOn),
                 new("@P_Time_Zone", m_Profile.TimeZone),
                 new("@P_Location", m_Profile.Location),
@@ -255,7 +255,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
                 new("@P_Account", this.Cleanup(m_Profile.Account)),
                 new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
                 new("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
-                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
                 };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
@@ -292,7 +292,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
                 new("@P_Account", this.Cleanup(m_Profile.Account)),
                 new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
                 new("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
-                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
                 };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
