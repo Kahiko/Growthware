@@ -12,75 +12,6 @@ namespace GrowthWare.Framework.Models;
 public class MSecurityEntity : AbstractBaseModel
 {
 
-    #region Protected Methods
-        /// <summary>
-        /// Initializes all of the properties given a data row.
-        /// </summary>
-        /// <param name="dataRow">DataRow</param>
-        protected new void Initialize(DataRow dataRow)
-        {
-            base.NameColumnName = "Name";
-            base.IdColumnName = "SecurityEntityID";
-            base.Initialize(dataRow);
-            this.Description = base.GetString(dataRow, "Description");
-            this.Url = base.GetString(dataRow, "URL");
-            this.Skin = base.GetString(dataRow, "Skin");
-            this.Style = base.GetString(dataRow, "Style");
-            this.ParentSeqId = base.GetInt(dataRow, "PARENT_SecurityEntityID");
-            this.StatusSeqId = base.GetInt(dataRow, "STATUS_SEQ_ID");
-            this.DataAccessLayer = base.GetString(dataRow, "DAL");
-            this.DataAccessLayerAssemblyName = base.GetString(dataRow, "DAL_NAME");
-            this.DataAccessLayerNamespace = base.GetString(dataRow, "DAL_NAME_SPACE");
-            this.ConnectionString = base.GetString(dataRow, "DAL_STRING");
-            EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
-            string mConnectionString = this.ConnectionString;
-            try
-            {
-                // this.ConnectionString = CryptoUtility.decryptDES(mConnectionString, EncryptionType);
-                CryptoUtility.TryDecrypt(mConnectionString, out mConnectionString, this.EncryptionType);
-                this.ConnectionString = mConnectionString;
-            }
-            catch (CryptoUtilityException)
-            {
-                // do nothing atm the values is more than likely clear text
-            }
-        }
-    #endregion
-
-    #region Public Methods
-        /// <summary>
-        /// Will return a account profile with the default vaules
-        /// </summary>
-        /// <remarks></remarks>
-        public MSecurityEntity()
-        {
-            // populate with default values
-            this.ConnectionString = ConfigSettings.ConnectionString;
-            this.DataAccessLayer = ConfigSettings.DataAccessLayer;
-            this.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
-            this.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace;
-            this.EncryptionType = ConfigSettings.EncryptionType;
-            this.ParentSeqId = -1;
-            this.Skin = "Default";
-            this.StatusSeqId = 1;
-            this.Style = "Default";
-            this.Url = "no url";
-        }
-
-        /// <summary>
-        /// Will populate values based on the contents of the data row.
-        /// </summary>
-        /// <param name="dataRow">Datarow containing base values</param>
-        /// <remarks>
-        /// Class should be inherited to extend to your project specific properties
-        /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MSecurityEntity(DataRow dataRow)
-        {
-            Initialize(dataRow);
-        }
-    #endregion
-
     #region Public Properties
         /// <summary>
         /// Represents the connection string
@@ -143,4 +74,71 @@ public class MSecurityEntity : AbstractBaseModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url { get; set; }
     #endregion
+
+    #region Constructors
+        /// <summary>
+        /// Will return a account profile with the default vaules
+        /// </summary>
+        /// <remarks></remarks>
+        public MSecurityEntity()
+        {
+            // populate with default values
+            this.ConnectionString = ConfigSettings.ConnectionString;
+            this.DataAccessLayer = ConfigSettings.DataAccessLayer;
+            this.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
+            this.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace;
+            this.EncryptionType = ConfigSettings.EncryptionType;
+            this.ParentSeqId = -1;
+            this.Skin = "Default";
+            this.StatusSeqId = 1;
+            this.Style = "Default";
+            this.Url = "no url";
+        }
+
+        /// <summary>
+        /// Will populate values based on the contents of the data row.
+        /// </summary>
+        /// <param name="dataRow">Datarow containing base values</param>
+        /// <remarks>
+        /// Class should be inherited to extend to your project specific properties
+        /// </remarks>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MSecurityEntity(DataRow dataRow)
+        {
+            Initialize(dataRow);
+        }
+    #endregion
+
+    /// <summary>
+    /// Initializes all of the properties given a data row.
+    /// </summary>
+    /// <param name="dataRow">DataRow</param>
+    protected new void Initialize(DataRow dataRow)
+    {
+        base.NameColumnName = "Name";
+        base.IdColumnName = "SecurityEntityID";
+        base.Initialize(dataRow);
+        this.Description = base.GetString(dataRow, "Description");
+        this.Url = base.GetString(dataRow, "URL");
+        this.Skin = base.GetString(dataRow, "Skin");
+        this.Style = base.GetString(dataRow, "Style");
+        this.ParentSeqId = base.GetInt(dataRow, "PARENT_SecurityEntityID");
+        this.StatusSeqId = base.GetInt(dataRow, "STATUS_SEQ_ID");
+        this.DataAccessLayer = base.GetString(dataRow, "DAL");
+        this.DataAccessLayerAssemblyName = base.GetString(dataRow, "DAL_NAME");
+        this.DataAccessLayerNamespace = base.GetString(dataRow, "DAL_NAME_SPACE");
+        this.ConnectionString = base.GetString(dataRow, "DAL_STRING");
+        EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
+        string mConnectionString = this.ConnectionString;
+        try
+        {
+            // this.ConnectionString = CryptoUtility.decryptDES(mConnectionString, EncryptionType);
+            CryptoUtility.TryDecrypt(mConnectionString, out mConnectionString, this.EncryptionType);
+            this.ConnectionString = mConnectionString;
+        }
+        catch (CryptoUtilityException)
+        {
+            // do nothing atm the values is more than likely clear text
+        }
+    }
 }
