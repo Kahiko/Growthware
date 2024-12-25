@@ -29,6 +29,9 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
     - MNameValuePair                        to AAddedUpdated
     - MNameValuePairDetails                 to AAddedUpdated
     - MRegistrationInformation              to AAddedUpdated
+    - MRole                                 to AAddedUpdated
+    - MSecurityEntity                       to AAddedUpdated
+    - MState                                to AAddedUpdated
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
