@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models;
 /// Store procedures: 
 /// ZGWSystem.Set_DataBase_Information, ZGWSystem.Get_Database_Information
 /// </remarks>
-public class MDBInformation : AAddedUpdated
+public class MDBInformation : AbstractBaseModel
 {
     #region Constructors
         /// <summary>
@@ -19,7 +19,6 @@ public class MDBInformation : AAddedUpdated
         /// </summary>
         public MDBInformation()
         {
-            this.SetupClass();
         }
 
         /// <summary>
@@ -28,7 +27,6 @@ public class MDBInformation : AAddedUpdated
         /// <param name="dataRow">The dataRow.</param>
         public MDBInformation(DataRow dataRow)
         {
-            this.SetupClass();
             this.Initialize(dataRow);
         }
     #endregion
@@ -83,13 +81,14 @@ public class MDBInformation : AAddedUpdated
         /// <param name="dataRow">DataRow</param>
         protected new void Initialize(DataRow dataRow)
         {
+            this.IdColumnName = "Information_SEQ_ID";
             base.Initialize(dataRow);
             m_InformationSeqId = base.GetInt(dataRow, "Information_SEQ_ID");
             m_Version = base.GetString(dataRow, "VERSION");
             m_EnableInheritance = base.GetInt(dataRow, "ENABLE_INHERITANCE");
         }
 
-        protected override void SetupClass()
+        private void SetupClass()
         {
             base.m_ForeignKeyName = "NOT_USED";
             m_TableName = "[ZGWSystem].[Database_Information]";

@@ -27,7 +27,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new ("@P_Database_InformationSeqId", m_Profile.DatabaseInformationSeqId),
                 new ("@P_Version", m_Profile.Version),
                 new ("@P_Enable_Inheritance", m_Profile.EnableInheritance),
-                new ("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.DatabaseInformationSeqId)),
+                new ("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
                 GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.InputOutput)
             };
             try
