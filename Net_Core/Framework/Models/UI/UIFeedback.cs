@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Feedback.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class UIFeedback : AbstractDatabaseFunctions 
+public class UIFeedback : ADatabaseTable 
 {
 
     #region Public Properties
@@ -38,10 +38,14 @@ public class UIFeedback : AbstractDatabaseFunctions
     #endregion
 
     #region Constructors
-        public UIFeedback() { }
+        public UIFeedback() 
+        { 
+            this.SetupClass();
+        }
 
         public UIFeedback(DataRow dataRow) 
         { 
+            this.SetupClass();
             this.Initialize(dataRow);
         }
     #endregion
@@ -73,5 +77,11 @@ public class UIFeedback : AbstractDatabaseFunctions
         this.UpdatedById = base.GetInt(dataRow, "UpdatedById");
         this.VerifiedBy = base.GetString(dataRow, "VerifiedBy");
         this.VerifiedById = base.GetInt(dataRow, "VerifiedById");
+    }
+
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWOptional].[Feedbacks]";
     }
 }
