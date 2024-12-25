@@ -17,8 +17,6 @@
 Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Converted the following to either ADatabaseTable or AAddedUpdatedAAddedUpdated
     - MRefreshToken                         to ADatabaseTable
-    - MCalendar                             to AAddedUpdated
-    - MCalendarEvent                        to AAddedUpdated
     - MDirectoryProfile                     to AAddedUpdated
     - MMessage                              to AAddedUpdated
     - MDirectoryProfile                     to AAddedUpdated
