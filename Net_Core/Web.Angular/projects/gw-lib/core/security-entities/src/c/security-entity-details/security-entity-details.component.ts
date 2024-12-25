@@ -125,7 +125,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			this._SecurityInfo = securityInfo;
 			return this._ProfileSvc.getValidParents(mEditId);                                   // #2 Request getValidParents
 		}).catch((error) => {                                                              		// #1 Error Handler getSecurityInfo
-			this._LoggingSvc.toast('Error getting security info:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+			this._LoggingSvc.toast('Error getting security info:\r\n' + error, this.securityEntityTranslation() + ' Details:', LogLevel.Error);
 		}).then((parents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.parents', parents);
 			// Add 'None' to the top of the list
@@ -133,13 +133,13 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			this.validParents = parents;			
 			return this._ProfileSvc.getSecurityEntity(mEditId);                                 // #3 Request getSecurityEntity
 		}).catch((error) => {                                                              		// #2 Error Handler
-			this._LoggingSvc.toast('Error getting Security Entity:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+			this._LoggingSvc.toast('Error getting Security Entity:\r\n' + error, this.securityEntityTranslation() + ' Details:', LogLevel.Error);
 		}).then((profile: ISecurityEntityProfile) => {                                          // #3 Request getProfile Handler
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
 			this._Profile = profile;
 			return this._ProfileSvc.getValidSecurityEntities();                      			// #4 Request getValidSecurityEntities
 		}).catch((error) => {                                                              		// #3 Error Handler
-			this._LoggingSvc.toast('Error getting valid Security Entities:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+			this._LoggingSvc.toast('Error getting valid Security Entities:\r\n' + error, this.securityEntityTranslation() + ' Details:', LogLevel.Error);
 		}).then((response: IValidSecurityEntities[]) => {										// #4 Request getValidSecurityEntities Handler
 			this.validSecurityEntities = response;
 			return this._ProfileSvc.getRegistrationInformation(mEditId);                      	// #5 Request GetRegistrationInformation
@@ -257,11 +257,11 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	override save(): void {
 		this._ProfileSvc.save(this._Profile, this._RegistrationInformation).then((response: boolean) => {
 			if(response) {
-				this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
+				this._LoggingSvc.toast(this.securityEntityTranslation() + ' has been saved', this.securityEntityTranslation() + ' Details:', LogLevel.Success);
 				this.onClose();
 			}
 		}).catch((error: string) => {
-			this._LoggingSvc.toast('Error saving ' + this.securityEntityTranslation + ':\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+			this._LoggingSvc.toast('Error saving ' + this.securityEntityTranslation() + ':\r\n' + error, this.securityEntityTranslation() + ' Details:', LogLevel.Error);
 		});
 	}
 
