@@ -36,20 +36,18 @@ public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated, IDatabaseTa
         public DateTime UpdatedDate { get; set; }
     #endregion
 
-    #region Protected Methods
-        /// <summary>
-        /// Initializes properties given a DataRow
-        /// </summary>
-        /// <param name="dataRow">datarow</param>
-        /// <remarks>
-        /// Sets AddedBy, AddedDate, UpdatedBy, UpdatedDate
-        /// </remarks>
-        protected virtual void Initialize(DataRow dataRow)
-        {            
-            this.AddedBy = base.GetInt(dataRow, "Added_By");
-            this.AddedDate = base.GetDateTime(dataRow, "Added_Date", DateTime.Now);
-            this.UpdatedBy = base.GetInt(dataRow, "Updated_By");
-            this.UpdatedDate = base.GetDateTime(dataRow, "Updated_Date", DateTime.Now);
-        }
-    #endregion
+    /// <summary>
+    /// Initializes properties given a DataRow
+    /// </summary>
+    /// <param name="dataRow">datarow</param>
+    /// <remarks>
+    /// Sets AddedBy, AddedDate, UpdatedBy, UpdatedDate
+    /// </remarks>
+    protected virtual void Initialize(DataRow dataRow)
+    {            
+        this.AddedBy = base.GetInt(dataRow, "Added_By");
+        this.AddedDate = base.GetDateTime(dataRow, "Added_Date", DateTime.Now);
+        this.UpdatedBy = base.GetInt(dataRow, "Updated_By");
+        this.UpdatedDate = base.GetDateTime(dataRow, "Updated_Date", DateTime.Now);
+    }
 }
