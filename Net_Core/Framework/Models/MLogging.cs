@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Class MLoggingProfile
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MLoggingProfile : AbstractDatabaseFunctions
+public class MLoggingProfile : ADatabaseTable
 {
     #region Member Objects
         string m_Account = "System";
@@ -40,14 +40,15 @@ public class MLoggingProfile : AbstractDatabaseFunctions
         public string ClassName { get; set; }
 
         /// <summary>
-        /// Indicates where the log event occurred.
-        /// </summary>
-        public LogDestination[] Destination { get; set; }
-
-        /// <summary>
         /// Indicates what component the log event occurred.
         /// </summary>
         public string Component { get; set; }
+
+        /// <summary>
+        /// Indicates where the log event occurred.
+        /// </summary>
+        [DBIgnoreProperty]
+        public LogDestination[] Destination { get; set; }
 
         /// <summary>
         /// Used as the level of the log entry
@@ -60,6 +61,7 @@ public class MLoggingProfile : AbstractDatabaseFunctions
         /// <remarks>This is a unique value</remarks>
         public DateTime LogDate { get; set; }
 
+        [DBPrimaryKey]
         public int LogSeqId { get; set; }
 
         /// <summary>
@@ -75,31 +77,37 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     #endregion
 
     #region Constructors
-    /// <summary>
-    /// Will return a Function profile with the default values
-    /// </summary>
-    public MLoggingProfile()
-    {
-        LogSeqId = -1;
-    }
+        /// <summary>
+        /// Will return a Function profile with the default values
+        /// </summary>
+        public MLoggingProfile()
+        {
+            this.SetupClass();
+            LogSeqId = -1;
+        }
 
-    /// <summary>
-    /// Will return a fully populated logging profile.
-    /// </summary>
-    /// <param name="dataRow">A data row containing the log entry</param>
-    /// <remarks></remarks>
-    public MLoggingProfile(DataRow dataRow)
-    {
-        this.Account = base.GetString(dataRow, "Account");
-        this.ClassName = base.GetString(dataRow, "ClassName");
-        this.Component = base.GetString(dataRow, "Component");
-        this.Level = base.GetString(dataRow, "Level");
-        this.LogDate = base.GetDateTime(dataRow, "LogDate", DateTime.Now);
-        this.LogSeqId = base.GetInt(dataRow, "LogSeqId");
-        this.MethodName = base.GetString(dataRow, "MethodName");
-        this.Msg = base.GetString(dataRow, "Msg");
-    }
-
+        /// <summary>
+        /// Will return a fully populated logging profile.
+        /// </summary>
+        /// <param name="dataRow">A data row containing the log entry</param>
+        /// <remarks></remarks>
+        public MLoggingProfile(DataRow dataRow)
+        {
+            this.SetupClass();
+            this.Account = base.GetString(dataRow, "Account");
+            this.ClassName = base.GetString(dataRow, "ClassName");
+            this.Component = base.GetString(dataRow, "Component");
+            this.Level = base.GetString(dataRow, "Level");
+            this.LogDate = base.GetDateTime(dataRow, "LogDate", DateTime.Now);
+            this.LogSeqId = base.GetInt(dataRow, "LogSeqId");
+            this.MethodName = base.GetString(dataRow, "MethodName");
+            this.Msg = base.GetString(dataRow, "Msg");
+        }
     #endregion
 
+    protected override void SetupClass()
+    {
+        base.m_ForeignKeyName = "NOT_USED";
+        m_TableName = "[ZGWSystem].[Logging]";
+    }
 }

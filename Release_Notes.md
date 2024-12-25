@@ -32,6 +32,7 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
     - MRole                                 to AAddedUpdated
     - MSecurityEntity                       to AAddedUpdated
     - MState                                to AAddedUpdated
+    - MLoggingProfile                       to ADatabaseTable
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
