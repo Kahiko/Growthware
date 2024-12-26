@@ -8,36 +8,11 @@ namespace GrowthWare.Framework.Models;
 /// Represents the properties necessary to interact with a servers directory(ies)
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public sealed class MDirectoryProfile : AAddedUpdated
+public sealed class MDirectoryProfile : AbstractBaseModel
 {
 
-    #region Constructors
-        /// <summary>
-        /// Will return a directory profile with the default vaules
-        /// </summary>
-        /// <remarks></remarks>
-        public MDirectoryProfile()
-        {
-            SetupClass();
-        }
-
-        /// <summary>
-        /// Will return a directory profile with the values from the data row
-        /// </summary>
-        /// <param name="dataRow">DataRow</param>
-        public MDirectoryProfile(DataRow dataRow)
-        {
-            SetupClass();
-            base.Initialize(dataRow);
-            Id = base.GetInt(dataRow, "FUNCTION_SEQ_ID");
-            m_Directory = base.GetString(dataRow, "Directory");
-            m_Impersonate = base.GetBool(dataRow, "Impersonate");
-            m_Impersonate_Account = base.GetString(dataRow, "Impersonate_Account");
-            m_Impersonate_PWD = base.GetString(dataRow, "Impersonate_PWD");
-        }
-    #endregion
-
-    #region Field Objects
+    #region Member Fields
+        private int m_Function_Seq_ID;
         private string m_Directory = string.Empty;
         private bool m_Impersonate = false;
         private string m_Impersonate_Account = string.Empty;
@@ -48,9 +23,9 @@ public sealed class MDirectoryProfile : AAddedUpdated
         /// <summary>
         /// Is the primary key
         /// </summary>
-        [DBPrimaryKey]
-        [DBColumnName("FunctionSeqId")]
-        public int Id { get; set; }
+        // [DBPrimaryKey]
+        // [DBColumnName("FunctionSeqId")]
+        // public int Id { get; set; }
 
         /// <summary>
         /// Is the full local directory i.e. C:\temp
@@ -127,11 +102,39 @@ public sealed class MDirectoryProfile : AAddedUpdated
         }
     #endregion
 
-    protected override void SetupClass()
+    #region Constructors
+        /// <summary>
+        /// Will return a directory profile with the default vaules
+        /// </summary>
+        /// <remarks></remarks>
+        public MDirectoryProfile()
+        {
+            m_Function_Seq_ID = -1;
+            Id = -1;
+        }
+
+        /// <summary>
+        /// Will return a directory profile with the values from the data row
+        /// </summary>
+        /// <param name="dataRow">DataRow</param>
+        public MDirectoryProfile(DataRow dataRow)
+        {
+            base.Initialize(dataRow);
+            m_Function_Seq_ID = base.GetInt(dataRow, "FUNCTION_SEQ_ID");
+            m_Directory = base.GetString(dataRow, "Directory");
+            m_Impersonate = base.GetBool(dataRow, "Impersonate");
+            m_Impersonate_Account = base.GetString(dataRow, "Impersonate_Account");
+            m_Impersonate_PWD = base.GetString(dataRow, "Impersonate_PWD");
+            base.Id = m_Function_Seq_ID;
+            base.Name = m_Directory.ToString();
+        }
+    #endregion
+
+    private void SetupClass()
     {
-        this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        base.m_IsForeignKeyNumeric = true;
-        m_TableName = "[ZGWOptional].[Directories]";
+        // this.Id = -1;
+        // base.m_ForeignKeyName = "NOT_USED";
+        // base.m_IsForeignKeyNumeric = true;
+        // m_TableName = "[ZGWOptional].[Directories]";
     }
 }

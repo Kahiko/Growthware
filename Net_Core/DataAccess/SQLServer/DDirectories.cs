@@ -40,7 +40,7 @@ namespace GrowthWare.DataAccess.SQLServer
 			  new SqlParameter("@P_Impersonate", profile.Impersonate),
 			  new SqlParameter("@P_Impersonating_Account", mImpersonateAccount),
 			  new SqlParameter("@P_Impersonating_Password", mImpersonatePassword),
-			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
+			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
 			  GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)			
 			};
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
