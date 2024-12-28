@@ -24,7 +24,7 @@ public class DMessages : AbstractDBInteraction, IMessages
                 new SqlParameter("@P_Description", m_Profile.Description),
                 new SqlParameter("@P_BODY", m_Profile.Body),
                 new SqlParameter("@P_Format_As_HTML", m_Profile.FormatAsHtml),
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)),
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
                 GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)
             };
         return myParameters;
