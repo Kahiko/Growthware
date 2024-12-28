@@ -93,7 +93,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
                 new SqlParameter("@P_Groups", CommaSeparatedGroups), 
                 new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) 
             ];
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
         }
@@ -106,7 +106,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
                 new SqlParameter("@P_Role", CommaSeparatedRoles), 
                 new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) 
             ];
             base.ExecuteNonQuery(myStoreProcdure, mParameters);
         }
@@ -184,7 +184,7 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Display", m_Profile.Display), 
 				new SqlParameter("@P_Description", m_Profile.Description), 
 				new SqlParameter("@P_StatusSeqId", m_Profile.Status), 
-				new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
+				new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile)), 
 				GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) 
             ];
             return mParameters;

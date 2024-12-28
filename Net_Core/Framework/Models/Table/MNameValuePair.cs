@@ -8,9 +8,10 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MNameValuePair : AAddedUpdated
+public class MNameValuePair : AbstractBaseModel
 {
-    #region #region Member Fields
+
+    #region Member Fields
         private string m_SchemaName = "dbo";
         private string m_StaticName = "NEW";
         private string m_Display = string.Empty;
@@ -19,17 +20,6 @@ public class MNameValuePair : AAddedUpdated
     #endregion
 
     #region Public Properties
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>The description.</value>
-        public string Description
-        {
-            get { return m_Description; }
-            set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
-        }
-
         /// <summary>
         /// Gets or sets the display.
         /// </summary>
@@ -39,11 +29,11 @@ public class MNameValuePair : AAddedUpdated
             get { return m_Display; }
             set { if (!String.IsNullOrEmpty(value)) m_Display = value.Trim(); }
         }
-
-        [DBPrimaryKey]
-        [DBColumnName("NVPSeqId")]
-        public int Id { get; set; }
-
+        
+        // // Commented out for now this should need to come back when we fix the base class
+        // [DBPrimaryKey]
+        // [DBColumnName("NVPSeqId")]
+        // public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the schema.
@@ -80,11 +70,20 @@ public class MNameValuePair : AAddedUpdated
             set { m_Status = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>The description.</value>
+        public string Description
+        {
+            get { return m_Description; }
+            set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
+        }
     #endregion
 
     #region Constructors
         /// <summary>
-        /// Provides a new Name Value Pair profile with the default vaules
+        /// Provides a new account profile with the default vaules
         /// </summary>
         /// <remarks></remarks>
         public MNameValuePair()
@@ -107,22 +106,27 @@ public class MNameValuePair : AAddedUpdated
     #endregion
 
     /// <summary>
-    /// Initializes the class with the specified DataRow.
+    /// Initializes the specified DataRow.
     /// </summary>
     /// <param name="dataRow">The DataRow.</param>
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        this.Id = base.GetInt(dataRow, "NVP_SEQ_ID");
         m_SchemaName = base.GetString(dataRow, "SCHEMA_NAME");
-        m_StaticName = base.GetString(dataRow, "STATIC_NAME");
+        m_StaticName = base.Name;
         m_Display = base.GetString(dataRow, "DISPLAY");
         m_Description = base.GetString(dataRow, "DESCRIPTION");
         m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
     }
 
-    protected override void SetupClass()
+    /// <summary>
+    /// Sets up the class default properties
+    /// </summary>
+    private void SetupClass()
     {
+        base.NameColumnName = "STATIC_NAME";
+        base.IdColumnName = "NVP_SEQ_ID";
+
         this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         m_TableName = "[ZGWSystem].[Name_Value_Pairs]";
