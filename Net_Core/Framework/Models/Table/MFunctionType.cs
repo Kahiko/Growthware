@@ -8,9 +8,10 @@ namespace GrowthWare.Framework.Models;
 /// Class MFunctionTypeProfile
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MFunctionTypeProfile : AAddedUpdated
+public class MFunctionTypeProfile : AbstractBaseModel
 {
-    #region Member Properties
+
+    #region Member Fields
         private int m_FunctionTypeSeqId = -1;
         private string m_Description = string.Empty;
         private string m_Template = string.Empty;
@@ -34,26 +35,22 @@ public class MFunctionTypeProfile : AAddedUpdated
         /// <value>The FunctionTypeSeqId.</value>
         [DBPrimaryKey]
         [DBColumnName("FunctionTypeSeqId")]
-        public int Id
+        public int FunctionTypeSeqId
         {
             get { return m_FunctionTypeSeqId; }
             set { m_FunctionTypeSeqId = value; }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether it is Content.
+        /// Gets or sets a value indicating whether [I s_ CONTENT].
         /// </summary>
+        /// <value><c>true</c> if [I s_ CONTENT]; otherwise, <c>false</c>.</value>
         [DBColumnName("Is_Content")]
         public bool IsContent
         {
             get { return m_IsContent; }
             set { m_IsContent = value; }
         }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the TEMPLATE.
@@ -64,7 +61,6 @@ public class MFunctionTypeProfile : AAddedUpdated
             get { return m_Template; }
             set { if (!string.IsNullOrEmpty(value)) m_Template = value.Trim(); }
         }
-
     #endregion
 
     #region Constructors
@@ -74,7 +70,7 @@ public class MFunctionTypeProfile : AAddedUpdated
         /// <remarks></remarks>
         public MFunctionTypeProfile()
         {
-            SetupClass();
+            this.SetupClass();
         }
 
         /// <summary>
@@ -84,7 +80,7 @@ public class MFunctionTypeProfile : AAddedUpdated
         /// <remarks></remarks>
         public MFunctionTypeProfile(DataRow dataRow)
         {
-            SetupClass();
+            this.SetupClass();
             Initialize(dataRow);
         }
     #endregion
@@ -95,22 +91,21 @@ public class MFunctionTypeProfile : AAddedUpdated
     /// <param name="detailRow">The datarow.</param>
     protected new void Initialize(DataRow detailRow)
     {
-        // base.NameColumnName = "NAME";
-        // base.IdColumnName = "Function_Type_Seq_ID";
         if (detailRow != null)
         {
             base.Initialize(detailRow);
-            m_FunctionTypeSeqId = base.GetInt(detailRow, "Function_Type_Seq_ID");
+            m_FunctionTypeSeqId = Id;
             m_Description = base.GetString(detailRow, "DESCRIPTION");
-            Name = base.GetString(detailRow, "NAME");
             m_Template = base.GetString(detailRow, "TEMPLATE");
             m_IsContent = base.GetBool(detailRow, "IS_CONTENT");
         }
     }
-
-    protected override void SetupClass()
+    
+    private void SetupClass()
     {
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSecurity].[Function_Types]";
+        base.NameColumnName = "NAME";
+        base.IdColumnName = "Function_Type_Seq_ID";
+        // base.m_ForeignKeyName = "NOT_USED";
+        // m_TableName = "[ZGWSecurity].[Function_Types]";
     }
 }
