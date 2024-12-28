@@ -113,7 +113,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new ("@P_AddAccount", profile.AddAccount),
                 new ("@P_Groups", profile.Groups),
                 new ("@P_Roles", profile.Roles),
-                new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id))
+                new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile))
              };
             try
             {
