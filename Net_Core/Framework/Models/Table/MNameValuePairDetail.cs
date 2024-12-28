@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Name Value Pair Detail.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MNameValuePairDetail : AAddedUpdated
+public class MNameValuePairDetail : AbstractBaseModel
 {
 
     #region Member Fields
@@ -20,16 +20,18 @@ public class MNameValuePairDetail : AAddedUpdated
     #endregion
 
     #region Public Properties
+        // // Commented out for now this should need to come back when we fix the base class
+        // [DBPrimaryKey]
+        // [DBColumnName("NVP_DetailSeqId")]
+        // public int Id { get; set; }
 
-        [DBPrimaryKey]
-        [DBColumnName("NVP_DetailSeqId")]
-        public int Id { get; set; }
-
-        public string Name
-        {
-            get { return m_Text; }
-            set { if (!String.IsNullOrEmpty(value)) m_Text = value.Trim(); }
-        }
+        // // Commented out for now this should need to come back when we fix the base class
+        // [DBColumnName("NVP_Detail_Name")]
+        // public string Name
+        // {
+        //     get { return m_Text; }
+        //     set { if (!String.IsNullOrEmpty(value)) m_Text = value.Trim(); }
+        // }
 
         /// <summary>
         /// Gets or sets the Name Value Pair SeqId.
@@ -43,17 +45,6 @@ public class MNameValuePairDetail : AAddedUpdated
         }
 
         /// <summary>
-        /// Gets or sets the status.
-        /// </summary>
-        /// <value>The status.</value>
-        [DBColumnName("StatusSeqId")]
-        public int Status
-        {
-            get { return m_Status; }
-            set { m_Status = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the sort order.
         /// </summary>
         /// <value>The sort order.</value>
@@ -62,6 +53,17 @@ public class MNameValuePairDetail : AAddedUpdated
         {
             get { return m_SortOrder; }
             set { m_SortOrder = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>The status.</value>
+        [DBColumnName("StatusSeqId")]
+        public int Status
+        {
+            get { return m_Status; }
+            set { m_Status = value; }
         }
 
         /// <summary>
@@ -117,22 +119,21 @@ public class MNameValuePairDetail : AAddedUpdated
     /// <param name="dataRow">The dr.</param>
     protected new void Initialize(DataRow dataRow)
     {
-        // base.IdColumnName = "NVP_SEQ_DET_ID";
-        // base.NameColumnName = "NVP_DET_TEXT";
         base.Initialize(dataRow);
-        this.Id = base.GetInt(dataRow, "NVP_SEQ_DET_ID");
-        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID");
-        m_Text = base.GetString(dataRow, "NVP_DET_TEXT");
+        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
+        m_Text = base.Name;
         m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
         m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
         m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
     }
 
-    protected override void SetupClass()
+    /// <summary>
+    /// Sets up the common class properties
+    /// </summary>
+    protected virtual void SetupClass()
     {
-        this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "Set table name using SetTableName(string schemaName, string tableName, bool useBrackets = false)";
+        base.IdColumnName = "NVP_SEQ_DET_ID";
+        base.NameColumnName = "NVP_DET_TEXT";
     }
 
     /// <summary>

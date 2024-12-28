@@ -17,14 +17,8 @@
 Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Converted the following to either ADatabaseTable or AAddedUpdatedAAddedUpdated
     - MRefreshToken                         to ADatabaseTable
-    - MDirectoryProfile                     to AAddedUpdated
     - MMessage                              to AAddedUpdated
-    - MDirectoryProfile                     to AAddedUpdated
-    - AbstractGroupRolePermissionSecurity   to AAddedUpdated
-    - MFunctionTypeProfile                  to AAddedUpdated
-    - MGroupProfile                         to AAddedUpdated
     - MNameValuePair                        to AAddedUpdated
-    - MNameValuePairDetails                 to AAddedUpdated
     - MRegistrationInformation              to AAddedUpdated
     - MRole                                 to AAddedUpdated
     - MSecurityEntity                       to AAddedUpdated
