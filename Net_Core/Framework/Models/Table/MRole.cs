@@ -9,117 +9,128 @@ namespace GrowthWare.Framework.Models;
 /// Model object representing a Role.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MRole : AAddedUpdated
+public class MRole : AbstractBaseModel
 {
 
-    #region Member Fields
-        private string m_Description = string.Empty;
-        private bool m_IsSystem = false;
-        private bool m_IsSystemOnly = false;
-        private int m_SecurityEntityID = 1;
-    #endregion
+#region Member Fields
+    private string m_Description = string.Empty;
+    private bool m_IsSystem = false;
+    private bool m_IsSystemOnly = false;
+    private int m_SecurityEntityID = 1;
+#endregion
 
-    #region Public Properties
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>The description.</value>
-        public string Description
+#region Public Properties
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    /// <value>The description.</value>
+    public string Description
+    {
+        get { return m_Description; }
+        set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
+    }
+
+    // // Commented out for now this should need to come back when we fix the base class
+    // [DBPrimaryKey]
+    // [DBColumnName("RoleSeqId")]
+    // public int Id { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the is system.
+    /// </summary>
+    /// <value>The is system.</value>
+    [DBColumnName("Is_System")]
+    public bool IsSystem
+    {
+        get { return m_IsSystem; }
+        set { m_IsSystem = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets the is system only.
+    /// </summary>
+    /// <value>The is system only.</value>
+    [DBColumnName("Is_System_Only")]
+    public bool IsSystemOnly
+    {
+        get { return m_IsSystemOnly; }
+        set { m_IsSystemOnly = value; }
+    }
+
+    // // Commented out for now this should need to come back when we fix the base class
+    // public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the security entity ID.
+    /// </summary>
+    /// <value>The security entity ID.</value>
+    [DBIgnoreProperty]
+    public int SecurityEntityID
+    {
+        get { return m_SecurityEntityID; }
+        set { m_SecurityEntityID = value; }
+    }
+
+#endregion
+
+#region Constructors
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MRole" /> class.
+    /// </summary>
+    public MRole()
+    {
+        this.SetupClass();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MRole" /> class and populates values given a MRole object.
+    /// </summary>
+    /// <param name="roleProfile"></param>
+    public MRole(MRole roleProfile)
+    {
+        this.SetupClass();
+        this.AddedBy = roleProfile.AddedBy;
+        this.AddedDate = roleProfile.AddedDate;
+        this.Description = roleProfile.Description;
+        this.Id = roleProfile.Id;
+        this.IsSystem = roleProfile.IsSystem;
+        if (!roleProfile.IsSystemOnly)
         {
-            get { return m_Description; }
-            set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
+            this.IsSystemOnly = roleProfile.IsSystemOnly;
         }
+        this.Name = roleProfile.Name;
+        this.SecurityEntityID = roleProfile.SecurityEntityID;
+        this.UpdatedBy = roleProfile.UpdatedBy;
+        this.UpdatedDate = roleProfile.UpdatedDate;
+    }
 
-        [DBPrimaryKey]
-        [DBColumnName("RoleSeqId")]
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the is system.
-        /// </summary>
-        /// <value>The is system.</value>
-        [DBColumnName("Is_System")]
-        public bool IsSystem
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MRole" /> class and populates values given a UIRole object.
+    /// </summary>
+    /// <param name="uiRole"></param>
+    public MRole(UIRole uiRole)
+    {
+        this.SetupClass();
+        this.Description = uiRole.Description;
+        this.Id = uiRole.Id;
+        this.IsSystem = uiRole.IsSystem;
+        if (!uiRole.IsSystemOnly)
         {
-            get { return m_IsSystem; }
-            set { m_IsSystem = value; }
+            this.m_IsSystemOnly = uiRole.IsSystemOnly;
         }
+        this.Name = uiRole.Name;
+    }
 
-        /// <summary>
-        /// Gets or sets the is system only.
-        /// </summary>
-        /// <value>The is system only.</value>
-        [DBColumnName("Is_System_Only")]
-        public bool IsSystemOnly
-        {
-            get { return m_IsSystemOnly; }
-            set { m_IsSystemOnly = value; }
-        }
-
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the security entity ID.
-        /// </summary>
-        /// <value>The security entity ID.</value>
-        [DBIgnoreProperty]
-        public int SecurityEntityID
-        {
-            get { return m_SecurityEntityID; }
-            set { m_SecurityEntityID = value; }
-        }
-    #endregion
-
-    #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MRole" /> class.
-        /// </summary>
-        public MRole()
-        {
-            this.SetupClass();
-        }
-
-        public MRole(MRole roleProfile)
-        {
-            this.SetupClass();
-            this.AddedBy = roleProfile.AddedBy;
-            this.AddedDate = roleProfile.AddedDate;
-            this.Description = roleProfile.Description;
-            this.Id = roleProfile.Id;
-            this.IsSystem = roleProfile.IsSystem;
-            if (!roleProfile.IsSystemOnly)
-            {
-                this.IsSystemOnly = roleProfile.IsSystemOnly;
-            }
-            this.Name = roleProfile.Name;
-            this.SecurityEntityID = roleProfile.SecurityEntityID;
-            this.UpdatedBy = roleProfile.UpdatedBy;
-            this.UpdatedDate = roleProfile.UpdatedDate;
-        }
-
-        public MRole(UIRole uiRole)
-        {
-            this.SetupClass();
-            this.Description = uiRole.Description;
-            this.Id = uiRole.Id;
-            this.IsSystem = uiRole.IsSystem;
-            if (!uiRole.IsSystemOnly)
-            {
-                this.m_IsSystemOnly = uiRole.IsSystemOnly;
-            }
-            this.Name = uiRole.Name;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MRole" /> class.
-        /// </summary>
-        /// <param name="dataRow">The dataRow.</param>
-        public MRole(DataRow dataRow)
-        {
-            this.SetupClass();
-            this.Initialize(dataRow);
-        }
-    #endregion
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MRole" /> class and populates values given a DataRow.
+    /// </summary>
+    /// <param name="dataRow">The dataRow.</param>
+    public MRole(DataRow dataRow)
+    {
+        this.SetupClass();
+        this.Initialize(dataRow);
+    }
+#endregion
 
     /// <summary>
     /// Initializes with the specified DataRow.
@@ -128,19 +139,19 @@ public class MRole : AAddedUpdated
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        this.Id = base.GetInt(dataRow, "ROLE_SEQ_ID");
-        this.Name = base.GetString(dataRow, "NAME");
         m_Description = base.GetString(dataRow, "DESCRIPTION");
         m_IsSystem = base.GetBool(dataRow, "IS_SYSTEM");
         m_IsSystemOnly = base.GetBool(dataRow, "IS_SYSTEM_ONLY");
     }
 
-    protected override void SetupClass()
+    private void SetupClass()
     {
+        base.NameColumnName = "NAME";
+        base.IdColumnName = "ROLE_SEQ_ID";
+
         this.Id = -1;
         base.m_ForeignKeyName = "NOT_USED";
         m_TableName = "[ZGWSecurity].[Roles]";
-        // base.NameColumnName = "NAME";
-        // base.IdColumnName = "ROLE_SEQ_ID";
     }
+
 }
