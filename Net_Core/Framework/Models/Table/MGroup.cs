@@ -87,6 +87,10 @@ public class MGroupProfile : AbstractBaseModel
         m_Description = base.GetString(dataRow, "DESCRIPTION");
     }
 
+
+    /// <summary>
+    /// Sets up the common and specific class properties
+    /// </summary>
     private void SetupClass()
     {
         base.NameColumnName = "NAME";
