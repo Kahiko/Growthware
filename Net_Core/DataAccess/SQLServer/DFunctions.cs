@@ -178,7 +178,7 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords ?? ""), 
 				new SqlParameter("@P_ParentSeqId", m_Profile.ParentId), 
 				new SqlParameter("@P_Notes", m_Profile.Notes ?? ""), 
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			];
             String mStoreProc = "ZGWSecurity.Set_Function";
             base.ExecuteNonQuery(mStoreProc, mParameters);
@@ -195,7 +195,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
                 new SqlParameter("@P_Groups", mCommaSeporatedString), 
                 new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
             ];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
@@ -210,7 +210,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
                 new SqlParameter("@P_Roles", mCommaSeporatedString), 
                 new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
             ];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
@@ -220,7 +220,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoreProcedure = "ZGWSecurity.Set_Function_Sort";
             SqlParameter[] mParameters = [ 
 				new SqlParameter("@P_Commaseparated_Ids", commaSeparated_Ids), 
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
 				GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
 			];
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
