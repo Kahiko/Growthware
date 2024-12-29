@@ -539,7 +539,7 @@ public abstract class AbstractFileController : ControllerBase
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
                 if (mDirectoryProfile != null)
                 {
-                    UploadResponse mRetVal = new UploadResponse();
+                    DTO_UploadResponse mRetVal = new DTO_UploadResponse();
                     mRetVal.IsSuccess = false;
                     string mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath) + Path.DirectorySeparatorChar + this.m_TempUploadDirectory;
                     // create the upload directory if one doest exist

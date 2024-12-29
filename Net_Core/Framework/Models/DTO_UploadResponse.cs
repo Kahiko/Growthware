@@ -3,7 +3,7 @@ using System;
 namespace GrowthWare.Framework.Models;
 
 [Serializable(), CLSCompliant(true)]
-public class UploadResponse
+public class DTO_UploadResponse
 {
     public dynamic Data { get; set; }
     public string ErrorMessage { get; set; }
