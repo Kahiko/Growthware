@@ -4,8 +4,28 @@ using System.Data;
 using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
-public class MRefreshToken : ADatabaseTable
+public class MRefreshToken : AbstractDatabaseFunctions
 {
+
+#region Public Properties
+    [Key]
+    [DBPrimaryKey]
+	public int RefreshTokenId { get; set; }
+    public int AccountSeqId { get; set; }
+    public string Token { get; set; }
+    public DateTime Expires { get; set; }
+    public DateTime Created { get; set; }
+    public string CreatedByIp { get; set; }
+    public DateTime? Revoked { get; set; }
+    public string RevokedByIp { get; set; }
+    public string ReplacedByToken { get; set; }
+    public string ReasonRevoked { get; set; }
+    public bool IsExpired() { return DateTime.UtcNow >= Expires; }
+    public bool IsRevoked() { return Revoked != null; }
+    public bool IsActive() { return Revoked == null && !IsExpired(); }
+#endregion
+
+#region Constructors
     public MRefreshToken()
     {
         this.SetupClass();
@@ -31,27 +51,14 @@ public class MRefreshToken : ADatabaseTable
         this.ReasonRevoked = base.GetString(dataRow, "ReasonRevoked");
 
     }
+#endregion
 
-    protected override void SetupClass()
+    private void SetupClass()
     {
-        base.m_IsForeignKeyNumeric = true;
-        base.m_ForeignKeyName = "[AccountSeqId]";
-        m_TableName = "[ZGWSecurity].[RefreshTokens]";
+        this.m_ForeignKeyIsNumber = true;
+        this.m_ForeignKeyName = "[AccountSeqId]";
+        this.m_PrimaryKeyName = "[RefreshTokenId]";
+        this.m_TableName = "[ZGWSecurity].[RefreshTokens]";
     }
 
-    [Key]
-	[DBPrimaryKey]
-    public int RefreshTokenId { get; set; }
-    public int AccountSeqId { get; set; }
-    public string Token { get; set; }
-    public DateTime Expires { get; set; }
-    public DateTime Created { get; set; }
-    public string CreatedByIp { get; set; }
-    public DateTime? Revoked { get; set; }
-    public string RevokedByIp { get; set; }
-    public string ReplacedByToken { get; set; }
-    public string ReasonRevoked { get; set; }
-    public bool IsExpired() { return DateTime.UtcNow >= Expires; }
-    public bool IsRevoked() { return Revoked != null; }
-    public bool IsActive() { return Revoked == null && !IsExpired(); }
 }

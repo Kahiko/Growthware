@@ -263,17 +263,22 @@ public class DAccounts : AbstractDBInteraction, IAccount
         void IAccount.SaveRefreshTokens()
         {
             MRefreshToken[] mRefreshTokens = this.m_Profile.RefreshTokens.ToArray();
-            MRefreshToken mFirstObj = mRefreshTokens.FirstOrDefault();
+            IDatabaseFunctions mFirstObj = (IDatabaseFunctions)mRefreshTokens.FirstOrDefault();
+            // MRefreshToken mFirstObj = mRefreshTokens.FirstOrDefault();
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
             bool mIncludePrimaryKey = false;
-            string mPrimaryKeyName = MRefreshToken.GetPrimaryKeyName<MRefreshToken>();
+            string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
+            // string mPrimaryKeyName = MRefreshToken.GetPrimaryKeyName<MRefreshToken>();
 
             DTO_BulkInsert_Parameters mBulkInsertParameters = new()
             {
-                DestinationTableName = mFirstObj.TableName,
+                DestinationTableName = mFirstObj.GetTableName(),
+                // DestinationTableName = mFirstObj.TableName,
                 DoDelete = true,
-                EmptyTable = MRefreshToken.GenerateEmptyTable<MRefreshToken>(mTempTableName, mIncludePrimaryKey),
-                ForeignKeyName = mFirstObj.ForeignKeyName,
+                EmptyTable = mFirstObj.GetEmptyTable(mTempTableName, mIncludePrimaryKey),
+                // EmptyTable = MRefreshToken.GenerateEmptyTable<MRefreshToken>(mTempTableName, mIncludePrimaryKey),
+                ForeignKeyName = mFirstObj.GetForeignKeyName(),
+                // ForeignKeyName = mFirstObj.ForeignKeyName,
                 IncludePrimaryKey = mIncludePrimaryKey,
                 ListOfProfiles = mRefreshTokens,
                 NumberOfProfiles = mRefreshTokens.Count(),

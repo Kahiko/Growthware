@@ -16,7 +16,6 @@
     - Added addtributes to the properties giving clairty to them
 Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Converted the following to either ADatabaseTable or AAddedUpdatedAAddedUpdated
-    - MRefreshToken                         to ADatabaseTable
     - MNameValuePair                        to AAddedUpdated
     - MRegistrationInformation              to AAddedUpdated
     - MRole                                 to AAddedUpdated
