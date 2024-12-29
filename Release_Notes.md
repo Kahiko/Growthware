@@ -20,7 +20,6 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
     - MNameValuePair                        to AAddedUpdated
     - MRegistrationInformation              to AAddedUpdated
     - MRole                                 to AAddedUpdated
-    - MSecurityEntity                       to AAddedUpdated
     - MState                                to AAddedUpdated
     - MLoggingProfile                       to ADatabaseTable
     - UIFeedback                            to ADatabaseTable
