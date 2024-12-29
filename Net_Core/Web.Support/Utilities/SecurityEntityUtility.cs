@@ -191,7 +191,9 @@ public static class SecurityEntityUtility
         profile.ConnectionString = mEcryptedValue;
 
         m_CacheHelper.RemoveFromCache(s_CacheName);
-        return getBusinessLogic().Save(profile);
+        int mRetVal = getBusinessLogic().Save(profile);
+        m_CacheHelper.RemoveFromCache(s_CacheName);
+        return mRetVal;
     }
 
     public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)

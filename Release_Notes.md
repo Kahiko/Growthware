@@ -40,6 +40,7 @@ Marked AbstractDatabaseFunctions and AbstractBaseModel as Obsolete
 - Fixed saving the directory profile where the ImpersonatePassword was not being handeled correctly.  If "Impersonate" is false then both the Password and ImpersonatePassword be saved as string.empty.  The password is no longer displayed in the UI as was desinged (leaving it blank with keep the same password)
 - Fixed bug where you couldn't save a group without roles
 - Cleaned up AbstractGroupController.SaveGroup(UIGroupProfile groupProfile)
+- Fixed bug where cache was not being updated after saving a Security Entity
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
