@@ -14,6 +14,7 @@
 - Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions.
     - Making some of the methods and properties static
     - Added addtributes to the properties giving clairty to them
+- Moved Table/MGroupRolePermissionSecurity.cs to Base/AGroupRolePermissionSecurity.cs
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
