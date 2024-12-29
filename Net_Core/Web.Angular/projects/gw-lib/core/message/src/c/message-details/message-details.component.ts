@@ -75,6 +75,9 @@ export class MessageDetailsComponent implements OnInit {
 				this.canSave = true;
 			}
 		}
+		if(this._MessageSvc.modalReason.toLowerCase() != 'newprofile') {
+			this.controls['name'].disable();
+		}
 	}
 
 	get controls() {
