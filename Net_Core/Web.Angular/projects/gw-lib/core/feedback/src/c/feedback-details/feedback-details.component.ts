@@ -4,6 +4,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
@@ -20,7 +24,11 @@ import { FeedbackService } from '../../feedback.service';
 		FormsModule,
 		ReactiveFormsModule,
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './feedback-details.component.html',
   styleUrl: './feedback-details.component.scss'
@@ -57,12 +65,30 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 
   createForm(): void {
     this.frmProfile = this._FormBuilder.group({
-      details: [this._Profile.details, [Validators.required]],
+      action: [this._Profile.action],
+      assignee: [this._Profile.assignee],
+      dateOpened: [this._Profile.dateOpened],
+      dateClosed: [this._Profile.dateClosed],
+      details: [this._Profile.details],
+      foundInVersion: [this._Profile.foundInVersion],
+      notes: [this._Profile.notes],
+      severity: [this._Profile.severity],
+      status: [this._Profile.status],
+      submittedBy: [{ value: this._Profile.submittedBy, disabled: true }]
     });
   }
 
   populateProfile(): void {
-    throw new Error('Method not implemented.');
+    const formModel = this.frmProfile.value;
+    this._Profile.action = formModel.action;
+    this._Profile.assignee = formModel.assignee;
+    this._Profile.dateOpened = formModel.dateOpened;
+    this._Profile.dateClosed = formModel.dateClosed;
+    this._Profile.details = formModel.details;
+    this._Profile.foundInVersion = formModel.foundInVersion;
+    this._Profile.notes = formModel.notes;
+    this._Profile.severity = formModel.severity;
+    this._Profile.status = formModel.status;
   }
 
   save(): void {

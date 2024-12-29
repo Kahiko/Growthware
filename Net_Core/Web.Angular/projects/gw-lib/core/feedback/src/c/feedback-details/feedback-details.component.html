@@ -3,8 +3,73 @@
       <mat-tab label="General" class="mat-tab__tab">
         <div class="div__tab-container formSection">
           <div class="formSectionContents">
-            Feedback details
-            <input formControlName="details" />
+            <div class="form-row">
+              <mat-form-field class="full-width">
+                <mat-label>Action</mat-label>
+                <input matInput formControlName="action">
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="full-width">
+                <mat-label>Details</mat-label>
+                <textarea matInput formControlName="details" rows="5"></textarea>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="half-width">
+                <mat-label>Assignee</mat-label>
+                <input matInput formControlName="assignee">
+              </mat-form-field>
+  
+              <mat-form-field class="half-width">
+                <mat-label>Status</mat-label>
+                <input matInput formControlName="status">
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="half-width">
+                <mat-label>Date Opened</mat-label>
+                <input matInput [matDatepicker]="dateOpenedPicker" formControlName="dateOpened">
+                <mat-datepicker-toggle matSuffix [for]="dateOpenedPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dateOpenedPicker></mat-datepicker>
+              </mat-form-field>
+  
+              <mat-form-field class="half-width">
+                <mat-label>Date Closed</mat-label>
+                <input matInput [matDatepicker]="dateClosedPicker" formControlName="dateClosed">
+                <mat-datepicker-toggle matSuffix [for]="dateClosedPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dateClosedPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="half-width">
+                <mat-label>Severity</mat-label>
+                <input matInput formControlName="severity">
+              </mat-form-field>
+  
+              <mat-form-field class="half-width">
+                <mat-label>Found In Version</mat-label>
+                <input matInput formControlName="foundInVersion">
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="full-width">
+                <mat-label>Notes</mat-label>
+                <textarea matInput formControlName="notes" rows="3"></textarea>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field class="full-width">
+                <mat-label>Submitted By</mat-label>
+                <input matInput formControlName="submittedBy" readonly>
+              </mat-form-field>
+            </div>
           </div>
         </div>
       </mat-tab>
