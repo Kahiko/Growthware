@@ -25,17 +25,53 @@ AS
         BEGIN
             IF @P_Debug = 1 PRINT 'Return all records';
             SELECT
-                *
-            FROM 
-                [ZGWOptional].[Feedbacks]
+                [FeedbackId]
+                ,[Action]
+                ,[Assignee]
+                ,[AssigneeId]
+                ,[Date_Closed]
+                ,[Date_Opened]
+                ,[Details]
+                ,[Found_In_Version]
+                ,[FunctionSeqId]
+                ,[Notes]
+                ,[Severity]
+                ,[Status]
+                ,[SubmittedBy]
+                ,[SubmittedById]
+                ,[TargetVersion]
+                ,[Type]
+                ,[UpdatedBy]
+                ,[UpdatedById]
+                ,[VerifiedBy]
+                ,[VerifiedById]
+            FROM [ZGWOptional].[vwCurrentFeedbacks]
         END
     ELSE
         BEGIN
             IF @P_Debug = 1 PRINT 'Return one record';
             SELECT
-                *
-            FROM 
-                [ZGWOptional].[Feedbacks]
+                [FeedbackId]
+                ,[Action]
+                ,[Assignee]
+                ,[AssigneeId]
+                ,[Date_Closed]
+                ,[Date_Opened]
+                ,[Details]
+                ,[Found_In_Version]
+                ,[FunctionSeqId]
+                ,[Notes]
+                ,[Severity]
+                ,[Status]
+                ,[SubmittedBy]
+                ,[SubmittedById]
+                ,[TargetVersion]
+                ,[Type]
+                ,[UpdatedBy]
+                ,[UpdatedById]
+                ,[VerifiedBy]
+                ,[VerifiedById]
+            FROM [ZGWOptional].[vwCurrentFeedbacks]
             WHERE FeedbackId = @P_FeedbackId
         END
     --END IF
