@@ -8,47 +8,84 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Feedback.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class UIFeedback : ADatabaseTable 
+public class UIFeedback : AbstractDatabaseFunctions
 {
 
-    #region Public Properties
-        public int FeedbackId { get; set; }
-        public string Action { get; set; }
-        public string Assignee { get; set; }
-        public int AssigneeId { get; set; }
-        public DateTime DateClosed { get; set; }
-        public DateTime DateOpened { get; set; }
-        public string Details { get; set; }
-        public string FoundInVersion { get; set; }
-        /// <summary>
-        /// The "FunctionSeqId" should be looked up using the "Action" value.
-        /// </summary>
-        public int FunctionSeqId { get; set; }
-        public string Notes { get; set; }
-        public string Severity { get; set; }
-        public string Status { get; set; }
-        public string SubmittedBy { get; set; }
-        public int SubmittedById { get; set; }
-        public string TargetVersion { get; set; }
-        public string Type { get; set; }
-        public string UpdatedBy { get; set; }
-        public int UpdatedById { get; set; }
-        public string VerifiedBy { get; set; }
-        public int VerifiedById { get; set; }
-    #endregion
+#region Public Properties
+    public string Action { get; set; }
+    
+    public string Assignee { get; set; }
+    
+    public int AssigneeId { get; set; }
+    
+    [DBColumnName("Date_Closed")]
+    public DateTime DateClosed { get; set; }
+    
+    [DBColumnName("Date_Opened")]
+    public DateTime DateOpened { get; set; }
+    
+    public string Details { get; set; }
+    
+    public int FeedbackId { get; set; }
+    
+    [DBColumnName("Found_In_Version")]
+    public string FoundInVersion { get; set; }
 
-    #region Constructors
-        public UIFeedback() 
-        { 
-            this.SetupClass();
-        }
+    /// <summary>
+    /// The "FunctionSeqId" should be looked up using the "Action" value.
+    /// </summary>
+    public int FunctionSeqId { get; set; }
 
-        public UIFeedback(DataRow dataRow) 
-        { 
-            this.SetupClass();
-            this.Initialize(dataRow);
-        }
-    #endregion
+    public string Notes { get; set; }
+
+    public string Severity { get; set; }
+
+    public string Status { get; set; }
+
+    /// <summary>
+    /// The account who submitted the feedback.
+    /// </summary>
+    /// <remarks>Used by the UI</remarks>
+    [DBIgnoreProperty]
+    public string SubmittedBy { get; set; }
+
+    public int SubmittedById { get; set; }
+
+    public string TargetVersion { get; set; }
+
+    public string Type { get; set; }
+
+    /// <summary>
+    /// The account who updated the feedback.
+    /// </summary>
+    /// <remarks>Used by the UI</remarks>
+    [DBIgnoreProperty]
+    public string UpdatedBy { get; set; }
+
+    public int UpdatedById { get; set; }
+
+    /// <summary>
+    /// The account who verified the feedback was resolved.
+    /// </summary>
+    /// <remarks>Used by the UI</remarks>
+    [DBIgnoreProperty]
+    public string VerifiedBy { get; set; }
+
+    public int VerifiedById { get; set; }
+#endregion
+
+#region Constructors
+    public UIFeedback()
+    {
+        this.SetupClass();
+    }
+
+    public UIFeedback(DataRow dataRow)
+    {
+        this.SetupClass();
+        this.Initialize(dataRow);
+    }
+#endregion
 
     /// <summary>
     /// Populates direct properties as well as passing the DataRow to the abstract class
@@ -79,7 +116,7 @@ public class UIFeedback : ADatabaseTable
         this.VerifiedById = base.GetInt(dataRow, "VerifiedById");
     }
 
-    protected override void SetupClass()
+    private void SetupClass()
     {
         base.m_ForeignKeyName = "NOT_USED";
         m_TableName = "[ZGWOptional].[Feedbacks]";

@@ -44,24 +44,24 @@ public static class FeedbackUtility
         bool mUseBrackets = true;
         string mPrimaryKeyName = "NVP_DetailSeqId";
         string mDataTableName = "Temp_Table";
-        MNameValuePair mNameValuePair = NameValuePairUtility.GetNameValuePairs().FirstOrDefault();
-        MNameValuePairDetail mProfile = NameValuePairUtility.GetNameValuePairDetail(mNameValuePair.Id, 1);
-        mProfile.SetTableName(mNameValuePair.SchemaName, mNameValuePair.StaticName, true);
+        // MNameValuePair mNameValuePair = NameValuePairUtility.GetNameValuePairs().FirstOrDefault();
+        // MNameValuePairDetail mProfile = NameValuePairUtility.GetNameValuePairDetail(mNameValuePair.Id, 1);
+        // mProfile.SetTableName(mNameValuePair.SchemaName, mNameValuePair.StaticName, true);
 
-        string mTableName = mProfile.TableName;
+        // string mTableName = mProfile.TableName;
         
-        string mDeleteWithParameters = MNameValuePairDetail.GenerateDeleteWithParameters(mPrimaryKeyName, mUseBrackets);
-        string mDeleteWithValues = mProfile.GenerateDeleteWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
-        string mDeleteWithValuesSpecifyKeyValue = MNameValuePairDetail.GenerateDeleteWithValues(mPrimaryKeyName, "'yaba'", mUseBrackets);
-        string mInsertWithParameters = MNameValuePairDetail.GenerateInsertWithParameters<MNameValuePairDetail>(mUseBrackets);
-        string mInsertWithValues = mProfile.GenerateInsertWithValues<MNameValuePairDetail>(mUseBrackets);
-        string mUpdateWithParameters = MNameValuePairDetail.GenerateUpdateWithParameters<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
-        string mUpdateWithValues = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
-        string mUpdateWithValuesSpecifyKeyValue = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, "'yaba'", mUseBrackets);
+        // string mDeleteWithParameters = MNameValuePairDetail.GenerateDeleteWithParameters(mPrimaryKeyName, mUseBrackets);
+        // string mDeleteWithValues = mProfile.GenerateDeleteWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        // string mDeleteWithValuesSpecifyKeyValue = MNameValuePairDetail.GenerateDeleteWithValues(mPrimaryKeyName, "'yaba'", mUseBrackets);
+        // string mInsertWithParameters = MNameValuePairDetail.GenerateInsertWithParameters<MNameValuePairDetail>(mUseBrackets);
+        // string mInsertWithValues = mProfile.GenerateInsertWithValues<MNameValuePairDetail>(mUseBrackets);
+        // string mUpdateWithParameters = MNameValuePairDetail.GenerateUpdateWithParameters<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        // string mUpdateWithValues = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, mUseBrackets);
+        // string mUpdateWithValuesSpecifyKeyValue = mProfile.GenerateUpdateWithValues<MNameValuePairDetail>(mPrimaryKeyName, "'yaba'", mUseBrackets);
 
-        DataTable mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, false);
-        mDataTable = null;
-        mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, true);
+        // DataTable mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, false);
+        // mDataTable = null;
+        // mDataTable = MNameValuePairDetail.GenerateEmptyTable<MNameValuePairDetail>(mDataTableName, true);
         string mStop = string.Empty;
     }
 }
