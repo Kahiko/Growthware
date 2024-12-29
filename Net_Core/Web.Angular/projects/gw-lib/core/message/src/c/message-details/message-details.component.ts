@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { LoggingService, LogLevel } from '@growthware/core/logging';
-import { ModalService } from '@growthware/core/modal';
+import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 import { SecurityService, ISecurityInfo } from '@growthware/core/security';
 // Feature
 import { MessageService } from '../../message.service';
@@ -28,7 +28,9 @@ import { IMessageProfile, MessageProfile } from '../../message-profile.model';
 	styleUrls: ['./message-details.component.scss']
 })
 export class MessageDetailsComponent implements OnInit {
+	@ViewChild('helpTags') private _HelpTags!: TemplateRef<unknown>;
 
+	private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 	private _Profile: IMessageProfile = new MessageProfile();
 	private _SecurityInfo!: ISecurityInfo;
 
@@ -104,6 +106,16 @@ export class MessageDetailsComponent implements OnInit {
 
 	onCancel(): void {
 		this.closeModal();
+	}
+
+	onHelp(controleName: string): void {
+		switch (controleName) {
+			case 'Tags':
+				this._HelpOptions.windowSize = new WindowSize(150, 480);
+				this._HelpOptions.contentPayLoad = this._HelpTags;
+				break;
+		}
+		this._ModalSvc.open(this._HelpOptions);
 	}
 
 	private populateForm(): void {

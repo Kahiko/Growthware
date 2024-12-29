@@ -30,7 +30,7 @@ export class SearchMessagesComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'Message';
 		this._TheApi = 'GrowthwareMessage/SearchMessages';
 		this._TheComponent = MessageDetailsComponent;
-		this._TheWindowSize = new WindowSize(500,900);
+		this._TheWindowSize = new WindowSize(550,900);
 		this._TheService = theFeatureSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
 		this._ModalSvc = modalSvc;
