@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -42,9 +42,10 @@ namespace GrowthWare.Framework.Models.Base
         protected Boolean GetBool(DataRow dataRow, String columnName)
         {
             bool mRetVal = false;
-            if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+            if (RowHasValue(dataRow, columnName))
             {
-                if (dataRow[columnName].ToString() == "1" || dataRow[columnName].ToString().ToUpper(CultureInfo.InvariantCulture) == "TRUE")
+                string mRowValue = dataRow[columnName].ToString();
+                if (String.Equals(mRowValue, "1") || string.Equals(mRowValue, "true", StringComparison.OrdinalIgnoreCase))
                 {
                     mRetVal = true;
                 }
@@ -92,7 +93,7 @@ namespace GrowthWare.Framework.Models.Base
         protected DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
         {
             DateTime mRetVal = defaultDateTime;
-            if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+            if (RowHasValue(dataRow, columnName))
             {
                 mRetVal = DateTime.Parse(dataRow[columnName].ToString(), CultureInfo.CurrentCulture);
             }
@@ -271,7 +272,7 @@ namespace GrowthWare.Framework.Models.Base
         protected Int32 GetInt(DataRow dataRow, String columnName)
         {
             int mRetVal = -1;
-            if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+            if (RowHasValue(dataRow, columnName))
             {
                 mRetVal = int.Parse(dataRow[columnName].ToString(), CultureInfo.InvariantCulture);
             }
@@ -289,7 +290,7 @@ namespace GrowthWare.Framework.Models.Base
         protected String GetString(DataRow dataRow, String columnName)
         {
             String mRetVal = string.Empty;
-            if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
+            if (RowHasValue(dataRow, columnName))
             {
                 mRetVal = dataRow[columnName].ToString().Trim();
             }
@@ -348,6 +349,11 @@ namespace GrowthWare.Framework.Models.Base
         bool IDatabaseFunctions.IsForeignKeyNumber()
         {
             return this.m_ForeignKeyIsNumber;
+        }
+
+        protected static bool RowHasValue(DataRow dataRow, String columnName)
+        {
+            return dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName]));
         }
     }
 }
