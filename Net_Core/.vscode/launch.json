@@ -16,7 +16,7 @@
             "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net8.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
-                "5.2.0.0"
+                "5.3.0.0"
             ],
             "cwd": "${workspaceFolder}/DatabaseManager",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
