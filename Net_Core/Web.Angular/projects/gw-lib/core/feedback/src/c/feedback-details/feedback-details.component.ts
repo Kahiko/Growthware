@@ -59,7 +59,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 
   ngOnInit(): void {
     this._ProfileSvc.getFeedbackAccounts().then((response: any) => {                // Request and Response Handler #1 (getFeedbackAccounts)
-      console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
+      // console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
       this.AvalibleDevelopers = response.item1;
       this.AvalibleQA = response.item2;
       return this._AccountSvc.getSelectableActions();                               // Request #2 (getSelectableActions)
@@ -87,6 +87,9 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   createForm(): void {
     // this.selectedAction = this._Profile.action;
     const mSelectedAction = this.validLinks.find(x => x.action === this._Profile.action);
+    if (mSelectedAction) {
+      this.selectedAction = mSelectedAction.action;
+    }
     this.frmProfile = this._FormBuilder.group({
       action: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
       assignee: [this._Profile.assignee],
@@ -97,7 +100,8 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
       notes: [this._Profile.notes],
       severity: [this._Profile.severity],
       status: [this._Profile.status],
-      submittedBy: [{ value: this._Profile.submittedBy, disabled: true }]
+      submittedBy: [{ value: this._Profile.submittedBy, disabled: true }],
+      verifiedBy: [{ value: this._Profile.verifiedBy }]
     });
   }
 
