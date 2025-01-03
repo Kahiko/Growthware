@@ -5,24 +5,50 @@
           <div class="formSectionContents">
             <div class="form-row">
               <mat-form-field class="full-width">
-                <mat-label>Action</mat-label>
-                <input matInput formControlName="action">
+                <mat-label>Area occurred</mat-label>
+                <mat-select formControlName="action">
+                  <mat-option>--</mat-option>
+                  @for (item of validLinks; track item.action) {
+                    <mat-option [value]="item.action">{{item.title}}</mat-option>
+                  }
+                </mat-select>
               </mat-form-field>
-            </div>
-  
+            </div>  
             <div class="form-row">
               <mat-form-field class="full-width">
                 <mat-label>Details</mat-label>
                 <textarea matInput formControlName="details" rows="5"></textarea>
               </mat-form-field>
             </div>
-  
+
             <div class="form-row">
               <mat-form-field class="half-width">
-                <mat-label>Assignee</mat-label>
-                <input matInput formControlName="assignee">
+                <mat-label>Assigned To</mat-label>
+                <mat-select formControlName="assignee">
+                  @for (item of AvalibleDevelopers; track item) {
+                  <mat-option [value]="item">
+                      {{item}}
+                  </mat-option>
+                  }
+                </mat-select>
+            </mat-form-field>
+              <mat-form-field class="half-width">
+                <mat-label>Verified By</mat-label>
+                <mat-select formControlName="verifiedBy">
+                  @for (item of AvalibleQA; track item) {
+                  <mat-option [value]="item">
+                      {{item}}
+                  </mat-option>
+                  }
+                </mat-select>
               </mat-form-field>
-  
+            </div>  
+
+            <div class="form-row">
+              <mat-form-field class="half-width">
+                <mat-label>Severity</mat-label>
+                <input matInput formControlName="severity">
+              </mat-form-field>
               <mat-form-field class="half-width">
                 <mat-label>Status</mat-label>
                 <input matInput formControlName="status">
@@ -46,11 +72,6 @@
             </div>
   
             <div class="form-row">
-              <mat-form-field class="half-width">
-                <mat-label>Severity</mat-label>
-                <input matInput formControlName="severity">
-              </mat-form-field>
-  
               <mat-form-field class="half-width">
                 <mat-label>Found In Version</mat-label>
                 <input matInput formControlName="foundInVersion">

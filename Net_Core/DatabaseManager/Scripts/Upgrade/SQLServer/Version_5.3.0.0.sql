@@ -9,7 +9,7 @@ GO
 		@P_RoleSeqId INT = -1,
 		@P_Name VARCHAR(50) = 'QA',
 		@P_Description VARCHAR(128) = 'Quality Assurance Role',
-		@P_Is_System INT = 0,
+		@P_Is_System INT = 1,
 		@P_Is_System_Only INT = 0,
 		@P_SecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 1,

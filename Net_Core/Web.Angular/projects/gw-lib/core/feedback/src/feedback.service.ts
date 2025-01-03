@@ -14,6 +14,7 @@ import { IFeedback } from './feedback.model';
 })
 export class FeedbackService extends BaseService {
   private _ApiName: string = 'GrowthwareFeedback/';
+  private _Api_GetFeedbackAccounts: string = '';
   private _Api_GetFeedbackForEdit: string = '';
   private _Api_GetNewFeedback: string = '';
   private _Api_SaveFeedback: string = '';
@@ -36,6 +37,7 @@ export class FeedbackService extends BaseService {
 		private _LoggingSvc: LoggingService,
   ) { 
     super();
+    this._Api_GetFeedbackAccounts = this._GWCommon.baseURL + this._ApiName + 'GetFeedbackAccounts';
     this._Api_GetFeedbackForEdit = this._GWCommon.baseURL + this._ApiName + 'GetFeedbackForEdit';
     this._Api_GetNewFeedback = this._GWCommon.baseURL + this._ApiName + 'GetNewFeedback';
     this._Api_SaveFeedback = this._GWCommon.baseURL + this._ApiName + 'SaveFeedback';
@@ -71,6 +73,26 @@ export class FeedbackService extends BaseService {
         },
         error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FeedbackService', 'getFeedback');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async getFeedbackAccounts(): Promise<{developers: Array<string>, qa: Array<string>}> { 
+    return new Promise<{developers: Array<string>, qa: Array<string>}>((resolve, reject) => {
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      };
+      this._HttpClient.get<{developers: Array<string>, qa: Array<string>}>(this._Api_GetFeedbackAccounts, mHttpOptions).subscribe({
+        next: (response: {developers: Array<string>, qa: Array<string>}) => {
+          resolve(response);
+        },
+        error: (error) => {
+          this._LoggingSvc.errorHandler(error, 'FeedbackService', 'getFeedbackAccounts');
           reject('Failed to call the API');
         },
         // complete: () => {}

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 using GrowthWare.BusinessLogic;
@@ -124,6 +125,17 @@ public static class RoleUtility
             mRetVal.Add((string)item["NAME"]);
         }
         return mRetVal;
+    }
+
+    public static List<MRole> GetRolesBySecurityEntity(int securityEntityId)
+    {
+         List<MRole> mReturn = new List<MRole>();
+         DataTable mRolesTable = GetAllRolesBySecurityEntity(securityEntityId);
+         foreach (DataRow item in mRolesTable.Rows)
+         {
+             mReturn.Add(new MRole(item));
+         }
+         return mReturn;        
     }
 
     /// <summary>

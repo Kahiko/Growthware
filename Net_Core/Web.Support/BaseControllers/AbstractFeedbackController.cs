@@ -6,6 +6,8 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -13,6 +15,51 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractFeedbackController : ControllerBase
 {
     private Logger m_Logger = Logger.Instance();
+
+    /// <summary>
+    /// Retrieves an array of strings representing the accounts in the Developer and QA roles.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("GetFeedbackAccounts")]
+    public ActionResult<Tuple<string[], string[]>> GetFeedbackAccounts()
+    {
+        MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
+        if (mSecurityInfo.MayEdit)
+        {
+            int mSecurityId = SecurityEntityUtility.CurrentProfile.Id;
+            // Get all of the roles for the security entity
+            List<MRole> mRoles = RoleUtility.GetRolesBySecurityEntity(mSecurityId);
+            // Get the Developer and QA roles
+            MRole mDeveloper = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("Developer", StringComparison.InvariantCultureIgnoreCase));
+            MRole mQA = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("QA", StringComparison.InvariantCultureIgnoreCase));
+            string[] mAccountsInRole_Developers = [];
+            string[] mAccountsInRole_QA = [];
+            // Ensure that the roles were found before we attempt to us them
+            if (mDeveloper != null)
+            {
+                // Get the AccountsInRole from the UIProfile
+                mAccountsInRole_Developers = RoleUtility.GetUIProfile(mDeveloper.Id, mSecurityId).AccountsInRole;
+            }
+            if (mQA != null)
+            {
+                mAccountsInRole_QA = RoleUtility.GetUIProfile(mQA.Id, mSecurityId).AccountsInRole;
+            }
+            // Add the Anonymous account to the feedback accounts
+            List<string> mAccountsList_Developers = new List<string>(mAccountsInRole_Developers);
+            List<string> mAccountsList_QA = new List<string>(mAccountsInRole_QA);
+            if (!mAccountsList_Developers.Contains("Anonymous"))
+            {
+                mAccountsList_Developers.Add("Anonymous");
+            }
+            if (!mAccountsList_QA.Contains("Anonymous"))
+            {
+                mAccountsList_QA.Add("Anonymous");
+            }
+            Tuple<string[], string[]> mRetVal = new Tuple<string[], string[]>([.. mAccountsList_Developers.Order()],[.. mAccountsList_QA.Order()] );
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");       
+    }
 
     [Authorize("feedbacks")]
     [HttpGet("GetFeedbackForEdit")]
