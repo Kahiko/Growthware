@@ -106,7 +106,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                     {
                         mRetVal = true;
                         return Ok(mRetVal);
-                    }                    
+                    }
                 } catch (Exception ex)
                 {
                     m_Logger.Error(ex.Message);
