@@ -5,6 +5,15 @@ SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
+-- Remove the Role
+DECLARE 
+	@P_Name AS VARCHAR(50) = 'QA',
+	@P_SecurityEntitySeqId AS INT = 1
+
+EXEC [ZGWSecurity].[Delete_Role]
+	@P_Name,
+	@P_SecurityEntitySeqId
+
 -- Remove the functions
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] LIKE 'feedbacks/edit')
 	BEGIN

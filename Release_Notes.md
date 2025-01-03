@@ -1,5 +1,5 @@
 # Release Notes
-## Net_Core Version 5.3.0.0 (2025-01-01)
+## Net_Core Version 5.2.0.0 (2025-01-01)
 
 ### New Features
 - Added Feedback support

@@ -5,6 +5,38 @@ SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
+DECLARE 
+    @P_RoleSeqId INT = -1,
+    @P_Name VARCHAR(50) = 'QA',
+    @P_Description VARCHAR(128) = 'Quality Assurance Role',
+    @P_Is_System INT = 1,
+    @P_Is_System_Only INT = 0,
+    @P_SecurityEntitySeqId INT = 1,
+    @P_Added_Updated_By INT = 1,
+    @P_Primary_Key int,
+    @P_Debug INT = 1
+
+EXEC [ZGWSecurity].[Set_Role]
+    @P_RoleSeqId,
+    @P_Name,
+    @P_Description,
+    @P_Is_System,
+    @P_Is_System_Only,
+    @P_SecurityEntitySeqId,
+    @P_Added_Updated_By,
+    @P_Primary_Key OUT,
+    @P_Debug
+
+DECLARE 
+    @P_Account VARCHAR(128) = 'Mike';
+
+EXEC [ZGWSecurity].[Set_Role_Accounts]
+    @P_Primary_Key,
+    @P_SecurityEntitySeqId,
+    @P_Account,
+    @P_Added_Updated_By,
+    @P_Debug
+
 /****** Start: Sequence [ZGWOptional].[FeedbackCounter] ******/
 IF NOT EXISTS(SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FeedbackCounter]') AND type = 'SO')
     CREATE SEQUENCE [ZGWOptional].[FeedbackCounter] AS INT START WITH 1 INCREMENT BY 1;
