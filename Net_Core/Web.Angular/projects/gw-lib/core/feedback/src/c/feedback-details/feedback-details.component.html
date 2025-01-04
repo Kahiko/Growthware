@@ -53,9 +53,9 @@
                 }  
               </mat-form-field>
               <mat-form-field class="half-width">
-                <mat-label value="--">Status</mat-label>
-                <mat-select  [(value)]="selectedStatus">
-                  <mat-option>--</mat-option>
+                <mat-label>Status</mat-label>
+                <mat-select [(value)]="selectedStatus">
+                  <mat-option value="--">--</mat-option>
                   @for (item of avalibleStatuses; track item) {
                     <mat-option [value]="item">{{item}}</mat-option>
                   }
@@ -69,7 +69,7 @@
             <div class="form-row">
               <mat-form-field class="half-width">
                 <mat-label>Type</mat-label>
-                <mat-select  [(value)]="selectedType">
+                <mat-select [(value)]="selectedType">
                   <mat-option value="--">--</mat-option>
                   @for (item of avalibleTypes; track item) {
                     <mat-option [value]="item">{{item}}</mat-option>
