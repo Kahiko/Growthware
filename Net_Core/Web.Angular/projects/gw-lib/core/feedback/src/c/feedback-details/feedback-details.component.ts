@@ -41,9 +41,13 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   private _FormBuilder: FormBuilder = inject(FormBuilder);
   private _Profile: IFeedback = new Feedback('Anonymous', '');
 
-  public AvalibleDevelopers: Array<string> = [];
-  public AvalibleQA: Array<string> = [];
-  selectedAction!: string;
+  public avalibleDevelopers: Array<string> = [];
+  public avalibleQA: Array<string> = [];
+  public avalibleStatuses: Array<string> = ['Submitted', 'Open', 'Open-in progress', 'Closed', 'Closed-cannot reproduce', 'Closed-works as designed'];
+  public avalibleTypes: Array<string> = ['Bug', 'Feature-change', 'Feature-request', 'Question', 'Other'];
+  selectedAction: string = '--';
+  selectedStatus: string = '--';
+  selectedType: string = '--';
   public validLinks: ISelectedableAction[] = [];
 
   constructor(
@@ -60,8 +64,8 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   ngOnInit(): void {
     this._ProfileSvc.getFeedbackAccounts().then((response: any) => {                // Request and Response Handler #1 (getFeedbackAccounts)
       // console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
-      this.AvalibleDevelopers = response.item1;
-      this.AvalibleQA = response.item2;
+      this.avalibleDevelopers = response.item1;
+      this.avalibleQA = response.item2;
       return this._AccountSvc.getSelectableActions();                               // Request #2 (getSelectableActions)
     }).catch((error: any) => {                                                      // Error Handler #1 (getFeedbackAccounts)
       this._LoggingSvc.toast('Error getting Accounts:\r\n' + error, 'Feedback Details:', LogLevel.Error);
@@ -85,10 +89,17 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   createForm(): void {
-    // this.selectedAction = this._Profile.action;
-    const mSelectedAction = this.validLinks.find(x => x.action === this._Profile.action);
+    const mSelectedAction = this.validLinks.find(x => x.action.toUpperCase() === this._Profile.action.toUpperCase());
     if (mSelectedAction) {
       this.selectedAction = mSelectedAction.action;
+    }
+    const mSelectedStatus = this.avalibleStatuses.find(x => x.toUpperCase() === this._Profile.status.toUpperCase());
+    if (mSelectedStatus) {
+      this.selectedStatus = mSelectedStatus;
+    }
+    const mSelectedType = this.avalibleTypes.find(x => x.toUpperCase() === this._Profile.type.toUpperCase());
+    if (mSelectedType) {
+      this.selectedType = mSelectedType;
     }
     this.frmProfile = this._FormBuilder.group({
       action: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
@@ -99,7 +110,6 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
       foundInVersion: [this._Profile.foundInVersion],
       notes: [this._Profile.notes],
       severity: [this._Profile.severity],
-      status: [this._Profile.status],
       submittedBy: [{ value: this._Profile.submittedBy, disabled: true }],
       verifiedBy: [{ value: this._Profile.verifiedBy }]
     });

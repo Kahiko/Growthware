@@ -7,7 +7,7 @@
               <mat-form-field class="full-width">
                 <mat-label>Area occurred</mat-label>
                 <mat-select  [(value)]="selectedAction">
-                  <mat-option>--</mat-option>
+                  <mat-option value="--">--</mat-option>
                   @for (item of validLinks; track item.action) {
                     <mat-option [value]="item.action">{{item.title}}</mat-option>
                   }
@@ -25,7 +25,7 @@
               <mat-form-field class="half-width">
                 <mat-label>Assigned To</mat-label>
                 <mat-select formControlName="assignee">
-                  @for (item of AvalibleDevelopers; track item) {
+                  @for (item of avalibleDevelopers; track item) {
                   <mat-option [value]="item">
                       {{item}}
                   </mat-option>
@@ -35,7 +35,7 @@
               <mat-form-field class="half-width">
                 <mat-label>Verified By</mat-label>
                 <mat-select formControlName="verifiedBy">
-                  @for (item of AvalibleQA; track item) {
+                  @for (item of avalibleQA; track item) {
                   <mat-option [value]="item">
                       {{item}}
                   </mat-option>
@@ -50,11 +50,32 @@
                 <input matInput formControlName="severity">
               </mat-form-field>
               <mat-form-field class="half-width">
-                <mat-label>Status</mat-label>
-                <input matInput formControlName="status">
+                <mat-label value="--">Status</mat-label>
+                <mat-select  [(value)]="selectedStatus">
+                  <mat-option>--</mat-option>
+                  @for (item of avalibleStatuses; track item) {
+                    <mat-option [value]="item">{{item}}</mat-option>
+                  }
+                </mat-select>
               </mat-form-field>
             </div>
-  
+
+            <div class="form-row">
+              <mat-form-field class="half-width">
+                <mat-label>Type</mat-label>
+                <mat-select  [(value)]="selectedType">
+                  <mat-option value="--">--</mat-option>
+                  @for (item of avalibleTypes; track item) {
+                    <mat-option [value]="item">{{item}}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="half-width">
+                <mat-label>Found In Version</mat-label>
+                <input matInput formControlName="foundInVersion">
+              </mat-form-field>
+            </div>
+
             <div class="form-row">
               <mat-form-field class="half-width">
                 <mat-label>Date Opened</mat-label>
@@ -68,13 +89,6 @@
                 <input matInput [matDatepicker]="dateClosedPicker" formControlName="dateClosed">
                 <mat-datepicker-toggle matSuffix [for]="dateClosedPicker"></mat-datepicker-toggle>
                 <mat-datepicker #dateClosedPicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-  
-            <div class="form-row">
-              <mat-form-field class="half-width">
-                <mat-label>Found In Version</mat-label>
-                <input matInput formControlName="foundInVersion">
               </mat-form-field>
             </div>
   
