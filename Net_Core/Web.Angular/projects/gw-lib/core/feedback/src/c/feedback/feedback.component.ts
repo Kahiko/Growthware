@@ -102,6 +102,7 @@ export class FeedbackComponent implements OnInit {
   populateProfile(): void {
     this._Profile.details = this.frmSubmit.controls['details'].value;
     this._Profile.action = this.frmSubmit.controls['areaOccurred'].value;
+    this._Profile.status = 'Submitted';
     this._Profile.submittedById = this._AccountSvc.authenticationResponse().id;
   }
 
