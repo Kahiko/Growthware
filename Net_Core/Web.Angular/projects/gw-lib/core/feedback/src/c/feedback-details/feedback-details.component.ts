@@ -88,6 +88,24 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     throw new Error('Method not implemented.');
   }
 
+  getErrorMessage(fieldName: string) {
+    switch (fieldName) {
+      case 'status':
+        if (this.selectedStatus === '--') {
+          return 'The Status is required.';
+        }
+        break;
+      case 'severity':
+        if (this.frmProfile.get('severity')?.hasError('required') || (this.frmProfile.get('severity')?.value < 1 || this.frmProfile.get('severity')?.value > 5)) {
+          return 'The Severity is required and must be between 1 and 5.';
+        }
+        break;
+      default:
+        break;
+    }
+    return undefined;
+  }
+
   createForm(): void {
     const mSelectedAction = this.validLinks.find(x => x.action.toUpperCase() === this._Profile.action.toUpperCase());
     if (mSelectedAction) {
@@ -102,14 +120,15 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
       this.selectedType = mSelectedType;
     }
     this.frmProfile = this._FormBuilder.group({
-      action: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
+      // action: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
       assignee: [this._Profile.assignee],
       dateOpened: [this._Profile.dateOpened],
       dateClosed: [this._Profile.dateClosed],
       details: [this._Profile.details],
       foundInVersion: [this._Profile.foundInVersion],
       notes: [this._Profile.notes],
-      severity: [this._Profile.severity],
+      severity: [this._Profile.severity, [Validators.required, Validators.min(1), Validators.max(5)]],
+      status: [this._Profile.status, [Validators.required]],
       submittedBy: [{ value: this._Profile.submittedBy, disabled: true }],
       verifiedBy: [{ value: this._Profile.verifiedBy }]
     });
@@ -117,7 +136,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 
   populateProfile(): void {
     const mFrmProfile = this.frmProfile.value;
-    this._Profile.action = mFrmProfile.action;
+    this._Profile.action = this.selectedAction;
     this._Profile.assignee = mFrmProfile.assignee;
     this._Profile.dateOpened = mFrmProfile.dateOpened;
     this._Profile.dateClosed = mFrmProfile.dateClosed;
@@ -125,7 +144,8 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     this._Profile.foundInVersion = mFrmProfile.foundInVersion;
     this._Profile.notes = mFrmProfile.notes;
     this._Profile.severity = mFrmProfile.severity;
-    this._Profile.status = mFrmProfile.status;
+    this._Profile.status = this.selectedStatus;
+    this._Profile.type = this.selectedType;
   }
 
   save(): void {
