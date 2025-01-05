@@ -41,14 +41,14 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   private _FormBuilder: FormBuilder = inject(FormBuilder);
   private _Profile: IFeedback = new Feedback('Anonymous', '');
 
-  public avalibleDevelopers: Array<string> = [];
-  public avalibleQA: Array<string> = [];
-  public avalibleStatuses: Array<string> = ['Submitted', 'Open', 'Open-in progress', 'Closed', 'Closed-cannot reproduce', 'Closed-works as designed'];
-  public avalibleTypes: Array<string> = ['Bug', 'Feature-change', 'Feature-request', 'Question', 'Other'];
+  avalibleDevelopers: Array<string> = [];
+  avalibleQA: Array<string> = [];
+  avalibleStatuses: Array<string> = ['Submitted', 'Open', 'Open-in progress', 'Closed', 'Closed-cannot reproduce', 'Closed-works as designed'];
+  avalibleTypes: Array<string> = ['Bug', 'Feature-change', 'Feature-request', 'Question', 'Other'];
   selectedAction: string = '--';
   selectedStatus: string = '--';
   selectedType: string = '--';
-  public validLinks: ISelectedableAction[] = [];
+  validLinks: ISelectedableAction[] = [];
 
   constructor(
     feedbackSvc: FeedbackService,
@@ -62,22 +62,22 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   ngOnInit(): void {
-    this._ProfileSvc.getFeedbackAccounts().then((response: any) => {                // Request and Response Handler #1 (getFeedbackAccounts)
+    this._ProfileSvc.getFeedbackAccounts().then((response: any) => {  // Request and Response Handler #1 (getFeedbackAccounts)
       // console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
       this.avalibleDevelopers = response.item1;
       this.avalibleQA = response.item2;
-      return this._AccountSvc.getSelectableActions();                               // Request #2 (getSelectableActions)
-    }).catch((error: any) => {                                                      // Error Handler #1 (getFeedbackAccounts)
+      return this._AccountSvc.getSelectableActions();                 // Request #2 (getSelectableActions)
+    }).catch((error: any) => {                                        // Error Handler #1 (getFeedbackAccounts)
       this._LoggingSvc.toast('Error getting Accounts:\r\n' + error, 'Feedback Details:', LogLevel.Error);
-    }).then((actions: ISelectedableAction[]) => {                                   // Response Handler #2 (getSelectableActions)
+    }).then((actions: ISelectedableAction[]) => {                     // Response Handler #2 (getSelectableActions)
       this.validLinks = actions;
       return this._ProfileSvc.getFeedback(this._ProfileSvc.selectedRow.FeedbackId); // Request #3 (getFeedback)
     }).catch((error: any) => {
       this._LoggingSvc.toast('Error getting Avalible Actions:\r\n' + error, 'Feedback Details:', LogLevel.Error);
-    }).then((profile: IFeedback) => {                                               // Response Handler #3 (getFeedback)
+    }).then((profile: IFeedback) => {                                 // Response Handler #3 (getFeedback)
       this._Profile = profile;
       this.createForm();
-    }).catch((error: any) => {                                                      // Error Handler #3 (getFeedback)
+    }).catch((error: any) => {                                        // Error Handler #3 (getFeedback)
       this._LoggingSvc.toast('Error getting Feedback details:\r\n' + error, 'Feedback Details:', LogLevel.Error);
     });
 		this._Profile = new Feedback('Anonymous', '');
@@ -130,26 +130,61 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
       severity: [this._Profile.severity, [Validators.required, Validators.min(1), Validators.max(5)]],
       status: [this._Profile.status, [Validators.required]],
       submittedBy: [{ value: this._Profile.submittedBy, disabled: true }],
+      targetVersion: [this._Profile.targetVersion],
       verifiedBy: [{ value: this._Profile.verifiedBy }]
     });
   }
 
   populateProfile(): void {
+    const mDateClosed = new Date(this.frmProfile.get('dateClosed')?.value);
+    const mSelectedAction = this.validLinks.find(x => x.action.toUpperCase() === this.selectedAction.toUpperCase());
+    const mSelectedStatus = this.avalibleStatuses.find(x => x.toUpperCase() === this.selectedStatus.toUpperCase());
+    const mSelectedType = this.avalibleTypes.find(x => x.toUpperCase() === this.selectedType.toUpperCase());
     const mFrmProfile = this.frmProfile.value;
-    this._Profile.action = this.selectedAction;
+
+    //this._Profile.feedbackId                // We don't change this handled by the data store
+    this._Profile.action = mSelectedAction?.action ?? '';
     this._Profile.assignee = mFrmProfile.assignee;
-    this._Profile.dateOpened = mFrmProfile.dateOpened;
-    this._Profile.dateClosed = mFrmProfile.dateClosed;
-    this._Profile.details = mFrmProfile.details;
-    this._Profile.foundInVersion = mFrmProfile.foundInVersion;
+    // this._Profile.assigneeId: number;      // Set in API
+    if (mDateClosed && mDateClosed.getFullYear() !== 1753) {
+      this._Profile.dateClosed = mDateClosed.toISOString();
+    }
+    // this._Profile.dateOpened: string;      // We don't change this
+    // this._Profile.details: string;         // We don't change this
+    // this._Profile.foundInVersion: string;  // We don't change this
+    // this._Profile.functionSeqId: number;   // We don't change this
     this._Profile.notes = mFrmProfile.notes;
     this._Profile.severity = mFrmProfile.severity;
-    this._Profile.status = this.selectedStatus;
-    this._Profile.type = this.selectedType;
+    this._Profile.status = mSelectedStatus ?? '';
+    // this._Profile.submittedBy: string;     // We don't change this
+    // this._Profile.submittedById: number;   // We don't change this
+    this._Profile.targetVersion = mFrmProfile.targetVersion;
+    this._Profile.type = mSelectedType ?? '';
+    // this._Profile.updatedBy: string;       // We don't change this
+    // this._Profile.updatedById: number;     // Set in API
+    this._Profile.verifiedBy = mFrmProfile.verifiedBy;
+    // this._Profile.verifiedById: number;    // Set in API using verifiedBy
   }
 
   save(): void {
-    throw new Error('Method not implemented.');
+    console.log('FeedbackDetailsComponent.save', this._Profile);
+    this._ProfileSvc.save(this._Profile).then((respnse: boolean) => {
+      if (respnse) {
+        this._LoggingSvc.toast('Feedback has been submitted', 'Submit Feedback:', LogLevel.Success);
+        this.onClose();
+      } else {
+        this._LoggingSvc.toast('Feedback could not be submitted!', 'Submit Feedback:', LogLevel.Error);
+      }
+    }).catch(() => {
+      this._LoggingSvc.toast('Feedback could not be submitted!', 'Submit Feedback:', LogLevel.Error);
+    });
+    // throw new Error('Method not implemented.');
   }
 
+	setToCurrentTime(elementId: string, e: Event): void {
+    // not sure why this (click) is bubbling up to to the parent, but save was being called after this event
+    e.preventDefault();
+		const mNow = new Date();
+		this.controls[elementId].setValue(mNow);
+	}
 }

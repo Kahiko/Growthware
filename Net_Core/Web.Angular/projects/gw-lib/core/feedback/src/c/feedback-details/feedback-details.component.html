@@ -96,6 +96,7 @@
                 <mat-datepicker-toggle matSuffix [for]="dateClosedPicker"></mat-datepicker-toggle>
                 <mat-datepicker #dateClosedPicker></mat-datepicker>
               </mat-form-field>
+              <button mat-raised-button color="primary" (click)="setToCurrentTime('dateClosed', $event)">Now</button>
             </div>
   
             <div class="form-row">
