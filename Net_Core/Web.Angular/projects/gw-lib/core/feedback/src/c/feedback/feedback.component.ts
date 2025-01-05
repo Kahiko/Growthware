@@ -94,7 +94,7 @@ export class FeedbackComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.frmSubmit);
+    // console.log(this.frmSubmit);
     this.populateProfile();
     this.save();
   }
@@ -107,6 +107,7 @@ export class FeedbackComponent implements OnInit {
   }
 
   save(): void {
+    // console.log('FeedbackComponent.save', this._Profile);
     this._FeedbackSvc.save(this._Profile).then((respnse: boolean) => {
       if (respnse) {
         this._LoggingSvc.toast('Feedback has been submitted', 'Submit Feedback:', LogLevel.Success);
