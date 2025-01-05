@@ -10,7 +10,7 @@ import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
 import { AccountService } from '../../account.service';
-import { LoginComponent } from '@growthware/core/account';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'gw-core-forgot-password',
