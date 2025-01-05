@@ -14,7 +14,7 @@ import { AccountService } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
-import { ISelectedableAction } from '@growthware/core/account/src/selectedable-action.model';
+import { ISelectedableAction } from '@growthware/core/account';
 // Feature
 import { IFeedback, Feedback } from '../../feedback.model';
 import { FeedbackService } from '../../feedback.service';

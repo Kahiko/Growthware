@@ -15,3 +15,4 @@ export * from './src/account-information.model';
 export * from './src/account-profile.model';
 export * from './src/account.service';
 export * from './src/authentication-response.model';
+export * from './src/selectedable-action.model';
