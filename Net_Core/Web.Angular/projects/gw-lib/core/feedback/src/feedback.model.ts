@@ -1,11 +1,11 @@
 export interface IFeedback {
-    feedbackId: number;
     action: string;
     assignee: string;
     assigneeId: number;
     dateClosed: string;
     dateOpened: string;
     details: string;
+    feedbackId: number;
     foundInVersion: string;
     functionSeqId: number;
     notes: string;
