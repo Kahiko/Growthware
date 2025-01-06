@@ -154,7 +154,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     // this._Profile.foundInVersion: string;  // We don't change this
     // this._Profile.functionSeqId: number;   // We don't change this
     this._Profile.notes = mFrmProfile.notes;
-    this._Profile.severity = mFrmProfile.severity;
+    this._Profile.severity = '' + mFrmProfile.severity;
     this._Profile.status = mSelectedStatus ?? '';
     // this._Profile.submittedBy: string;     // We don't change this
     // this._Profile.submittedById: number;   // We don't change this
@@ -162,7 +162,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     this._Profile.type = mSelectedType ?? '';
     // this._Profile.updatedBy: string;       // We don't change this
     // this._Profile.updatedById: number;     // Set in API
-    this._Profile.verifiedBy = mFrmProfile.verifiedBy;
+    this._Profile.verifiedBy = mFrmProfile.verifiedBy.value;
     // this._Profile.verifiedById: number;    // Set in API using verifiedBy
   }
 
@@ -181,9 +181,9 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     // throw new Error('Method not implemented.');
   }
 
-	setToCurrentTime(elementId: string, e: Event): void {
+	setToCurrentTime(elementId: string, event: Event): void {
     // not sure why this (click) is bubbling up to to the parent, but save was being called after this event
-    e.preventDefault();
+    event.preventDefault();
 		const mNow = new Date();
 		this.controls[elementId].setValue(mNow);
 	}
