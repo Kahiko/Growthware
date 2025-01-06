@@ -88,11 +88,39 @@ public abstract class AbstractFeedbackController : ControllerBase
         {
             if(feedback != new UIFeedback()  && mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
             {
+                // Populate a MFeedback object with the UI Feedback
                 MFeedback mFeedbackToSave = new(feedback);
+                // Get the Ids for the Assignee, VerifiedBy and FunctionSeq
+                int mAnonymousId = AccountUtility.GetAccount("Anonymous").Id;
+                int mAssigneeId = AccountUtility.GetAccount(feedback.Assignee).Id;
+                int mFunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                int mVerifiedById = AccountUtility.GetAccount(feedback.VerifiedBy).Id;
+                if (mAssigneeId == 0)
+                {
+                    // this must be set to an existing account id so we'll use the Anonymous account
+                    mAssigneeId = mAnonymousId;
+                }
+                if (mFunctionSeqId == 0)
+                {
+                    // This is mostly for something other than our frontend calling the API
+                    // We can't have a non-existing FunctionSeqId, so it's better to set it to the
+                    // current FunctionSeqId
+                    mFunctionSeqId = mFunctionProfile.Id;
+                }
+                if (mVerifiedById == 0)
+                {
+                    // this must be set to an existing account id so we'll use the Anonymous account
+                    mVerifiedById = mAnonymousId;
+                }
+                // Set the properties that may not have been set by the UI/Requestor
+                // In particular the AssigneeId, VerifiedById, FunctionSeqId, and UpdatedById
+                mFeedbackToSave.AssigneeId = mAssigneeId;
+                mFeedbackToSave.FunctionSeqId = mFunctionSeqId;
+                mFeedbackToSave.VerifiedById = mVerifiedById;
                 mFeedbackToSave.UpdatedById = mRequestingProfile.Id;
-                // set the properties that may not have been set by the UI/Requestor
                 if(feedback.FeedbackId == -1)
                 {
+                    // The default values for a new feedback
                     mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
                     mFeedbackToSave.DateOpened = DateTime.Now;
                     mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultSystemDateTime;
