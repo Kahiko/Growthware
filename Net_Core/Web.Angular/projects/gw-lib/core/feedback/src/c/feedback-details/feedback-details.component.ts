@@ -14,6 +14,7 @@ import { AccountService } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
+import { SearchService } from '@growthware/core/search';
 import { ISelectedableAction } from '@growthware/core/account';
 // Feature
 import { IFeedback, Feedback } from '../../feedback.model';
@@ -38,6 +39,7 @@ import { FeedbackService } from '../../feedback.service';
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
   private _AccountSvc: AccountService = inject(AccountService);
+  private _SearchSvc: SearchService = inject(SearchService);
   private _FormBuilder: FormBuilder = inject(FormBuilder);
   private _Profile: IFeedback = new Feedback('Anonymous', '');
 
@@ -171,6 +173,10 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     this._ProfileSvc.save(this._Profile).then((respnse: boolean) => {
       if (respnse) {
         this._LoggingSvc.toast('Feedback has been submitted', 'Submit Feedback:', LogLevel.Success);
+        const mSearchCriteria = this._SearchSvc.getSearchCriteria('Search_Feedbacks'); // from SearchAccountsComponent (this.configurationName)
+        if (mSearchCriteria != null) {
+          this._SearchSvc.setSearchCriteria('Search_Feedbacks', mSearchCriteria);
+        }
         this.onClose();
       } else {
         this._LoggingSvc.toast('Feedback could not be submitted!', 'Submit Feedback:', LogLevel.Error);
