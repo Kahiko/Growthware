@@ -206,28 +206,42 @@ IF NOT EXISTS (SELECT * FROM sys.views WHERE [schema_id] = SCHEMA_ID('ZGWOptiona
 GO
 ALTER VIEW ZGWOptional.vwCurrentFeedbacks AS
     SELECT 
-          [FeedbackId]
-        , [Action] = (SELECT TOP(1) [Action] FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = [FunctionSeqId])
-        , [Assignee] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [AssigneeId])
-        , [AssigneeId]
-        , [Date_Closed]
-        , [Date_Opened]
-        , [Details]
-        , [Found_In_Version]
-        , [FunctionSeqId]
-        , [Notes]
-        , [Severity]
-        , [Status]
-        , [SubmittedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [SubmittedById])
-        , [SubmittedById]
-        , [TargetVersion]
-        , [Type]
-        , [UpdatedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [UpdatedById])
-        , [UpdatedById]
-        , [VerifiedBy] = (SELECT TOP(1) [Account] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [VerifiedById])
-        , [VerifiedById]
+          FB.[FeedbackId]
+        , [Action] = FUN.[Action]
+        , [Assignee] = [Assignee].[Account]
+        , FB.[AssigneeId]
+        , FB.[Date_Closed]
+        , FB.[Date_Opened]
+        , FB.[Details]
+        , FB.[Found_In_Version]
+        , FB.[FunctionSeqId]
+        , FB.[Notes]
+        , FB.[Severity]
+        , FB.[Status]
+        , [SubmittedBy] = [Submitted].[Account]
+        , FB.[SubmittedById]
+        , FB.[TargetVersion]
+        , FB.[Type]
+        , [UpdatedBy] = [Updated].[Account]
+        , FB.[UpdatedById]
+        , [VerifiedBy] = [Verified].[Account]
+        , FB.[VerifiedById]
     FROM 
-        [ZGWOptional].[Feedbacks]
+        [ZGWOptional].[Feedbacks] AS FB
+		LEFT JOIN [ZGWSecurity].[Functions] AS FUN ON
+			FB.[FunctionSeqId] = FUN.[FunctionSeqId]
+
+		LEFT JOIN [ZGWSecurity].[Accounts] AS Assignee ON
+			FB.[AssigneeId] = [Assignee].[AccountSeqId]
+
+		LEFT JOIN [ZGWSecurity].[Accounts] AS Submitted ON
+			FB.[SubmittedById] = [Submitted].[AccountSeqId]
+
+		LEFT JOIN [ZGWSecurity].[Accounts] AS Updated ON
+			FB.[UpdatedById] = [Updated].[AccountSeqId]
+
+		LEFT JOIN [ZGWSecurity].[Accounts] AS Verified ON
+			FB.[VerifiedById] = [Verified].[AccountSeqId]
     WHERE 
         [End_Date] IS NULL;
 GO
