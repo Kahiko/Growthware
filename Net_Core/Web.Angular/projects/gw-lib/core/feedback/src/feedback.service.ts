@@ -43,21 +43,6 @@ export class FeedbackService extends BaseService {
     this._Api_SaveFeedback = this._GWCommon.baseURL + this._ApiName + 'SaveFeedback';
   }
 
-  getNewFeedback(): Promise<IFeedback> {
-    return new Promise<IFeedback>((resolve, reject) => {
-      this._HttpClient.get<IFeedback>(this._Api_GetNewFeedback).subscribe({
-        next: (response: IFeedback) => {
-          resolve(response);
-        },
-        error: (error) => {
-          this._LoggingSvc.errorHandler(error, 'FeedbackService', 'getFeedback');
-          reject('Failed to call the API');
-        },
-        // complete: () => {}
-      });
-    });
-  }
-
   getFeedback(feedbackId: number): Promise<IFeedback> {
     const mQueryParameter: HttpParams = new HttpParams().append('feedbackId', feedbackId);
     const mHttpOptions = {
