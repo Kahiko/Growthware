@@ -84,6 +84,13 @@
 
             <div class="form-row">
               <mat-form-field class="half-width">
+                <mat-label>Target Version</mat-label>
+                <input matInput formControlName="targetVersion">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field class="half-width">
                 <mat-label>Date Opened</mat-label>
                 <input matInput [matDatepicker]="dateOpenedPicker" formControlName="dateOpened">
                 <mat-datepicker-toggle matSuffix [for]="dateOpenedPicker"></mat-datepicker-toggle>
