@@ -121,13 +121,18 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     if (mSelectedType) {
       this.selectedType = mSelectedType;
     }
+    const mDateClosed = new Date(this._Profile.dateClosed);
+    let mDateClosedString = null;
+    if (mDateClosed.getFullYear() !== 1753) {
+      mDateClosedString = mDateClosed.toISOString();
+    }
     this.frmProfile = this._FormBuilder.group({
       // action: new FormControl<ISelectedableAction | null>(null, { validators: [Validators.required] }),
       assignee: [this._Profile.assignee],
-      dateOpened: [this._Profile.dateOpened],
-      dateClosed: [this._Profile.dateClosed],
-      details: [this._Profile.details],
-      foundInVersion: [this._Profile.foundInVersion],
+      dateOpened: [{ value: this._Profile.dateOpened, disabled: true }],
+      dateClosed: [mDateClosedString ?? null, Validators.nullValidator],
+      details: [{ value: this._Profile.details, disabled: true }],
+      foundInVersion: [{ value: this._Profile.foundInVersion, disabled: true }],
       notes: [this._Profile.notes],
       severity: [this._Profile.severity, [Validators.required, Validators.min(1), Validators.max(5)]],
       status: [this._Profile.status, [Validators.required]],
@@ -148,7 +153,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
     this._Profile.action = mSelectedAction?.action ?? '';
     this._Profile.assignee = mFrmProfile.assignee;
     // this._Profile.assigneeId: number;      // Set in API
-    if (mDateClosed && mDateClosed.getFullYear() !== 1753) {
+    if (mDateClosed  && !isNaN(mDateClosed.getFullYear()) && mDateClosed.getFullYear() !== 1753) {
       this._Profile.dateClosed = mDateClosed.toISOString();
     }
     // this._Profile.dateOpened: string;      // We don't change this
