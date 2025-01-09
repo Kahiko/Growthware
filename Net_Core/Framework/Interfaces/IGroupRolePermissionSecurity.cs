@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 namespace GrowthWare.Framework.Interfaces
 {
     /// <summary>
-    /// Ensures the basic properties are avalible to all Profile model objects.
+    ///   Ensures the basic properties are avalible to all Profile model objects.
     /// </summary>
     /// <remarks>
-    /// If it is decided to use entities in the future then
-    /// this interface should be used for the save, delete, and getitem methods.
-    ///  </remarks>
+    ///   If it is decided to use entities in the future then
+    ///   this interface should be used for the save, delete, and getitem methods.
+    /// </remarks>
     [CLSCompliant(true)]
     public interface IGroupRolePermissionSecurity
     {
