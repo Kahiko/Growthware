@@ -82,33 +82,26 @@ namespace GrowthWare.Framework.Models
         }
 
         /// <summary>
-        /// Initializes a new HSecurityInfo object given an object that implements ISecurityInfo.
-        ///  All client permissions are calculated relative to the object and the client roles.
+        /// Creates a new instance of MSecurityInfo checking the groups and derived roles for each permission against the account's groups and derived roles
         /// </summary>
-        /// <param name="groupRolePermissionSecurity">A profile(Function) that implements IMGroupRolePermissionSecurity.</param>
-        /// <param name="profileWithDerivedRoles">A profile(Account) that implements IMGroupRoleSecurity.</param>
-        public MSecurityInfo(IGroupRolePermissionSecurity groupRolePermissionSecurity, IGroupRoleSecurity profileWithDerivedRoles)
+        /// <param name="permissionSecurity"></param>
+        /// <param name="accountProfile"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public MSecurityInfo(IGroupRolePermissionSecurity groupRolePermissionSecurity, IGroupRoleSecurity groupRoleSecurity)
         {
             if (groupRolePermissionSecurity == null) throw new ArgumentNullException(nameof(groupRolePermissionSecurity), "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!");
-            if (profileWithDerivedRoles == null) throw new ArgumentNullException(nameof(profileWithDerivedRoles), "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
+            if (groupRoleSecurity == null) throw new ArgumentNullException(nameof(groupRoleSecurity), "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
             // not all object will be a type of MAccountProfile
-            if(profileWithDerivedRoles is MAccountProfile)
+            if(groupRoleSecurity is MAccountProfile profile)
             {
                 /*
                     If the account profile is a system admin, then all permissions are granted
-                    This handles the special case when the selected SecurityEntity has no parrent and
-                    roles have not been setup and the UI is needed to "Fix" secutiry.
+                    This handles the special case when the selected SecurityEntity has no parent and
+                    groups/roles have not been setup and the UI is needed to "Fix" secutiry.
                 */
-                if(!((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
+                if(!profile.IsSystemAdmin)
                 {
-                    // Check View Permissions
-                    m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
-                    // Check Add Permissions
-                    m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
-                    // Check Edit Permissions
-                    m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
-                    // Check Delete Permissions
-                    m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                    SetMemberFields(groupRolePermissionSecurity, groupRoleSecurity);
                 }
                 else
                 {
@@ -120,34 +113,87 @@ namespace GrowthWare.Framework.Models
             }
             else
             {
-                // Check View Permissions
-                m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
-                // Check Add Permissions
-                m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
-                // Check Edit Permissions
-                m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
-                // Check Delete Permissions
-                m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                SetMemberFields(groupRolePermissionSecurity, groupRoleSecurity);
             }
 
         }
 
         /// <summary>
-        /// Checks whether an account is in the necessary role for the 4 permissions given an objects roles
+        /// Sets the member fields for each permission using the groups and roles from the groupRolePermissionSecurity and the groups and roles from the groupRoleSecurity
         /// </summary>
-        /// <param name="objRoles">The obj roles.</param>
-        /// <param name="profileDerivedRoles">The derived roles.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        protected static bool CheckAuthenticatedPermission(Collection<String> objRoles, Collection<String> profileDerivedRoles)
+        /// <param name="groupRolePermissionSecurity"></param>
+        /// <param name="groupRoleSecurity"></param>
+        protected void SetMemberFields(IGroupRolePermissionSecurity groupRolePermissionSecurity, IGroupRoleSecurity groupRoleSecurity)
         {
-            if (objRoles == null) throw new ArgumentNullException(nameof(objRoles), "objRoles cannot be a null reference (Nothing in Visual Basic)!");
-            if (profileDerivedRoles == null) throw new ArgumentNullException(nameof(profileDerivedRoles), "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
-            // If page/module contains the role "Anonymous" the don't bother running the rest of code just return true
-            if (objRoles.Contains("Anonymous")) return true;
+            // Check View Permissions
+            m_MayView = CheckGroups(groupRolePermissionSecurity.ViewGroups, groupRoleSecurity.Groups);
+            if (m_MayView == false && groupRolePermissionSecurity.DerivedViewRoles != null)
+            {
+                m_MayView = CheckRoles(groupRolePermissionSecurity.DerivedViewRoles, groupRoleSecurity.DerivedRoles);
+            }
+            // Check Add Permissions
+            m_MayAdd = CheckGroups(groupRolePermissionSecurity.AddGroups, groupRoleSecurity.Groups);
+            if (m_MayAdd == false && groupRolePermissionSecurity.DerivedAddRoles != null)
+            {
+                m_MayAdd = CheckRoles(groupRolePermissionSecurity.DerivedAddRoles, groupRoleSecurity.DerivedRoles);
+            }
+            // Check Edit Permissions
+            m_MayEdit = CheckGroups(groupRolePermissionSecurity.EditGroups, groupRoleSecurity.Groups);
+            if (m_MayEdit == false && groupRolePermissionSecurity.DerivedEditRoles != null)
+            {
+                m_MayEdit = CheckRoles(groupRolePermissionSecurity.DerivedEditRoles, groupRoleSecurity.DerivedRoles);
+            }
+            // Check Delete Permissions
+            m_MayDelete = CheckGroups(groupRolePermissionSecurity.DeleteGroups, groupRoleSecurity.Groups);
+            if (m_MayDelete == false && groupRolePermissionSecurity.DerivedDeleteRoles != null)
+            {
+                m_MayDelete = CheckRoles(groupRolePermissionSecurity.DerivedDeleteRoles, groupRoleSecurity.DerivedRoles);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the permission roles contain the profile's roles
+        /// </summary>
+        /// <param name="permissionRoles"></param>
+        /// <param name="profileDerivedRoles"></param>
+        /// <returns></returns>
+        protected static bool CheckRoles(Collection<String> permissionRoles, Collection<String> profileDerivedRoles)
+        {
+            // if there are no permission or profile roles then return false
+            if (permissionRoles.Count == 0 || profileDerivedRoles.Count == 0)
+            {
+                return false;
+            }
+            // If permissionRoles contains the role "Anonymous" the don't bother running the rest of code just return true
+            if (permissionRoles.Contains("Anonymous")) return true;
+            // If profileDerivedRoles contains the role "SysAdmin" the don't bother running the rest of code just return true
             if (profileDerivedRoles.Contains("SysAdmin")) return true;
-            foreach (string role in objRoles)
+            foreach (string role in permissionRoles)
             {
                 if (profileDerivedRoles.Contains(role))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the permission groups contain the profile's groups
+        /// </summary>
+        /// <param name="permissionGroups"></param>
+        /// <param name="profileGroups"></param>
+        /// <returns></returns>
+        protected static bool CheckGroups(Collection<String> permissionGroups, Collection<String> profileGroups)
+        {
+            // if there are no permission or profile groups then return false
+            if (permissionGroups.Count == 0 || profileGroups.Count == 0)
+            {
+                return false;
+            }
+            foreach (string mGroup in profileGroups)
+            {
+                if (permissionGroups.Contains(mGroup))
                 {
                     return true;
                 }
