@@ -34,7 +34,7 @@
 - Fixed bug where you couldn't save a group without roles
 - Cleaned up AbstractGroupController.SaveGroup(UIGroupProfile groupProfile)
 - Fixed bug where cache was not being updated after saving a Security Entity
-- Fixed MSecurityInfo it never checked just the groups only the dervied roles
+- Fixed MSecurityInfo it never checked the groups only the dervied roles
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
