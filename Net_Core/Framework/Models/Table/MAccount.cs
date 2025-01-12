@@ -89,9 +89,9 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         [DBColumnName("Enable_Notifications")]
         public bool EnableNotifications { get; set; }
 
-        [DBPrimaryKey]
-        [DBColumnName("AccountSeqId")]
-        public int Id { get; set; }
+        // [DBPrimaryKey]
+        // [DBColumnName("AccountSeqId")]
+        // public int Id { get; set; }
 
         /// <summary>
         /// Represents the status of the account
@@ -142,9 +142,9 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         [DBColumnName("Middle_Name")]
         public String MiddleName { get; set; }
 
-        [DBIgnoreProperty]
-        [DBColumnName("Account")]
-        public string Name { get; set; }
+        // [DBIgnoreProperty]
+        // [DBColumnName("Account")]
+        // public string Name { get; set; }
 
         /// <summary>
         /// Preferred or nick name of the person for the account

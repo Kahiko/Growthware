@@ -77,7 +77,7 @@ public class MFeedback : AbstractDatabaseFunctions
         }
     #endregion
 
-    protected new void Initialize(DataRow dataRow)
+    protected void Initialize(DataRow dataRow)
     {
         DateTime mNow = DateTime.Now;
         this.FeedbackId = base.GetInt(dataRow, "FeedbackId");
