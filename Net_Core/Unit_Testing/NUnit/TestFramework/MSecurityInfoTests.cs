@@ -39,7 +39,7 @@ public class MSecurityInfoTests : MSecurityInfo
     {
         // Arrange
         IGroupRolePermissionSecurity groupRolePermissionSecurity = new MockGroupRolePermissionSecurity();
-        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(null, new Collection<string> { "Role2" });
+        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role2" });
 
         // Act
         MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
@@ -52,7 +52,7 @@ public class MSecurityInfoTests : MSecurityInfo
     {
         // Arrange
         IGroupRolePermissionSecurity groupRolePermissionSecurity = new MockGroupRolePermissionSecurity();
-        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(null, new Collection<string> { "Role3" });
+        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role3" });
 
         // Act
         MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
@@ -66,7 +66,7 @@ public class MSecurityInfoTests : MSecurityInfo
     {
         // Arrange
         IGroupRolePermissionSecurity groupRolePermissionSecurity = new MockGroupRolePermissionSecurity();
-        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(null, new Collection<string> { "Role4" });
+        IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role4" });
 
         // Act
         MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
