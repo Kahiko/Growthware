@@ -157,7 +157,7 @@ namespace GrowthWare.Framework.Models
         /// <param name="permissionRoles"></param>
         /// <param name="profileDerivedRoles"></param>
         /// <returns></returns>
-        protected static bool CheckRoles(Collection<String> permissionRoles, Collection<String> profileDerivedRoles)
+        public static bool CheckRoles(Collection<String> permissionRoles, Collection<String> profileDerivedRoles)
         {
             // if there are no permission or profile roles then return false
             if (permissionRoles.Count == 0 || profileDerivedRoles.Count == 0)
@@ -184,7 +184,7 @@ namespace GrowthWare.Framework.Models
         /// <param name="permissionGroups"></param>
         /// <param name="profileGroups"></param>
         /// <returns></returns>
-        protected static bool CheckGroups(Collection<String> permissionGroups, Collection<String> profileGroups)
+        public static bool CheckGroups(Collection<String> permissionGroups, Collection<String> profileGroups)
         {
             // if there are no permission or profile groups then return false
             if (permissionGroups.Count == 0 || profileGroups.Count == 0)
