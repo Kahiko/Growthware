@@ -33,10 +33,6 @@ Usage:
 --	ZGWSecurity.Roles_Security_Entities
 -- Note: @P_RoleSeqId value of -1 inserts a new record
 -- =============================================
--- Author:		Michael Regan
--- Altered: 	01/13/2025
--- Description: Just formatting when reviewing code
--- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Role]
 	@P_RoleSeqId INT,
 	@P_Name VARCHAR(50),
