@@ -19,7 +19,7 @@ namespace GrowthWare.Framework
 
         static ConfigSettings()
         {
-            m_SettingsDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            m_SettingsDirectory = Directory.GetCurrentDirectory();
 #if(DEBUG)
                // In Debug mode - use parent directory.
                 m_SettingsDirectory = Directory.GetParent(m_SettingsDirectory).ToString();
