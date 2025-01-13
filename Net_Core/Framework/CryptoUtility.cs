@@ -301,7 +301,7 @@ namespace GrowthWare.Framework
                         mRetVal = encryptedValue;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
