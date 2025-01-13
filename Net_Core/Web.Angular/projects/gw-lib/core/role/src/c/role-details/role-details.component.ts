@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -89,7 +89,7 @@ export class RoleDetailsComponent implements OnInit {
 				this._Role = profile;
 				this.availableRoles = this._Role.accountsNotInRole;
 				this.selectedRoles = this._Role.accountsInRole;
-				if (profile.id === -1 || profile.isSystemOnly) {
+				if (profile.id === -1 || profile.isSystemOnly || profile.isSystem) {
 					this.canDelete = false;
 					if (profile.isSystemOnly) {
 						this.canSave = false;
@@ -152,11 +152,15 @@ export class RoleDetailsComponent implements OnInit {
 	}
 
 	private populateForm(): void {
+		let mDisabledName = false;
+		if (this._Role.isSystem || this._Role.isSystemOnly) {
+			mDisabledName = true;
+		}
 		this.frmRole = this._FormBuilder.group({
-			name: [this._Role.name, Validators.required],
+			name: [{ value: this._Role.name, disabled: mDisabledName }, Validators.required],
 			description: [this._Role.description],
-			isSystem: [{ value: this._Role.isSystem, disabled: this._Role.isSystemOnly }],
-			isSystemOnly: [{ value: this._Role.isSystemOnly, disabled: this._Role.isSystemOnly }],
+			isSystem: [{ value: this._Role.isSystem, disabled: this._Role.isSystem }],
+			isSystemOnly: [{ value: this._Role.isSystemOnly, disabled: this._Role.isSystemOnly || this._Role.isSystem }],
 		});
 	}
 
