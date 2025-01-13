@@ -8,7 +8,7 @@ GO
 DECLARE 
     @P_RoleSeqId INT = -1,
     @P_Name VARCHAR(50) = 'QA',
-    @P_Description VARCHAR(128) = 'Quality Assurance Role',
+    @P_Description VARCHAR(128) = 'Quality Assurance Role, used when editing a Feedback to populate Verified By.',
     @P_Is_System INT = 1,
     @P_Is_System_Only INT = 0,
     @P_SecurityEntitySeqId INT = 1,
