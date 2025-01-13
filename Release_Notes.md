@@ -1,5 +1,6 @@
 # Release Notes
 ## Net_Core Version 5.2.0.0 (2025-01-01)
+- Upgraded to .Net Core 9.0
 
 ### New Features
 - Added Feedback support

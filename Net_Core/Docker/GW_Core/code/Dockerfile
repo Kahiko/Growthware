@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS base
 
 # Install SQL Tools: SQLPackage and sqlcmd
 COPY mssql/installSQLtools.sh installSQLtools.sh
@@ -23,7 +23,7 @@ RUN npm install -g @angular/cli@18.2
 
 # Clone the growthware repository
 RUN git config --global --add safe.directory /growthware
-RUN git clone --branch 5_1_1 https://github.com/Kahiko/Growthware.git growthware
+RUN git clone --branch feature/feedback https://github.com/Kahiko/Growthware.git growthware
 
 # Setup the dev certs
 RUN dotnet dev-certs https
