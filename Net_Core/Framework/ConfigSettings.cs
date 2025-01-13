@@ -19,14 +19,7 @@ namespace GrowthWare.Framework
 
         static ConfigSettings()
         {
-            m_SettingsDirectory = Directory.GetCurrentDirectory();
-#if(DEBUG)
-               // In Debug mode - use parent directory.
-                m_SettingsDirectory = Directory.GetParent(m_SettingsDirectory).ToString();
-                // Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
-#else
-                // Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
-#endif
+            m_SettingsDirectory = findConfigDirectory();
             m_Configuration = new ConfigurationBuilder()
                 .SetBasePath(m_SettingsDirectory)
                 .AddJsonFile("GrowthWare.json", optional: true, reloadOnChange: true)
@@ -374,6 +367,27 @@ namespace GrowthWare.Framework
         public static int FailedAttempts
         {
             get { return int.Parse(GetAppSettingValue("Failed_Attempts", true), CultureInfo.InvariantCulture); }
+        }
+
+        private static string findConfigDirectory()
+        {
+            string mCurrentDirectory = Directory.GetCurrentDirectory();
+            while (true)
+            {
+                string mJsonFilePath = Path.Combine(mCurrentDirectory, "GrowthWare.json");
+                if (File.Exists(mJsonFilePath))
+                {
+                    return mCurrentDirectory;
+                }
+                string mParentDirectory = Directory.GetParent(mCurrentDirectory).FullName;
+                if (mParentDirectory == mCurrentDirectory)
+                {
+                    // We've reached the root directory, so stop searching
+                    break;
+                }
+                mCurrentDirectory = mParentDirectory;
+            }
+            throw new FileNotFoundException("GrowthWare.json file not found");
         }
 
         /// <summary>
