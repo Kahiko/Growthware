@@ -25,7 +25,6 @@
 - Manage Name/Value Pairs is not updating the search results after saving
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
 - Looks like the API is not working correctly with Docker
-- Looks like the Upload is not working correctly Uploaded a "VirtualBox-6.1.4-136177-Win.exe" of a file size of "107 MB (113,006,600 bytes)" but the uploaded file size is "84.9 MB (89,088,000 bytes)", first guess is the file chunking isn't working correctly
 
 ### Bug Fixes
 - Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.

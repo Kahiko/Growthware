@@ -536,6 +536,8 @@ export class FileManagerService {
 				mTotalNumberOfUploads,
 				chunkSize
 			);
+			mMultiPartFileUpload.startingByte = 0;
+			mMultiPartFileUpload.endingByte = chunkSize;
 			this.multiPartFileUpload(mMultiPartFileUpload);
 		} else {
 			this.singleFileUpload(file, action);
