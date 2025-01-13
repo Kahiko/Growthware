@@ -35,6 +35,7 @@
 - Cleaned up AbstractGroupController.SaveGroup(UIGroupProfile groupProfile)
 - Fixed bug where cache was not being updated after saving a Security Entity
 - Fixed MSecurityInfo it never checked the groups only the dervied roles
+- Fixed error in block size when decrypting using both Des and TrippleDes
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 

@@ -283,7 +283,7 @@ namespace GrowthWare.Framework
                         SymmetricAlgorithm mSymmetricAlgorithm = DES.Create();
                         byte[] mByteArray = Convert.FromBase64String(encryptedValue);
                         using (mMemoryStream = new MemoryStream(mByteArray)) {
-                            byte[] mIV = new byte[16];
+                            byte[] mIV = mSymmetricAlgorithm.IV;
                             mMemoryStream.Read(mIV, 0, mIV.Length);  // Pull the IV from the first 16 bytes of the encrypted value
                             using (var cryptStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateDecryptor(s_KEY_8_BYTE, mIV), CryptoStreamMode.Read)) {
                                 using (var reader = new System.IO.StreamReader(cryptStream)) {
@@ -301,7 +301,7 @@ namespace GrowthWare.Framework
                         mRetVal = encryptedValue;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     throw;
                 }
@@ -461,7 +461,7 @@ namespace GrowthWare.Framework
                         SymmetricAlgorithm mSymmetricAlgorithm = TripleDES.Create();
                         byte[] mByteArray = Convert.FromBase64String(encryptedValue);
                         using (mMemoryStream = new MemoryStream(mByteArray)) {
-                            byte[] mIV = new byte[16];
+                            byte[] mIV = mSymmetricAlgorithm.IV;
                             mMemoryStream.Read(mIV, 0, mIV.Length);  // Pull the IV from the first 16 bytes of the encrypted value
                             using (var cryptStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateDecryptor(s_KEY_24_BYTE, mIV), CryptoStreamMode.Read)) {
                                 using (var reader = new System.IO.StreamReader(cryptStream)) {
