@@ -1,8 +1,8 @@
-using NUnit.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Interfaces;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+
+namespace GrowthWare.Framework.Tests;
 
 [TestFixture]
 public class MSecurityInfoTests : MSecurityInfo
