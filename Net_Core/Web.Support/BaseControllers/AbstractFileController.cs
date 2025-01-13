@@ -397,9 +397,12 @@ public abstract class AbstractFileController : ControllerBase
         {
             mFileStream1 = System.IO.File.Open(file1, FileMode.Append);
             mFileStream2 = System.IO.File.Open(file2, FileMode.Open);
-            byte[] fs2Content = new byte[mFileStream2.Length];
-            mFileStream2.Read(fs2Content, 0, (int)mFileStream2.Length);
-            mFileStream1.Write(fs2Content, 0, (int)mFileStream2.Length);
+            byte[] mFileStream2Content = new byte[mFileStream2.Length];
+            int mBytesRead;
+            while ((mBytesRead = mFileStream2.Read(mFileStream2Content, 0, (int)mFileStream2.Length)) > 0)
+            {
+                mFileStream1.Write(mFileStream2Content, 0, mBytesRead);
+            }
         }
         catch (Exception ex)
         {
