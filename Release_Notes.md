@@ -39,6 +39,7 @@
 - Fixed MSecurityInfo it never checked the groups only the dervied roles
 - Fixed error in block size when decrypting using both Des and TrippleDes
 - Fixed Avoid inexact read with 'System.IO.FileStream.Read(byte[], int, int)'
+- Fixed Upload was not setting startingByte and endingByte correctly in FileManagerService.uploadFile for the first call to multiPartFileUpload
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
