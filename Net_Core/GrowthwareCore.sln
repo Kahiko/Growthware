@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Web.Api", "Web.Api\GrowthWare.Web.Api.csproj", "{9EC57F71-C1BF-4E2E-9A3B-372D04213FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFramework", "Unit_Testing\NUnit\TestFramework\TestFramework.csproj", "{64CBC159-C7B8-43C5-8DB3-34ACB9E60D68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFramework", "Unit_Testing\NUnit\Test.Framework\Test.Framework.csproj", "{64CBC159-C7B8-43C5-8DB3-34ACB9E60D68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
