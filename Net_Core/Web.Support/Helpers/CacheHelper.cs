@@ -47,9 +47,9 @@ public class CacheHelper
      */
 
     private static CacheHelper m_CacheHelper;
-    private static readonly object m_CacheLock = new object();
+    private static readonly object m_CacheLock = new();
     private string s_CacheDirectory = string.Empty;
-    private static readonly Mutex m_Mutex = new Mutex();
+    private static readonly Mutex m_Mutex = new();
     private MemoryCache m_MemoryCache;
 
     /// <summary>
@@ -161,25 +161,23 @@ public class CacheHelper
     /// </summary>
     public void RemoveAll()
     {
+        // remove the in memory cache even though deleting the files will trigger the changeCallback
+        // this is to ensure that the in memory cache is lagging because there
+        // is a delay between the file being deleted and the changeCallback being triggered
+        lock (m_CacheLock) 
+        {
+            foreach (var key in m_MemoryCache.Keys)
+            {
+                m_MemoryCache.Remove(key);
+            }        }
+        // Delete all the files in the cache directory triggering the changeCallback
+        // Hopefully there is some mechanism to syncronize the directory across multiple servers
         DirectoryInfo mDirectoryInfo = new DirectoryInfo(this.s_CacheDirectory);
         lock (m_CacheLock) 
         {
             foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
             {
                 mFileInfo.Delete();  // should trigger the changeCallback
-            }
-        }
-        // remove the in memory cache even though deleting the files will trigger the changeCallback
-        // this is to ensure that the in memory cache is lagging because there
-        // is a delay between the file being deleted and the changeCallback being triggered
-        lock (m_CacheLock) 
-        {
-            if (m_MemoryCache != null)
-            {
-                foreach (var mKey in m_MemoryCache.Keys)
-                {
-                    m_MemoryCache.Remove(mKey);
-                }
             }
         }
     }
