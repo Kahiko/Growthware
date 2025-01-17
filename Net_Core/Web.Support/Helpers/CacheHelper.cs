@@ -22,6 +22,7 @@ namespace GrowthWare.Web.Support.Helpers;
 public class CacheHelper
 {
     private static CacheHelper m_CacheHelper;
+    private static readonly object m_CacheLock = new object();
     private string s_CacheDirectory = string.Empty;
     private static readonly Mutex m_Mutex = new Mutex();
     private IMemoryCache m_MemoryCache;
@@ -93,7 +94,10 @@ public class CacheHelper
                     // Create entry options with the change token and add the value to the cache
                     MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
                     // Add the value to the cache
-                    m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
+                    lock (m_CacheLock)
+                    {
+                        m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
+                    }
                 }
             }
         }
@@ -126,7 +130,10 @@ public class CacheHelper
             } while (mWaitCount < 4 && File.Exists(mFileNameAndPath));
             if (mWaitCount < 4) 
             {
-                m_MemoryCache.Remove(mCacheName);
+                lock (m_CacheLock) 
+                {
+                    m_MemoryCache.Remove(mCacheName);
+                }
             } 
             else 
             {
@@ -137,8 +144,12 @@ public class CacheHelper
 
     public T GetFromCache<T>(string cacheName)
     {
-        m_MemoryCache.TryGetValue(cacheName, out T mRetVal);
-        return mRetVal;
+        lock (m_CacheLock) 
+        {
+            m_MemoryCache.TryGetValue(cacheName, out T mRetVal);
+            return mRetVal;
+        }
+        
     }
 
     /// <summary>
@@ -147,12 +158,18 @@ public class CacheHelper
     public void RemoveAll()
     {
         DirectoryInfo mDirectoryInfo = new DirectoryInfo(this.s_CacheDirectory);
-        foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
+        lock (m_CacheLock) 
         {
-            mFileInfo.Delete();
+            foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
+            {
+                mFileInfo.Delete();
+            }
         }
-        m_MemoryCache.Dispose();
-        this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
+        lock (m_CacheLock) 
+        {
+            m_MemoryCache.Dispose();
+            this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
+        }
     }
 
     /// <summary>
@@ -168,7 +185,10 @@ public class CacheHelper
         }
         else
         {
-            m_MemoryCache.Remove(cacheName);
+            lock (m_CacheLock) 
+            {
+                m_MemoryCache.Remove(cacheName);
+            }
         }
     }
 
