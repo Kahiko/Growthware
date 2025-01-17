@@ -114,13 +114,24 @@ public class CacheHelper
             {
                 try
                 {
-                    File.Delete(mFileNameAndPath);
+                    if (File.Exists(mFileNameAndPath))
+                    {
+                        File.Delete(mFileNameAndPath);
+                    }
                 }
                 catch (System.Exception)
                 {
                     mWaitCount++;
                 }
             } while (mWaitCount < 4 && File.Exists(mFileNameAndPath));
+            if (mWaitCount < 4) 
+            {
+                m_MemoryCache.Remove(mCacheName);
+            } 
+            else 
+            {
+                throw new Exception($"Unable to remove the { mCacheName } item from cache");
+            }
         }
     }
 
