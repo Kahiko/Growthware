@@ -108,21 +108,21 @@ public class CacheHelper
         {
             string mFileName = cacheName + ".txt";
             // Create the file if it does not exist
-            if (prepDirectory())
+            lock (m_CacheLock) 
             {
-                if (prepFile(cacheName))
+                if (prepDirectory())
                 {
-                    // Create a PhysicalFileProvider
-                    PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
-                    // Create the change token using the PhysicalFileProvider
-                    IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
-                    // Register the change callback to remove the item from the cache
-                    mChangeToken.RegisterChangeCallback(changeCallback, cacheName);
-                    // Create entry options with the change token and add the value to the cache
-                    MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
-                    // Add the value to the cache
-                    lock (m_CacheLock)
+                    if (prepFile(cacheName))
                     {
+                        // Create a PhysicalFileProvider
+                        PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
+                        // Create the change token using the PhysicalFileProvider
+                        IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
+                        // Register the change callback to remove the item from the cache
+                        mChangeToken.RegisterChangeCallback(changeCallback, cacheName);
+                        // Create entry options with the change token and add the value to the cache
+                        MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
+                        // Add the value to the cache
                         m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
                     }
                 }
@@ -146,6 +146,12 @@ public class CacheHelper
         }
     }
 
+    /// <summary>
+    /// Returns the value from the cache or null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="cacheName"></param>
+    /// <returns></returns>
     public T GetFromCache<T>(string cacheName)
     {
         lock (m_CacheLock) 
