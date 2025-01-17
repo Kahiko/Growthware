@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -49,7 +50,7 @@ public class CacheHelper
     private static readonly object m_CacheLock = new object();
     private string s_CacheDirectory = string.Empty;
     private static readonly Mutex m_Mutex = new Mutex();
-    private IMemoryCache m_MemoryCache;
+    private MemoryCache m_MemoryCache;
 
     /// <summary>
     /// Prevent any other instances of this class from being created
@@ -165,13 +166,21 @@ public class CacheHelper
         {
             foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
             {
-                mFileInfo.Delete();
+                mFileInfo.Delete();  // should trigger the changeCallback
             }
         }
+        // remove the in memory cache even though deleting the files will trigger the changeCallback
+        // this is to ensure that the in memory cache is lagging because there
+        // is a delay between the file being deleted and the changeCallback being triggered
         lock (m_CacheLock) 
         {
-            m_MemoryCache.Dispose();
-            this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
+            if (m_MemoryCache != null)
+            {
+                foreach (var mKey in m_MemoryCache.Keys)
+                {
+                    m_MemoryCache.Remove(mKey);
+                }
+            }
         }
     }
 
