@@ -107,7 +107,7 @@ public class CacheHelper
         {
             string mFileName = cacheName + ".txt";
             // Create the file if it does not exist
-            if (prepDirecotry())
+            if (prepDirectory())
             {
                 if (prepFile(cacheName))
                 {
@@ -192,7 +192,7 @@ public class CacheHelper
     /// Prepares the cache directory.
     /// </summary>
     /// <returns>False if unable to create cache directory</returns>
-    private bool prepDirecotry()
+    private bool prepDirectory()
     {
         bool mRetVal = true;
         try
