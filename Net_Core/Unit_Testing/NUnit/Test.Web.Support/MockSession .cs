@@ -22,13 +22,13 @@ public class MockSession : ISession
 
     public void SetString(string key, string value) => _storage[key] = value;
 
-    public string GetString(string key) => _storage.TryGetValue(key, out var value) ? value : null;
+    public string? GetString(string key) => _storage.TryGetValue(key, out var value) ? value : null;
 
     public void Load() { }
 
     public Task LoadAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
 
-    public bool TryGetValue(string key, out byte[] value)
+    public bool TryGetValue(string key, [NotNullWhen(true)] out byte[]? value)
     {
         if (_storage.TryGetValue(key, out var stringValue))
         {
