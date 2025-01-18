@@ -227,7 +227,7 @@ public static class AccountUtility
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         mBAccount.Delete(accountSeqId);
     }
 
@@ -247,7 +247,7 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         DataTable mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
@@ -275,7 +275,7 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         DataTable mDataTable = null;
         mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
@@ -320,14 +320,14 @@ public static class AccountUtility
         BAccounts mBAccount = null;
         if (forceDb)
         {
-            mBAccount = getBusinessLogic();
+            mBAccount = BusinessLogic;
             mRetVal = mBAccount.GetProfile(account);
             return mRetVal;
         }
         mRetVal = CurrentProfile;
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = getBusinessLogic();
+            mBAccount = BusinessLogic;
             mRetVal = mBAccount.GetProfile(account);
         }
         return mRetVal;
@@ -344,7 +344,7 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static MAccountProfile getAccountByRefreshToken(string token)
     {
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
         mRetVal = mBAccount.GetProfileByRefreshToken(token);
         return mRetVal;
@@ -369,18 +369,21 @@ public static class AccountUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts getBusinessLogic()
+    private static BAccounts BusinessLogic
     {
-        if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+        get
         {
-            m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
+            if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+            {
+                m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
+            }
+            return m_BAccounts;
         }
-        return m_BAccounts;
     }
 
     public static MAccountProfile GetProfileByResetToken(string token)
     {
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
         try
         {
@@ -680,7 +683,7 @@ public static class AccountUtility
             return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
         if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
