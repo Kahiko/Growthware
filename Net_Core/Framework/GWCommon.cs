@@ -18,7 +18,6 @@ public static class GWCommon
     public static MethodInfo[] GetMethods(object obj)
     {
         // This was intended to help ensure that the public and or static methods are covered in NUnit tests
-        // MethodInfo[] mInfos = obj.GetType().GetMethods(BindingFlags.Public | BindingFlags.Static);
         MethodInfo[] mInfos;
         if (obj is Type type)
         {
