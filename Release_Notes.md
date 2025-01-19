@@ -18,6 +18,7 @@
 - Moved Table/MGroupRolePermissionSecurity.cs to Base/AGroupRolePermissionSecurity.cs
 - Renamed UploadResponse.cs to DTO_UploadResponse.cs
 - Moved MLogging.cs to Table/MLogging.cs
+- Added the GWCommon class to the Growthware.Framework.csproj to help with common functions
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
