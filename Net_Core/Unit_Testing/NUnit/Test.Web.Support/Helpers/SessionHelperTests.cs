@@ -7,7 +7,7 @@ using System.Text.Json;
 using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Test.Web.Support;
 
-namespace GrowthWare.Test.Web.Support.Helpers.Tests;
+namespace Test.Web.Support.Helpers;
 
 [TestFixture]
 public class SessionHelperTests

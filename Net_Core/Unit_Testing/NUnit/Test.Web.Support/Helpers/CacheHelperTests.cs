@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using GWHelpers = GrowthWare.Web.Support.Helpers;
 
-namespace GrowthWare.Test.Web.Support.Helpers;
+namespace Test.Web.Support.Helpers;
 
 [TestFixture]
 public class CacheHelperTests
