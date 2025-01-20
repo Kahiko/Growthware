@@ -65,7 +65,120 @@ export class FileManagerService {
 		this._Api_UploadFile = this._Api + 'UploadFile';
 	}
 	
-	/********************************************* Directory related Functions **********************************************/
+	/**
+	 * Creates a FormData object for uploading a file.
+	 *
+	 * @private
+	 * @param {string} action - The action to be performed
+	 * @param {string} fileName - The name of the file being uploaded
+	 * @param {string} completed - A string indicating if this is the last part of a multi-part upload.
+	 * @param {File | Blob | null} [data] - The file or blob to be uploaded
+	 * @returns {FormData} - The FormData object to be used in the upload request.
+	 * @memberof FileManagerService
+	 */
+	private _uploadFormData(action: string, fileName: string, completed: string, data: File | Blob | null = null): FormData {
+		const mRetVal = new FormData();
+		mRetVal.append('action', action);
+		mRetVal.append('selectedPath', this._SelectedPath);
+		if (data !== null && data !== undefined) { 
+			mRetVal.append(fileName, data); 
+		}
+		mRetVal.append('fileName', fileName);
+		mRetVal.append('completed', completed);
+		return mRetVal;
+	}
+
+	/**
+	 * @description Uploads files that are too large to be sent in a single upload by using recursion
+	 * to call the API with a "slice" of the file.
+	 *
+	 * @private
+	 * @param {IMultiPartFileUploadParameters} parameters
+	 * @memberof FileManagerService
+	 */
+	private _uploadLargeFile(parameters: IMultiPartFileUploadParameters) {
+		// it's good practice to leave parameter values unchanged
+		const mParams = { ...parameters };
+		const mNextUploadNumber = mParams.uploadNumber + 1;
+		const mMultiUploadFileName = mParams.file.name + '_UploadNumber_' + mNextUploadNumber;
+		// do we need to send any more pices of the file
+		if (mParams.uploadNumber < mParams.totalNumberOfUploads) { 
+			const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
+			const mFormData: FormData = this._uploadFormData(mParams.action, mMultiUploadFileName, 'false', mBlob);
+			this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
+				next: (response: IUploadResponse) => { // update the parameters can call this method again
+					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
+					mParams.uploadNumber = mNextUploadNumber;
+					mParams.startingByte = parameters.endingByte;
+					mParams.endingByte = parameters.endingByte + parameters.chunkSize;
+					this.uploadStatusChanged$.update(() => mUploadStatus);
+					this._uploadLargeFile(mParams);
+				},
+				error: (error) => {
+					if (parameters.retryNumber < 4) {
+						mParams.retryNumber = mParams.retryNumber + 1;
+						this._uploadLargeFile(mParams);
+					} else {
+						this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
+						mParams.uploadNumber = mNextUploadNumber;
+					}
+				},
+				// complete: () => {}
+			});
+		}
+		if (parameters.uploadNumber == parameters.totalNumberOfUploads) { // make sure this is the last upload
+			this._uploadLargeFileComplete(mParams);
+		}
+	}	
+	
+	/**
+	 * @description Makes the final call to the API to merge together all the "chunks" or slices of the file that were uploaded.
+	 *
+	 * @private
+	 * @param {IMultiPartFileUploadParameters} parameters
+	 * @memberof FileManagerService
+	 */
+	private _uploadLargeFileComplete(parameters: IMultiPartFileUploadParameters) {
+		const mFormData: FormData = this._uploadFormData(parameters.action, parameters.file.name, 'true');
+		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
+			next: (response: IUploadResponse) => {
+				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, response.fileName, response.data, true, response.isSuccess, parameters.totalNumberOfUploads, parameters.uploadNumber);
+				this.uploadStatusChanged$.update(() => mUploadStatus);
+				this.getFiles(parameters.action, this._SelectedPath);
+			},
+			error: (error) => {
+				this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
+				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, parameters.file.name, error, true, false, parameters.totalNumberOfUploads, parameters.uploadNumber);
+				this.uploadStatusChanged$.update(() => mUploadStatus);
+			},
+		});
+	}
+
+	/**
+	 * @description Performs a single file upload
+	 *
+	 * @private
+	 * @param {File} file the HTML "file" object
+	 * @param {string} action Used to determine the upload directory and enforce security on the server
+	 * @memberof FileManagerService
+	 */
+	private _uploadSingleFile(file: File, action: string) {
+		const mFormData: FormData = this._uploadFormData(action, file.name + '_UploadNumber_1', 'true', file);
+		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
+			next: (response: IUploadResponse) => {
+				const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
+				this.uploadStatusChanged$.update(() => mUploadStatus);
+				if (mUploadStatus.completed) {
+					this.getFiles(action, this._SelectedPath);
+				}
+			},
+			error: (error) => {
+				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'singleFileUpload');
+				// const mUploadStatus: IUploadStatus = new UploadStatus(action, file.name, error, true, false, 1, 1);
+			},
+			// complete: () => {}
+		});
+	}
 
 	public async createDirectory(action: string, newPath: string): Promise<boolean> {
 		if (this._GWCommon.isNullOrEmpty(action)) {
@@ -244,8 +357,6 @@ export class FileManagerService {
 		}
 	}
 
-	/*********************************************  File Functions **********************************************/
-
 	/**
 	 * A method to delete a file.
 	 *
@@ -395,8 +506,6 @@ export class FileManagerService {
 			// complete: () => {}
 		});		
 	}
-
-	/*********************************************  Multi-Part File Upload Functions **********************************************/
 	
 	/**
 	 * @description Calculates the total number of chuncks needed to upload a large file
@@ -409,116 +518,6 @@ export class FileManagerService {
 	public getTotalNumberOfUploads(fileSize: number, chunkSize: number): number {
 		const mRetVal = fileSize % chunkSize == 0 ? fileSize / chunkSize : Math.floor(fileSize / chunkSize) + 1;
 		return mRetVal;
-	}
-
-	/**
-	 * @description Uploads files that are too large to be sent in a single upload by using recursion
-	 * to call the API with a "slice" of the file.
-	 *
-	 * @private
-	 * @param {IMultiPartFileUploadParameters} parameters
-	 * @memberof FileManagerService
-	 */
-	private multiPartFileUpload(parameters: IMultiPartFileUploadParameters) {
-		const mParams = { ...parameters }; // it's good practice to leave parameter values unchanged
-		const mNextUploadNumber = mParams.uploadNumber + 1;
-		// const mFileSize: number = mParams.file.size;
-		const mMultiUploadFileName = mParams.file.name + '_UploadNumber_' + mNextUploadNumber;
-		if (mParams.uploadNumber < mParams.totalNumberOfUploads) { // do we need to send any more pices of the file
-			const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
-			const mFormData: FormData = new FormData();
-			mFormData.append('action', mParams.action);
-			mFormData.append('completed', 'false');
-			mFormData.append('selectedPath', this._SelectedPath);
-			mFormData.append(mMultiUploadFileName, mBlob);
-			this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
-				next: (response: IUploadResponse) => { // update the parameters can call this method again
-					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					mParams.uploadNumber = mNextUploadNumber;
-					mParams.startingByte = parameters.endingByte;
-					mParams.endingByte = parameters.endingByte + parameters.chunkSize;
-					this.uploadStatusChanged$.update(() => mUploadStatus);
-					this.multiPartFileUpload(mParams);
-				},
-				error: (error) => {
-					if (parameters.retryNumber < 4) {
-						mParams.retryNumber = mParams.retryNumber + 1;
-						this.multiPartFileUpload(mParams);
-					} else {
-						this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
-						// const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mMultiUploadFileName, error, false, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
-						mParams.uploadNumber = mNextUploadNumber;
-					}
-				},
-				// complete: () => {}
-			});
-		}
-		if (mParams.uploadNumber == mParams.totalNumberOfUploads) { // make sure this is the last upload
-			this.multiUploadComplete(mParams.action, mParams.file.name, this._Api_UploadFile).subscribe({
-				next: (response: IUploadResponse) => {
-					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					this.uploadStatusChanged$.update(() => mUploadStatus);
-					this.getFiles(mParams.action, this._SelectedPath);
-				},
-				error: (error) => {
-					this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
-					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mParams.file.name, error, true, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					this.uploadStatusChanged$.update(() => mUploadStatus);
-				},
-				// complete: () => {}
-			});
-		}
-	}
-
-	/**
-	 * @description Helper method that calls the upload API so the merging of the file chunks (slices)
-	 * can be done
-	 *
-	 * @private
-	 * @param {string} action Used to determine the upload directory and enforce security on the server.
-	 * @param {string} fileName The file name for this Chunk.
-	 * @param {string} uri The Uniform Resource Identifier.
-	 * @return {*}  {Observable<IUploadResponse>}
-	 * @memberof FileManagerService
-	 */
-	private multiUploadComplete(action: string, fileName: string, uri: string): Observable<IUploadResponse> {
-		const mFormData = new FormData();
-		mFormData.append('action', action);
-		mFormData.append('completed', 'true');
-		mFormData.append('fileName', fileName);
-		mFormData.append('selectedPath', this._SelectedPath);
-		return this._HttpClient.post<IUploadResponse>(uri, mFormData);
-	}
-
-	/**
-	 * @description Performs a single file upload
-	 *
-	 * @private
-	 * @param {File} file the HTML "file" object
-	 * @param {string} action Used to determine the upload directory and enforce security on the server
-	 * @memberof FileManagerService
-	 */
-	private singleFileUpload(file: File, action: string) {
-		const mFormData = new FormData();
-		mFormData.append('action', action);
-		mFormData.append('selectedPath', this._SelectedPath);
-		mFormData.append(file.name + '_UploadNumber_1', file);
-		mFormData.append('fileName', file.name);
-		mFormData.append('completed', 'true');
-		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
-			next: (response: IUploadResponse) => {
-				const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
-				this.uploadStatusChanged$.update(() => mUploadStatus);
-				if (mUploadStatus.completed) {
-					this.getFiles(action, this._SelectedPath);
-				}
-			},
-			error: (error) => {
-				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'singleFileUpload');
-				// const mUploadStatus: IUploadStatus = new UploadStatus(action, file.name, error, true, false, 1, 1);
-			},
-			// complete: () => {}
-		});
 	}
 
 	/**
@@ -540,9 +539,9 @@ export class FileManagerService {
 			);
 			mMultiPartFileUpload.startingByte = 0;
 			mMultiPartFileUpload.endingByte = this._ChunkSize;
-			this.multiPartFileUpload(mMultiPartFileUpload);
+			this._uploadLargeFile(mMultiPartFileUpload);
 		} else {
-			this.singleFileUpload(file, action);
+			this._uploadSingleFile(file, action);
 		}
 	}
 }
