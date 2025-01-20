@@ -162,7 +162,7 @@ export class FileManagerService {
 	 * @param {string} action Used to determine the upload directory and enforce security on the server
 	 * @memberof FileManagerService
 	 */
-	private _uploadSingleFile(file: File, action: string) {
+	private _uploadSmallFile(file: File, action: string) {
 		const mFormData: FormData = this._uploadFormData(action, file.name + '_UploadNumber_1', 'true', file);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
@@ -521,7 +521,7 @@ export class FileManagerService {
 	}
 
 	/**
-	 * @description Uploads file by calling either _uploadLargeFile or _uploadSingleFile depending on the file size.
+	 * @description Uploads file by calling either _uploadLargeFile or _uploadSmallFile depending on the file size.
 	 *
 	 * @param {string} action Used to determine the upload directory and enforce security on the server
 	 * @param {File} file An HTML "File" object
@@ -541,7 +541,7 @@ export class FileManagerService {
 			mMultiPartFileUpload.endingByte = this._ChunkSize;
 			this._uploadLargeFile(mMultiPartFileUpload);
 		} else {
-			this._uploadSingleFile(file, action);
+			this._uploadSmallFile(file, action);
 		}
 	}
 }
