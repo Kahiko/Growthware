@@ -515,8 +515,8 @@ export class FileManagerService {
 	 * @return {*}  {number}
 	 * @memberof FileManagerService
 	 */
-	public getTotalNumberOfUploads(fileSize: number, chunkSize: number): number {
-		const mRetVal = fileSize % chunkSize == 0 ? fileSize / chunkSize : Math.floor(fileSize / chunkSize) + 1;
+	public getTotalNumberOfUploads(fileSize: number): number {
+		const mRetVal = fileSize % this._ChunkSize == 0 ? fileSize / this._ChunkSize : Math.floor(fileSize / this._ChunkSize) + 1;
 		return mRetVal;
 	}
 
@@ -529,7 +529,7 @@ export class FileManagerService {
 	 * @memberof FileManagerService
 	 */
 	uploadFile(action: string, file: File) {
-		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, this._ChunkSize);
+		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size);
 		if (mTotalNumberOfUploads > 1) {
 			const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
 				action,
