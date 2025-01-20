@@ -18,6 +18,7 @@ export class ConfigurationService {
 	private _Loaded: boolean = false;
 
 	readonly applicationName = signal<string>('');
+	readonly chunkSize = signal<number>(29696000); // The default value is 30MB in Kestrel so this is a bit smaller
 	readonly environment = signal<string>('');
 	readonly logPriority = signal<string>('');
 	readonly securityEntityTranslation = signal<string>('');
@@ -62,6 +63,7 @@ export class ConfigurationService {
 			this._HttpClient.get<IAppSettings>(mUrl).subscribe({
 				next: (response: IAppSettings) => {
 					if (response.name) { this.applicationName.set(response.name); }
+					if (response.chunkSize) { this.chunkSize.set(response.chunkSize); }
 					if (response.environment) { this.environment.set(response.environment); }
 					if (response.logPriority) { this.logPriority.set(response.logPriority); }
 					if (response.securityEntityTranslation) { this.securityEntityTranslation.set(response.securityEntityTranslation); }

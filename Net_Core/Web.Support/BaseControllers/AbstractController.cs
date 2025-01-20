@@ -16,21 +16,22 @@ public abstract class AbstractController : ControllerBase
 {
 
     private string m_ApplicationName = string.Empty;
+    private string m_ChunkSize = string.Empty;
     private string m_Environment = string.Empty;
     private string m_Version = string.Empty;
-
     private Logger m_Logger = Logger.Instance();
-
     private string m_LogPriority = string.Empty;
-
     private string m_SecurityEntityTranslation = string.Empty;
-
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
 
     [HttpGet("GetAppSettings")]
     public UIAppSettings GetAppSettings()
     {
         UIAppSettings mRetVal = new UIAppSettings();
+        if (this.m_ChunkSize == string.Empty)
+        {
+            this.m_ChunkSize = ConfigSettings.RequestBodySize.ToString();
+        }
         if(this.m_Environment == string.Empty)
         {
             this.m_Environment = ConfigSettings.Environment;
@@ -44,15 +45,16 @@ public abstract class AbstractController : ControllerBase
         {
             this.m_ApplicationName = ConfigSettings.AppDisplayedName;
         }
-        if (this.m_Version == string.Empty)
-        {
-            this.m_Version = ConfigSettings.Version;
-        }
         if(this.m_SecurityEntityTranslation == string.Empty)
         {
             this.m_SecurityEntityTranslation = ConfigSettings.SecurityEntityTranslation;
         }
+        if (this.m_Version == string.Empty)
+        {
+            this.m_Version = ConfigSettings.Version;
+        }
         mRetVal.Environment = this.m_Environment;
+        mRetVal.ChunkSize = this.m_ChunkSize;
         mRetVal.LogPriority = this.m_LogPriority;
         mRetVal.Name = this.m_ApplicationName;
         mRetVal.SecurityEntityTranslation = this.m_SecurityEntityTranslation;

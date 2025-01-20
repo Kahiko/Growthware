@@ -1,5 +1,6 @@
 export interface IAppSettings {
   environment?: string;
+  chunkSize?: number;
   logPriority?: string;
   name?: string;
   securityEntityTranslation?: string;
@@ -8,6 +9,7 @@ export interface IAppSettings {
 
 export class AppSettings implements IAppSettings {
 	public environment?: string;
+	public chunkSize?: number;
 	public logPriority?: string;
 	public name?: string;
 	public securityEntityTranslation?: string;

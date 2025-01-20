@@ -74,6 +74,7 @@
     "Development_JWT_Refresh_Token_DB_TTL_Days": "2",
     "Development_JWT_Refresh_Token_Expires_Days": "7",
     "Development_JWT_Token_TTL_Minutes": "15",
+    "Development_RequestBodySize_N_Bytes": "29696000",
     "Development_MicrosoftAccountClientId": "",
     "Development_MicrosoftAccountClientSecret": "",
     "Development_RegistrationDefaultGroups": "",

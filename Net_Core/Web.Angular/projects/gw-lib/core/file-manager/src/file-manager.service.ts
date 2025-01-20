@@ -2,8 +2,9 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // Library
-import { GWCommon } from '@growthware/common/services';
+import { ConfigurationService } from '@growthware/core/configuration';
 import { DirectoryTree, IDirectoryTree } from '@growthware/common/interfaces';
+import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { IFileInfoLight } from './interfaces/file-info-light.model';
@@ -26,6 +27,7 @@ export class FileManagerService {
 	private _Api_RenameFile: string = '';
 	private _Api_UploadFile: string = '';
 	private _SelectedPath: string = '\\';
+	private _ChunkSize: number = 29696000; // The default value is 30MB in Kestrel so this is a bit smaller
 
 	ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
 	ModalId_CreateDirectory: string = 'CreateDirectoryForm';
@@ -46,6 +48,7 @@ export class FileManagerService {
 
 	constructor(
 		// private _DataSvc: DataService,
+		private _ConfigSvc: ConfigurationService,
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
@@ -526,17 +529,17 @@ export class FileManagerService {
 	 * @param {number} [chunkSize=3072000] Used to break the "File" up if the file size is greater than the chunkSize.  The number is in direct relation to KestrelServerLimits.MaxRequestBodySize Property
 	 * @memberof FileManagerService
 	 */
-	uploadFile(action: string, file: File, chunkSize: number = 29696000) {
-		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, chunkSize);
+	uploadFile(action: string, file: File) {
+		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, this._ChunkSize);
 		if (mTotalNumberOfUploads > 1) {
 			const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
 				action,
 				file,
 				mTotalNumberOfUploads,
-				chunkSize
+				this._ChunkSize
 			);
 			mMultiPartFileUpload.startingByte = 0;
-			mMultiPartFileUpload.endingByte = chunkSize;
+			mMultiPartFileUpload.endingByte = this._ChunkSize;
 			this.multiPartFileUpload(mMultiPartFileUpload);
 		} else {
 			this.singleFileUpload(file, action);

@@ -508,6 +508,15 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Return RequestBodySize_N_Bytes from the CONFIG file and is used as the "chunk" size when 
+        /// uploading files.
+        /// </summary>
+        public static int RequestBodySize
+        {
+            get { return int.Parse(GetAppSettingValue("RequestBodySize_N_Bytes", true), CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
         /// Return JWT_Refresh_Cookie_TTL_Days from the CONFIG file
         /// </summary>
         /// <remarks>
