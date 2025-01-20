@@ -608,7 +608,6 @@ public abstract class AbstractFileController : ControllerBase
                             }
                             mRetVal.FileName = mNewFileName.Replace(mDirectoryInfo.FullName.Replace(this.m_TempUploadDirectory, ""), "");
                             mRetVal.IsSuccess = true;
-                            return Ok(mRetVal);
                         }
                     }
                     if (mRetVal.IsSuccess)
