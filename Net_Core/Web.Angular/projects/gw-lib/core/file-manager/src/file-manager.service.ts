@@ -521,7 +521,7 @@ export class FileManagerService {
 	}
 
 	/**
-	 * @description Uploads file by calling either multiPartFileUpload or singleFileUpload depending on the file size.
+	 * @description Uploads file by calling either _uploadLargeFile or _uploadSingleFile depending on the file size.
 	 *
 	 * @param {string} action Used to determine the upload directory and enforce security on the server
 	 * @param {File} file An HTML "File" object
