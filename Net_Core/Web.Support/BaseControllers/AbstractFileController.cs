@@ -13,6 +13,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Threading;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -21,7 +22,7 @@ public abstract class AbstractFileController : ControllerBase
 {
     string m_TempUploadDirectory = "tempUpload" + Path.DirectorySeparatorChar;
 
-    private static Logger m_Logger = Logger.Instance();
+    private static readonly Logger m_Logger = Logger.Instance();
 
     /// <summary>
     /// Calculates the path given the directory and the selected (or desired) path
@@ -127,8 +128,32 @@ public abstract class AbstractFileController : ControllerBase
             string mFileName = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, selectedPath), fileName);
             if (System.IO.File.Exists(mFileName))
             {
-                System.IO.File.Delete(mFileName);
-                return Ok(true);
+                int mRetryCount = 0;
+                int mMaxRetryCount = 10;
+                bool mFileDeleted = false;
+                while (!mFileDeleted && mRetryCount < mMaxRetryCount)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(mFileName);
+                        mFileDeleted = true;
+                    }
+                    catch (IOException e) when ((e.HResult & 0x0000FFFF) == 32)
+                    {
+                        m_Logger.Error($"Unable to delete file sharing violation for '{mFileName}'");
+                        return StatusCode(StatusCodes.Status409Conflict, "Unable to delete file sharing violation");
+                    }
+                    catch (IOException)
+                    {
+                        mRetryCount += 1;
+                        Thread.Sleep(100);
+                    }
+                }
+                if (!mFileDeleted) 
+                {
+                    m_Logger.Error($"Unable to delete file '{mFileName}'");
+                }
+                return Ok(mFileDeleted);
             }
             return StatusCode(StatusCodes.Status404NotFound, String.Format("The file '{0}' does not exists", mFileName));
         }
