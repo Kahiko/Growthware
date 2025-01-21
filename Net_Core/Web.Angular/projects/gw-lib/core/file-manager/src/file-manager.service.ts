@@ -179,7 +179,15 @@ export class FileManagerService {
 			// complete: () => {}
 		});
 	}
-
+	
+	/**
+	 * @description Creates a directory in the current directory.
+	 *
+	 * @param {string} action - The action to be performed
+	 * @param {string} newPath - The name of the new directory
+	 * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the operation.
+	 * @memberof FileManagerService
+	 */
 	public async createDirectory(action: string, newPath: string): Promise<boolean> {
 		if (this._GWCommon.isNullOrEmpty(action)) {
 			throw new Error('action can not be blank!');
@@ -292,6 +300,15 @@ export class FileManagerService {
 		});
 	}
 
+	
+	/**
+	 * Refreshes the current directory and file list by retrieving the latest 
+	 * directories and files from the server based on the provided action.
+	 *
+	 * @param {string} action - The action used to determine the upload directory 
+	 * and enforce security on the server.
+	 * @return {void} - This function does not return a value.
+	 */
 	refresh(action: string): void {
 		this.getDirectories(action, this.selectedPath);
 		this.getFiles(action, this.selectedPath);
