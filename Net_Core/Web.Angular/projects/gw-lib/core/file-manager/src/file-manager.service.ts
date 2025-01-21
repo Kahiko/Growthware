@@ -142,9 +142,11 @@ export class FileManagerService {
 		const mFormData: FormData = this._uploadFormData(parameters.action, parameters.file.name, 'true');
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
+				// update the file list
+				this.getFiles(parameters.action, this._SelectedPath);
+				// update the uploadStatusChanged signal so the UI can update
 				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, response.fileName, response.data, true, response.isSuccess, parameters.totalNumberOfUploads, parameters.uploadNumber);
 				this.uploadStatusChanged$.update(() => mUploadStatus);
-				this.getFiles(parameters.action, this._SelectedPath);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
