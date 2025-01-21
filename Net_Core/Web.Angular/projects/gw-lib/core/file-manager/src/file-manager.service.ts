@@ -530,7 +530,6 @@ export class FileManagerService {
 	 * @description Calculates the total number of chuncks needed to upload a large file
 	 *
 	 * @param {number} fileSize  The size of the file
-	 * @param {number} chunkSize The size of the chunck that the server can accept
 	 * @return {*}  {number}
 	 * @memberof FileManagerService
 	 */
