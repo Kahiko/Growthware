@@ -555,7 +555,7 @@ export class FileManagerService {
 				mTotalNumberOfUploads,
 				this._ChunkSize
 			);
-			mMultiPartFileUpload.startingByte = 0;
+			// mMultiPartFileUpload.startingByte = 0;
 			mMultiPartFileUpload.endingByte = this._ChunkSize;
 			this._uploadLargeFile(mMultiPartFileUpload);
 		} else {
