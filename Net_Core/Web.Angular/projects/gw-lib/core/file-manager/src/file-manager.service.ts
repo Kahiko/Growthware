@@ -28,6 +28,7 @@ export class FileManagerService {
 	private _Api_UploadFile: string = '';
 	private _SelectedPath: string = '\\';
 	private _ChunkSize: number = 29696000; // The default value is 30MB in Kestrel so this is a bit smaller
+	private _StartTime = new Date().getTime();
 
 	ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
 	ModalId_CreateDirectory: string = 'CreateDirectoryForm';
@@ -147,6 +148,10 @@ export class FileManagerService {
 				// update the uploadStatusChanged signal so the UI can update
 				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, response.fileName, response.data, true, response.isSuccess, parameters.totalNumberOfUploads, parameters.uploadNumber);
 				this.uploadStatusChanged$.update(() => mUploadStatus);
+				// Uncomment this code if you want to time the upload
+				// const mEndTime = new Date().getTime();
+				// const mDuration = mEndTime - this._StartTime;
+				// console.log('Duration: ', mDuration);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
@@ -547,6 +552,7 @@ export class FileManagerService {
 	 * @memberof FileManagerService
 	 */
 	uploadFile(action: string, file: File) {
+		this._StartTime = new Date().getTime();
 		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size);
 		if (mTotalNumberOfUploads > 1) {
 			const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
