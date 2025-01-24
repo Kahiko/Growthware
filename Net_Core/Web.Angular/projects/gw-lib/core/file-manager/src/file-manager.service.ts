@@ -539,7 +539,10 @@ export class FileManagerService {
 	 * @memberof FileManagerService
 	 */
 	public getTotalNumberOfUploads(fileSize: number): number {
-		const mRetVal = fileSize % this._ChunkSize == 0 ? fileSize / this._ChunkSize : Math.floor(fileSize / this._ChunkSize) + 1;
+		if (fileSize !> 0) {
+			throw new Error('fileSize must be greater than 0!');
+		}
+		const mRetVal = Math.ceil(fileSize / this._ChunkSize);
 		return mRetVal;
 	}
 
