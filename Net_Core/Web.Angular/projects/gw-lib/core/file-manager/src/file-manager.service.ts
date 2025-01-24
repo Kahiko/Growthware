@@ -539,9 +539,6 @@ export class FileManagerService {
 	 * @memberof FileManagerService
 	 */
 	public getTotalNumberOfUploads(fileSize: number): number {
-		if (fileSize !> 0) {
-			throw new Error('fileSize must be greater than 0!');
-		}
 		const mRetVal = Math.ceil(fileSize / this._ChunkSize);
 		return mRetVal;
 	}
