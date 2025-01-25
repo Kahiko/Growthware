@@ -24,6 +24,8 @@ public abstract class AbstractFileController : ControllerBase
 
     private static readonly Logger m_Logger = Logger.Instance();
 
+    public static bool m_ForcedFail = false;
+
     /// <summary>
     /// Calculates the path given the directory and the selected (or desired) path
     /// </summary>
@@ -34,11 +36,14 @@ public abstract class AbstractFileController : ControllerBase
     {
         string mRetVal = string.Empty;
         if (selectedPath != null) { mRetVal = selectedPath; }
-        string mDirectory = directory.Replace(@"\", @"/");
-        mDirectory = mDirectory.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        string mDirectory = directory.Replace(@"\", @"/"); // update all back slashes to forward slashes
+        mDirectory = mDirectory.Replace(@"/", Path.DirectorySeparatorChar.ToString()); // update all forward slashes to the DirectorySeparatorChar
         mDirectory = mDirectory.TrimEnd(Path.DirectorySeparatorChar);
-        mDirectory = mDirectory.TrimStart(Path.DirectorySeparatorChar);
-        if (!mDirectory.EndsWith(Path.DirectorySeparatorChar)) { mDirectory = mDirectory + Path.DirectorySeparatorChar.ToString(); }
+        // mDirectory = mDirectory.TrimStart(Path.DirectorySeparatorChar);
+        if (!mDirectory.EndsWith(Path.DirectorySeparatorChar))
+        { 
+            mDirectory = mDirectory + Path.DirectorySeparatorChar.ToString(); 
+        }
 
         string mSelectedPath = string.Empty;
         if (!string.IsNullOrEmpty(selectedPath))
@@ -49,8 +54,14 @@ public abstract class AbstractFileController : ControllerBase
             mSelectedPath = mSelectedPath.TrimStart(Path.DirectorySeparatorChar);
         }
         mRetVal = mDirectory + mSelectedPath;
-        if (mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = mDirectory; }
-        if (!mRetVal.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = mRetVal + Path.DirectorySeparatorChar.ToString(); }
+        if (mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) 
+        { 
+            mRetVal = mDirectory; 
+        }
+        if (!mRetVal.EndsWith(Path.DirectorySeparatorChar)) 
+        { 
+            mRetVal = mRetVal + Path.DirectorySeparatorChar.ToString(); 
+        }
         return mRetVal;
     }
 
@@ -410,34 +421,32 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     /// <summary>
-    /// Merges the contents of two files.
+    /// Asynchronously creates the final file (fileName) by "merging" 1 or more files (fileId) into a single file.
     /// </summary>
-    /// <param name="file1">The first file.</param>
-    /// <param name="file2">The second file.</param>
-    private static void mergeFiles(string file1, string file2)
+    /// <param name="fileId">The identifier for the file being merged.</param>
+    /// <param name="fileName">The name of the final merged file.</param>
+    /// <param name="totalChunks">The total number of chunks to be merged.</param>
+    /// <param name="finialUploadPath">The path where the final merged file will be saved.</param>
+    /// <param name="uploadTempPath">The temporary path where the file chunks are stored.</param>
+    private async Task mergeFiles(string fileId, string fileName, int totalChunks, string finialUploadPath, string uploadTempPath)
     {
-        FileStream mFileStream1 = null;
-        FileStream mFileStream2 = null;
-        try
+        string mFinalFilePath = Path.Combine(finialUploadPath, fileName);
+        using (var mFileStream = new FileStream(mFinalFilePath, FileMode.Create))
         {
-            mFileStream1 = System.IO.File.Open(file1, FileMode.Append);
-            mFileStream2 = System.IO.File.Open(file2, FileMode.Open);
-            byte[] mFileStream2Content = new byte[mFileStream2.Length];
-            int mBytesRead;
-            while ((mBytesRead = mFileStream2.Read(mFileStream2Content, 0, (int)mFileStream2.Length)) > 0)
+            for (int i = 0; i < totalChunks; i++)
             {
-                mFileStream1.Write(mFileStream2Content, 0, mBytesRead);
+                string mChunkPath = Path.Combine(uploadTempPath, $"{fileId}.part{i}");
+                byte[] mChunkBytes = await System.IO.File.ReadAllBytesAsync(mChunkPath);
+                await mFileStream.WriteAsync(mChunkBytes.AsMemory(0, mChunkBytes.Length), CancellationToken.None);
+                // await mFileStream.WriteAsync(mChunkBytes, 0, mChunkBytes.Length);
             }
         }
-        catch (Exception ex)
+
+        // Cleanup temporary chunks
+        for (int i = 0; i < totalChunks; i++)
         {
-            m_Logger.Error(ex.Message);
-        }
-        finally
-        {
-            if (mFileStream1 != null) mFileStream1.Close();
-            if (mFileStream2 != null) mFileStream2.Close();
-            System.IO.File.Delete(file2);
+            string chunkPath = Path.Combine(uploadTempPath, $"{fileId}.part{i}");
+            System.IO.File.Delete(chunkPath);
         }
     }
 
@@ -550,80 +559,133 @@ public abstract class AbstractFileController : ControllerBase
     [HttpPost("UploadFile")]
     public async Task<IActionResult> UploadFile()
     {
-        string mAction = Request.Form["action"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
-        string mSelectedPath = Request.Form["selectedPath"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
-        if (string.IsNullOrEmpty(mAction)) { return StatusCode(StatusCodes.Status500InternalServerError, "Missing the 'action' property."); }
-        if (mSelectedPath.Contains(":"))
+        DTO_UploadResponse mRetVal = new()
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
+            IsSuccess = false
+        };
+        string action = Request.Form["action"].ToString();
+        if (string.IsNullOrEmpty(action)) 
+        {
+            mRetVal.ErrorMessage = "Missing the 'action' property.";
+            return Ok(mRetVal);
         }
         try
         {
+            string selectedPath = Request.Form["selectedPath"].ToString();
+            string mDoMergeValue = Request.Form["doMerge"].ToString();
+            bool doMerge = false;
+            if (!string.IsNullOrEmpty(mDoMergeValue)) 
+            { 
+                doMerge = Convert.ToBoolean(mDoMergeValue); 
+            } 
+            if (selectedPath.Contains(":"))
+            {
+                mRetVal.ErrorMessage = "The current path parameter can not contain a colon.";
+                return Ok(mRetVal);
+            }
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (mSecurityInfo.MayAdd)
             {
+                string fileId = Request.Form["fileId"].ToString();
+                string fileName = Request.Form["fileName"].ToString();
+                string chunkIndexValue = Request.Form["chunkIndex"].ToString();
+                string totalChunksValue = Request.Form["totalChunks"].ToString();
+                if (string.IsNullOrEmpty(fileId))
+                {
+                    mRetVal.ErrorMessage = "'fileId' is required.";
+                    return Ok(mRetVal);
+                }
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    mRetVal.ErrorMessage = "'fileName' is required.";
+                    return Ok(mRetVal);
+                }
+                if (string.IsNullOrEmpty(chunkIndexValue))
+                {
+                    mRetVal.ErrorMessage = "'chunkIndex' is required.  Even if uploading a single file then chunkIndex should be 0.";
+                    return Ok(mRetVal);
+                }                
+                if (string.IsNullOrEmpty(totalChunksValue))
+                {
+                    mRetVal.ErrorMessage = "'totalChunks' is required.  Even if uploading a single file then totalChunks should be 1.";
+                    return Ok(mRetVal);
+                }
+                
+                int chunkIndex = Convert.ToInt32(chunkIndexValue);
+                int totalChunks = Convert.ToInt32(totalChunksValue);
+                // Simulate an API failure for bad data
+                // if (chunkIndex == 2)
+                // {
+                //     m_ForcedFail = true;
+                //     mRetVal.ErrorMessage = "Simulating an upload failure.";
+                //     return Ok(mRetVal);
+                // }
+
+                // Simulate an API network or unexpected failure for bad data
+                // if (chunkIndex == 2 && m_ForcedFail == false)
+                // {
+                //     m_ForcedFail = true;
+                //     throw new Exception("Simulating an upload failure.");
+                // }
+
+                IFormFile formFile = null;
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    // there should only ever be one weather it be a chunk or the whole file
+                    formFile = Request.Form.Files[0];
+                }
+
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
                 if (mDirectoryProfile != null)
                 {
-                    DTO_UploadResponse mRetVal = new DTO_UploadResponse();
-                    mRetVal.IsSuccess = false;
-                    string mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath) + Path.DirectorySeparatorChar + this.m_TempUploadDirectory;
+                    string mUploadDirectory = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, ""), this.m_TempUploadDirectory);
                     // create the upload directory if one doest exist
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                    string mCompleted = Request.Form["completed"];
                     if (!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
-                    if (Request.Form.Files.Count() > 0)
+
+                    string mTempFilePath = Path.Combine(mUploadDirectory, $"{fileId}.part{chunkIndex}");
+                    // Save the chunk
+                    if (formFile != null)
                     {
-                        // attempt the upload
-                        IFormFile mFormFile = Request.Form.Files[0]; // there should only ever be one
-                        mRetVal.FileName = mFormFile.Name;
-                        string mFullPath = mUploadDirectory + mRetVal.FileName;
-                        if (System.IO.File.Exists(mFullPath)) System.IO.File.Delete(mFullPath);
-                        using (var stream = new FileStream(mFullPath, FileMode.Create))
+                        // Delete the chunk if it already exists
+                        if (System.IO.File.Exists(mTempFilePath)) 
                         {
-                            await mFormFile.CopyToAsync(stream);
+                            System.IO.File.Delete(mTempFilePath);
                         }
-                        mRetVal.IsSuccess = true;
-                    }
-                    if (!String.IsNullOrWhiteSpace(mCompleted) && mCompleted.ToLowerInvariant() == "true")
-                    {
-                        // merge logic
-                        string mFileName = Request.Form["fileName"];
-                        // get file that start with the file name
-                        FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().Where(f => f.Name.StartsWith(mFileName)).OrderBy(x => x.Name).ToArray();
-                        if (mSortedFiles != null && mSortedFiles.Count() > 0)
+                        using (var stream = new FileStream(mTempFilePath, FileMode.Create, FileAccess.Write))
                         {
-                            string mNewFileName = mSortedFiles[0].FullName.Replace(m_TempUploadDirectory, ""); // The original intended directory
-                            mNewFileName = mNewFileName.Replace("_UploadNumber_1", ""); // strip off the _UploadNumber_1
-                            if (System.IO.File.Exists(mNewFileName)) System.IO.File.Delete(mNewFileName);
-                            for (int i = 0; i < mSortedFiles.Count(); i++)
-                            {
-                                mergeFiles(mNewFileName, mSortedFiles[i].FullName);
-                            }
-                            if (mDirectoryInfo.GetFiles().Count() == 0)
-                            {
-                                mDirectoryInfo.Delete();
-                            }
-                            mRetVal.FileName = mNewFileName.Replace(mDirectoryInfo.FullName.Replace(this.m_TempUploadDirectory, ""), "");
-                            mRetVal.IsSuccess = true;
+                            await formFile.CopyToAsync(stream);
                         }
                     }
-                    if (mRetVal.IsSuccess)
+                    // Check if all chunks are uploaded
+                    if (doMerge)
                     {
-                        return Ok(mRetVal);
+                        await mergeFiles(fileId, fileName, totalChunks, mDirectoryProfile.Directory, mUploadDirectory);
+                        if (mDirectoryInfo.GetFiles().Count() == 0)
+                        {
+                            mDirectoryInfo.Delete();
+                        }                        
                     }
-                    return StatusCode(StatusCodes.Status500InternalServerError, "No file found in Request.Form.Files.");
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
+                    mRetVal.FileName = fileId;
+                    if (!doMerge)
+                    {
+                        mRetVal.FileName = fileName;
+                    }
+                    mRetVal.IsSuccess = true;
+                    return Ok(mRetVal);
+                }      
             }
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         catch (System.Exception ex)
         {
             Logger.Instance().Fatal(ex);
-            return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile Failed.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "File Upload Failed.");
         }
     }
+
+
 }

@@ -20,6 +20,10 @@
 - Moved MLogging.cs to Table/MLogging.cs
 - Added the GWCommon class to the Growthware.Framework.csproj to help with common functions
 - Moved the "Chunk Size" from the typescript to the configuration file and it is now retrieved from the API
+- Updated the file manager service:
+    - Now uses the chunk size from the configuration file
+    - Now retries on unexpected errors
+    - Optimized mergeFiles
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

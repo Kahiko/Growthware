@@ -1,6 +1,6 @@
 import { effect, Injectable, OnInit, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 // Library
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DirectoryTree, IDirectoryTree } from '@growthware/common/interfaces';
@@ -28,6 +28,8 @@ export class FileManagerService implements OnInit {
 	private _Api_UploadFile: string = '';
 	private _SelectedPath: string = '\\';
 	private _ChunkSize: number = 29696000; // The default value is 30MB in Kestrel so this is a bit smaller
+	private _Concurrency = 3; // Number of parallel uploads
+	private _MaxRetries = 3;
 	private _StartTime = new Date().getTime();
 
 	ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
@@ -71,7 +73,78 @@ export class FileManagerService implements OnInit {
 			this._ChunkSize = this._ConfigSvc.chunkSize();
 		});
 	}
-	
+
+    /**
+     * @description Generates a "unique" ID for a given file based on its name, size, and modified date.
+     * @param {File} file - The file to generate the ID for
+     * @returns {string} - The generated ID
+     * @memberof FileManagerService
+     */
+    private _generateFileId(file: File): string {
+        return `${file.name}-${file.size}-${file.lastModified}`; // Simple unique identifier
+    }
+
+	/**
+	 * @description Uploads a chunk of a file. The chunk is the raw content of the file and is identified by its index.
+	 * @param {string} action Used to determine the upload directory and enforce security on the server
+	 * @param {boolean} doMerge If true, the chunk is merged into an existing file. Otherwise, a new file is created.
+	 * @param {string} fileName The name of the file being uploaded.
+	 * @param {string} fileId A "unique" ID for a given file based on its name, size, and modified date.  See _generateFileId
+	 * @param {Blob} chunk The raw content of the file.
+	 * @param {number} chunkIndex The index of the chunk.
+	 * @param {number} totalChunks The total number of chunks.
+	 * @returns {Promise<void>}
+	 * @memberof FileManagerService
+	 */
+	private async _uploadChunk(action: string, doMerge: boolean, fileName: string, fileId: string, chunk: Blob, chunkIndex: number, totalChunks: number): Promise<IUploadResponse> {
+		const mFormData: FormData = this._uploadFormData(action, doMerge, chunk, fileId, fileName, chunkIndex, totalChunks);
+		return lastValueFrom(this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData));
+	}
+
+	/**
+	 * @description Attempts to upload a chunk of a file with a retry mechanism in case of failure.
+	 *
+	 * @private
+	 * @param {string} action - Used to determine the upload directory and enforce security on the server.
+	 * @param {boolean} doMerge - If true, the chunk is merged into an existing file. Otherwise, a new file is created.
+	 * @param {string} fileId - A "unique" ID for a given file based on its name, size, and modified date.  See _generateFileId
+	 * @param {Blob} chunk - The raw content of the file.
+	 * @param {string} fileName - The name of the file being uploaded.
+	 * @param {number} chunkIndex - The index of the chunk.
+	 * @param {number} totalChunks - The total number of chunks.
+	 * @param {number} maxRetries - The maximum number of retry attempts for a failed upload.
+	 * @throws {Error} Throws an error if the maximum number of retries is reached.
+	 * @memberof FileManagerService
+	 */
+    private async _uploadChunkWithRetry(action: string, doMerge: boolean, fileId: string, chunk: Blob, fileName: string, chunkIndex: number, totalChunks: number, maxRetries: number) {
+        let attempt = 0;
+        while (attempt < maxRetries) {
+            try {
+				await this._uploadChunk(action, doMerge, fileName, fileId, chunk, chunkIndex, totalChunks).then((response: IUploadResponse) => {
+					if (!response.isSuccess) {
+						// This is an error that can not be recovered because the error is more than likely
+						// related to code in this service. Missing data, etc.
+						attempt = maxRetries + 1; // Force exit the loop
+						this._LoggingSvc.toast(response.errorMessage, 'File Manager', LogLevel.Error);
+						throw new Error(response.errorMessage);
+					}
+				}).catch((error) => {
+					throw new Error(error);
+				});
+				return; // Success, exit function
+            } catch (error: any) {
+                attempt++;
+				if (!this._GWCommon.isNullOrUndefined(error) && error.message !== null) {
+					console.error(`FileManagerService._uploadChunkWithRetry: Chunk ${chunkIndex} failed (Attempt ${attempt}/${maxRetries})`);
+				}
+                if (attempt >= maxRetries) {
+					throw new Error(`FileManagerService._uploadChunkWithRetry: Upload failed after ${maxRetries} attempts for chunk ${chunkIndex}`);
+				}
+                this._GWCommon.sleep(1000 * attempt); // Exponential backoff
+            }
+        }
+    }
+
 	/**
 	 * Creates a FormData object for uploading a file.
 	 *
@@ -83,15 +156,18 @@ export class FileManagerService implements OnInit {
 	 * @returns {FormData} - The FormData object to be used in the upload request.
 	 * @memberof FileManagerService
 	 */
-	private _uploadFormData(action: string, fileName: string, completed: string, data: File | Blob | null = null): FormData {
+	private _uploadFormData(action: string, doMerge: boolean, formFile: Blob | null | undefined, fileId: string, fileName: string, chunkIndex: number, totalChunks: number): FormData {
 		const mRetVal = new FormData();
-		mRetVal.append('action', action);
-		mRetVal.append('selectedPath', this._SelectedPath);
-		if (data !== null && data !== undefined) { 
-			mRetVal.append(fileName, data); 
+        mRetVal.append('action', action);
+		mRetVal.append('doMerge', doMerge.toString());
+        mRetVal.append('fileId', fileId);
+        mRetVal.append('fileName', fileName);
+		if (formFile !== null && formFile !== undefined) {
+			mRetVal.append('formFile', formFile);
 		}
-		mRetVal.append('fileName', fileName);
-		mRetVal.append('completed', completed);
+        mRetVal.append('chunkIndex', chunkIndex.toString());
+        mRetVal.append('selectedPath', this._SelectedPath);
+        mRetVal.append('totalChunks', totalChunks.toString());
 		return mRetVal;
 	}
 
@@ -103,40 +179,36 @@ export class FileManagerService implements OnInit {
 	 * @param {IMultiPartFileUploadParameters} parameters
 	 * @memberof FileManagerService
 	 */
-	private _uploadLargeFile(parameters: IMultiPartFileUploadParameters) {
-		// it's good practice to leave parameter values unchanged
-		const mParams = { ...parameters };
-		const mNextUploadNumber = mParams.uploadNumber + 1;
-		const mMultiUploadFileName = mParams.file.name + '_UploadNumber_' + mNextUploadNumber;
-		// do we need to send any more pices of the file
-		if (mParams.uploadNumber < mParams.totalNumberOfUploads) { 
-			const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
-			const mFormData: FormData = this._uploadFormData(mParams.action, mMultiUploadFileName, 'false', mBlob);
-			this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
-				next: (response: IUploadResponse) => { // update the parameters can call this method again
-					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
-					mParams.uploadNumber = mNextUploadNumber;
-					mParams.startingByte = parameters.endingByte;
-					mParams.endingByte = parameters.endingByte + parameters.chunkSize;
-					this.uploadStatusChanged$.update(() => mUploadStatus);
-					this._uploadLargeFile(mParams);
-				},
-				error: (error) => {
-					if (parameters.retryNumber < 4) {
-						mParams.retryNumber = mParams.retryNumber + 1;
-						this._uploadLargeFile(mParams);
-					} else {
-						this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
-						mParams.uploadNumber = mNextUploadNumber;
-					}
-				},
-				// complete: () => {}
-			});
-		}
-		if (parameters.uploadNumber == parameters.totalNumberOfUploads) { // make sure this is the last upload
-			this._uploadLargeFileComplete(mParams);
-		}
-	}	
+    private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
+        const fileId = this._generateFileId(file);
+        const totalChunks = Math.ceil(file.size / this._ChunkSize);
+        let uploadedChunks = 0;
+        let chunkUploadPromises: Promise<void>[] = [];
+
+        for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+            let start = chunkIndex * this._ChunkSize;
+            let end = Math.min(start + this._ChunkSize, file.size);
+            let chunk = file.slice(start, end);
+
+            chunkUploadPromises.push(
+                this._uploadChunkWithRetry(action, doMerge, fileId, chunk, file.name, chunkIndex, totalChunks, this._MaxRetries).then(() => {
+                    uploadedChunks++;
+                    const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, chunkIndex);
+                    onProgress(uploadStatus);
+                })
+            );
+            // Control concurrency: Process only a limited number of chunks at a time
+            if (chunkUploadPromises.length >= this._Concurrency) {
+                await Promise.all(chunkUploadPromises);
+                chunkUploadPromises = []; // Reset after batch completes
+            }
+        }
+
+        // Wait for any remaining chunks to complete
+        await Promise.all(chunkUploadPromises);
+        const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, totalChunks);
+        onComplete(uploadStatus);
+    }
 	
 	/**
 	 * @description Makes the final call to the API to merge together all the "chunks" or slices of the file that were uploaded.
@@ -145,26 +217,29 @@ export class FileManagerService implements OnInit {
 	 * @param {IMultiPartFileUploadParameters} parameters
 	 * @memberof FileManagerService
 	 */
-	private _uploadLargeFileComplete(parameters: IMultiPartFileUploadParameters) {
-		const mFormData: FormData = this._uploadFormData(parameters.action, parameters.file.name, 'true');
+	private _uploadLargeFileComplete(uploadStatus: IUploadStatus) {
+		const mFormData: FormData = this._uploadFormData(uploadStatus.id, true, null, uploadStatus.fileId, uploadStatus.fileName, uploadStatus.totalNumberOfUploads, uploadStatus.totalNumberOfUploads);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				// update the file list
-				this.getFiles(parameters.action, this._SelectedPath);
-				// update the uploadStatusChanged signal so the UI can update
-				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, response.fileName, response.data, true, response.isSuccess, parameters.totalNumberOfUploads, parameters.uploadNumber);
-				this.uploadStatusChanged$.update(() => mUploadStatus);
+				this.getFiles(uploadStatus.id, this._SelectedPath);
 				// Uncomment this code if you want to time the upload
-				// const mEndTime = new Date().getTime();
-				// const mDuration = mEndTime - this._StartTime;
-				// console.log('Duration: ', mDuration);
+				const mEndTime = new Date().getTime();
+				const mDuration = mEndTime - this._StartTime;
+				console.log('Duration: ', mDuration);
+
+				// update the uploadStatusChanged signal so the UI can update
+				this.uploadStatusChanged$.update(() => uploadStatus);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
-				const mUploadStatus: IUploadStatus = new UploadStatus(parameters.action, parameters.file.name, error, true, false, parameters.totalNumberOfUploads, parameters.uploadNumber);
-				this.uploadStatusChanged$.update(() => mUploadStatus);
+				this.uploadStatusChanged$.update(() => uploadStatus);
 			},
 		});
+	}
+
+	private _uploadProgress(uploadStatus: IUploadStatus) {
+		this.uploadStatusChanged$.update(() => uploadStatus);
 	}
 
 	/**
@@ -176,10 +251,11 @@ export class FileManagerService implements OnInit {
 	 * @memberof FileManagerService
 	 */
 	private _uploadSmallFile(file: File, action: string) {
-		const mFormData: FormData = this._uploadFormData(action, file.name + '_UploadNumber_1', 'true', file);
+		const mFileId = this._generateFileId(file);
+		const mFormData: FormData = this._uploadFormData(action, true, file, mFileId, file.name, 0, 1);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
-				const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
+				const mUploadStatus: IUploadStatus = new UploadStatus(action, mFileId, response.fileName, response.errorMessage, true, response.isSuccess, 1, 1);
 				this.uploadStatusChanged$.update(() => mUploadStatus);
 				if (mUploadStatus.completed) {
 					this.getFiles(action, this._SelectedPath);
@@ -561,16 +637,22 @@ export class FileManagerService implements OnInit {
 		this._StartTime = new Date().getTime();
 		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size);
 		if (mTotalNumberOfUploads > 1) {
-			const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
-				action,
-				file,
-				mTotalNumberOfUploads,
-				this._ChunkSize
-			);
-			mMultiPartFileUpload.endingByte = this._ChunkSize;
-			this._uploadLargeFile(mMultiPartFileUpload);
+			
+			this._uploadLargeFile(action, false, file, (uploadStatus) => {
+				this.uploadProgress(uploadStatus);
+			}, (uploadStatus) => {
+				// It is good practice to leave parameters unchanged
+				const mUploadStatus: IUploadStatus = {...uploadStatus};
+				mUploadStatus.completed = true;
+				mUploadStatus.uploadNumber = uploadStatus.totalNumberOfUploads;
+				this._uploadLargeFileComplete(mUploadStatus);
+			});
 		} else {
 			this._uploadSmallFile(file, action);
 		}
+	}
+
+	private uploadProgress(uploadStatus: IUploadStatus) {
+		this.uploadStatusChanged$.update(() => uploadStatus);
 	}
 }
