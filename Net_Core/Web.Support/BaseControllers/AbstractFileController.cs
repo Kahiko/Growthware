@@ -425,25 +425,24 @@ public abstract class AbstractFileController : ControllerBase
     /// </summary>
     /// <param name="fileId">The identifier for the file being merged.</param>
     /// <param name="fileName">The name of the final merged file.</param>
-    /// <param name="totalChunks">The total number of chunks to be merged.</param>
+    /// <param name="totalUploads">The total number of files to be merged.</param>
     /// <param name="finialUploadPath">The path where the final merged file will be saved.</param>
     /// <param name="uploadTempPath">The temporary path where the file chunks are stored.</param>
-    private async Task mergeFiles(string fileId, string fileName, int totalChunks, string finialUploadPath, string uploadTempPath)
+    private async Task mergeFiles(string fileId, string fileName, int totalUploads, string finialUploadPath, string uploadTempPath)
     {
         string mFinalFilePath = Path.Combine(finialUploadPath, fileName);
         using (var mFileStream = new FileStream(mFinalFilePath, FileMode.Create))
         {
-            for (int i = 0; i < totalChunks; i++)
+            for (int i = 0; i < totalUploads; i++)
             {
                 string mChunkPath = Path.Combine(uploadTempPath, $"{fileId}.part{i}");
                 byte[] mChunkBytes = await System.IO.File.ReadAllBytesAsync(mChunkPath);
                 await mFileStream.WriteAsync(mChunkBytes.AsMemory(0, mChunkBytes.Length), CancellationToken.None);
-                // await mFileStream.WriteAsync(mChunkBytes, 0, mChunkBytes.Length);
             }
         }
 
         // Cleanup temporary chunks
-        for (int i = 0; i < totalChunks; i++)
+        for (int i = 0; i < totalUploads; i++)
         {
             string chunkPath = Path.Combine(uploadTempPath, $"{fileId}.part{i}");
             System.IO.File.Delete(chunkPath);
@@ -590,8 +589,8 @@ public abstract class AbstractFileController : ControllerBase
             {
                 string fileId = Request.Form["fileId"].ToString();
                 string fileName = Request.Form["fileName"].ToString();
-                string chunkIndexValue = Request.Form["chunkIndex"].ToString();
-                string totalChunksValue = Request.Form["totalChunks"].ToString();
+                string uploadIndexValue = Request.Form["uploadIndex"].ToString();
+                string totalUploadsValue = Request.Form["totalUploads"].ToString();
                 if (string.IsNullOrEmpty(fileId))
                 {
                     mRetVal.ErrorMessage = "'fileId' is required.";
@@ -602,19 +601,19 @@ public abstract class AbstractFileController : ControllerBase
                     mRetVal.ErrorMessage = "'fileName' is required.";
                     return Ok(mRetVal);
                 }
-                if (string.IsNullOrEmpty(chunkIndexValue))
+                if (string.IsNullOrEmpty(uploadIndexValue))
                 {
-                    mRetVal.ErrorMessage = "'chunkIndex' is required.  Even if uploading a single file then chunkIndex should be 0.";
+                    mRetVal.ErrorMessage = "'uploadIndex' is required.  Even if uploading a single file then chunkIndex should be 0.";
                     return Ok(mRetVal);
                 }                
-                if (string.IsNullOrEmpty(totalChunksValue))
+                if (string.IsNullOrEmpty(totalUploadsValue))
                 {
-                    mRetVal.ErrorMessage = "'totalChunks' is required.  Even if uploading a single file then totalChunks should be 1.";
+                    mRetVal.ErrorMessage = "'totalUploads' is required.  Even if uploading a single file then totalChunks should be 1.";
                     return Ok(mRetVal);
                 }
                 
-                int chunkIndex = Convert.ToInt32(chunkIndexValue);
-                int totalChunks = Convert.ToInt32(totalChunksValue);
+                int uploadIndex = Convert.ToInt32(uploadIndexValue);
+                int totalUploads = Convert.ToInt32(totalUploadsValue);
                 // Simulate an API failure for bad data
                 // if (chunkIndex == 2)
                 // {
@@ -646,7 +645,7 @@ public abstract class AbstractFileController : ControllerBase
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                     if (!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
 
-                    string mTempFilePath = Path.Combine(mUploadDirectory, $"{fileId}.part{chunkIndex}");
+                    string mTempFilePath = Path.Combine(mUploadDirectory, $"{fileId}.part{uploadIndex}");
                     // Save the chunk
                     if (formFile != null)
                     {
@@ -663,7 +662,7 @@ public abstract class AbstractFileController : ControllerBase
                     // Check if all chunks are uploaded
                     if (doMerge)
                     {
-                        await mergeFiles(fileId, fileName, totalChunks, mDirectoryProfile.Directory, mUploadDirectory);
+                        await mergeFiles(fileId, fileName, totalUploads, mDirectoryProfile.Directory, mUploadDirectory);
                         if (mDirectoryInfo.GetFiles().Count() == 0)
                         {
                             mDirectoryInfo.Delete();

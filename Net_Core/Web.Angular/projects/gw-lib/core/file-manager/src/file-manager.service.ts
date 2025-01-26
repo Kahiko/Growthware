@@ -147,7 +147,7 @@ export class FileManagerService implements OnInit {
     }
 
 	/**
-	 * Creates a FormData object for uploading a file.
+	 * Creates a FormData object for uploading a file or part of a file (chunk/slice).
 	 *
 	 * @param {IUploadFormData} parameters - The parameters to add to the FormData.
 	 * @returns {FormData} A FormData object containing all the given parameters.
@@ -162,9 +162,9 @@ export class FileManagerService implements OnInit {
 		if (parameters.formFile !== null && parameters.formFile !== undefined) {
 			mRetVal.append('formFile', parameters.formFile);
 		}
-        mRetVal.append('chunkIndex', parameters.uploadIndex.toString());
+        mRetVal.append('uploadIndex', parameters.uploadIndex.toString());
         mRetVal.append('selectedPath', this._SelectedPath);
-        mRetVal.append('totalChunks', parameters.totalUploads.toString());
+        mRetVal.append('totalUploads', parameters.totalUploads.toString());
 		return mRetVal;
 	}
 
