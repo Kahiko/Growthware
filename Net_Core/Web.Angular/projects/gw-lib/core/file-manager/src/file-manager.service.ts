@@ -8,7 +8,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { IFileInfoLight } from './interfaces/file-info-light.model';
-import { IMultiPartFileUploadParameters, MultiPartFileUploadParameters } from './interfaces/multi-part-file-upload-parameters.model';
+import { IUploadFormData, UploadFormData } from './interfaces/upload-form-data.model';
 import { IUploadResponse } from './interfaces/upload-response.model';
 import { IUploadStatus, UploadStatus } from './interfaces/upload-status.model';
 
@@ -97,7 +97,8 @@ export class FileManagerService implements OnInit {
 	 * @memberof FileManagerService
 	 */
 	private async _uploadToServer(action: string, doMerge: boolean, fileName: string, fileId: string, data: Blob, uploadIndex: number, totalUploads: number): Promise<IUploadResponse> {
-		const mFormData: FormData = this._uploadFormData(action, doMerge, data, fileId, fileName, uploadIndex, totalUploads);
+		const mFormDataParameters: IUploadFormData = new UploadFormData(action, doMerge, data, fileId, fileName, uploadIndex, totalUploads);
+		const mFormData: FormData = this._uploadFormData(mFormDataParameters);
 		return lastValueFrom(this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData));
 	}
 
@@ -148,26 +149,22 @@ export class FileManagerService implements OnInit {
 	/**
 	 * Creates a FormData object for uploading a file.
 	 *
-	 * @private
-	 * @param {string} action - The action to be performed
-	 * @param {string} fileName - The name of the file being uploaded
-	 * @param {string} completed - A string indicating if this is the last part of a multi-part upload.
-	 * @param {File | Blob | null} [data] - The file or blob to be uploaded
-	 * @returns {FormData} - The FormData object to be used in the upload request.
+	 * @param {IUploadFormData} parameters - The parameters to add to the FormData.
+	 * @returns {FormData} A FormData object containing all the given parameters.
 	 * @memberof FileManagerService
 	 */
-	private _uploadFormData(action: string, doMerge: boolean, formFile: Blob | null | undefined, fileId: string, fileName: string, chunkIndex: number, totalChunks: number): FormData {
+	private _uploadFormData(parameters: IUploadFormData): FormData {
 		const mRetVal = new FormData();
-        mRetVal.append('action', action);
-		mRetVal.append('doMerge', doMerge.toString());
-        mRetVal.append('fileId', fileId);
-        mRetVal.append('fileName', fileName);
-		if (formFile !== null && formFile !== undefined) {
-			mRetVal.append('formFile', formFile);
+        mRetVal.append('action', parameters.action);
+		mRetVal.append('doMerge', parameters.doMerge.toString());
+        mRetVal.append('fileId', parameters.fileId);
+        mRetVal.append('fileName', parameters.fileName);
+		if (parameters.formFile !== null && parameters.formFile !== undefined) {
+			mRetVal.append('formFile', parameters.formFile);
 		}
-        mRetVal.append('chunkIndex', chunkIndex.toString());
+        mRetVal.append('chunkIndex', parameters.uploadIndex.toString());
         mRetVal.append('selectedPath', this._SelectedPath);
-        mRetVal.append('totalChunks', totalChunks.toString());
+        mRetVal.append('totalChunks', parameters.totalUploads.toString());
 		return mRetVal;
 	}
 
@@ -176,7 +173,7 @@ export class FileManagerService implements OnInit {
 	 * to call the API with a "slice" of the file.
 	 *
 	 * @private
-	 * @param {IMultiPartFileUploadParameters} parameters
+	 * @param {IUploadFormData} parameters
 	 * @memberof FileManagerService
 	 */
     private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
@@ -214,11 +211,12 @@ export class FileManagerService implements OnInit {
 	 * @description Makes the final call to the API to merge together all the "chunks" or slices of the file that were uploaded.
 	 *
 	 * @private
-	 * @param {IMultiPartFileUploadParameters} parameters
+	 * @param {IUploadFormData} parameters
 	 * @memberof FileManagerService
 	 */
 	private _uploadLargeFileComplete(uploadStatus: IUploadStatus) {
-		const mFormData: FormData = this._uploadFormData(uploadStatus.id, true, null, uploadStatus.fileId, uploadStatus.fileName, uploadStatus.totalNumberOfUploads, uploadStatus.totalNumberOfUploads);
+		const mUploadFormData: IUploadFormData = new UploadFormData(uploadStatus.id, true, null, uploadStatus.fileId, uploadStatus.fileName, uploadStatus.totalNumberOfUploads, uploadStatus.totalNumberOfUploads);
+		const mFormData: FormData = this._uploadFormData(mUploadFormData);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				// update the file list
@@ -252,7 +250,8 @@ export class FileManagerService implements OnInit {
 	 */
 	private _uploadSmallFile(file: File, action: string) {
 		const mFileId = this._generateFileId(file);
-		const mFormData: FormData = this._uploadFormData(action, true, file, mFileId, file.name, 0, 1);
+		const mUploadFormData: IUploadFormData = new UploadFormData(action, true, file, mFileId, file.name, 0, 1);
+		const mFormData: FormData = this._uploadFormData(mUploadFormData);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				const mUploadStatus: IUploadStatus = new UploadStatus(action, mFileId, response.fileName, response.errorMessage, true, response.isSuccess, 1, 1);
