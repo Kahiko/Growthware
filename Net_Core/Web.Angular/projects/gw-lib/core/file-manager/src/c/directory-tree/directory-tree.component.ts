@@ -185,7 +185,7 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	 */
 	onMenuRenameClick(item: IDirectoryTree) {
 		console.log('item', item);
-		const mModalOptions: ModalOptions = new ModalOptions(this._FileManagerSvc.ModalId_Rename_Directory, 'Rename Directory', RenameDirectoryComponent, new WindowSize(84, 300));
+		const mModalOptions: ModalOptions = new ModalOptions(this._FileManagerSvc.MODAL_ID_RENAME_DIRECTORY, 'Rename Directory', RenameDirectoryComponent, new WindowSize(84, 300));
 		this._ModalSvc.open(mModalOptions);
 	}
 

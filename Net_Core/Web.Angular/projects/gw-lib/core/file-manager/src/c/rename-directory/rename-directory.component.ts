@@ -89,6 +89,6 @@ export class RenameDirectoryComponent implements OnInit {
 			this._LoggingSvc.toast('Directory was NOT renamed', 'Rename direcory', LogLevel.Error);
 			this._LoggingSvc.errorHandler(error, 'RenameDirectoryComponent', 'onRenameSubmit');
 		});
-		this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
+		this._ModalSvc.close(this._FileManagerSvc.MODAL_ID_RENAME_DIRECTORY);
 	}
 }

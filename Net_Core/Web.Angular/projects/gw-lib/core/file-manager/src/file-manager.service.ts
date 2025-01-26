@@ -8,7 +8,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { IFileInfoLight } from './interfaces/file-info-light.model';
-import { IUploadFormData, UploadFormData } from './interfaces/upload-form-data.model';
+import { IFormDataParameters, FormDataParameters } from './interfaces/form-data-parameters.model';
 import { IUploadResponse } from './interfaces/upload-response.model';
 import { IUploadStatus, UploadStatus } from './interfaces/upload-status.model';
 
@@ -32,8 +32,8 @@ export class FileManagerService implements OnInit {
 	private _MaxRetries = 3;
 	private _StartTime = new Date().getTime();
 
-	ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
-	ModalId_CreateDirectory: string = 'CreateDirectoryForm';
+	MODAL_ID_RENAME_DIRECTORY: string = 'DirectoryTreeComponent.onMenuRenameClick';
+	MODAL_ID_CREATE_DIRECTORY: string = 'CreateDirectoryForm';
 
 	public get selectedPath(): string {
 		return this._SelectedPath;
@@ -84,20 +84,13 @@ export class FileManagerService implements OnInit {
     }
 
 	/**
-	 * @description Uploads a chunk of a file. The chunk is the raw content of the file and is identified by its index.
-	 * @param {string} action Used to determine the upload directory and enforce security on the server
-	 * @param {boolean} doMerge If true, the API runs the merge logic.
-	 * @param {string} fileName The name of the file being uploaded.
-	 * @param {string} fileId A "unique" ID for a given file based on its name, size, and modified date.  See _generateFileId
-	 * @param {Blob} data The raw content of the file.
-	 * @param {number} uploadIndex The index of the upload.
-	 * @param {number} totalUploads The total number of uploads for the file.
-	 * @returns {Promise<IUploadResponse>}
+	 * @description Uploads a file or part of a file (chunk/slice) to the server.
+	 * @param {IFormDataParameters} formDataParameters - The parameters to add to the FormData.
+	 * @returns {Promise<IUploadResponse>} - The response from the API.
 	 * @memberof FileManagerService
 	 */
-	private async _uploadToServer(action: string, doMerge: boolean, fileName: string, fileId: string, data: Blob, uploadIndex: number, totalUploads: number): Promise<IUploadResponse> {
-		const mFormDataParameters: IUploadFormData = new UploadFormData(action, doMerge, data, fileId, fileName, uploadIndex, totalUploads);
-		const mFormData: FormData = this._uploadFormData(mFormDataParameters);
+	private async _uploadToServer(formDataParameters: IFormDataParameters): Promise<IUploadResponse> {
+		const mFormData: FormData = this._uploadFormData(formDataParameters);
 		return lastValueFrom(this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData));
 	}
 
@@ -120,7 +113,8 @@ export class FileManagerService implements OnInit {
         let attempt = 0;
         while (attempt < maxRetries) {
             try {
-				await this._uploadToServer(action, doMerge, fileName, fileId, chunk, chunkIndex, totalChunks).then((response: IUploadResponse) => {
+				const mFormDataParameters: IFormDataParameters = new FormDataParameters(action, doMerge, chunk, fileId, fileName, chunkIndex, totalChunks);
+				await this._uploadToServer(mFormDataParameters).then((response: IUploadResponse) => {
 					if (!response.isSuccess) {
 						// This is an error that can not be recovered because the error is more than likely
 						// related to code in this service. Missing data, etc.
@@ -148,11 +142,11 @@ export class FileManagerService implements OnInit {
 	/**
 	 * Creates a FormData object for uploading a file or part of a file (chunk/slice).
 	 *
-	 * @param {IUploadFormData} parameters - The parameters to add to the FormData.
+	 * @param {IFormDataParameters} parameters - The parameters to add to the FormData.
 	 * @returns {FormData} A FormData object containing all the given parameters.
 	 * @memberof FileManagerService
 	 */
-	private _uploadFormData(parameters: IUploadFormData): FormData {
+	private _uploadFormData(parameters: IFormDataParameters): FormData {
 		const mRetVal = new FormData();
         mRetVal.append('action', parameters.action);
 		mRetVal.append('doMerge', parameters.doMerge.toString());
@@ -172,7 +166,7 @@ export class FileManagerService implements OnInit {
 	 * to call the API with a "slice" of the file.
 	 *
 	 * @private
-	 * @param {IUploadFormData} parameters
+	 * @param {IFormDataParameters} parameters
 	 * @memberof FileManagerService
 	 */
     private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
@@ -210,12 +204,12 @@ export class FileManagerService implements OnInit {
 	 * @description Makes the final call to the API to merge together all the "chunks" or slices of the file that were uploaded.
 	 *
 	 * @private
-	 * @param {IUploadFormData} parameters
+	 * @param {IFormDataParameters} parameters
 	 * @memberof FileManagerService
 	 */
 	private _uploadLargeFileComplete(uploadStatus: IUploadStatus) {
-		const mUploadFormData: IUploadFormData = new UploadFormData(uploadStatus.id, true, null, uploadStatus.fileId, uploadStatus.fileName, uploadStatus.totalNumberOfUploads, uploadStatus.totalNumberOfUploads);
-		const mFormData: FormData = this._uploadFormData(mUploadFormData);
+		const mFormDataParameters: IFormDataParameters = new FormDataParameters(uploadStatus.id, true, null, uploadStatus.fileId, uploadStatus.fileName, uploadStatus.totalNumberOfUploads, uploadStatus.totalNumberOfUploads);
+		const mFormData: FormData = this._uploadFormData(mFormDataParameters);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				// update the file list
@@ -249,8 +243,8 @@ export class FileManagerService implements OnInit {
 	 */
 	private _uploadSmallFile(file: File, action: string) {
 		const mFileId = this._generateFileId(file);
-		const mUploadFormData: IUploadFormData = new UploadFormData(action, true, file, mFileId, file.name, 0, 1);
-		const mFormData: FormData = this._uploadFormData(mUploadFormData);
+		const mFormDataParameters: IFormDataParameters = new FormDataParameters(action, true, file, mFileId, file.name, 0, 1);
+		const mFormData: FormData = this._uploadFormData(mFormDataParameters);
 		this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
 			next: (response: IUploadResponse) => {
 				const mUploadStatus: IUploadStatus = new UploadStatus(action, mFileId, response.fileName, response.errorMessage, true, response.isSuccess, 1, 1);
