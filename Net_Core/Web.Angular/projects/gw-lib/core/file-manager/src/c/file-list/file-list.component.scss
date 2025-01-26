@@ -20,3 +20,28 @@ li {
 .background-highlight {
   background-color: #CCE8FF;
 }
+
+.selection-controls {
+  display: flex;        /* Use flexbox for layout */
+  align-items: center;  /* Center items vertically */
+  gap: 15px;            /* Space between controls */
+  margin-bottom: 20px;  /* Space below the controls */
+}
+
+.clear-filter, .select-all, .delete-button, .sorting-dropdown, .filter-input {
+  display: flex;        /* Use flexbox for each control */
+  align-items: center;  /* Center items vertically */
+}
+
+.checkbox-label {
+  display: flex;        /* Use flexbox for the label */
+  align-items: center;  /* Center checkbox and text vertically */
+  gap: 5px;             /* Space between checkbox and label text */
+  width: 100px;         /* Set a fixed width for the label to be just large enough to fit "unselect all" without moving the UI elements */
+}
+
+button {
+  min-width: 70px;      /* Set a smaller minimum width for buttons */
+  font-size: 12px;      /* Adjust font size */
+  padding: 4px 8px;     /* Reduce padding */
+}

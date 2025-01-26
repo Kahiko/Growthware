@@ -25,6 +25,7 @@
     - Now retries on unexpected errors for large files
     - Now notifies if coded data is incorrect to help with debugging and development
     - Optimized mergeFiles in the API
+- Added Select/Unselect All, Delete Selected, Sorting and Filtering to the file-list.component
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

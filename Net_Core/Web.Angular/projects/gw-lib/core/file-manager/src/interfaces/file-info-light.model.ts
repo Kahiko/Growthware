@@ -6,6 +6,7 @@ export interface IFileInfoLight {
   modified: Date;
   modifiedShort: string
   name: string;
+  selected: boolean;
   shortFileName: string;
   size: string;
 }

@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 // Library
-import { GWCommon } from '@growthware/common/services';
 import { ISecurityInfo } from '@growthware/core/security';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
@@ -29,10 +30,13 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 		ReactiveFormsModule,
 		// Angular Material
 		MatButtonModule,
+		MatFormFieldModule,
 		MatIconModule,
+		MatInputModule,
+		MatLabel,
 		MatMenuModule,
 		MatMenuTrigger,
-		MatTabsModule,
+		MatSelectModule,
 	],
 	templateUrl: './file-list.component.html',
 	styleUrls: ['./file-list.component.scss']
@@ -53,9 +57,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.filesChanged$());
 
 	id = input.required<string>();
+	files: IFileInfoLight[] = []; // Regular property to hold the files
+	filterTerm: string = ""; // Property to hold the filter term
 	frmRenameFile!: FormGroup;
-	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates 
+	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates
+	selectUnselectText: string = 'Select';
 	selectedFile!: IFileInfoLight;
+	selectedSortOption: string = ""; // Default to empty or the first option
 	showDelete: boolean = false;
 	showDownload: boolean = false;
 	showRename: boolean = false;
@@ -65,8 +73,16 @@ export class FileListComponent implements OnDestroy, OnInit {
 	// reference to the MatMenuTrigger in the DOM 
 	@ViewChild(MatMenuTrigger, { static: true }) private _MatMenuTrigger!: MatMenuTrigger;
 	@ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!: TemplateRef<unknown>;
+	@ViewChild('deleteSelected', { read: TemplateRef }) private _DeleteSelected!: TemplateRef<unknown>;
 	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!: TemplateRef<unknown>;
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
+
+	constructor() {
+		effect(() => {
+			this.files = this.data$();
+			this.selectedSortOption = ""; // Reset to default sorting option
+		});
+	}
 
 	ngOnDestroy(): void {
 		this._Action = '';
@@ -85,9 +101,41 @@ export class FileListComponent implements OnDestroy, OnInit {
 
 	}
 
+	get allSelected(): boolean {
+		const isChecked = this.data$().every(file => file.selected);
+		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
+		return isChecked;
+	}
+
+	get anySelected(): boolean {
+		return this.data$().some(file => file.selected);
+	}
+
 	get getControls() {
 		return this.frmRenameFile.controls;
 	}
+
+	onDeleteSelected() {
+		const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Selected Files', this._DeleteSelected, new WindowSize(84, 300));
+		mModalOptions.buttons.okButton.visible = true;
+		mModalOptions.buttons.okButton.text = 'Yes';
+		mModalOptions.buttons.okButton.callbackMethod = () => {
+			this.data$().forEach(file => {
+				if (file.selected) {
+					this._FileManagerSvc.deleteFile(this._Action, file.name);
+				}
+			});
+			this._ModalSvc.close(this._ModalId_Delete);
+		};
+		this._ModalSvc.open(mModalOptions);
+	}
+
+	onFilterChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const searchTerm = target.value ?? '';
+		const mFiles = [...this.data$()].filter(file => file.shortFileName.toLowerCase().includes(searchTerm.toLowerCase()));
+		this.files = mFiles; // Update the displayed files based on the filter
+	  }
 
 	/**
 	 * Get error message for a specific field.
@@ -119,6 +167,26 @@ export class FileListComponent implements OnDestroy, OnInit {
 		return mRetVal;
 	}
 
+	private convertSizeToBytes(size: string): number {
+		const sizeRegex = /^(\d+)([KMG]B?)$/i; // Regex to match size format
+		const match = size.match(sizeRegex);
+		if (!match) return 0; // Return 0 for invalid formats
+
+		const value = parseFloat(match[1]); // The numeric part
+		const unit = match[2].toUpperCase(); // The unit part (KB, MB, GB)
+
+		switch (unit) {
+			case 'KB':
+				return value * 1024; // Convert KB to bytes
+			case 'MB':
+				return value * 1024 * 1024; // Convert MB to bytes
+			case 'GB':
+				return value * 1024 * 1024 * 1024; // Convert GB to bytes
+			default:
+				return value; // Assume bytes if no unit is specified
+		}
+	}
+	
 	/**
 	 * Handle left click event on the file
 	 *
@@ -184,7 +252,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 		this._ModalSvc.open(mModalOptions);
 	}
 
-
 	/**
 	 * Handle "Properties" menu click event
 	 *
@@ -244,6 +311,39 @@ export class FileListComponent implements OnDestroy, OnInit {
 
 		// we open the menu
 		this._MatMenuTrigger.openMenu();
+	}
+
+	onSortChange(sortType: string) {
+		// const sortType = value;
+	  
+		if (!sortType) return;
+	  
+		switch (sortType) {
+		  case 'name-asc':
+			this.files.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
+			break;
+		  case 'name-desc':
+			this.files.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
+			break;
+		  case 'date-asc':
+			this.files.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+			break;
+		  case 'date-desc':
+			this.files.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+			break;
+		  case 'size-asc':
+			this.files.sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size));
+			break;
+		  case 'size-desc':
+			this.files.sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size));
+			break;
+		}
+	}
+
+	onTggleSelectAll(event: Event) {
+		const isChecked = (event.target as HTMLInputElement).checked;
+		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
+		this.data$().forEach(file => file.selected = isChecked);
 	}
 }
 
