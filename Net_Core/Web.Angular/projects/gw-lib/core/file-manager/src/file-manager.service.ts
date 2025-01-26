@@ -87,17 +87,17 @@ export class FileManagerService implements OnInit {
 	/**
 	 * @description Uploads a chunk of a file. The chunk is the raw content of the file and is identified by its index.
 	 * @param {string} action Used to determine the upload directory and enforce security on the server
-	 * @param {boolean} doMerge If true, the chunk is merged into an existing file. Otherwise, a new file is created.
+	 * @param {boolean} doMerge If true, the API runs the merge logic.
 	 * @param {string} fileName The name of the file being uploaded.
 	 * @param {string} fileId A "unique" ID for a given file based on its name, size, and modified date.  See _generateFileId
-	 * @param {Blob} chunk The raw content of the file.
-	 * @param {number} chunkIndex The index of the chunk.
-	 * @param {number} totalChunks The total number of chunks.
-	 * @returns {Promise<void>}
+	 * @param {Blob} data The raw content of the file.
+	 * @param {number} uploadIndex The index of the upload.
+	 * @param {number} totalUploads The total number of uploads for the file.
+	 * @returns {Promise<IUploadResponse>}
 	 * @memberof FileManagerService
 	 */
-	private async _uploadChunk(action: string, doMerge: boolean, fileName: string, fileId: string, chunk: Blob, chunkIndex: number, totalChunks: number): Promise<IUploadResponse> {
-		const mFormData: FormData = this._uploadFormData(action, doMerge, chunk, fileId, fileName, chunkIndex, totalChunks);
+	private async _uploadToServer(action: string, doMerge: boolean, fileName: string, fileId: string, data: Blob, uploadIndex: number, totalUploads: number): Promise<IUploadResponse> {
+		const mFormData: FormData = this._uploadFormData(action, doMerge, data, fileId, fileName, uploadIndex, totalUploads);
 		return lastValueFrom(this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData));
 	}
 
@@ -120,7 +120,7 @@ export class FileManagerService implements OnInit {
         let attempt = 0;
         while (attempt < maxRetries) {
             try {
-				await this._uploadChunk(action, doMerge, fileName, fileId, chunk, chunkIndex, totalChunks).then((response: IUploadResponse) => {
+				await this._uploadToServer(action, doMerge, fileName, fileId, chunk, chunkIndex, totalChunks).then((response: IUploadResponse) => {
 					if (!response.isSuccess) {
 						// This is an error that can not be recovered because the error is more than likely
 						// related to code in this service. Missing data, etc.
