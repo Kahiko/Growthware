@@ -78,6 +78,8 @@ export class FileListComponent implements OnDestroy, OnInit {
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
 
 	constructor() {
+		// make sure that the local files property is updated should the files change
+		// in the service
 		effect(() => {
 			this.files = this.data$();
 			this.selectedSortOption = ""; // Reset to default sorting option
@@ -101,12 +103,22 @@ export class FileListComponent implements OnDestroy, OnInit {
 
 	}
 
+	/**
+	 * Checks if all the files are selected, and if so, changes the text of the
+	 * select/unselect button to 'Unselect'. If not, changes the text to 'Select'.
+	 * @returns {boolean} true if all files are selected, false otherwise
+	 */
 	get allSelected(): boolean {
 		const isChecked = this.data$().every(file => file.selected);
 		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
 		return isChecked;
 	}
 
+	/**
+	 * Determines if any of the files are selected.
+	 *
+	 * @returns {boolean} true if any of the files are selected, false otherwise
+	 */
 	get anySelected(): boolean {
 		return this.data$().some(file => file.selected);
 	}
@@ -115,6 +127,11 @@ export class FileListComponent implements OnDestroy, OnInit {
 		return this.frmRenameFile.controls;
 	}
 
+	/**
+	 * Handles the "Delete Selected" button click event.
+	 *
+	 * @returns {void}
+	 */
 	onDeleteSelected() {
 		const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Selected Files', this._DeleteSelected, new WindowSize(84, 300));
 		mModalOptions.buttons.okButton.visible = true;
@@ -122,6 +139,11 @@ export class FileListComponent implements OnDestroy, OnInit {
 		mModalOptions.buttons.okButton.callbackMethod = () => {
 			this.data$().forEach(file => {
 				if (file.selected) {
+					// TODO: This is horrible for performance and should be changed
+					// by adding a batch delete in the file manager service
+					// so the getFiles is only triggered once after all the files
+					// have been deleted.  This will help prevent the signal 
+					// from updating excessively as ell.
 					this._FileManagerSvc.deleteFile(this._Action, file.name);
 				}
 			});
@@ -130,12 +152,19 @@ export class FileListComponent implements OnDestroy, OnInit {
 		this._ModalSvc.open(mModalOptions);
 	}
 
+	/**
+	 * Filter the files based on the search term changed.
+	 *
+	 * @param {Event} event The event from the input element.
+	 *
+	 * Updates the displayed files based on the filter.
+	 */
 	onFilterChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const searchTerm = target.value ?? '';
 		const mFiles = [...this.data$()].filter(file => file.shortFileName.toLowerCase().includes(searchTerm.toLowerCase()));
 		this.files = mFiles; // Update the displayed files based on the filter
-	  }
+	}
 
 	/**
 	 * Get error message for a specific field.
@@ -167,26 +196,50 @@ export class FileListComponent implements OnDestroy, OnInit {
 		return mRetVal;
 	}
 
+	/**
+	 * Converts a string representing a size in bytes, kilobytes, megabytes, or gigabytes
+	 * to a number of bytes.
+	 *
+	 * @param {string} size - a string representing a size in bytes, kilobytes, megabytes, or gigabytes
+	 * @return {number} the number of bytes
+	 */
 	private convertSizeToBytes(size: string): number {
-		const sizeRegex = /^(\d+)([KMG]B?)$/i; // Regex to match size format
-		const match = size.match(sizeRegex);
-		if (!match) return 0; // Return 0 for invalid formats
-
-		const value = parseFloat(match[1]); // The numeric part
-		const unit = match[2].toUpperCase(); // The unit part (KB, MB, GB)
-
-		switch (unit) {
-			case 'KB':
-				return value * 1024; // Convert KB to bytes
-			case 'MB':
-				return value * 1024 * 1024; // Convert MB to bytes
-			case 'GB':
-				return value * 1024 * 1024 * 1024; // Convert GB to bytes
-			default:
-				return value; // Assume bytes if no unit is specified
-		}
-	}
+		if (!size) return 0; // Handle empty or null input
 	
+		const mSplitSize = size.split(' ');    
+		if (mSplitSize.length < 2) return parseFloat(size) || 0; // If no unit, assume bytes
+		const mValue = parseFloat(mSplitSize[0]); // Extract the numeric part
+		const mUnit = mSplitSize[1].toUpperCase(); // Convert unit to uppercase
+		let mRetVal = 0;
+	
+		switch (mUnit) {
+			case 'B':
+			case 'BYTE':
+			case 'BYTES':
+				mRetVal = mValue;
+				break;
+			case 'KB':
+				mRetVal = mValue * 1024;
+				break;
+			case 'MB':
+				mRetVal = mValue * 1024 * 1024;
+				break;
+			case 'GB':
+				mRetVal = mValue * 1024 * 1024 * 1024;
+				break;
+			case 'TB':
+				mRetVal = mValue * 1024 * 1024 * 1024 * 1024;
+				break;
+			case 'PB':
+				mRetVal = mValue * 1024 * 1024 * 1024 * 1024 * 1024;
+				break;
+			default:
+				console.warn(`Unknown unit: ${mUnit}`); // Handle unexpected units
+				mRetVal = mValue; // Assume bytes if unknown unit
+		}
+		return Math.round(mRetVal); // Round to the nearest whole byte
+	}
+
 	/**
 	 * Handle left click event on the file
 	 *
@@ -313,33 +366,48 @@ export class FileListComponent implements OnDestroy, OnInit {
 		this._MatMenuTrigger.openMenu();
 	}
 
+	/**
+	 * Handle "Sort" option click event
+	 * @param {string} sortType - the type of sorting, one of
+	 * - 'name-asc': sort by name in ascending order
+	 * - 'name-desc': sort by name in descending order
+	 * - 'date-asc': sort by date in ascending order
+	 * - 'date-desc': sort by date in descending order
+	 * - 'size-asc': sort by size in ascending order
+	 * - 'size-desc': sort by size in descending order
+	 */
 	onSortChange(sortType: string) {
-		// const sortType = value;
-	  
 		if (!sortType) return;
+		const mSortArray = [...this.files];
 	  
 		switch (sortType) {
 		  case 'name-asc':
-			this.files.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
+			mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
 			break;
 		  case 'name-desc':
-			this.files.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
+			mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
 			break;
 		  case 'date-asc':
-			this.files.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+			mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
 			break;
 		  case 'date-desc':
-			this.files.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+			mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 			break;
 		  case 'size-asc':
-			this.files.sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size));
+			mSortArray.sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size));
 			break;
 		  case 'size-desc':
-			this.files.sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size));
+			mSortArray.sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size));
 			break;
 		}
+		this.files = mSortArray;
 	}
 
+	/**
+	 * Handle "Select All" checkbox click event
+	 * @param {Event} event - description of parameter
+	 * @return {void} description of return value
+	 */
 	onTggleSelectAll(event: Event) {
 		const isChecked = (event.target as HTMLInputElement).checked;
 		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
