@@ -8,6 +8,7 @@ export class LoaderService {
 	private _Counter = 0;
 	private _Delay = 700;
 	private _IsLoading = new BehaviorSubject<boolean>(false);
+	private _Paused: boolean = false;
 
 	public stateChanged$ = new EventEmitter<boolean>();
   
@@ -25,12 +26,30 @@ export class LoaderService {
 	}
 
 	/**
-   * Sets _IsLoading.next triggering loading$
-   *
-   * @param {boolean} isLoading
-   * @memberof LoaderService
-   */
+	 * Sets _IsLoading.next triggering loading$
+	 *
+	 * @param {boolean} isLoading
+	 * @memberof LoaderService
+	 */
 	public setLoading(isLoading: boolean): void {
-		this._IsLoading.next(isLoading);
+		if (!this._Paused) {
+			this._IsLoading.next(isLoading);
+		}
+	}
+
+	/**
+	 * Pauses the loading state, preventing any changes to the loading indicator.
+	 * Once paused, calls to setLoading will not trigger state changes.
+	 * Use resume() to allow state changes again.
+	 */
+	public pause(): void {
+		this._Paused = true;
+	}
+
+	/**
+	 * Resumes the loading state, allowing setLoading to trigger state changes again.
+	 */
+	public resume(): void {
+		this._Paused = false;
 	}
 }

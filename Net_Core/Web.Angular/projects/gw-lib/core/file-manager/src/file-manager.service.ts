@@ -5,6 +5,7 @@ import { lastValueFrom, Observable } from 'rxjs';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DirectoryTree, IDirectoryTree } from '@growthware/common/interfaces';
 import { GWCommon } from '@growthware/common/services';
+import { LoaderService } from '@growthware/core/loader';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { IFileInfoLight } from './interfaces/file-info-light.model';
@@ -53,6 +54,7 @@ export class FileManagerService implements OnInit {
 		private _ConfigSvc: ConfigurationService,
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
+		private _LoaderSvc: LoaderService,
 		private _LoggingSvc: LoggingService,
 	) {
 		this._Api = this._GWCommon.baseURL + 'GrowthwareFile/';
@@ -177,7 +179,8 @@ export class FileManagerService implements OnInit {
 	 * @memberof FileManagerService
 	 */
     private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
-        const fileId = this._generateFileId(file);
+        this._LoaderSvc.pause();
+		const fileId = this._generateFileId(file);
         const totalChunks = Math.ceil(file.size / this._ChunkSize);
         let uploadedChunks = 0;
         let chunkUploadPromises: Promise<void>[] = [];
@@ -204,6 +207,7 @@ export class FileManagerService implements OnInit {
         // Wait for any remaining chunks to complete
         await Promise.all(chunkUploadPromises);
         const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, totalChunks);
+		this._LoaderSvc.resume();
         onComplete(uploadStatus);
     }
 	
