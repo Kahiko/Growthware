@@ -81,6 +81,13 @@ export class FileManagerService implements OnInit {
      */
     private _generateFileId(file: File): string {
         return `${file.name}-${file.size}-${file.lastModified}`; // Simple unique identifier
+		// should we need to be more complex
+		// let mRetVal = crypto.randomUUID();
+		// for (let i = 0; i < 20; i++) {
+		// 	let id = crypto.randomUUID();
+		// 	console.log(id);
+		// }
+		// return mRetVal;
     }
 
 	/**
