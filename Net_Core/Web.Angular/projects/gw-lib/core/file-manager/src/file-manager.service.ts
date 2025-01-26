@@ -255,7 +255,6 @@ export class FileManagerService implements OnInit {
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'singleFileUpload');
-				// const mUploadStatus: IUploadStatus = new UploadStatus(action, file.name, error, true, false, 1, 1);
 			},
 			// complete: () => {}
 		});
