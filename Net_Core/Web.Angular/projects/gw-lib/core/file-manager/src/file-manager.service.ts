@@ -50,7 +50,6 @@ export class FileManagerService implements OnInit {
 	public readonly uploadStatusChanged$ = signal<IUploadStatus>({ id: '' } as unknown as IUploadStatus);
 
 	constructor(
-		// private _DataSvc: DataService,
 		private _ConfigSvc: ConfigurationService,
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
