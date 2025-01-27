@@ -12,8 +12,10 @@ public class FileInfoLight
     public DateTime Modified {get; set;}
     public string ModifiedShort {get; set;}
     public string Name {get; set;}
+    public bool Selected {get; set;}
     public string ShortFileName{get; set;}
     public string Size {get; set;}
+    public bool Visible {get; set;}
 
     public FileInfoLight(FileInfo fileInfo)
     {
@@ -29,6 +31,7 @@ public class FileInfoLight
         this.Modified = File.GetLastWriteTime(fileInfo.Directory.FullName + Path.DirectorySeparatorChar.ToString() + fileInfo.Name);
         this.ModifiedShort = this.Modified.ToString();
         this.Name = fileInfo.Name;
+        this.Selected = false;
         this.ShortFileName = mFilename.Remove(mFilename.Length - fileInfo.Extension.Length, fileInfo.Extension.Length);
         if (mBytes >= Math.Pow(mByteConversion, 3)) //GB Range
         {
@@ -46,5 +49,6 @@ public class FileInfoLight
         {
             this.Size = string.Concat(mBytes, " Bytes");
         }
+        this.Visible = true;
     }
 }
