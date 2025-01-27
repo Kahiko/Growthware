@@ -272,7 +272,51 @@ export class FileManagerService implements OnInit {
 			// complete: () => {}
 		});
 	}
+
+	/**
+	 * Converts a string representing a size in bytes, kilobytes, megabytes, or gigabytes
+	 * to a number of bytes.
+	 *
+	 * @param {string} size - a string representing a size in bytes, kilobytes, megabytes, or gigabytes
+	 * @return {number} the number of bytes
+	 */
+	public convertSizeToBytes(size: string): number {
+		if (!size) return 0; // Handle empty or null input
 	
+		const mSplitSize = size.split(' ');    
+		if (mSplitSize.length < 2) return parseFloat(size) || 0; // If no unit, assume bytes
+		const mValue = parseFloat(mSplitSize[0]); // Extract the numeric part
+		const mUnit = mSplitSize[1].toUpperCase(); // Convert unit to uppercase
+		let mRetVal = 0;
+	
+		switch (mUnit) {
+			case 'B':
+			case 'BYTE':
+			case 'BYTES':
+				mRetVal = mValue;
+				break;
+			case 'KB':
+				mRetVal = mValue * 1024;
+				break;
+			case 'MB':
+				mRetVal = mValue * 1024 * 1024;
+				break;
+			case 'GB':
+				mRetVal = mValue * 1024 * 1024 * 1024;
+				break;
+			case 'TB':
+				mRetVal = mValue * 1024 * 1024 * 1024 * 1024;
+				break;
+			case 'PB':
+				mRetVal = mValue * 1024 * 1024 * 1024 * 1024 * 1024;
+				break;
+			default:
+				console.warn(`Unknown unit: ${mUnit}`); // Handle unexpected units
+				mRetVal = mValue; // Assume bytes if unknown unit
+		}
+		return Math.round(mRetVal); // Round to the nearest whole byte
+	}
+
 	/**
 	 * @description Creates a directory in the current directory.
 	 *
