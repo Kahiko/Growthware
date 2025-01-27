@@ -137,13 +137,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 		mModalOptions.buttons.okButton.visible = true;
 		mModalOptions.buttons.okButton.text = 'Yes';
 		mModalOptions.buttons.okButton.callbackMethod = () => {
-			const mFileNames = new Array<string>();
-			this.data$().forEach(file => {
-				if (file.selected) {
-					mFileNames.push(file.name);
-				}
-			});
-			this._FileManagerSvc.deleteFiles(this._Action, mFileNames).then(() => {
+			this._FileManagerSvc.deleteFiles(this._Action).then(() => {
 				this._FileManagerSvc.getFiles(this._Action, this._FileManagerSvc.selectedPath);
 				this._LoggingSvc.toast('Files were deleted', 'Delete files', LogLevel.Success);
 			}).catch((error) => {

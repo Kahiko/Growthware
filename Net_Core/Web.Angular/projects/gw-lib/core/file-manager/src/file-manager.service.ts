@@ -549,20 +549,23 @@ export class FileManagerService implements OnInit {
 		});
 	}
 
-	public async deleteFiles(action: string, fileNames: Array<string>): Promise<boolean>
+	public async deleteFiles(action: string): Promise<boolean>
 	{
 		return new Promise((resolve, reject) => {
 			if (this._GWCommon.isNullOrEmpty(action)) {
 				throw new Error('action can not be blank!');
 			}
-			if (!fileNames || fileNames.length === 0) {
-				throw new Error('fileNames can not be blank or have no items!');
-			}
+			const mFileNames = new Array<string>();
+			this.filesChanged$().forEach(file => {
+				if (file.selected) {
+					mFileNames.push(file.name);
+				}
+			});
 			const mFormData = new FormData();
 			mFormData.append('action', action);
 			mFormData.append('selectedPath', this._SelectedPath);
 			// Append each filename separately (FormData does not support arrays directly)
-			fileNames.forEach((fileName) => {
+			mFileNames.forEach((fileName) => {
 			  mFormData.append('fileNames', fileName);
 			});
 			this._HttpClient.delete<boolean>(this._Api_DeleteFiles, { body: mFormData } ).subscribe({
