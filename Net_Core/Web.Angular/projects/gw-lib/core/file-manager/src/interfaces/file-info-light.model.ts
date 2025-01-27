@@ -9,4 +9,33 @@ export interface IFileInfoLight {
   selected: boolean;
   shortFileName: string;
   size: string;
+  visible: boolean;
+}
+
+export class FileInfoLight implements IFileInfoLight {
+  created: Date = new Date();
+  createdShort: string = '';
+  extension: string = '';
+  fullName: string = '';
+  modified: Date = new Date();
+  modifiedShort: string = '';
+  name: string = '';
+  selected: boolean = false;
+  shortFileName: string = '';
+  size: string = '';
+  visible: boolean = false;
+  
+  constructor(
+    created: Date,
+    createdShort: string,
+    extension: string,
+    fullName: string,
+    modified: Date,
+    modifiedShort: string,
+    name: string,
+    shortFileName: string,
+    size: string,
+  ) { 
+
+  }
 }
