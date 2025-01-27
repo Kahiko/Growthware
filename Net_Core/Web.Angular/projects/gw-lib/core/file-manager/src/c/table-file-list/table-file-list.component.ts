@@ -125,6 +125,11 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	ngAfterViewInit() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
+		this.sort.sortChange.subscribe(() => {
+			if (this.sort.active === 'size') {
+				this.dataSource.data = this.dataSource.data.sort(this.compareSize.bind(this));
+			}
+		});
 	}
 
 	applyFilter(event: Event) {
@@ -134,6 +139,13 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		if (this.dataSource.paginator) {
 			this.dataSource.paginator.firstPage();
 		}
+	}
+
+	// Custom sorting function for size
+	compareSize(a: IFileInfoLight, b: IFileInfoLight): number {
+		const sizeA = this._FileManagerSvc.convertSizeToBytes(a.size);
+		const sizeB = this._FileManagerSvc.convertSizeToBytes(b.size);
+		return sizeA - sizeB;
 	}
 
 	/**

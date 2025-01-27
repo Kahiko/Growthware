@@ -49,6 +49,7 @@
 - Fixed Avoid inexact read with 'System.IO.FileStream.Read(byte[], int, int)'
 - Fixed Upload was not setting startingByte and endingByte correctly in FileManagerService.uploadFile for the first call to multiPartFileUpload
 - Fixed CacheHelper where the item was not being removed from the MemoryCache collection in the changeCallback method
+- Fixed sorting in the TableFileListComponent, it was not sorting the size correctly
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
