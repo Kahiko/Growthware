@@ -91,7 +91,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		if (this._GWCommon.isNullOrUndefined(this.id)) {
 			this._LoggingSvc.toast('The id can not be blank!', 'File List Component', LogLevel.Error);
 		} else {
-			this.dataSource.data = this._FileManagerSvc.filesChanged$();
+			this.dataSource.data = this._FileManagerSvc.fileInfoList$();
 		}
 	}
 

@@ -54,7 +54,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
 
-	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.filesChanged$());
+	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.fileInfoList$());
 
 	id = input.required<string>();
 	files: IFileInfoLight[] = []; // Regular property to hold the files

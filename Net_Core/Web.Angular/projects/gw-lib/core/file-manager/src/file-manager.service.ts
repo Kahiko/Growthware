@@ -41,7 +41,7 @@ export class FileManagerService implements OnInit {
 		return this._SelectedPath;
 	}
 
-	public readonly filesChanged$ = signal<Array<IFileInfoLight>>([] as Array<IFileInfoLight>);
+	public readonly fileInfoList$ = signal<Array<IFileInfoLight>>([] as Array<IFileInfoLight>);
 
 	public directoriesChanged$ = signal<Array<IDirectoryTree>>([] as Array<IDirectoryTree>);
 
@@ -556,7 +556,7 @@ export class FileManagerService implements OnInit {
 				throw new Error('action can not be blank!');
 			}
 			const mFileNames = new Array<string>();
-			this.filesChanged$().forEach(file => {
+			this.fileInfoList$().forEach(file => {
 				if (file.selected) {
 					mFileNames.push(file.name);
 				}
@@ -685,7 +685,7 @@ export class FileManagerService implements OnInit {
 		this._SelectedPath = selectedPath;
 		this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
 			next: (response) => {
-				this.filesChanged$.set(response);
+				this.fileInfoList$.set(response);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
