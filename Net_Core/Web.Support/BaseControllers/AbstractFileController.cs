@@ -172,6 +172,73 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     /// <summary>
+    /// Deletes multiple files from the specified directory.
+    /// </summary>
+    /// <param name="action">The action to perform.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <param name="fileNames">The file names to delete.</param>
+    /// <returns>An ActionResult containing a bool indicating the success of the operation.</returns>
+    [HttpDelete("DeleteFiles")]
+    public ActionResult<bool> DeleteFiles()
+    {
+        IFormCollection mRequestForm = Request.Form;
+        string action = mRequestForm["action"];
+        string selectedPath = mRequestForm["selectedPath"];
+        List<string> fileNames = mRequestForm["fileNames"].ToList(); // FormData sends repeated keys as a collection
+        if (fileNames.Count == 0)
+        {
+            return BadRequest("File names list is empty.");
+        }
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayDelete)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            bool mDeletedAll = true;
+            foreach (string mFileName in fileNames)
+            {
+                bool mFileDeleted = false;
+                string mFullPath = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, selectedPath), mFileName);
+                if (System.IO.File.Exists(mFullPath))
+                {
+                    int mRetryCount = 0;
+                    int mMaxRetryCount = 10;
+                    while (!mFileDeleted && mRetryCount < mMaxRetryCount)
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(mFullPath);
+                            mFileDeleted = true;
+                        }
+                        catch (IOException e) when ((e.HResult & 0x0000FFFF) == 32)
+                        {
+                            mDeletedAll = false;
+                            m_Logger.Error($"Unable to delete file sharing violation for '{mFileName}'");
+                            return StatusCode(StatusCodes.Status409Conflict, "Unable to delete file sharing violation");
+                        }
+                        catch (IOException)
+                        {
+                            mDeletedAll = false;
+                            mRetryCount += 1;
+                            Thread.Sleep(100);
+                        }
+                    }
+                }
+                if (!mFileDeleted) 
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, String.Format("The file '{0}' does not exists", mFullPath));
+                }
+            }
+            if (mDeletedAll) 
+            {
+                return Ok(mDeletedAll);
+            }
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    /// <summary>
     /// Retrieves the content type of a file based on its full file name.
     /// </summary>
     /// <param name="fullFileName">The full file name of the file including the path.</param>
@@ -685,6 +752,5 @@ public abstract class AbstractFileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "File Upload Failed.");
         }
     }
-
 
 }

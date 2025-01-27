@@ -137,16 +137,19 @@ export class FileListComponent implements OnDestroy, OnInit {
 		mModalOptions.buttons.okButton.visible = true;
 		mModalOptions.buttons.okButton.text = 'Yes';
 		mModalOptions.buttons.okButton.callbackMethod = () => {
+			const mFileNames = new Array<string>();
 			this.data$().forEach(file => {
 				if (file.selected) {
-					// TODO: This is horrible for performance and should be changed
-					// by adding a batch delete in the file manager service
-					// so the getFiles is only triggered once after all the files
-					// have been deleted.  This will help prevent the signal 
-					// from updating excessively as ell.
-					this._FileManagerSvc.deleteFile(this._Action, file.name);
+					mFileNames.push(file.name);
 				}
 			});
+			this._FileManagerSvc.deleteFiles(this._Action, mFileNames).then(() => {
+				this._FileManagerSvc.getFiles(this._Action, this._FileManagerSvc.selectedPath);
+				this._LoggingSvc.toast('Files were deleted', 'Delete files', LogLevel.Success);
+			}).catch((error) => {
+				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onDeleteSelected');
+				this._LoggingSvc.toast('Was not able to delete the files', 'Delete files error', LogLevel.Error);
+			});			
 			this._ModalSvc.close(this._ModalId_Delete);
 		};
 		this._ModalSvc.open(mModalOptions);

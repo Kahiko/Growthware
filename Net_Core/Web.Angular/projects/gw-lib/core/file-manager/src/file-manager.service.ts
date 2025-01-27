@@ -24,6 +24,7 @@ export class FileManagerService implements OnInit {
 	private _Api_CreateDirectory: string = '';
 	private _Api_DeleteDirectory: string = '';
 	private _Api_DeleteFile: string = '';
+	private _Api_DeleteFiles: string = '';
 	private _Api_RenameDirectory: string = '';
 	private _Api_RenameFile: string = '';
 	private _Api_UploadFile: string = '';
@@ -64,6 +65,7 @@ export class FileManagerService implements OnInit {
 		this._Api_CreateDirectory = this._Api + 'CreateDirectory';
 		this._Api_DeleteDirectory = this._Api + 'DeleteDirectory';
 		this._Api_DeleteFile = this._Api + 'DeleteFile';
+		this._Api_DeleteFiles = this._Api + 'DeleteFiles';
 		this._Api_RenameDirectory = this._Api + 'RenameDirectory';
 		this._Api_RenameFile = this._Api + 'RenameFile';
 		this._Api_UploadFile = this._Api + 'UploadFile';
@@ -490,6 +492,36 @@ export class FileManagerService implements OnInit {
 				params: mQueryParameter,
 			};
 			this._HttpClient.delete<boolean>(this._Api_DeleteFile, mHttpOptions).subscribe({
+				next: (response: boolean) => {
+					this.getFiles(action, this._SelectedPath);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
+					reject(false);
+				},
+				complete: () => { }
+			});
+		});
+	}
+
+	public async deleteFiles(action: string, fileNames: Array<string>): Promise<boolean>
+	{
+		return new Promise((resolve, reject) => {
+			if (this._GWCommon.isNullOrEmpty(action)) {
+				throw new Error('action can not be blank!');
+			}
+			if (!fileNames || fileNames.length === 0) {
+				throw new Error('fileNames can not be blank or have no items!');
+			}
+			const mFormData = new FormData();
+			mFormData.append('action', action);
+			mFormData.append('selectedPath', this._SelectedPath);
+			// Append each filename separately (FormData does not support arrays directly)
+			fileNames.forEach((fileName) => {
+			  mFormData.append('fileNames', fileName);
+			});
+			this._HttpClient.delete<boolean>(this._Api_DeleteFiles, { body: mFormData } ).subscribe({
 				next: (response: boolean) => {
 					this.getFiles(action, this._SelectedPath);
 					resolve(response);
