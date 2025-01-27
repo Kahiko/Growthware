@@ -57,7 +57,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.fileInfoList$());
 
 	id = input.required<string>();
-	files: IFileInfoLight[] = []; // Regular property to hold the files
 	filterTerm: string = ""; // Property to hold the filter term
 	frmRenameFile!: FormGroup;
 	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates
@@ -76,15 +75,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 	@ViewChild('deleteSelected', { read: TemplateRef }) private _DeleteSelected!: TemplateRef<unknown>;
 	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!: TemplateRef<unknown>;
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
-
-	constructor() {
-		// make sure that the local files property is updated should the files change
-		// in the service
-		effect(() => {
-			this.files = this.data$();
-			this.selectedSortOption = ""; // Reset to default sorting option
-		});
-	}
 
 	ngOnDestroy(): void {
 		this._Action = '';
@@ -109,7 +99,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * @returns {boolean} true if all files are selected, false otherwise
 	 */
 	get allSelected(): boolean {
-		const isChecked = this.data$().every(file => file.selected);
+		const isChecked = this._FileManagerSvc.fileInfoList$().every(file => file.selected);
 		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
 		return isChecked;
 	}
@@ -120,7 +110,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * @returns {boolean} true if any of the files are selected, false otherwise
 	 */
 	get anySelected(): boolean {
-		return this.data$().some(file => file.selected);
+		return this._FileManagerSvc.fileInfoList$().some(file => file.selected);
 	}
 
 	get getControls() {
@@ -158,8 +148,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	onFilterChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const searchTerm = target.value ?? '';
-		const mFiles = [...this.data$()].filter(file => file.shortFileName.toLowerCase().includes(searchTerm.toLowerCase()));
-		this.files = mFiles; // Update the displayed files based on the filter
+		this._FileManagerSvc.filterFileInfoList(searchTerm);
 	}
 
 	/**
@@ -303,6 +292,8 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 */
 	onRightClick(event: MouseEvent, item: IFileInfoLight) {
 		this.selectedFile = item;
+		// uncomment the following line to unselect all the selected files when a file is right-clicked
+		// this._FileManagerSvc.setAllSelected(false);
 		// preventDefault avoids to show the visualization of the right-click menu of the browser
 		event.preventDefault();
 
@@ -329,30 +320,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * - 'size-desc': sort by size in descending order
 	 */
 	onSortChange(sortType: string) {
-		if (!sortType) return;
-		const mSortArray = [...this.files];
-	  
-		switch (sortType) {
-		  case 'name-asc':
-			mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
-			break;
-		  case 'name-desc':
-			mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
-			break;
-		  case 'date-asc':
-			mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
-			break;
-		  case 'date-desc':
-			mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-			break;
-		  case 'size-asc':
-			mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
-			break;
-		  case 'size-desc':
-			mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
-			break;
-		}
-		this.files = mSortArray;
+		this._FileManagerSvc.sortFileInfoList(sortType);
 	}
 
 	/**
@@ -360,10 +328,10 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * @param {Event} event - description of parameter
 	 * @return {void} description of return value
 	 */
-	onTggleSelectAll(event: Event) {
+	onToggleSelectAll(event: Event) {
 		const isChecked = (event.target as HTMLInputElement).checked;
 		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
-		this.data$().forEach(file => file.selected = isChecked);
+		this._FileManagerSvc.setAllSelected(isChecked);
 	}
 }
 

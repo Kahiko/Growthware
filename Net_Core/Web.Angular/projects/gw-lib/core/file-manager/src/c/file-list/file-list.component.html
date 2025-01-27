@@ -1,8 +1,8 @@
 <div class="selection-controls">
   <!-- Select/Unselect All Checkbox -->
   <div class="select-all">
-    <label class="checkbox-label">
-      <input type="checkbox" [checked]="allSelected" (change)="onTggleSelectAll($event)" class="select-all-checkbox" aria-label="Select or unselect all files" />
+    <label class="checkbox-label" style="width: 100px;"> <!-- set the width to keep the UI from shifting -->
+      <input type="checkbox" [checked]="allSelected" (change)="onToggleSelectAll($event)" class="select-all-checkbox" aria-label="Select or unselect all files" />
       {{selectUnselectText}} All
     </label>
   </div>
@@ -44,11 +44,13 @@
 
 <!-- Grid List -->
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
-  @for (item of files; track item.fullName; let rowIndex = $index) {
-    <li (click)="item.selected = !item.selected; onLeftClick(item)" (contextmenu)="onRightClick($event, item)" [ngClass]="{ 'background-highlight': selectedFile === item }">
-      <input type="checkbox" [(ngModel)]="item.selected" />
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">text_snippet</i>{{ item.shortFileName }}
-    </li>
+  @for (item of data$(); track item.fullName; let rowIndex = $index) {
+    @if (item.visible) {
+      <li (click)="item.selected = !item.selected; onLeftClick(item)" (contextmenu)="onRightClick($event, item)" [ngClass]="{ 'background-highlight': selectedFile === item }">
+        <input type="checkbox" [(ngModel)]="item.selected" />
+        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">text_snippet</i>{{ item.shortFileName }}
+      </li>
+    }
   }
 </ul>
 

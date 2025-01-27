@@ -77,14 +77,14 @@ export class FileManagerService implements OnInit {
 		});
 	}
 
-    /**
-     * @description Generates a "unique" ID for a given file based on its name, size, and modified date.
-     * @param {File} file - The file to generate the ID for
-     * @returns {string} - The generated ID
-     * @memberof FileManagerService
-     */
-    private _generateFileId(file: File): string {
-        return `${file.name}-${file.size}-${file.lastModified}`; // Simple unique identifier
+	/**
+	 * @description Generates a "unique" ID for a given file based on its name, size, and modified date.
+	 * @param {File} file - The file to generate the ID for
+	 * @returns {string} - The generated ID
+	 * @memberof FileManagerService
+	 */
+	private _generateFileId(file: File): string {
+		return `${file.name}-${file.size}-${file.lastModified}`; // Simple unique identifier
 		// should we need to be more complex
 		// let mRetVal = crypto.randomUUID();
 		// for (let i = 0; i < 20; i++) {
@@ -92,7 +92,7 @@ export class FileManagerService implements OnInit {
 		// 	console.log(id);
 		// }
 		// return mRetVal;
-    }
+	}
 
 	/**
 	 * @description Uploads a file or part of a file (chunk/slice) to the server.
@@ -120,10 +120,10 @@ export class FileManagerService implements OnInit {
 	 * @throws {Error} Throws an error if the maximum number of retries is reached.
 	 * @memberof FileManagerService
 	 */
-    private async _uploadChunkWithRetry(action: string, doMerge: boolean, fileId: string, chunk: Blob, fileName: string, chunkIndex: number, totalChunks: number, maxRetries: number) {
-        let attempt = 0;
-        while (attempt < maxRetries) {
-            try {
+	private async _uploadChunkWithRetry(action: string, doMerge: boolean, fileId: string, chunk: Blob, fileName: string, chunkIndex: number, totalChunks: number, maxRetries: number) {
+		let attempt = 0;
+		while (attempt < maxRetries) {
+			try {
 				const mFormDataParameters: IFormDataParameters = new FormDataParameters(action, doMerge, chunk, fileId, fileName, chunkIndex, totalChunks);
 				await this._uploadToServer(mFormDataParameters).then((response: IUploadResponse) => {
 					if (!response.isSuccess) {
@@ -137,18 +137,18 @@ export class FileManagerService implements OnInit {
 					throw new Error(error);
 				});
 				return; // Success, exit function
-            } catch (error: any) {
-                attempt++;
+			} catch (error: any) {
+				attempt++;
 				if (!this._GWCommon.isNullOrUndefined(error) && error.message !== null) {
 					console.error(`FileManagerService._uploadChunkWithRetry: Chunk ${chunkIndex} failed (Attempt ${attempt}/${maxRetries})`);
 				}
-                if (attempt >= maxRetries) {
+				if (attempt >= maxRetries) {
 					throw new Error(`FileManagerService._uploadChunkWithRetry: Upload failed after ${maxRetries} attempts for chunk ${chunkIndex}`);
 				}
-                this._GWCommon.sleep(1000 * attempt); // Exponential backoff
-            }
-        }
-    }
+				this._GWCommon.sleep(1000 * attempt); // Exponential backoff
+			}
+		}
+	}
 
 	/**
 	 * Creates a FormData object for uploading a file or part of a file (chunk/slice).
@@ -159,16 +159,16 @@ export class FileManagerService implements OnInit {
 	 */
 	private _uploadFormData(parameters: IFormDataParameters): FormData {
 		const mRetVal = new FormData();
-        mRetVal.append('action', parameters.action);
+		mRetVal.append('action', parameters.action);
 		mRetVal.append('doMerge', parameters.doMerge.toString());
-        mRetVal.append('fileId', parameters.fileId);
-        mRetVal.append('fileName', parameters.fileName);
+		mRetVal.append('fileId', parameters.fileId);
+		mRetVal.append('fileName', parameters.fileName);
 		if (parameters.formFile !== null && parameters.formFile !== undefined) {
 			mRetVal.append('formFile', parameters.formFile);
 		}
-        mRetVal.append('uploadIndex', parameters.uploadIndex.toString());
-        mRetVal.append('selectedPath', this._SelectedPath);
-        mRetVal.append('totalUploads', parameters.totalUploads.toString());
+		mRetVal.append('uploadIndex', parameters.uploadIndex.toString());
+		mRetVal.append('selectedPath', this._SelectedPath);
+		mRetVal.append('totalUploads', parameters.totalUploads.toString());
 		return mRetVal;
 	}
 
@@ -180,39 +180,39 @@ export class FileManagerService implements OnInit {
 	 * @param {IFormDataParameters} parameters
 	 * @memberof FileManagerService
 	 */
-    private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
-        this._LoaderSvc.pause();
+	private async _uploadLargeFile(action: string, doMerge: boolean, file: File, onProgress: (uploadStatus: IUploadStatus) => void, onComplete: (uploadStatus: IUploadStatus) => void) {
+		this._LoaderSvc.pause();
 		const fileId = this._generateFileId(file);
-        const totalChunks = Math.ceil(file.size / this._ChunkSize);
-        let uploadedChunks = 0;
-        let chunkUploadPromises: Promise<void>[] = [];
+		const totalChunks = Math.ceil(file.size / this._ChunkSize);
+		let uploadedChunks = 0;
+		let chunkUploadPromises: Promise<void>[] = [];
 
-        for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-            let start = chunkIndex * this._ChunkSize;
-            let end = Math.min(start + this._ChunkSize, file.size);
-            let chunk = file.slice(start, end);
+		for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+			let start = chunkIndex * this._ChunkSize;
+			let end = Math.min(start + this._ChunkSize, file.size);
+			let chunk = file.slice(start, end);
 
-            chunkUploadPromises.push(
-                this._uploadChunkWithRetry(action, doMerge, fileId, chunk, file.name, chunkIndex, totalChunks, this._MaxRetries).then(() => {
-                    uploadedChunks++;
-                    const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, chunkIndex);
-                    onProgress(uploadStatus);
-                })
-            );
-            // Control concurrency: Process only a limited number of chunks at a time
-            if (chunkUploadPromises.length >= this._Concurrency) {
-                await Promise.all(chunkUploadPromises);
-                chunkUploadPromises = []; // Reset after batch completes
-            }
-        }
+			chunkUploadPromises.push(
+				this._uploadChunkWithRetry(action, doMerge, fileId, chunk, file.name, chunkIndex, totalChunks, this._MaxRetries).then(() => {
+					uploadedChunks++;
+					const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, chunkIndex);
+					onProgress(uploadStatus);
+				})
+			);
+			// Control concurrency: Process only a limited number of chunks at a time
+			if (chunkUploadPromises.length >= this._Concurrency) {
+				await Promise.all(chunkUploadPromises);
+				chunkUploadPromises = []; // Reset after batch completes
+			}
+		}
 
-        // Wait for any remaining chunks to complete
-        await Promise.all(chunkUploadPromises);
-        const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, totalChunks);
+		// Wait for any remaining chunks to complete
+		await Promise.all(chunkUploadPromises);
+		const uploadStatus: IUploadStatus = new UploadStatus(action, fileId, file.name, '', false, true, totalChunks, totalChunks);
 		this._LoaderSvc.resume();
-        onComplete(uploadStatus);
-    }
-	
+		onComplete(uploadStatus);
+	}
+
 	/**
 	 * @description Makes the final call to the API to merge together all the "chunks" or slices of the file that were uploaded.
 	 *
@@ -282,13 +282,13 @@ export class FileManagerService implements OnInit {
 	 */
 	public convertSizeToBytes(size: string): number {
 		if (!size) return 0; // Handle empty or null input
-	
-		const mSplitSize = size.split(' ');    
+
+		const mSplitSize = size.split(' ');
 		if (mSplitSize.length < 2) return parseFloat(size) || 0; // If no unit, assume bytes
 		const mValue = parseFloat(mSplitSize[0]); // Extract the numeric part
 		const mUnit = mSplitSize[1].toUpperCase(); // Convert unit to uppercase
 		let mRetVal = 0;
-	
+
 		switch (mUnit) {
 			case 'B':
 			case 'BYTE':
@@ -384,7 +384,7 @@ export class FileManagerService implements OnInit {
 				};
 				this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
 					next: (response: boolean) => {
-						if(response === true) {
+						if (response === true) {
 							const mNewDirectoryArray = JSON.parse(JSON.stringify(this.directoriesChanged$()));
 							this._GWCommon.hierarchyRemoveItem(mNewDirectoryArray, selectedPath, 'relitivePath');
 							this.directoriesChanged$.update(() => mNewDirectoryArray);
@@ -396,9 +396,9 @@ export class FileManagerService implements OnInit {
 						this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
 						reject(false);
 					},
-				//complete: () => { }
+					//complete: () => { }
 				});
-			}			
+			}
 		});
 	}
 
@@ -432,12 +432,12 @@ export class FileManagerService implements OnInit {
 					this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
 					reject(false);
 				},
-			// complete: () => {}
+				// complete: () => {}
 			});
 		});
 	}
 
-	
+
 	/**
 	 * Refreshes the current directory and file list by retrieving the latest 
 	 * directories and files from the server based on the provided action.
@@ -462,7 +462,7 @@ export class FileManagerService implements OnInit {
 		const mOriginalDirectory = this.selectedDirectoryChanged$();
 		const mNewDirectory = JSON.parse(JSON.stringify(mOriginalDirectory));
 		return new Promise((resolve, reject) => {
-			if(mOriginalDirectory) {
+			if (mOriginalDirectory) {
 				const mQueryParameter: HttpParams = new HttpParams().set('action', action)
 					.set('selectedPath', mOriginalDirectory.relitivePath)
 					.set('newName', newName);
@@ -491,7 +491,7 @@ export class FileManagerService implements OnInit {
 					},
 					complete: () => { }
 				});
-			}			
+			}
 		});
 	}
 
@@ -504,10 +504,54 @@ export class FileManagerService implements OnInit {
 	public setSelectedDirectory(relitivePath: string): void {
 		const mDirectory = this._GWCommon.hierarchySearch(this.directoriesChanged$(), relitivePath, 'relitivePath') as IDirectoryTree;
 		// console.log('setSelectedDirectory.mDirectory', mDirectory);
-		if(mDirectory) {
+		if (mDirectory) {
 			this.selectedDirectoryChanged$.update(() => mDirectory);
 		} else {
 			this.selectedDirectoryChanged$.update(() => new DirectoryTree());
+		}
+	}
+
+	/**
+	 * Sorts the file information list based on the specified sort type.
+	 *
+	 * @param {string} sortType - The type of sorting to apply. Possible values are:
+	 * - 'name-asc': Sort by name in ascending order.
+	 * - 'name-desc': Sort by name in descending order.
+	 * - 'date-asc': Sort by creation date in ascending order.
+	 * - 'date-desc': Sort by creation date in descending order.
+	 * - 'size-asc': Sort by size in ascending order.
+	 * - 'size-desc': Sort by size in descending order.
+	 *
+	 * Updates the `fileInfoList$` observable with the sorted list.
+	 */
+	public sortFileInfoList(sortType: string): void {
+		if (!sortType) return;
+	  
+		switch (sortType) {
+		  case 'name-asc':
+			// mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => a.shortFileName.localeCompare(b.shortFileName)));
+			break;
+		  case 'name-desc':
+			// mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => b.shortFileName.localeCompare(a.shortFileName)));
+			break;
+		  case 'date-asc':
+			// mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()));
+			break;
+		  case 'date-desc':
+			// mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()));
+			break;
+		  case 'size-asc':
+			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size)));
+			break;
+		  case 'size-desc':
+			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size)));
+			break;
 		}
 	}
 
@@ -549,8 +593,7 @@ export class FileManagerService implements OnInit {
 		});
 	}
 
-	public async deleteFiles(action: string): Promise<boolean>
-	{
+	public async deleteFiles(action: string): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this._GWCommon.isNullOrEmpty(action)) {
 				throw new Error('action can not be blank!');
@@ -566,9 +609,9 @@ export class FileManagerService implements OnInit {
 			mFormData.append('selectedPath', this._SelectedPath);
 			// Append each filename separately (FormData does not support arrays directly)
 			mFileNames.forEach((fileName) => {
-			  mFormData.append('fileNames', fileName);
+				mFormData.append('fileNames', fileName);
 			});
-			this._HttpClient.delete<boolean>(this._Api_DeleteFiles, { body: mFormData } ).subscribe({
+			this._HttpClient.delete<boolean>(this._Api_DeleteFiles, { body: mFormData }).subscribe({
 				next: (response: boolean) => {
 					this.getFiles(action, this._SelectedPath);
 					resolve(response);
@@ -580,6 +623,22 @@ export class FileManagerService implements OnInit {
 				complete: () => { }
 			});
 		});
+	}
+
+	/**
+	 * Filter the files based on the search term changed.
+	 *
+	 * @param {string} searchTerm The search term to filter the files.
+	 *
+	 * Updates the displayed files based on the filter.
+	 */
+	public filterFileInfoList(searchTerm: string): void {
+		this.fileInfoList$.update(currentItems =>
+			currentItems.map(item => ({
+				...item,
+				visible: item.name.includes(searchTerm)
+			}))
+		);
 	}
 
 	/**
@@ -624,6 +683,16 @@ export class FileManagerService implements OnInit {
 				complete: () => { }
 			});
 		});
+	}
+
+	/**
+	 * Sets the selected state for all files in the fileInfoList.
+	 *
+	 * @param {boolean} isSelected - The state to set for the selection of all files. 
+	 * If true, marks all files as selected; if false, unmarks all files.
+	 */
+	public setAllSelected(isSelected: boolean): void {
+		this.fileInfoList$().forEach(file => file.selected = isSelected);
 	}
 
 	/**
@@ -691,9 +760,9 @@ export class FileManagerService implements OnInit {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
 			},
 			// complete: () => {}
-		});		
+		});
 	}
-	
+
 	/**
 	 * @description Calculates the total number of chuncks needed to upload a large file
 	 *
@@ -718,12 +787,12 @@ export class FileManagerService implements OnInit {
 		this._StartTime = new Date().getTime();
 		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size);
 		if (mTotalNumberOfUploads > 1) {
-			
+
 			this._uploadLargeFile(action, false, file, (uploadStatus) => {
 				this.uploadProgress(uploadStatus);
 			}, (uploadStatus) => {
 				// It is good practice to leave parameters unchanged
-				const mUploadStatus: IUploadStatus = {...uploadStatus};
+				const mUploadStatus: IUploadStatus = { ...uploadStatus };
 				mUploadStatus.completed = true;
 				mUploadStatus.uploadNumber = uploadStatus.totalNumberOfUploads;
 				this._uploadLargeFileComplete(mUploadStatus);
