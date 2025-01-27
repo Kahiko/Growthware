@@ -138,7 +138,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 		mModalOptions.buttons.okButton.text = 'Yes';
 		mModalOptions.buttons.okButton.callbackMethod = () => {
 			this._FileManagerSvc.deleteFiles(this._Action).then(() => {
-				this._FileManagerSvc.getFiles(this._Action, this._FileManagerSvc.selectedPath);
 				this._LoggingSvc.toast('Files were deleted', 'Delete files', LogLevel.Success);
 			}).catch((error) => {
 				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onDeleteSelected');
