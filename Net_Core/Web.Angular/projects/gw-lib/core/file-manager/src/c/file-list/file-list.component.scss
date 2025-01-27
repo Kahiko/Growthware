@@ -33,13 +33,6 @@ li {
   align-items: center;  /* Center items vertically */
 }
 
-.checkbox-label {
-  display: flex;        /* Use flexbox for the label */
-  align-items: center;  /* Center checkbox and text vertically */
-  gap: 5px;             /* Space between checkbox and label text */
-  width: 100px;         /* Set a fixed width for the label to be just large enough to fit "unselect all" without moving the UI elements */
-}
-
 button {
   min-width: 70px;      /* Set a smaller minimum width for buttons */
   font-size: 12px;      /* Adjust font size */
