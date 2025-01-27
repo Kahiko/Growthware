@@ -685,7 +685,7 @@ export class FileManagerService implements OnInit {
 		this._SelectedPath = selectedPath;
 		this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
 			next: (response) => {
-				this.filesChanged$.update(() => response);
+				this.filesChanged$.set(response);
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
