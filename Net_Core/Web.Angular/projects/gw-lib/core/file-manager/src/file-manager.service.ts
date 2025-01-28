@@ -787,7 +787,6 @@ export class FileManagerService implements OnInit {
 		this._StartTime = new Date().getTime();
 		const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size);
 		if (mTotalNumberOfUploads > 1) {
-
 			this._uploadLargeFile(action, false, file, (uploadStatus) => {
 				this.uploadProgress(uploadStatus);
 			}, (uploadStatus) => {
