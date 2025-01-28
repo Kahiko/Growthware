@@ -637,14 +637,14 @@ public abstract class AbstractFileController : ControllerBase
         }
         try
         {
-            string selectedPath = Request.Form["selectedPath"].ToString();
+            string mSelectedPath = Request.Form["selectedPath"].ToString();
             string mDoMergeValue = Request.Form["doMerge"].ToString();
             bool doMerge = false;
             if (!string.IsNullOrEmpty(mDoMergeValue)) 
             { 
                 doMerge = Convert.ToBoolean(mDoMergeValue); 
             } 
-            if (selectedPath.Contains(":"))
+            if (mSelectedPath.Contains(":"))
             {
                 mRetVal.ErrorMessage = "The current path parameter can not contain a colon.";
                 return Ok(mRetVal);
@@ -707,8 +707,9 @@ public abstract class AbstractFileController : ControllerBase
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
                 if (mDirectoryProfile != null)
                 {
-                    string mUploadDirectory = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, ""), this.m_TempUploadDirectory);
-                    // create the upload directory if one doest exist
+                    string mFinalDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
+                    string mUploadDirectory = Path.Combine(this.calculatePath(mFinalDirectory, mSelectedPath), this.m_TempUploadDirectory);
+                    // create the upload directory if   one doest exist
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                     if (!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
 
@@ -729,7 +730,7 @@ public abstract class AbstractFileController : ControllerBase
                     // Check if all chunks are uploaded
                     if (doMerge)
                     {
-                        await mergeFiles(fileId, fileName, totalUploads, mDirectoryProfile.Directory, mUploadDirectory);
+                        await mergeFiles(fileId, fileName, totalUploads, mFinalDirectory, mUploadDirectory);
                         if (mDirectoryInfo.GetFiles().Count() == 0)
                         {
                             mDirectoryInfo.Delete();
