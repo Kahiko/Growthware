@@ -306,11 +306,6 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		const visibleRows = this.dataSource.data.slice(startIndex, endIndex);
 		// Update the selected property of visible rows
 		visibleRows.forEach(row => row.selected = isChecked);
-		this._FileManagerSvc.fileInfoList$().forEach((fileInfo) => {
-			if (fileInfo.selected) {
-				console.log('onToggleSelectAll:', fileInfo.name);
-			}
-		});
 	}
 
 	/**
