@@ -1,33 +1,40 @@
-toolbar {
-    block-size: fit-content;
-    height: 2.5rem;
-    border: 1px solid whitesmoke;
-}
+$file-list-width: 750px;
+$directory-tree-width: 300px;
+$content-width: calc(#{$directory-tree-width} + #{$file-list-width});
 
-.container {
-    border-left: 1px solid whitesmoke;
-    border-right: 1px solid whitesmoke;
-    border-bottom: 1px solid whitesmoke;
-    margin-left: 0;
-    width: calc(100% - 2px);
-}
-
-button {
+.file-manager-container {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    border: none;
-}
+    flex-direction: column;
+    align-items: start; // Ensure toolbar matches content width
+    height: 100vh; // Full viewport height
 
-.directories {
-    display: inline-block;
-    border-right: 1px solid whitesmoke; 
-    width: 300px; 
-    overflow-y: scroll;
-    overflow-x: auto;
-}
+    .toolbar {
+        width: $content-width; // Match content width
+        height: 50px; // Fixed height
+        background: #f4f4f4;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        border-bottom: 1px solid #ddd;
+    }
 
-.fileList {
-    vertical-align: top;
-    display: inline-block;
+    .content {
+        display: grid;
+        grid-template-columns: $directory-tree-width auto; // Left fixed, right flexible
+        height: 100%; // Take remaining height
+        width: $content-width; // Use calculated width
+        overflow: hidden;
+    }
+
+    .directory-tree {
+        width: $directory-tree-width; // Fixed width
+        overflow: auto; // Scrollable both ways
+        border-right: 1px solid #ddd; // give a dividing "bar"
+    }
+
+    .file-list {
+        padding-top: 5px; // Keep the text in the mat-form-field of the search bar from being cut off
+        min-width: $file-list-width; // Fixed width
+        overflow: auto; // Scrollable both ways
+    }
 }
