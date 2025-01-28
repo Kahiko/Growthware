@@ -99,7 +99,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * @returns {boolean} true if all files are selected, false otherwise
 	 */
 	get allSelected(): boolean {
-		const isChecked = this._FileManagerSvc.fileInfoList$().every(file => file.selected);
+		const isChecked = this._FileManagerSvc.fileInfoList$().length > 0 && this._FileManagerSvc.fileInfoList$().every(file => file.selected);
 		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
 		return isChecked;
 	}
