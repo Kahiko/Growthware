@@ -1,6 +1,6 @@
-$file-list-width: 750px;
+$file-list-width: 800px;
 $directory-tree-width: 300px;
-$content-width: calc(#{$directory-tree-width} + #{$file-list-width});
+$content-width: calc(#{$directory-tree-width} - 16px + #{$file-list-width});
 
 .file-manager-container {
     display: flex;
