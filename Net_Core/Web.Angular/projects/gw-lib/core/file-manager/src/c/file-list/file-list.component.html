@@ -16,7 +16,7 @@
 
   <!-- Sorting Dropdown -->
   <div class="sorting-dropdown">
-    <mat-form-field appearance="outline" dense>
+    <mat-form-field appearance="outline" style="width: 300px;" dense>
       <mat-label>Select sorting option</mat-label>
       <mat-select [(value)]="selectedSortOption" (selectionChange)="onSortChange($event.value)" aria-label="Sort files by">
         <mat-option value="" disabled>Select an option</mat-option>
