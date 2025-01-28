@@ -707,22 +707,23 @@ public abstract class AbstractFileController : ControllerBase
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
                 if (mDirectoryProfile != null)
                 {
-                    string mFinalDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
-                    string mUploadDirectory = Path.Combine(this.calculatePath(mFinalDirectory, mSelectedPath), this.m_TempUploadDirectory);
+                    string mBaseDirectory = mDirectoryProfile.Directory;
+                    string mFinalDirectory = this.calculatePath(mBaseDirectory, mSelectedPath);
+                    string mUploadDirectory = Path.Combine(this.calculatePath(mBaseDirectory, mSelectedPath), this.m_TempUploadDirectory);
                     // create the upload directory if   one doest exist
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                     if (!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
 
-                    string mTempFilePath = Path.Combine(mUploadDirectory, $"{fileId}.part{uploadIndex}");
+                    string mUploadPathAndFile = Path.Combine(mUploadDirectory, $"{fileId}.part{uploadIndex}");
                     // Save the chunk
                     if (formFile != null)
                     {
                         // Delete the chunk if it already exists
-                        if (System.IO.File.Exists(mTempFilePath)) 
+                        if (System.IO.File.Exists(mUploadPathAndFile)) 
                         {
-                            System.IO.File.Delete(mTempFilePath);
+                            System.IO.File.Delete(mUploadPathAndFile);
                         }
-                        using (var stream = new FileStream(mTempFilePath, FileMode.Create, FileAccess.Write))
+                        using (var stream = new FileStream(mUploadPathAndFile, FileMode.Create, FileAccess.Write))
                         {
                             await formFile.CopyToAsync(stream);
                         }
