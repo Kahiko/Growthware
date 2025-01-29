@@ -636,7 +636,7 @@ export class FileManagerService implements OnInit {
 		this.fileInfoList$.update(currentItems =>
 			currentItems.map(item => ({
 				...item,
-				visible: item.name.includes(searchTerm)
+				visible: item.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
 			}))
 		);
 	}

@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, computed, effect, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -39,9 +40,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _Action = '';
+	private _FilterSubject = new Subject<string>();
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
+	private _Subscription: Subscription = new Subscription();
 
 	dataSource = new MatTableDataSource<IFileInfoLight>([]);
 	// displayedColumns pulled from IFileInfoLight Note: order here effects the order in the table
@@ -86,6 +89,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 
 	ngOnDestroy(): void {
 		this._Action = '';
+		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -103,6 +107,15 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		} else {
 			this.dataSource.data = this._FileManagerSvc.fileInfoList$();
 		}
+		this._Subscription.add(
+			this._FilterSubject.pipe(
+				debounceTime(300),
+				switchMap(filterValue => {
+					this.applyFilter(filterValue);
+					return [];
+				})
+			).subscribe()
+		);
 	}
 
 	/**
@@ -160,15 +173,31 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	ngAfterViewInit() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
-		this.sort.sortChange.subscribe(() => {
-			if (this.sort.active === 'size') {
-				this.dataSource.data = this.dataSource.data.sort(this.compareSize.bind(this));
-			}
-		});
+		this._Subscription.add(
+			this.sort.sortChange.subscribe(() => {
+				if (this.sort.active === 'size') {
+					this.dataSource.data = this.dataSource.data.sort(this.compareSize.bind(this));
+				}
+			})
+		);
+		this._Subscription.add(
+			this.paginator.page.subscribe(() => {
+				this.dataSource.data.forEach(row => {
+					row.selected = false;
+				});
+			})
+		);
 	}
 
-	applyFilter(event: Event) {
-		const filterValue = (event.target as HTMLInputElement).value;
+	/**
+	 * Applies a filter to the data source based on the provided filter value.
+	 *
+	 * @param {string} filterValue - The value used to filter the data. It is trimmed
+	 * and converted to lowercase before being applied.
+	 *
+	 * Resets the paginator to the first page if it exists.
+	 */
+	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 
 		if (this.dataSource.paginator) {
@@ -202,6 +231,18 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 			this._ModalSvc.close(this._ModalId_Delete);
 		};
 		this._ModalSvc.open(mModalOptions);
+	}
+
+	/**
+	 * Filter the files based on the search term changed.
+	 *
+	 * @param {Event} event The event from the input element.
+	 *
+	 * Updates the displayed files based on the filter.
+	 */
+	onFilterChange(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this._FilterSubject.next(filterValue);
 	}
 
 	/**
@@ -267,6 +308,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		};
 		this._ModalSvc.open(mModalOptions);
 	}
+	
 	/**
 	 * Method called when the user click with the right button
 	 * @param event MouseEvent, it contains the coordinates

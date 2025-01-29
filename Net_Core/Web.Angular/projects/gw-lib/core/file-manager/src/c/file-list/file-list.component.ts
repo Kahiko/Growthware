@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
+import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
@@ -50,9 +51,11 @@ export class FileListComponent implements OnDestroy, OnInit {
 	private _SecuritySvc = inject(SecurityService);
 
 	private _Action: string = '';
+	private _FilterSubject = new Subject<string>();
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
+	private _Subscription: Subscription = new Subscription();
 
 	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.fileInfoList$());
 
@@ -78,6 +81,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 
 	ngOnDestroy(): void {
 		this._Action = '';
+		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -90,7 +94,18 @@ export class FileListComponent implements OnDestroy, OnInit {
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
 		});
-
+		this._Subscription.add(
+			this._FilterSubject.pipe(
+				debounceTime(300),
+				switchMap(filterValue => {
+					this.applyFilter(filterValue);
+					return [];
+				})
+			).subscribe()
+		);
+	}
+	applyFilter(filterValue: any) {
+		this._FileManagerSvc.filterFileInfoList(filterValue);
 	}
 
 	/**
@@ -148,7 +163,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	onFilterChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const searchTerm = target.value ?? '';
-		this._FileManagerSvc.filterFileInfoList(searchTerm);
+		this._FilterSubject.next(searchTerm);
 	}
 
 	/**
