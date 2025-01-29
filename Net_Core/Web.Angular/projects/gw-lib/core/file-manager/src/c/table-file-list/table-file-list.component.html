@@ -7,9 +7,12 @@
       </button>
     </div>
     <div>
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="onFilterChange($event)" placeholder="Ex. 04" #input>
+      <mat-form-field appearance="outline" dense style="padding-right: 20px;">
+        <mat-label>Search files...</mat-label>
+        <input matInput type="text" [(ngModel)]="filterTerm" (input)="onFilterChange($event)" aria-label="Search files">
+        <button mat-icon-button matSuffix (click)="filterTerm = ''; onFilterChange($event)">
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-form-field>
     </div>
   </div>
@@ -59,7 +62,7 @@
   
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterTerm}}"</td>
       </tr>
     </table>
   

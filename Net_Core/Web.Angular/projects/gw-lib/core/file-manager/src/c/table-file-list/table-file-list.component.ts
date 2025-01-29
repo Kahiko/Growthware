@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -17,7 +19,6 @@ import { ISecurityInfo, SecurityService } from '@growthware/core/security';
 // Feature
 import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 import { FileManagerService } from '../../file-manager.service';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
 	selector: 'gw-core-table-file-list',
@@ -28,6 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
 		
 		MatButtonModule,
 		MatFormFieldModule,
+		MatIconModule,
 		MatInputModule,
 		MatMenuModule,
 		MatMenuTrigger,
@@ -56,6 +58,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		'size'
 	];
 	id: string = '';
+	filterTerm: string = '';
 	frmRenameFile!: FormGroup;
 	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates 
 	selectedFile!: IFileInfoLight;
@@ -198,7 +201,11 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	 * Resets the paginator to the first page if it exists.
 	 */
 	applyFilter(filterValue: string) {
-		this.dataSource.filter = filterValue.trim().toLowerCase();
+		let mFilterValue = '';
+		if (!this._GWCommon.isNullOrUndefined(filterValue) && !this._GWCommon.isNullOrEmpty(filterValue)) {
+			mFilterValue = filterValue;
+		}
+		this.dataSource.filter = mFilterValue.trim().toLowerCase();
 
 		if (this.dataSource.paginator) {
 			this.dataSource.paginator.firstPage();
