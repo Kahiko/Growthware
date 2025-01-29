@@ -59,8 +59,8 @@ public abstract class ADatabaseTable : IDatabaseTable
     // The StringBuilder should be cleared after every use!
     static StringBuilder m_StringBuilder = new();
 
-    // I don't think this is going to work well it sort of opens the code up
-    // for massive errors, it this isn't set correctly in the deriving class the an
+    //   I don't think this is going to work well it sort of opens the code up
+    // for massive errors, if this isn't set correctly in the deriving class then an
     // unexpected result will occur.  I've even seen where it has been set but the incorrect
     // value is being return from the property TableName.
     //   OK this happens when a collection of the objects are pulled from
