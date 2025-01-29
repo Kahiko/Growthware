@@ -408,15 +408,17 @@ export class GWCommon {
   }
 
   /**
-	 * Determins if the str is null or empty (ie length === 0)
+	 * Determines if the input string is null, undefined, empty, or just whitespace
 	 *
-	 * @static
-	 * @param {string} str
-	 * @return {*}
+	 * @param {string} str - the input string to check
+	 * @return {boolean} true if the input string is null, undefined, empty, or just whitespace, false otherwise
 	 * @memberof GWCommon
 	 */
   public isNullOrEmpty(str: string): boolean {
-    if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
+    if (this.isNullOrUndefined(str)) {
+      return true;
+    }
+    if (0 === str.length || !str || /^\s*$/.test(str)) {
       return true;
     }
     return false;
