@@ -32,90 +32,90 @@ public class DBColumnName : Attribute // [DBColumnName("The_Column_Name")]
 public abstract class ADatabaseTable : IDatabaseTable
 {
 
-    #region Private Fields
+#region Private Fields
 
-        private bool m_IsSetDefaultSystemDateTime = false;
+    private bool m_IsSetDefaultSystemDateTime = false;
 
-        private DateTime m_DefaultSystemDateTime;
+    private DateTime m_DefaultSystemDateTime;
 
-        private const string m_DeleteStatementTemplate = "DELETE FROM {0} WHERE [{1}] = {2};";
+    private const string m_DeleteStatementTemplate = "DELETE FROM {0} WHERE [{1}] = {2};";
 
-        private bool m_DisposedValue;
+    private bool m_DisposedValue;
 
-        protected string m_ForeignKeyName = string.Empty;
+    protected string m_ForeignKeyName = string.Empty;
 
-        protected bool m_IsForeignKeyNumeric = true;
+    protected bool m_IsForeignKeyNumeric = true;
 
-        protected static HashSet<Type> m_NumTypes = new HashSet<Type>
-            {
-                typeof(int),  typeof(double),  typeof(decimal),
-                typeof(long), typeof(short),   typeof(sbyte),
-                typeof(byte), typeof(ulong),   typeof(ushort),
-                typeof(uint), typeof(float)// ,   typeof(BigInteger)
-            };
+    protected static HashSet<Type> m_NumTypes = new HashSet<Type>
+    {
+        typeof(int),  typeof(double),  typeof(decimal),
+        typeof(long), typeof(short),   typeof(sbyte),
+        typeof(byte), typeof(ulong),   typeof(ushort),
+        typeof(uint), typeof(float)// ,   typeof(BigInteger)
+    };
 
-        protected PropertyInfo[] m_PropertyInfoArray = null;
-        
-        // The StringBuilder should be cleared after every use!
-        static StringBuilder m_StringBuilder = new();
+    protected PropertyInfo[] m_PropertyInfoArray = null;
 
-        // I don't think this is going to work well it sort of opens the code up
-        // for massive errors, it this isn't set correctly in the deriving class the an
-        // unexpected result will occur.  I've even seen where it has been set but the incorrect
-        // value is being return from the property TableName.
-        //   OK this happens when a collection of the objects are pulled from
-        // cache the constructurer is not being called in the process so the SetupClass()
-        // never gets callled make the m_TableName return something from a previous value
-        protected static string m_TableName = string.Empty;
-    #endregion
+    // The StringBuilder should be cleared after every use!
+    static StringBuilder m_StringBuilder = new();
 
-    #region Public Properties
-        // Default System DateTime of 1/1/1753 12:00:00 AM
-        [DBIgnoreProperty]
-        public DateTime DefaultSystemDateTime
+    // I don't think this is going to work well it sort of opens the code up
+    // for massive errors, it this isn't set correctly in the deriving class the an
+    // unexpected result will occur.  I've even seen where it has been set but the incorrect
+    // value is being return from the property TableName.
+    //   OK this happens when a collection of the objects are pulled from
+    // cache the constructurer is not being called in the process so the SetupClass()
+    // never gets callled make the m_TableName return something from a previous value
+    protected static string m_TableName = string.Empty;
+#endregion
+
+#region Public Properties
+    // Default System DateTime of 1/1/1753 12:00:00 AM
+    [DBIgnoreProperty]
+    public DateTime DefaultSystemDateTime
+    {
+        get
         {
-            get 
-            { 
-                if (!m_IsSetDefaultSystemDateTime)
-                {
-                    m_IsSetDefaultSystemDateTime = true;
-                    m_DefaultSystemDateTime = new(1753, 1, 1, 0, 0, 0); // 1/1/1753 12:00:00 AM
-                }
-                return (DateTime)m_DefaultSystemDateTime; 
-            }
-        }
-
-        // The name of the foreign key used when performing bulk insert.
-        [DBIgnoreProperty]
-        public string ForeignKeyName
-        {
-            get {return m_ForeignKeyName;}        
-        }
-
-        // Whether the foreign key is numeric only used in bulk inserts
-        [DBIgnoreProperty]
-        public bool IsForeignKeyNumeric
-        {
-            get
+            if (!m_IsSetDefaultSystemDateTime)
             {
-                return m_IsForeignKeyNumeric;
+                m_IsSetDefaultSystemDateTime = true;
+                m_DefaultSystemDateTime = new(1753, 1, 1, 0, 0, 0); // 1/1/1753 12:00:00 AM
             }
+            return (DateTime)m_DefaultSystemDateTime;
         }
+    }
 
-        // The name of the database table
-        [DBIgnoreProperty]
-        public string TableName
-        { 
-            get
-            {
-                if (string.IsNullOrWhiteSpace(m_TableName))
-                {
-                    throw new InvalidOperationException($"The deriving class must set the m_TableName field.");
-                }
-                return m_TableName;
-            }
+    // The name of the foreign key used when performing bulk insert.
+    [DBIgnoreProperty]
+    public string ForeignKeyName
+    {
+        get { return m_ForeignKeyName; }
+    }
+
+    // Whether the foreign key is numeric only used in bulk inserts
+    [DBIgnoreProperty]
+    public bool IsForeignKeyNumeric
+    {
+        get
+        {
+            return m_IsForeignKeyNumeric;
         }
-    #endregion
+    }
+
+    // The name of the database table
+    [DBIgnoreProperty]
+    public string TableName
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(m_TableName))
+            {
+                throw new InvalidOperationException($"The deriving class must set the m_TableName field.");
+            }
+            return m_TableName;
+        }
+    }
+#endregion
 
     /// <summary>
     /// Implements Dispose
@@ -180,7 +180,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         string mWhereClause = $"WHERE [{keyColumn}] = @{keyColumn}";
         if (!useBrackets)
-        { 
+        {
             mWhereClause = handleBrackets(mWhereClause, useBrackets);
         }
         string mRetVal = $"DELETE FROM {m_TableName} {mWhereClause};";
@@ -200,9 +200,9 @@ public abstract class ADatabaseTable : IDatabaseTable
         if (string.IsNullOrEmpty(keyColumn))
         {
             throw new ArgumentException("keyColumn cannot be null or empty", nameof(keyColumn));
-        }        
+        }
         string mKeyValue = GetPropertyValue<T>(keyColumn);
-        if (string.IsNullOrWhiteSpace(mKeyValue)) 
+        if (string.IsNullOrWhiteSpace(mKeyValue))
         {
             throw new InvalidOperationException($"The keyColumn {keyColumn} has no value and cannot be deleted.");
         }
@@ -220,7 +220,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         string mRetVal = string.Format(m_DeleteStatementTemplate, m_TableName, keyColumn, keyValue);
         if (!useBrackets)
-        { 
+        {
             mRetVal = handleBrackets(mRetVal, useBrackets);
         }
         return mRetVal;
@@ -285,7 +285,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     public static string GenerateInsertWithParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable
     {
-        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where((propertyInfo) => 
+        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where((propertyInfo) =>
             (includePrimaryKey || !propertyInfo.IsDefined(typeof(DBPrimaryKey), false))
         ).ToArray();
         string mColumnNames = getColumnNames<T>(mPropertiesArray, useBrackets);
@@ -308,7 +308,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(includePrimaryKey);
         string mColumnNames = getColumnNames<T>(mPropertiesArray, useBrackets);
-        foreach(PropertyInfo mPropertyItem in mPropertiesArray)
+        foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
             var value = mPropertyItem.GetValue(this, null);
             m_StringBuilder.Append(formatValue(value) + " ,");
@@ -326,13 +326,13 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     public static string GenerateUpdateWithParameters<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
     {
-        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where(propertyInfo => 
+        PropertyInfo[] mPropertiesArray = getPropertiesFromType<T>().Where(propertyInfo =>
             !propertyInfo.IsDefined(typeof(DBPrimaryKey), false)
         ).ToArray();
         var mSetClauses = string.Join(", ", mPropertiesArray.Select(p => $"[{getColumnName(p)}] = @{getColumnName(p)}"));
-        if (!useBrackets) 
-        { 
-            mSetClauses = handleBrackets(mSetClauses, useBrackets); 
+        if (!useBrackets)
+        {
+            mSetClauses = handleBrackets(mSetClauses, useBrackets);
         }
         return $"UPDATE {m_TableName} SET {mSetClauses} WHERE {keyColumn} = @{keyColumn};";
     }
@@ -347,7 +347,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     public string GenerateUpdateWithValues<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
     {
         string mKeyValue = GetPropertyValue<T>(keyColumn);
-        if (string.IsNullOrWhiteSpace(mKeyValue)) 
+        if (string.IsNullOrWhiteSpace(mKeyValue))
         {
             throw new InvalidOperationException($"The keyColumn {keyColumn} has no value and cannot be updated.");
         }
@@ -367,10 +367,11 @@ public abstract class ADatabaseTable : IDatabaseTable
         m_StringBuilder.Append($"UPDATE {m_TableName} SET ");
         foreach (PropertyInfo mPropertyItem in getPropertiesFromField<T>(false))
         {
-            if (useBrackets) 
+            if (useBrackets)
             {
                 m_StringBuilder.Append($"[{getColumnName(mPropertyItem)}] = {formatValue(mPropertyItem.GetValue(this))}, ");
-            } else 
+            }
+            else
             {
                 m_StringBuilder.Append($"{getColumnName(mPropertyItem)} = {formatValue(mPropertyItem.GetValue(this))}, ");
             }
@@ -390,7 +391,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <remarks>
     ///     Integer or int values not equal to 0 are considered true
     /// </remarks>
-    #pragma warning disable CA1822 // Mark members as static
+#pragma warning disable CA1822 // Mark members as static
     protected Boolean GetBool(DataRow dataRow, String columnName)
     {
         /*
@@ -398,7 +399,7 @@ public abstract class ADatabaseTable : IDatabaseTable
          * reading it in the deriving class (eg. base.GetBool(dataRow, columnName))
          * it is clear that the code resides in the abstract class.
          */
-        if (string.IsNullOrEmpty(columnName)) 
+        if (string.IsNullOrEmpty(columnName))
         {
             throw new ArgumentNullException(nameof(columnName), "columnName cannot be a null reference (Nothing in Visual Basic) or empty!");
         }
@@ -420,7 +421,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     private static string getColumnName(PropertyInfo property)
     {
-        if (property == null) 
+        if (property == null)
         {
             throw new ArgumentNullException(nameof(property), "property cannot be a null reference (Nothing in Visual Basic)");
         }
@@ -450,13 +451,14 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         foreach (PropertyInfo mPropertyItem in propertiesArray)
         {
-            if (useBrackets) 
+            if (useBrackets)
             {
                 m_StringBuilder.Append("[" + getColumnName(mPropertyItem) + "], ");
-            } else 
+            }
+            else
             {
-                m_StringBuilder.Append(getColumnName(mPropertyItem) + ", ");                
-            }            
+                m_StringBuilder.Append(getColumnName(mPropertyItem) + ", ");
+            }
         }
         string mRetVal = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
         m_StringBuilder.Clear();
@@ -473,8 +475,8 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         PropertyInfo mRetVal = null;
         PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(includePrimaryKey);
-        mRetVal = mPropertiesArray.FirstOrDefault(propertyInfo => 
-            propertyInfo.Name == propertyName || 
+        mRetVal = mPropertiesArray.FirstOrDefault(propertyInfo =>
+            propertyInfo.Name == propertyName ||
             propertyInfo.GetCustomAttribute<DBColumnName>()?.Name == propertyName
         );
         return mRetVal;
@@ -490,7 +492,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     public string GetPropertyValue<T>(string propertyName) where T : ADatabaseTable
     {
         PropertyInfo mPropertyItem = getProperty<T>(propertyName, true);
-        if (mPropertyItem == null) 
+        if (mPropertyItem == null)
         {
             throw new InvalidOperationException($"The Property {propertyName} was not found.");
         }
@@ -506,7 +508,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="defaultDateTime">DateTime</param>
     /// <returns>DateTime</returns>
     /// <remarks></remarks>
-    #pragma warning disable CA1822 // Mark members as static
+#pragma warning disable CA1822 // Mark members as static
     protected DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
     {
         /*
@@ -528,7 +530,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="dataRow"></param>
     /// <param name="columnName"></param>
     /// <returns>-1 if no value was found</returns>
-    #pragma warning disable CA1822 // Mark members as static
+#pragma warning disable CA1822 // Mark members as static
     protected Int32 GetInt(DataRow dataRow, String columnName)
     {
         /*
@@ -551,7 +553,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     public static string GetPrimaryKeyName<T>() where T : ADatabaseTable
     {
-        PropertyInfo mPrimaryKeyProperty = getPropertiesFromType<T>().FirstOrDefault(propertyInfo => 
+        PropertyInfo mPrimaryKeyProperty = getPropertiesFromType<T>().FirstOrDefault(propertyInfo =>
             propertyInfo.IsDefined(typeof(DBPrimaryKey), false)
         );
         string mRetVal = string.Empty;
@@ -570,8 +572,8 @@ public abstract class ADatabaseTable : IDatabaseTable
     private static PropertyInfo[] getPropertiesFromType<T>() where T : ADatabaseTable
     {
         Type mType = typeof(T);
-        return mType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where((propertyInfo) => 
-            propertyInfo.CanRead && 
+        return mType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where((propertyInfo) =>
+            propertyInfo.CanRead &&
             !propertyInfo.IsDefined(typeof(DBIgnoreProperty), false)
         ).ToArray();
     }
@@ -589,7 +591,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         {
             m_PropertyInfoArray = getPropertiesFromType<T>().ToArray();
         }
-        PropertyInfo[] mPropertyInfoArray = m_PropertyInfoArray.Where(p => 
+        PropertyInfo[] mPropertyInfoArray = m_PropertyInfoArray.Where(p =>
                 p.CanRead &&
                 !p.IsDefined(typeof(DBIgnoreProperty), false) &&
                 (includePrimaryKey || !p.IsDefined(typeof(DBPrimaryKey), false))
