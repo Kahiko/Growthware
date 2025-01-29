@@ -29,7 +29,9 @@
           </label>
         </th>
         <td mat-cell *matCellDef="let row">
-          <input type="checkbox" [checked]="row.selected" (change)="row.selected = !row.selected;" class="select-all-checkbox" aria-label="Select or unselect the row" />
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <input type="checkbox" [checked]="row.selected" (change)="row.selected = !row.selected;" class="select-all-checkbox" aria-label="Select or unselect the row" />
+          </div>
         </td>
       </ng-container>
 
