@@ -3,7 +3,7 @@
     <div>
       <!-- Delete Selected Button -->
       <button type="button" [disabled]="!anySelected" (click)="onDeleteSelected()" mat-button class="delete-button" color="warn" aria-label="Delete selected files">
-        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete Checked
+        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete all checked
       </button>
     </div>
     <div>
@@ -25,7 +25,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <label class="checkbox-label" style="width: 100px;">
             <input type="checkbox" [checked]="allSelected" (change)="onToggleSelectAll($event)" aria-label="Select or unselect all files" />
-            {{selectUnselectText}} All  
+            {{selectUnselectText}} all  
           </label>
         </th>
         <td mat-cell *matCellDef="let row">

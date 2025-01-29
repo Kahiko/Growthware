@@ -63,7 +63,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	filterTerm: string = ""; // Property to hold the filter term
 	frmRenameFile!: FormGroup;
 	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates
-	selectUnselectText: string = 'Select';
+	selectUnselectText: string = 'Check';
 	selectedFile!: IFileInfoLight;
 	selectedSortOption: string = ""; // Default to empty or the first option
 	showDelete: boolean = false;
@@ -122,7 +122,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 */
 	get allSelected(): boolean {
 		const isChecked = this._FileManagerSvc.fileInfoList$().length > 0 && this._FileManagerSvc.fileInfoList$().every(file => file.selected);
-		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
+		this.selectUnselectText = isChecked ? 'Uncheck' : 'Check';
 		return isChecked;
 	}
 

@@ -3,14 +3,14 @@
   <div class="select-all">
     <label class="checkbox-label" style="width: 100px;"> <!-- set the width to keep the UI from shifting -->
       <input type="checkbox" [checked]="allSelected" (change)="onToggleSelectAll($event)" class="select-all-checkbox" aria-label="Select or unselect all files" />
-      {{selectUnselectText}} All
+      {{selectUnselectText}} all
     </label>
   </div>
 
   <!-- Delete Selected Button -->
   <div class="delete-button">
     <button type="button" [disabled]="!anySelected" (click)="onDeleteSelected()" mat-button class="delete-button" color="warn" aria-label="Delete selected files">
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete Selected
+      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete all checked
     </button>
   </div>
 
