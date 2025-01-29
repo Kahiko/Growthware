@@ -38,6 +38,8 @@ public abstract class ADatabaseTable : IDatabaseTable
 
         private DateTime m_DefaultSystemDateTime;
 
+        private const string m_DeleteStatementTemplate = "DELETE FROM {0} WHERE [{1}] = {2};";
+
         private bool m_DisposedValue;
 
         protected string m_ForeignKeyName = string.Empty;
@@ -169,17 +171,17 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    /// Static method to generate a DELETE statement;
+    /// Static method to generate a parameterized DELETE statement;
     /// </summary>
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
     /// <param name="keyColumn"></param>
-    /// <returns></returns>
+    /// <returns>A parameterized SQL DELETE statement for the specified key column and value.</returns>
     public static string GenerateDeleteWithParameters(string keyColumn, bool useBrackets)
     {
         string mWhereClause = $"WHERE [{keyColumn}] = @{keyColumn}";
         if (!useBrackets)
         { 
-            mWhereClause = mWhereClause.Replace("[", "").Replace("]", "");
+            mWhereClause = handleBrackets(mWhereClause, useBrackets);
         }
         string mRetVal = $"DELETE FROM {m_TableName} {mWhereClause};";
         return mRetVal;
@@ -190,10 +192,15 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// </summary>
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
     /// <param name="keyColumn"></param>
-    /// <returns></returns>
+    /// <returns>A SQL DELETE statement for the specified key column.</returns>
+    /// <exception cref="ArgumentException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
     public string GenerateDeleteWithValues<T>(string keyColumn, bool useBrackets) where T : ADatabaseTable
     {
+        if (string.IsNullOrEmpty(keyColumn))
+        {
+            throw new ArgumentException("keyColumn cannot be null or empty", nameof(keyColumn));
+        }        
         string mKeyValue = GetPropertyValue<T>(keyColumn);
         if (string.IsNullOrWhiteSpace(mKeyValue)) 
         {
@@ -203,21 +210,19 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    /// Generates a DELETE statement specifying the keyColumn and keyValue
+    /// Generates a DELETE statement for the specified key column.
     /// </summary>
-    /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
-    /// <param name="keyColumn"></param>
-    /// <param name="keyValue"></param>
-    /// <returns></returns>
-    /// <remarks>keyValue should be single quoted if it is a string</remarks>
+    /// <param name="keyColumn">The name of the key column.</param>
+    /// <param name="keyValue">The value of the key column. If it is a string, it should be single quoted.</param>
+    /// <param name="useBrackets">Whether to use brackets in the WHERE clause.</param>
+    /// <returns>A SQL DELETE statement for the specified key column and value.</returns>
     public static string GenerateDeleteWithValues(string keyColumn, string keyValue, bool useBrackets)
     {
-        string mWhereClause = $"WHERE [{keyColumn}] = {keyValue}";
+        string mRetVal = string.Format(m_DeleteStatementTemplate, m_TableName, keyColumn, keyValue);
         if (!useBrackets)
         { 
-            mWhereClause = mWhereClause.Replace("[", "").Replace("]", "");
+            mRetVal = handleBrackets(mRetVal, useBrackets);
         }
-        string mRetVal = $"DELETE FROM {m_TableName} {mWhereClause};";
         return mRetVal;
     }
 
@@ -327,7 +332,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         var mSetClauses = string.Join(", ", mPropertiesArray.Select(p => $"[{getColumnName(p)}] = @{getColumnName(p)}"));
         if (!useBrackets) 
         { 
-            mSetClauses = mSetClauses.Replace("[", "").Replace("]", ""); 
+            mSetClauses = handleBrackets(mSetClauses, useBrackets); 
         }
         return $"UPDATE {m_TableName} SET {mSetClauses} WHERE {keyColumn} = @{keyColumn};";
     }
@@ -377,9 +382,9 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    ///Returns a boolean given the DataRow and Column name for either bit or int values.
+    /// Returns a boolean given the DataRow and Column name for either bit or int values.
     /// </summary>
-    /// <param name="dataRow">The dataRow.</param>
+    /// <param name="dataRow">The dataRow. If null return value is false</param>
     /// <param name="columnName">Name of the column.</param>
     /// <returns>Boolean.</returns>
     /// <remarks>
@@ -393,6 +398,10 @@ public abstract class ADatabaseTable : IDatabaseTable
          * reading it in the deriving class (eg. base.GetBool(dataRow, columnName))
          * it is clear that the code resides in the abstract class.
          */
+        if (string.IsNullOrEmpty(columnName)) 
+        {
+            throw new ArgumentNullException(nameof(columnName), "columnName cannot be a null reference (Nothing in Visual Basic) or empty!");
+        }
         bool mRetVal = false;
         if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
         {
@@ -411,6 +420,10 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns></returns>
     private static string getColumnName(PropertyInfo property)
     {
+        if (property == null) 
+        {
+            throw new ArgumentNullException(nameof(property), "property cannot be a null reference (Nothing in Visual Basic)");
+        }
         var attribute = property.GetCustomAttribute<DBColumnName>();
         return attribute?.Name ?? property.Name; // Use the attribute name if available, otherwise use the property name
     }
@@ -418,8 +431,9 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <summary>
     /// Static method to get all the column names either from the attribute or property name if the attribute is not present
     /// </summary>
+    /// <param name="useBrackets">If true, the column names will be enclosed in brackets.</param>
     /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <returns>An array of column names.</returns>
     public string GetColumnNames<T>(bool useBrackets) where T : ADatabaseTable
     {
         PropertyInfo[] mPropertiesArray = getPropertiesFromField<T>(true);
@@ -543,7 +557,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         string mRetVal = string.Empty;
         if (mPrimaryKeyProperty != null)
         {
-            mRetVal = getColumnName(mPrimaryKeyProperty).Replace("[", "").Replace("]", "");
+            mRetVal = handleBrackets(getColumnName(mPrimaryKeyProperty), true);
         }
         return mRetVal;
     }
@@ -602,6 +616,22 @@ public abstract class ADatabaseTable : IDatabaseTable
             mRetVal = dataRow[columnName].ToString().Trim();
         }
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Removes brackets from the DELETE statement if the useBrackets flag is false.
+    /// </summary>
+    /// <param name="deleteStatement">The SQL DELETE statement.</param>
+    /// <param name="useBrackets">Indicates whether to retain brackets in the statement.</param>
+    /// <returns>The modified DELETE statement with brackets removed if useBrackets is false.</returns>
+    private static string handleBrackets(string deleteStatement, bool useBrackets)
+    {
+        // strings are inmutable so no need to create a copy.
+        if (!useBrackets)
+        {
+            deleteStatement = deleteStatement.Replace("[", "").Replace("]", "");
+        }
+        return deleteStatement;
     }
 
     /// <summary>
