@@ -32,7 +32,7 @@
 
   <!-- Filtering Input -->
   <div class="filter-input">
-    <mat-form-field appearance="outline" dense>
+    <mat-form-field appearance="outline" dense style="padding-right: 20px;">
       <mat-label>Search files...</mat-label>
       <input matInput type="text" [(ngModel)]="filterTerm" (input)="onFilterChange($event)" aria-label="Search files">
       <button mat-icon-button matSuffix (click)="filterTerm = ''; onFilterChange($event)">
