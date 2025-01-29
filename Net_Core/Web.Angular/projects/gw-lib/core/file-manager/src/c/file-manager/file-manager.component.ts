@@ -73,7 +73,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   onHelp(): void {
-  	const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'Help', this._HelpText, new WindowSize(325, 550));
+  	const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'Help', this._HelpText, new WindowSize(330, 550));
   	this._ModalSvc.open(mModalOptions);
   }
 
