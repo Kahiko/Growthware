@@ -202,7 +202,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	 */
 	applyFilter(filterValue: string) {
 		let mFilterValue = '';
-		if (!this._GWCommon.isNullOrUndefined(filterValue) && !this._GWCommon.isNullOrEmpty(filterValue)) {
+		if (!this._GWCommon.isNullOrEmpty(filterValue)) {
 			mFilterValue = filterValue;
 		}
 		this.dataSource.filter = mFilterValue.trim().toLowerCase();

@@ -197,7 +197,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 		if(!this._GWCommon.isNullOrEmpty(mClientChoicesString)) {
 			this.clientChoices = JSON.parse(mClientChoicesString);
 		}
-		if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName())) {
+		if (!this._GWCommon.isNullOrEmpty(this.configurationName())) {
 			this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName());
 			if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
 				this.maxHeadHeight = this.tableConfiguration.maxHeadHeight;
