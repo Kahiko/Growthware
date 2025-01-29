@@ -15,129 +15,129 @@ namespace GrowthWare.Framework.Models;
 public class MMessage : AbstractBaseModel, IMessage
 {
 
-    #region Member Fields
-        private int m_SecurityEntity_Seq_Id = 1;
-        private string m_Description = string.Empty;
-        private string[] m_ExcludedTags = new string[] { "Body", "Title", "IdColumnName", "NameColumnName", "AddedBy", "AddedDate", "UpdatedBy", "UpdatedDate" };
-        private string m_Title = string.Empty;
-        private bool m_FormatAsHTML = false;
-        private string m_Body = string.Empty;
-    #endregion
+#region Member Fields
+    private int m_SecurityEntity_Seq_Id = 1;
+    private string m_Description = string.Empty;
+    private string[] m_ExcludedTags = new string[] { "Body", "Title", "IdColumnName", "NameColumnName", "AddedBy", "AddedDate", "UpdatedBy", "UpdatedDate" };
+    private string m_Title = string.Empty;
+    private bool m_FormatAsHTML = false;
+    private string m_Body = string.Empty;
+#endregion
 
-    #region Public Properties
-        /// <summary>
-        /// Sets or gets the body property
-        /// </summary>
-        /// <value>Sets the value</value>
-        /// <returns>String</returns>
-        /// <remarks></remarks>
-        public string Body
+#region Public Properties
+    /// <summary>
+    /// Sets or gets the body property
+    /// </summary>
+    /// <value>Sets the value</value>
+    /// <returns>String</returns>
+    /// <remarks></remarks>
+    public string Body
+    {
+        get { return m_Body; }
+        set { if (value != null) m_Body = value.Trim(); }
+    }
+
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    /// <value>The description.</value>
+    public string Description
+    {
+        get { return m_Description; }
+        set
         {
-            get { return m_Body; }
-            set { if (value != null) m_Body = value.Trim(); }
+            if (value != null) m_Description = value.Trim();
         }
+    }
 
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>The description.</value>
-        public string Description
+    /// <summary>
+    /// Sets or gets the Title property
+    /// </summary>
+    /// <value>Sets the value</value>
+    /// <returns>String</returns>
+    /// <remarks></remarks>
+    public string Title
+    {
+        get { return m_Title; }
+        set { if (value != null) m_Title = value.Trim(); }
+    }
+
+    /// <summary>
+    /// Gets or sets the S e_ SE q_ ID.
+    /// </summary>
+    /// <value>The Security Entity ID.</value>
+    public int SecurityEntitySeqId
+    {
+        get { return m_SecurityEntity_Seq_Id; }
+        set { m_SecurityEntity_Seq_Id = value; }
+    }
+
+    /// <summary>
+    /// Sets or gets the FormatAsHtml property
+    /// </summary>
+    /// <value>Sets the value</value>
+    /// <returns>String</returns>
+    /// <remarks></remarks>
+    [DBColumnName("Format_As_HTML")]
+    public bool FormatAsHtml
+    {
+        get { return m_FormatAsHTML; }
+        set { m_FormatAsHTML = value; }
+    }
+
+    // // Commented out for now this should need to come back when we fix the base class
+    // [DBPrimaryKey]
+    // [DBColumnName("MessageSeqId")]
+    // public int Id { get; set; }
+
+    // // Commented out for now this should need to come back when we fix the base class
+    // public string Name { get; set; }
+#endregion
+
+#region Constructors
+    /// <summary>
+    /// Will return a message profile with the default values
+    /// </summary>
+    /// <remarks></remarks>
+    public MMessage()
+    {
+        this.SetupClass();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MMessage" /> class.
+    /// </summary>
+    /// <param name="profile">MMessage</param>
+    public MMessage(MMessage profile)
+    {
+        this.SetupClass();
+        if (profile != null)
         {
-            get { return m_Description; }
-            set
-            {
-                if (value != null) m_Description = value.Trim();
-            }
+            this.AddedBy = profile.AddedBy;
+            this.AddedDate = profile.AddedDate;
+            this.Body = profile.Body;
+            this.Description = profile.Description;
+            this.FormatAsHtml = profile.FormatAsHtml;
+            this.Id = profile.Id;
+            this.Name = profile.Name;
+            this.SecurityEntitySeqId = profile.SecurityEntitySeqId;
+            this.Title = profile.Title;
+            this.UpdatedBy = profile.UpdatedBy;
+            this.UpdatedDate = profile.UpdatedDate;
         }
+    }
 
-        /// <summary>
-        /// Sets or gets the Title property
-        /// </summary>
-        /// <value>Sets the value</value>
-        /// <returns>String</returns>
-        /// <remarks></remarks>
-        public string Title
-        {
-            get { return m_Title; }
-            set { if (value != null) m_Title = value.Trim(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the S e_ SE q_ ID.
-        /// </summary>
-        /// <value>The Security Entity ID.</value>
-        public int SecurityEntitySeqId
-        {
-            get { return m_SecurityEntity_Seq_Id; }
-            set { m_SecurityEntity_Seq_Id = value; }
-        }
-
-        /// <summary>
-        /// Sets or gets the FormatAsHtml property
-        /// </summary>
-        /// <value>Sets the value</value>
-        /// <returns>String</returns>
-        /// <remarks></remarks>
-        [DBColumnName("Format_As_HTML")]
-        public bool FormatAsHtml
-        {
-            get { return m_FormatAsHTML; }
-            set { m_FormatAsHTML = value; }
-        }
-
-        // // Commented out for now this should need to come back when we fix the base class
-        // [DBPrimaryKey]
-        // [DBColumnName("MessageSeqId")]
-        // public int Id { get; set; }
-
-        // // Commented out for now this should need to come back when we fix the base class
-        // public string Name { get; set; }
-    #endregion
-
-    #region Constructors
-        /// <summary>
-        /// Will return a message profile with the default values
-        /// </summary>
-        /// <remarks></remarks>
-        public MMessage()
-        {
-            this.SetupClass();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MMessage" /> class.
-        /// </summary>
-        /// <param name="profile">MMessage</param>
-        public MMessage(MMessage profile)
-        {
-            this.SetupClass();
-            if (profile != null)
-            {
-                this.AddedBy = profile.AddedBy;
-                this.AddedDate = profile.AddedDate;
-                this.Body = profile.Body;
-                this.Description = profile.Description;
-                this.FormatAsHtml = profile.FormatAsHtml;
-                this.Id = profile.Id;
-                this.Name = profile.Name;
-                this.SecurityEntitySeqId = profile.SecurityEntitySeqId;
-                this.Title = profile.Title;
-                this.UpdatedBy = profile.UpdatedBy;
-                this.UpdatedDate = profile.UpdatedDate;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MMessage" /> class 
-        /// and populates the properties with the data from the DataRow.
-        /// </summary>
-        /// <param name="dataRow">The DataRow.</param>
-        public MMessage(DataRow dataRow)
-        {
-            this.SetupClass();
-            this.Initialize(dataRow);
-        }
-    #endregion
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MMessage" /> class 
+    /// and populates the properties with the data from the DataRow.
+    /// </summary>
+    /// <param name="dataRow">The DataRow.</param>
+    public MMessage(DataRow dataRow)
+    {
+        this.SetupClass();
+        this.Initialize(dataRow);
+    }
+#endregion
 
     /// <summary>
     /// Formats the body and replaces property names within angle brackes with the appropriate property value.
