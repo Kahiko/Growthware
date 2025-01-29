@@ -185,9 +185,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		);
 		this._Subscription.add(
 			this.paginator.page.subscribe(() => {
-				this.dataSource.data.forEach(row => {
-					row.selected = false;
-				});
+				this._FileManagerSvc.setAllSelected(false);
 			})
 		);
 	}
