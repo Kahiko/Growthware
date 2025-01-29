@@ -639,6 +639,9 @@ export class FileManagerService implements OnInit {
 				visible: item.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
 			}))
 		);
+		this.fileInfoList$().forEach((file) => {
+			if (!file.visible) file.selected = false;
+		});
 	}
 
 	/**
