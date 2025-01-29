@@ -104,6 +104,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 			).subscribe()
 		);
 	}
+
+	/**
+	 * Applies a filter to the file list based on the provided filter value.
+	 *
+	 * @param {any} filterValue - The value used to filter the file list.
+	 * @returns {void} No return value.
+	 */
 	applyFilter(filterValue: any) {
 		this._FileManagerSvc.filterFileInfoList(filterValue);
 	}
