@@ -12,9 +12,6 @@
 - Forgot password's cancel now closes the modal and opens a new one for login
 - Moved version number to GrowthWare.Framework.csproj
     - Update both launch.json and GrowthWare.Framework.csproj because launch.json still works for the DatabaseManager.
-- Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions.
-    - Making some of the methods and properties static
-    - Added addtributes to the properties giving clairty to them
 - Moved Table/MGroupRolePermissionSecurity.cs to Base/AGroupRolePermissionSecurity.cs
 - Renamed UploadResponse.cs to DTO_UploadResponse.cs
 - Moved MLogging.cs to Table/MLogging.cs
@@ -26,12 +23,19 @@
     - Now notifies if coded data is incorrect to help with debugging and development
     - Optimized mergeFiles in the API
 - Added Select/Unselect All, Delete Selected, Sorting and Filtering to the file-list.component and the table-file-list.component
-- Added the following adding improvements over AbstractDatabaseFunctions:
+- Added the following improvements over AbstractDatabaseFunctions:
 	DataRowHelper to hold the Get functions that were originally in the AbstractDatabaseFunctions class
 	IDatabaseTable and IAddedUpdated interfaces as a replacement for IDatabaseFunctions and IBaseModel respectfully
 	ADatabaseTable as a replacement for AbstractDatabaseFunctions
 	AAddedUpdated as a replacement for AbstractBaseModel
 	MTestDatabaseTable to aid in testing ADatabaseTable and AAddedUpdated abstract classes
+- Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions.
+    - Making some of the methods and properties static
+    - Added addtributes to the properties giving clairty to them
+    - Converted:
+        - MSecurityEntity             to AAddedUpdated
+        - MRegistrationInformation    to AAddedUpdated
+- Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
