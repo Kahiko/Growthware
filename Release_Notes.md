@@ -26,6 +26,12 @@
     - Now notifies if coded data is incorrect to help with debugging and development
     - Optimized mergeFiles in the API
 - Added Select/Unselect All, Delete Selected, Sorting and Filtering to the file-list.component and the table-file-list.component
+- Added the following adding improvements over AbstractDatabaseFunctions:
+	DataRowHelper to hold the Get functions that were originally in the AbstractDatabaseFunctions class
+	IDatabaseTable and IAddedUpdated interfaces as a replacement for IDatabaseFunctions and IBaseModel respectfully
+	ADatabaseTable as a replacement for AbstractDatabaseFunctions
+	AAddedUpdated as a replacement for AbstractBaseModel
+	MTestDatabaseTable to aid in testing ADatabaseTable and AAddedUpdated abstract classes
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
