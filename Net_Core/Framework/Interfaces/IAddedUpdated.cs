@@ -2,7 +2,7 @@ using System;
 
 namespace GrowthWare.Framework.Interfaces;
 
-public interface IAddedUpdated
+public interface IAddedUpdated: IDatabaseTable
 {
     int AddedBy { get; set; }
 

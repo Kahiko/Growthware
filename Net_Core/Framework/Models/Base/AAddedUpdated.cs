@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
 
 namespace GrowthWare.Framework.Models.Base;
@@ -8,7 +9,7 @@ namespace GrowthWare.Framework.Models.Base;
 /// Base class for profile objects adding AddedBy, AddedDate, UpdatedBy, UpdatedDate.
 /// </summary>
 [Serializable()]
-public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated, IDatabaseTable
+public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated
 {
     #region Public Properties
         /// <summary>
@@ -45,9 +46,9 @@ public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated, IDatabaseTa
     /// </remarks>
     protected virtual void Initialize(DataRow dataRow)
     {            
-        this.AddedBy = base.GetInt(dataRow, "Added_By");
-        this.AddedDate = base.GetDateTime(dataRow, "Added_Date", DateTime.Now);
-        this.UpdatedBy = base.GetInt(dataRow, "Updated_By");
-        this.UpdatedDate = base.GetDateTime(dataRow, "Updated_Date", DateTime.Now);
+        this.AddedBy = DataRowHelper.GetInt(dataRow, "Added_By");
+        this.AddedDate = DataRowHelper.GetDateTime(dataRow, "Added_Date", DateTime.Now);
+        this.UpdatedBy = DataRowHelper.GetInt(dataRow, "Updated_By");
+        this.UpdatedDate = DataRowHelper.GetDateTime(dataRow, "Updated_Date", DateTime.Now);
     }
 }

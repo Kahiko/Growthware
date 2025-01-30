@@ -24,9 +24,4 @@ public interface IDatabaseTable : IDisposable
     /// Whether the foreign key is numeric only used in bulk inserts
     /// </summary>
     bool IsForeignKeyNumeric { get; }
-
-    /// <summary>
-    /// The name of the database table
-    /// </summary>
-    string TableName { get; }
 }
