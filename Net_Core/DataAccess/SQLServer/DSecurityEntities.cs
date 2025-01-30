@@ -94,7 +94,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_STYLE", profile.Style ?? ""),
                 new SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
                 new SqlParameter("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
                 mPrimaryKey
              };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
@@ -113,7 +113,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new ("@P_AddAccount", profile.AddAccount),
                 new ("@P_Groups", profile.Groups),
                 new ("@P_Roles", profile.Roles),
-                new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile))
+                new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id))
              };
             try
             {

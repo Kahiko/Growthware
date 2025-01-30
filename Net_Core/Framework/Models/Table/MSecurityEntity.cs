@@ -9,7 +9,7 @@ namespace GrowthWare.Framework.Models;
 /// Represents all of the prperties associated with a Security Entity.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MSecurityEntity : AbstractBaseModel
+public class MSecurityEntity : AAddedUpdated
 {
 
 #region Public Properties
@@ -52,13 +52,17 @@ public class MSecurityEntity : AbstractBaseModel
     [DBColumnName("Encryption_Type")]
     public EncryptionType EncryptionType { get; set; }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("SecurityEntitySeqId")]
-    // public int Id { get; set; }
+    public override string ForeignKeyName => "NOT_USED";
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // public string Name { get; set; }
+    // Commented out for now this should need to come back when we fix the base class
+    [DBPrimaryKey]
+    [DBColumnName("SecurityEntitySeqId")]
+    public int Id { get; set; }
+
+    public override bool IsForeignKeyNumeric => false;
+
+    // Commented out for now this should need to come back when we fix the base class
+    public string Name { get; set; }
 
     /// <summary>
     /// Security Entities have a hierarchical relationship to each other and this represents the parent of this Security Entity.
@@ -81,6 +85,8 @@ public class MSecurityEntity : AbstractBaseModel
     /// </summary>
     public string Style { get; set; }
 
+    public override string TableName => "[ZGWSecurity].[Security_Entities]";
+
     /// <summary>
     /// Represents the URL associated with the Security Entity.  
     /// The intended use was to all a way to retrieve a profile based on the URL
@@ -89,20 +95,21 @@ public class MSecurityEntity : AbstractBaseModel
     public string Url { get; set; }
 #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Will return a account profile with the default vaules
     /// </summary>
     /// <remarks></remarks>
     public MSecurityEntity()
     {
-        this.SetupClass();
+        this.setDefaults();
         // populate with default values
         this.ConnectionString = ConfigSettings.ConnectionString;
         this.DataAccessLayer = ConfigSettings.DataAccessLayer;
         this.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
         this.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace;
         this.EncryptionType = ConfigSettings.EncryptionType;
+        this.Id = ConfigSettings.DefaultSecurityEntityID;
         this.ParentSeqId = -1;
         this.Skin = "Default";
         this.StatusSeqId = 1;
@@ -119,7 +126,7 @@ public class MSecurityEntity : AbstractBaseModel
     /// </remarks>
     public MSecurityEntity(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Initialize(dataRow);
     }
 #endregion
@@ -131,29 +138,25 @@ public class MSecurityEntity : AbstractBaseModel
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        this.Description = base.GetString(dataRow, "Description");
-        this.Url = base.GetString(dataRow, "URL");
-        this.Skin = base.GetString(dataRow, "Skin");
-        this.Style = base.GetString(dataRow, "Style");
-        this.ParentSeqId = base.GetInt(dataRow, "PARENT_SecurityEntityID");
-        this.StatusSeqId = base.GetInt(dataRow, "STATUS_SEQ_ID");
         this.DataAccessLayer = base.GetString(dataRow, "DAL");
         this.DataAccessLayerAssemblyName = base.GetString(dataRow, "DAL_NAME");
         this.DataAccessLayerNamespace = base.GetString(dataRow, "DAL_NAME_SPACE");
         this.ConnectionString = base.GetString(dataRow, "DAL_STRING");
+        this.Description = base.GetString(dataRow, "Description");
+        this.Id = base.GetInt(dataRow, "SecurityEntityID");
+        this.Name = base.GetString(dataRow, "Name");
+        this.ParentSeqId = base.GetInt(dataRow, "PARENT_SecurityEntityID");
+        this.Skin = base.GetString(dataRow, "Skin");
+        this.Style = base.GetString(dataRow, "Style");
+        this.StatusSeqId = base.GetInt(dataRow, "STATUS_SEQ_ID");
+        this.Url = base.GetString(dataRow, "URL");
         EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
         CryptoUtility.TryDecrypt(this.ConnectionString, out string mConnectionString, this.EncryptionType);
         this.ConnectionString = mConnectionString;
     }
 
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        base.NameColumnName = "Name";
-        base.IdColumnName = "SecurityEntityID";
-        
-        // this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSecurity].[Security_Entities]";
+        this.Id = -1;
     }
-
 }

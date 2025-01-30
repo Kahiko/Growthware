@@ -8,7 +8,7 @@ namespace GrowthWare.Framework.Models;
 /// Represents all of the prperties associated with a Security Entity.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MRegistrationInformation : AbstractBaseModel
+public class MRegistrationInformation : AAddedUpdated
 {
 
 #region Member Fields
@@ -22,6 +22,7 @@ public class MRegistrationInformation : AbstractBaseModel
         this.AccountChoices = base.GetString(dataRow, "AccountChoices");
         this.AddAccount = base.GetInt(dataRow, "AddAccount");
         this.Groups = base.GetString(dataRow, "Groups");
+        this.Id = base.GetInt(dataRow, "SecurityEntitySeqId");
         this.Roles = base.GetString(dataRow, "Roles");
         this.SecurityEntitySeqIdOwner = base.GetInt(dataRow, "SecurityEntitySeqIdOwner");
     }
@@ -43,10 +44,10 @@ public class MRegistrationInformation : AbstractBaseModel
     /// </summary>
     public string Groups { get; set; }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("SecurityEntitySeqId")]
-    // public int Id { get; set; }
+    // Commented out for now this should need to come back when we fix the base class
+    [DBPrimaryKey]
+    [DBColumnName("SecurityEntitySeqId")]
+    public int Id { get; set; }
     
     /// <summary>
     /// A comma separated list of roles
@@ -58,18 +59,22 @@ public class MRegistrationInformation : AbstractBaseModel
     /// </summary>
     [DBColumnName("SecurityEntitySeqId_Owner")]
     public int SecurityEntitySeqIdOwner { get; set; }
-#endregion
 
-#region Constructors
+    public override string ForeignKeyName =>  "NOT_USED";
+
+    public override bool IsForeignKeyNumeric => false;
+
+    public override string TableName => "[ZGWSecurity].[Registration_Information]";
+    #endregion
+
+    #region Constructors
     /// <summary>
     /// Will return a account profile with the default vaules
     /// </summary>
     /// <remarks></remarks>
     public MRegistrationInformation()
     {
-        this.SetupClass();
-        // populate with default values
-        this.Id = -1;
+        this.setDefaults();
     }
 
     /// <summary>
@@ -81,18 +86,13 @@ public class MRegistrationInformation : AbstractBaseModel
     /// </remarks>
     public MRegistrationInformation(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         Initialize(dataRow);
     }
 #endregion
 
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        base.NameColumnName = string.Empty;
-        base.IdColumnName = "SecurityEntitySeqId";        
-
         this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSecurity].[Registration_Information]";
     }
 }

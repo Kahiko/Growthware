@@ -190,7 +190,6 @@ public static class SecurityEntityUtility
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
 
-        m_CacheHelper.RemoveFromCache(s_CacheName);
         int mRetVal = getBusinessLogic().Save(profile);
         m_CacheHelper.RemoveFromCache(s_CacheName);
         return mRetVal;
