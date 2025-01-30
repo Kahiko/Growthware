@@ -153,22 +153,6 @@ public abstract class ADatabaseTable : IDatabaseTable
     }
 
     /// <summary>
-    /// Removes brackets from the DELETE statement if the useBrackets flag is false.
-    /// </summary>
-    /// <param name="sqlStatement">The SQL statement.</param>
-    /// <param name="useBrackets">Indicates whether to retain brackets in the statement.</param>
-    /// <returns>The modified SQL statement with brackets removed if useBrackets is false.</returns>
-    private static string handleBrackets(string sqlStatement, bool useBrackets)
-    {
-        // strings are inmutable so no need to create a copy.
-        if (!useBrackets)
-        {
-            sqlStatement = sqlStatement.Replace("[", "").Replace("]", "");
-        }
-        return sqlStatement;
-    }
-
-    /// <summary>
     /// Generates a parameterized SQL DELETE statement given the name of the primary key.
     /// </summary>
     /// <typeparam name="T">The type of the database table, must inherit from ADatabaseTable.</typeparam>
@@ -371,7 +355,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="columnName">Name of the column.</param>
     /// <returns>Boolean.</returns>
     /// <remarks>Integer or int values not equal to 0 are considered true</remarks>
-    private bool GetBool(DataRow dataRow, string columnName)
+    protected bool GetBool(DataRow dataRow, string columnName)
     {
         return DataRowHelper.GetBool(dataRow, columnName);
     }
@@ -423,7 +407,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="defaultDateTime">DateTime</param>
     /// <returns>DateTime</returns>
     /// <remarks></remarks>
-    private DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
+    protected DateTime GetDateTime(DataRow dataRow, String columnName, DateTime defaultDateTime)
     {
         return DataRowHelper.GetDateTime(dataRow, columnName, defaultDateTime);
     }
@@ -456,7 +440,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="dataRow"></param>
     /// <param name="columnName"></param>
     /// <returns>-1 if no value was found</returns>
-    private int GetInt(DataRow dataRow, string columnName)
+    protected int GetInt(DataRow dataRow, string columnName)
     {
         return DataRowHelper.GetInt(dataRow, columnName);
     }
@@ -538,9 +522,29 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="dataRow"></param>
     /// <param name="columnName"></param>
     /// <returns>string value or empty</returns>
-    private string GetString(DataRow dataRow, string columnName)
+    protected string GetString(DataRow dataRow, string columnName)
     {
         return DataRowHelper.GetString(dataRow, columnName);
     }
 
+    /// <summary>
+    /// Removes brackets from the DELETE statement if the useBrackets flag is false.
+    /// </summary>
+    /// <param name="sqlStatement">The SQL statement.</param>
+    /// <param name="useBrackets">Indicates whether to retain brackets in the statement.</param>
+    /// <returns>The modified SQL statement with brackets removed if useBrackets is false.</returns>
+    private static string handleBrackets(string sqlStatement, bool useBrackets)
+    {
+        // strings are inmutable so no need to create a copy.
+        if (!useBrackets)
+        {
+            sqlStatement = sqlStatement.Replace("[", "").Replace("]", "");
+        }
+        return sqlStatement;
+    }
+
+    /// <summary>
+    /// Use this to setup any default values for your class.
+    /// </summary>
+    protected abstract void setDefaults();
 }

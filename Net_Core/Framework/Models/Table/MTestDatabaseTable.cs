@@ -31,11 +31,12 @@ public class MTestDatabaseTable : AAddedUpdated
     #region Constructors
     public MTestDatabaseTable()
     {
-        // populate default values ie this.Id = -1
+        this.setDefaults();
     }
 
     public MTestDatabaseTable(DataRow dataRow)
     {
+        this.setDefaults();
         Initialize(dataRow);
     }
     #endregion
@@ -44,5 +45,10 @@ public class MTestDatabaseTable : AAddedUpdated
     {
         base.Initialize(dataRow);
         // populate properties
+    }
+
+    protected override void setDefaults()
+    {
+        this.Id = -1;
     }
 }
