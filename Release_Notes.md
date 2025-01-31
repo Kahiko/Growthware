@@ -33,8 +33,10 @@
     - Making some of the methods and properties static
     - Added addtributes to the properties giving clairty to them
     - Converted:
-        - MSecurityEntity             to AAddedUpdated
-        - MRegistrationInformation    to AAddedUpdated
+        - MSecurityEntity           to AAddedUpdated
+        - MRegistrationInformation  to AAddedUpdated
+        - MAccountProfile           to AAddedUpdated
+        - MRefreshToken             to ADatabaseTable
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 
 ### Known Bugs

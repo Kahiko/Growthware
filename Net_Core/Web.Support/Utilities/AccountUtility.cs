@@ -404,7 +404,7 @@ public static class AccountUtility
             if (mAccountProfile.RefreshTokens.Count > 0)
             {
                 MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
-                if (!mRefreshToken.IsActive())
+                if (!mRefreshToken.IsActive)
                 {
                     removeFromCacheOrSession(forAccount);
                     RemoveInMemoryInformation(forAccount);
@@ -442,14 +442,14 @@ public static class AccountUtility
         {
             MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
-            if (mRefreshToken.IsRevoked())
+            if (mRefreshToken.IsRevoked)
             {
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(mRefreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
                 AccountUtility.Save(mAccountProfile, true, false, false);
             }
 
-            if (!mRefreshToken.IsActive())
+            if (!mRefreshToken.IsActive)
                 throw new WebSupportException("Invalid token");
 
             // replace old refresh token with a new one (rotate token)
@@ -578,7 +578,7 @@ public static class AccountUtility
         MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
         MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
-        if (!mRefreshToken.IsActive())
+        if (!mRefreshToken.IsActive)
             throw new WebSupportException("Invalid token");
 
         // revoke token and save
@@ -598,7 +598,7 @@ public static class AccountUtility
         if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
         {
             var childToken = account.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
-            if (childToken.IsActive())
+            if (childToken.IsActive)
                 revokeRefreshToken(childToken, ipAddress, reason);
             else
                 revokeDescendantRefreshTokens(childToken, account, ipAddress, reason);
@@ -626,7 +626,7 @@ public static class AccountUtility
     {
         // TODO - look at this are we sure we need to keep refresh tokens in the db for this long?
         accountProfile.RefreshTokens.RemoveAll(x => 
-            !x.IsActive() && 
+            !x.IsActive && 
             x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
         );
     }

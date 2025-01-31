@@ -85,6 +85,14 @@ public class AccountUtilityTests
                     .First().Token;
         }
     }
+    [TearDown]
+
+    public void TearDown()
+    {
+        // Dispose of any resources used in the tests
+        m_Developer_Profile?.Dispose();
+        m_Mike_Profile?.Dispose();
+    }
 
     [Test]
     public void Authenticate_ValidCredentials_ReturnsAccountProfile()

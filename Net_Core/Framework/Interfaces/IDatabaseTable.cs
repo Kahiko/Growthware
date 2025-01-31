@@ -24,4 +24,11 @@ public interface IDatabaseTable : IDisposable
     /// Whether the foreign key is numeric only used in bulk inserts
     /// </summary>
     bool IsForeignKeyNumeric { get; }
+
+    string PrimaryKeyName { get; }
+
+    string TableName { get; }
+
+    DataTable GetEmptyTable(string tableName, bool includePrimaryKey, string[] columnNamesInOrder);
+
 }

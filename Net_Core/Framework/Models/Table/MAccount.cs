@@ -12,313 +12,324 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
+public class MAccountProfile : AAddedUpdated, IGroupRoleSecurity
 {
 
-    #region Member Fields
-        private Collection<string> m_AssignedRoles = new Collection<string>();
-        private Collection<string> m_AssignedGroups = new Collection<string>();
-        private Collection<string> m_DerivedRoles = new Collection<string>();
-        private List<MRefreshToken> m_RefreshTokens = new List<MRefreshToken>();
-        private static String s_RoleColumn = "Roles";
-        private static String s_GroupColumn = "Groups";
-    #endregion
+#region Member Fields
+    private Collection<string> m_AssignedRoles = new Collection<string>();
+    private Collection<string> m_AssignedGroups = new Collection<string>();
+    private Collection<string> m_DerivedRoles = new Collection<string>();
+    private List<MRefreshToken> m_RefreshTokens = new List<MRefreshToken>();
+    private static String s_RoleColumn = "Roles";
+    private static String s_GroupColumn = "Groups";
+#endregion
 
-    #region Public Properties
-        /// <summary>
-        /// Represents the roles that have been directly assigned to the account.
-        /// </summary>
-        [DBIgnoreProperty]
-        public Collection<String> AssignedRoles
+#region Public Properties
+    /// <summary>
+    /// Represents the roles that have been directly assigned to the account.
+    /// </summary>
+    [DBIgnoreProperty]
+    public Collection<String> AssignedRoles
+    {
+        get
         {
-            get
-            {
-                return m_AssignedRoles;
-            }
-            set
-            {
-                if (value != null) { this.m_AssignedRoles = value; }
-            }
+            return m_AssignedRoles;
         }
-
-        /// <summary>
-        /// Represents the groups that have been directly assigned to the account.
-        /// </summary>
-        [DBIgnoreProperty]
-        public Collection<String> Groups
+        set
         {
-            get
-            {
-                return m_AssignedGroups;
-            }
-            set
-            {
-                this.m_AssignedGroups = value;
-            }
+            if (value != null) { this.m_AssignedRoles = value; }
         }
+    }
 
-        /// <summary>
-        /// Represents the roles that have been assigned either directly or through association of a role to a group.
-        /// </summary>
-        [DBIgnoreProperty]
-        public Collection<String> DerivedRoles
+    /// <summary>
+    /// Represents the groups that have been directly assigned to the account.
+    /// </summary>
+    [DBIgnoreProperty]
+    public Collection<String> Groups
+    {
+        get
         {
-            get
-            {
-                return m_DerivedRoles;
-            }
-            set
-            {
-                m_DerivedRoles = value;
-            }
+            return m_AssignedGroups;
         }
-
-        /// <summary>
-        /// Represents the account
-        /// </summary>
-        public String Account { get; set; }
-
-        /// <summary>
-        /// Represents the email address
-        /// </summary>
-        public String Email { get; set; }
-
-        /// <summary>
-        /// Used to determine if the client would like to receive notifications.
-        /// </summary>
-        [DBColumnName("Enable_Notifications")]
-        public bool EnableNotifications { get; set; }
-
-        // [DBPrimaryKey]
-        // [DBColumnName("AccountSeqId")]
-        // public int Id { get; set; }
-
-        /// <summary>
-        /// Represents the status of the account
-        /// </summary>
-        [DBColumnName("StatusSeqId")]
-        public int Status { get; set; }
-
-        /// <summary>
-        /// Indicates the last time the account password was changed
-        /// </summary>
-        [DBColumnName("Password_Last_Set")]
-        public DateTime PasswordLastSet { get; set; }
-
-        /// <summary>
-        /// The password for the account
-        /// </summary>
-        public String Password { get; set; }
-
-        /// <summary>
-        /// The number of failed logon attempts
-        /// </summary>
-        [DBColumnName("Failed_Attempts")]
-        public int FailedAttempts { get; set; }
-
-        /// <summary>
-        /// First name of the person for the account
-        /// </summary>
-        [DBColumnName("First_Name")]
-        public String FirstName { get; set; }
-
-        /// <summary>
-        /// Indicates if the account is a system administrator ... used to
-        /// prevent complete lockout when the roles have been
-        /// damaged.
-        /// </summary>
-        [DBColumnName("Is_System_Admin")]
-        public bool IsSystemAdmin { get; set; }
-
-        /// <summary>
-        /// Last name of the person for the account
-        /// </summary>
-        [DBColumnName("Last_Name")]
-        public String LastName { get; set; }
-
-        /// <summary>
-        /// Middle name of the person for the account
-        /// </summary>
-        [DBColumnName("Middle_Name")]
-        public String MiddleName { get; set; }
-
-        // [DBIgnoreProperty]
-        // [DBColumnName("Account")]
-        // public string Name { get; set; }
-
-        /// <summary>
-        /// Preferred or nick name of the person for the account
-        /// </summary>
-        [DBColumnName("Preferred_Name")]
-        public String PreferredName { get; set; }
-
-        /// <summary>
-        /// A list of refresh tokens
-        /// </summary>
-        /// <value></value>
-        [DBIgnoreProperty]
-        public List<MRefreshToken> RefreshTokens
+        set
         {
-            get { return m_RefreshTokens; }
-            set { m_RefreshTokens = value; }
+            this.m_AssignedGroups = value;
         }
+    }
 
-        /// <summary>
-        /// The reset token
-        /// </summary>
-        /// <value></value>
-        public string ResetToken { get; set; }
-
-        /// <summary>
-        /// Indicates when the reset token expires
-        /// </summary>
-        /// <value></value>
-        public DateTime? ResetTokenExpires { get; set; }
-
-        /// <summary>
-        /// The timezone for the account
-        /// </summary>
-        [DBColumnName("Time_Zone")]
-        public int TimeZone { get; set; }
-
-        /// <summary>
-        /// Used in new AuthenticationResponse to set the JwtToken
-        /// </summary>
-        [DBIgnoreProperty]
-        public string Token { get; set; }
-
-        /// <summary>
-        /// The verification token
-        /// </summary>
-        /// <value></value>
-        public string VerificationToken { get; set; }
-
-        /// <summary>
-        /// The location of the account
-        /// </summary>
-        public string Location { get; set; }
-
-        /// <summary>
-        /// The date and time the account was last logged on
-        /// </summary>
-        [DBColumnName("Last_Login")]
-        public DateTime LastLogOn { get; set; }
-
-        /// <summary>
-        /// Converts the collection of AssignedRoles to a comma Separated string.
-        /// </summary>
-        /// <returns>String</returns>
-        [DBIgnoreProperty]
-        public String GetCommaSeparatedAssignedRoles
+    /// <summary>
+    /// Represents the roles that have been assigned either directly or through association of a role to a group.
+    /// </summary>
+    [DBIgnoreProperty]
+    public Collection<String> DerivedRoles
+    {
+        get
         {
-            get { return getCommaSeparatedString(m_AssignedRoles); }
+            return m_DerivedRoles;
         }
-
-        /// <summary>
-        /// Converts the collection of AssignedGroups to a comma Separated string.
-        /// </summary>
-        /// <returns>String</returns>
-        [DBIgnoreProperty]
-        public String GetCommaSeparatedAssignedGroups
+        set
         {
-            get { return getCommaSeparatedString(m_AssignedGroups); }
+            m_DerivedRoles = value;
         }
+    }
 
-        /// <summary>
-        /// Converts the collection of DerivedRoles to a comma Separated string.
-        /// </summary>
-        /// <returns>String</returns>
-        [DBIgnoreProperty]
-        public String GetCommaSeparatedDerivedRoles
-        {
-            get { return getCommaSeparatedString(m_DerivedRoles); }
-        }
+    /// <summary>
+    /// Represents the account
+    /// </summary>
+    public String Account { get; set; }
 
-    #endregion
+    /// <summary>
+    /// Represents the email address
+    /// </summary>
+    public String Email { get; set; }
 
-    #region Constructors
-        /// <summary>
-        /// Provides a new account profile with the default values
-        /// </summary>
-        /// <remarks></remarks>
-        public MAccountProfile()
-        {
-        }
+    /// <summary>
+    /// Used to determine if the client would like to receive notifications.
+    /// </summary>
+    [DBColumnName("Enable_Notifications")]
+    public bool EnableNotifications { get; set; }
 
-        public MAccountProfile(int requestingAccountId)
-        {
-            Collection<string> mDefaultRoles = new Collection<string>() { "Authenticated" };
-            this.AddedBy = requestingAccountId;
-            this.AddedDate = DateTime.Now;
-            this.AssignedRoles = mDefaultRoles;
-            this.PasswordLastSet = DateTime.Now.AddYears(-22);
-            this.LastLogOn = DateTime.Now.AddYears(-22);
-            this.UpdatedDate = DateTime.Now.AddYears(-22);
-            this.Status = (int)SystemStatus.ChangePassword;
-            this.Location = "";
-            this.TimeZone = -8;
-        }
+    [DBPrimaryKey]
+    [DBColumnName("AccountSeqId")]
+    public int Id { get; set; }
 
-        /// <summary>
-        /// Provides a new account profile with the same values as the account profile
-        /// </summary>
-        /// <param name="accountProfile">MAccountProfile</param>
-        /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
-        public MAccountProfile(MAccountProfile accountProfile)
-        {
-            base.NameColumnName = "ACCT";
-            base.IdColumnName = "ACCT_SEQ_ID";
-            this.Id = -1;
-            this.Account = accountProfile.Account;
-            this.Email = accountProfile.Email;
-            this.EnableNotifications = accountProfile.EnableNotifications;
-            this.FirstName = accountProfile.FirstName;
-            // this.IsSystemAdmin needs to be set by the caller
-            this.LastName = accountProfile.LastName;
-            this.Location = accountProfile.Location;
-            this.MiddleName = accountProfile.MiddleName;
-            this.Name = accountProfile.Account;
-            this.PreferredName = accountProfile.PreferredName;
-            this.Status = accountProfile.Status;
-            this.TimeZone = accountProfile.TimeZone;
-        }
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => false;
 
-        /// <summary>
-        /// Will populate values based on the contents of the data row.
-        /// </summary>
-        /// <param name="detailRow">DataRow containing base values</param>
-        /// <remarks>
-        /// Class should be inherited to extend to your project specific properties
-        /// </remarks>
-        public MAccountProfile(DataRow detailRow)
+    /// <summary>
+    /// Represents the status of the account
+    /// </summary>
+    [DBColumnName("StatusSeqId")]
+    public int Status { get; set; }
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWSecurity].[Accounts]";
+
+    /// <summary>
+    /// Indicates the last time the account password was changed
+    /// </summary>
+    [DBColumnName("Password_Last_Set")]
+    public DateTime PasswordLastSet { get; set; }
+
+    /// <summary>
+    /// The password for the account
+    /// </summary>
+    public String Password { get; set; }
+
+    /// <summary>
+    /// The number of failed logon attempts
+    /// </summary>
+    [DBColumnName("Failed_Attempts")]
+    public int FailedAttempts { get; set; }
+
+    /// <summary>
+    /// First name of the person for the account
+    /// </summary>
+    [DBColumnName("First_Name")]
+    public String FirstName { get; set; }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "Not Used";
+
+    /// <summary>
+    /// Indicates if the account is a system administrator ... used to
+    /// prevent complete lockout when the roles have been
+    /// damaged.
+    /// </summary>
+    [DBColumnName("Is_System_Admin")]
+    public bool IsSystemAdmin { get; set; }
+
+    /// <summary>
+    /// Last name of the person for the account
+    /// </summary>
+    [DBColumnName("Last_Name")]
+    public String LastName { get; set; }
+
+    /// <summary>
+    /// Middle name of the person for the account
+    /// </summary>
+    [DBColumnName("Middle_Name")]
+    public String MiddleName { get; set; }
+
+    [DBIgnoreProperty]
+    [DBColumnName("Account")]
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Preferred or nick name of the person for the account
+    /// </summary>
+    [DBColumnName("Preferred_Name")]
+    public String PreferredName { get; set; }
+
+    /// <summary>
+    /// A list of refresh tokens
+    /// </summary>
+    /// <value></value>
+    [DBIgnoreProperty]
+    public List<MRefreshToken> RefreshTokens
+    {
+        get { return m_RefreshTokens; }
+        set { m_RefreshTokens = value; }
+    }
+
+    /// <summary>
+    /// The reset token
+    /// </summary>
+    /// <value></value>
+    public string ResetToken { get; set; }
+
+    /// <summary>
+    /// Indicates when the reset token expires
+    /// </summary>
+    /// <value></value>
+    public DateTime? ResetTokenExpires { get; set; }
+
+    /// <summary>
+    /// The timezone for the account
+    /// </summary>
+    [DBColumnName("Time_Zone")]
+    public int TimeZone { get; set; }
+
+    /// <summary>
+    /// Used in new AuthenticationResponse to set the JwtToken
+    /// </summary>
+    [DBIgnoreProperty]
+    public string Token { get; set; }
+
+    /// <summary>
+    /// The verification token
+    /// </summary>
+    /// <value></value>
+    public string VerificationToken { get; set; }
+
+    /// <summary>
+    /// The location of the account
+    /// </summary>
+    public string Location { get; set; }
+
+    /// <summary>
+    /// The date and time the account was last logged on
+    /// </summary>
+    [DBColumnName("Last_Login")]
+    public DateTime LastLogOn { get; set; }
+
+    /// <summary>
+    /// Converts the collection of AssignedRoles to a comma Separated string.
+    /// </summary>
+    /// <returns>String</returns>
+    [DBIgnoreProperty]
+    public String GetCommaSeparatedAssignedRoles
+    {
+        get { return getCommaSeparatedString(m_AssignedRoles); }
+    }
+
+    /// <summary>
+    /// Converts the collection of AssignedGroups to a comma Separated string.
+    /// </summary>
+    /// <returns>String</returns>
+    [DBIgnoreProperty]
+    public String GetCommaSeparatedAssignedGroups
+    {
+        get { return getCommaSeparatedString(m_AssignedGroups); }
+    }
+
+    /// <summary>
+    /// Converts the collection of DerivedRoles to a comma Separated string.
+    /// </summary>
+    /// <returns>String</returns>
+    [DBIgnoreProperty]
+    public String GetCommaSeparatedDerivedRoles
+    {
+        get { return getCommaSeparatedString(m_DerivedRoles); }
+    }
+
+#endregion
+
+#region Constructors
+    /// <summary>
+    /// Provides a new account profile with the default values
+    /// </summary>
+    /// <remarks></remarks>
+    public MAccountProfile()
+    {
+        this.setDefaults();
+    }
+
+    public MAccountProfile(int requestingAccountId)
+    {
+        this.setDefaults();
+        Collection<string> mDefaultRoles = new Collection<string>() { "Authenticated" };
+        this.AddedBy = requestingAccountId;
+        this.AddedDate = DateTime.Now;
+        this.AssignedRoles = mDefaultRoles;
+        this.PasswordLastSet = DateTime.Now.AddYears(-22);
+        this.LastLogOn = DateTime.Now.AddYears(-22);
+        this.UpdatedDate = DateTime.Now.AddYears(-22);
+        this.Status = (int)SystemStatus.ChangePassword;
+        this.Location = "";
+        this.TimeZone = -8;
+    }
+
+    /// <summary>
+    /// Provides a new account profile with the same values as the account profile
+    /// </summary>
+    /// <param name="accountProfile">MAccountProfile</param>
+    /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
+    public MAccountProfile(MAccountProfile accountProfile)
+    {
+        this.setDefaults();
+        this.Account = accountProfile.Account;
+        this.Email = accountProfile.Email;
+        this.EnableNotifications = accountProfile.EnableNotifications;
+        this.FirstName = accountProfile.FirstName;
+        // this.IsSystemAdmin needs to be set by the caller
+        this.LastName = accountProfile.LastName;
+        this.Location = accountProfile.Location;
+        this.MiddleName = accountProfile.MiddleName;
+        this.Name = accountProfile.Account;
+        this.PreferredName = accountProfile.PreferredName;
+        this.Status = accountProfile.Status;
+        this.TimeZone = accountProfile.TimeZone;
+    }
+
+    /// <summary>
+    /// Will populate values based on the contents of the data row.
+    /// </summary>
+    /// <param name="detailRow">DataRow containing base values</param>
+    /// <remarks>
+    /// Class should be inherited to extend to your project specific properties
+    /// </remarks>
+    public MAccountProfile(DataRow detailRow)
+    {
+        this.setDefaults();
+        this.Initialize(detailRow);
+    }
+
+    /// <summary>
+    /// Will populate values based on the contents of the data row.
+    /// Also populates the roles and groups properties.
+    /// </summary>
+    /// <param name="detailRow">DataRow containing base values</param>
+    /// <param name="assignedRolesData">DataRow containing Role data</param>
+    /// <param name="assignedGroupsData">DataRow containing Group data</param>
+    /// <param name="derivedRolesData">DataRow containing Role data derived from both assigned roles and groups.></param>
+    /// <remarks>
+    /// Class should be inherited to extend to your project specific properties
+    /// </remarks>
+    public MAccountProfile(DataRow detailRow, DataTable refreshTokens, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
+    {
+        this.setDefaults();
+        if (detailRow != null)
         {
             this.Initialize(detailRow);
+            if (refreshTokens != null) setRefreshTokens(ref m_RefreshTokens, refreshTokens);
+            if (assignedRolesData != null) setRolesOrGroups(ref m_AssignedRoles, assignedRolesData.Rows, s_RoleColumn);
+            if (assignedGroupsData != null) setRolesOrGroups(ref m_AssignedGroups, assignedGroupsData.Rows, s_GroupColumn);
+            if (derivedRolesData != null) setRolesOrGroups(ref m_DerivedRoles, derivedRolesData.Rows, s_RoleColumn);
         }
+    }
 
-        /// <summary>
-        /// Will populate values based on the contents of the data row.
-        /// Also populates the roles and groups properties.
-        /// </summary>
-        /// <param name="detailRow">DataRow containing base values</param>
-        /// <param name="assignedRolesData">DataRow containing Role data</param>
-        /// <param name="assignedGroupsData">DataRow containing Group data</param>
-        /// <param name="derivedRolesData">DataRow containing Role data derived from both assigned roles and groups.></param>
-        /// <remarks>
-        /// Class should be inherited to extend to your project specific properties
-        /// </remarks>
-        public MAccountProfile(DataRow detailRow, DataTable refreshTokens, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
-        {
-            if (detailRow != null)
-            {
-                this.Initialize(detailRow);
-                if (refreshTokens != null) setRefreshTokens(ref m_RefreshTokens, refreshTokens);
-                if (assignedRolesData != null) setRolesOrGroups(ref m_AssignedRoles, assignedRolesData.Rows, s_RoleColumn);
-                if (assignedGroupsData != null) setRolesOrGroups(ref m_AssignedGroups, assignedGroupsData.Rows, s_GroupColumn);
-                if (derivedRolesData != null) setRolesOrGroups(ref m_DerivedRoles, derivedRolesData.Rows, s_RoleColumn);
-            }
-        }
-
-    #endregion
+#endregion
 
     private static string getCommaSeparatedString(Collection<string> CollectionOfStrings)
     {
@@ -350,7 +361,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         // base.NameColumnName = "ACCT";
         // base.IdColumnName = "ACCT_SEQ_ID";
         base.Initialize(dataRow);
-        Account = base.GetString(dataRow, "ACCT");
+        this.Account = base.GetString(dataRow, "ACCT");
         this.Email = base.GetString(dataRow, "EMAIL");
         this.EnableNotifications = base.GetBool(dataRow, "ENABLE_NOTIFICATIONS");
         this.Id = base.GetInt(dataRow, "ACCT_SEQ_ID");
@@ -380,6 +391,11 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         return this.RefreshTokens?.Find(x => x.Token == token) != null;
     }
 
+    protected override void setDefaults()
+    {
+        this.Id = -1;
+    }
+
     /// <summary>
     /// Will set the collection of groups given a comma Separated string of groups.
     /// </summary>
@@ -388,7 +404,6 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     {
         setRolesOrGroups(ref m_AssignedGroups, ref commaSeparatedGroups);
     }
-
     private static void setRefreshTokens(ref List<MRefreshToken> refreshTokens, DataTable refreshTokenData)
     {
         refreshTokens = new List<MRefreshToken>();

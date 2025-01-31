@@ -17,11 +17,6 @@ public class DTO_BulkInsert_Parameters
     public bool DoDelete{ get; set; }
 
     /// <summary>
-    /// An empty DataTable used to add records from ListOfProfiles for the bulk insert
-    /// </summary>
-    public DataTable EmptyTable{ get; set; }
-
-    /// <summary>
     /// The name of the foreign key
     /// </summary>
     public string ForeignKeyName{ get; set; }

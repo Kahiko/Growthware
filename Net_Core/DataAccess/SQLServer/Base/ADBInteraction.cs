@@ -44,132 +44,132 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     {
         if (bulkInsertParameters.ListOfProfiles != null && bulkInsertParameters.ListOfProfiles.Any())
         {
-            DataTable mDataTable = bulkInsertParameters.EmptyTable.Clone();
-            DataColumnCollection mColumns = mDataTable.Columns;
             string mCommandText = string.Empty;
-
-            // Populate mDataTable with the data from the listOfIDatabaseFunctions
-            foreach (var item in bulkInsertParameters.ListOfProfiles)
-            {
-                DataRow mRow = mDataTable.NewRow();
-                PropertyInfo[] mProperties = item.GetType().GetProperties();
-                foreach (PropertyInfo mPropertyItem in mProperties)
-                {
-                    var mValue = mPropertyItem.GetValue(item, null);
-                    var mPropertyType = mPropertyItem.PropertyType;
-                    // deal with nullable properties
-                    if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        mPropertyType = mPropertyType.GetGenericArguments()[0];
-                    }
-                    if (mValue == null)
-                    {
-                        mValue = DBNull.Value;
-                    }
-                    if (!bulkInsertParameters.IncludePrimaryKey)
-                    {
-                        string mPrimaryKeyName = bulkInsertParameters.PrimaryKeyName;
-                        if (mPrimaryKeyName.StartsWith('[')) 
-                        {
-                            mPrimaryKeyName = mPrimaryKeyName.Replace("[", "").Replace("]", "");
-                        }
-                        bool mNotMatched = !string.Equals(mPropertyItem.Name, mPrimaryKeyName, StringComparison.OrdinalIgnoreCase);
-                        if (mNotMatched && mColumns.Contains(mPropertyItem.Name))
-                        {
-                            mRow[mPropertyItem.Name] = mValue;
-                        }
-                    }
-                }
-                mDataTable.Rows.Add(mRow);
-            }
 
             using var mSqlConnection = new SqlConnection(this.ConnectionString);
             mSqlConnection.Open();
             SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
-
-            // 1.) Create Destination Table
-            mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", bulkInsertParameters.TempTableName, bulkInsertParameters.DestinationTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
+            try
             {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
+                // 1.) Create Destination Table
+                mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", bulkInsertParameters.TempTableName, bulkInsertParameters.DestinationTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
                 {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            if (!bulkInsertParameters.IncludePrimaryKey)
-            {
-                mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", bulkInsertParameters.TempTableName, bulkInsertParameters.PrimaryKeyName);
-                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-                {
-                    mSqlCommand.Connection = mSqlConnection;
                     mSqlCommand.CommandType = CommandType.Text;
-                    mSqlCommand.Transaction = mSqlTransaction;
-                    if (mSqlConnection.State != ConnectionState.Open)
+                    mSqlCommand.ExecuteNonQuery();
+                }
+
+                // Retrieve ordered column names from the temporary table
+                string[] orderedColumns;
+                mCommandText = string.Format("SELECT * FROM {0}", bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    using (var reader = mSqlCommand.ExecuteReader())
                     {
-                        mSqlConnection.Open();
+                        orderedColumns = new string[reader.FieldCount]; // Initialize array with the number of columns
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            orderedColumns[i] = reader.GetName(i); // Get column names in order
+                        }
                     }
+                }
+
+                // Remove primary key column name if needed and it exists from orderedColumns
+                if (!bulkInsertParameters.IncludePrimaryKey && orderedColumns.Contains(bulkInsertParameters.PrimaryKeyName, StringComparer.OrdinalIgnoreCase))
+                {
+                    orderedColumns = orderedColumns.Where(x => !string.Equals(x, bulkInsertParameters.PrimaryKeyName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                }
+
+                // Create DataTable with the columns in the same order as the temporary table
+                IDatabaseTable mFirstObj = (IDatabaseTable)bulkInsertParameters.ListOfProfiles.First();
+                DataTable mDataTable = mFirstObj.GetEmptyTable(bulkInsertParameters.TempTableName, bulkInsertParameters.IncludePrimaryKey, orderedColumns);
+
+                // Now populate the DataTable
+                foreach (var item in bulkInsertParameters.ListOfProfiles)
+                {
+                    DataRow mRow = mDataTable.NewRow();
+                    PropertyInfo[] mProperties = item.GetType().GetProperties();
+
+                    foreach (var columnName in orderedColumns)
+                    {
+                        var mPropertyItem = mProperties.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase));
+                        if (mPropertyItem != null)
+                        {
+                            var mValue = mPropertyItem.GetValue(item, null);
+                            // Handle nullable properties
+                            if (mPropertyItem.PropertyType.IsGenericType && mPropertyItem.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                mValue = mValue ?? DBNull.Value;
+                            }
+
+                            mRow[columnName] = mValue ?? DBNull.Value; // Set to DBNull if null
+                        }
+                    }
+                    mDataTable.Rows.Add(mRow);
+                }
+
+                if (!bulkInsertParameters.IncludePrimaryKey)
+                {
+                    mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", bulkInsertParameters.TempTableName, bulkInsertParameters.PrimaryKeyName);
+                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                    {
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // 2.) Perform SqlBulkCopy of the data table in a temporary table
+                using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.Default, mSqlTransaction))
+                {
+                    mSqlBulkCopy.BatchSize = 5000;
+                    mSqlBulkCopy.DestinationTableName = bulkInsertParameters.TempTableName;
+                    mSqlBulkCopy.WriteToServer(mDataTable);
+                }
+
+                // 3.) Delete all rows associated from the db if needed
+                if (bulkInsertParameters.DoDelete)
+                {
+                    // semi correct should account for the primary key or in other words join on all columns except the primary key
+                    // b/c the primary key if one exists is always unique
+                    // for now I'm going to insist that the Destination have a single foreign key
+                    mCommandText = "DELETE {0} FROM {0} Destination INNER JOIN {1} TempTable ON Destination.{2} = TempTable.{2};";
+                    mCommandText = string.Format(mCommandText, bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName, bulkInsertParameters.ForeignKeyName);
+                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                    {
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                }
+                // 4.) Insert all the rows from the temp table into Destination
+                mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.ExecuteNonQuery();
+                }
+                mSqlTransaction.Commit();
+            }
+            catch (System.Exception ex)
+            {
+                // Roll back the transaction if an error occurs
+                mSqlTransaction.Rollback();
+                // provide more context
+                DataAccessLayerException mException = new DataAccessLayerException("An error occurred during bulk insert.", ex);
+                // Log the exception
+                m_Logger.Error(mException);
+                throw mException;
+            }
+            finally
+            {
+                // 5.) finally delete the temporary table
+                mCommandText = string.Format("IF OBJECT_ID('{0}', 'U') IS NOT NULL DROP TABLE {0};", bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
                     mSqlCommand.ExecuteNonQuery();
                 }
             }
-
-            // 2.) Perform SqlBulkCopy of the data table in a temporary table
-            using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.Default, mSqlTransaction))
-            {
-                mSqlBulkCopy.BatchSize = 5000;
-                mSqlBulkCopy.DestinationTableName = bulkInsertParameters.TempTableName;
-                mSqlBulkCopy.WriteToServer(mDataTable);
-            }
-            // 3.) Delete all rows associated from the db if needed
-            if (bulkInsertParameters.DoDelete)
-            {
-                // semi correct should account for the primary key or in other words join on all columns except the primary key
-                // b/c the primary key if one exists is always unique
-                // for now I'm going to insist that the Destination have a single foreign key
-                mCommandText = "DELETE {0} FROM {0} Destination INNER JOIN {1} TempTable ON Destination.{2} = TempTable.{2};";
-                mCommandText = string.Format(mCommandText, bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName, bulkInsertParameters.ForeignKeyName);
-                using SqlCommand mSqlCommand = new SqlCommand(mCommandText)
-                {
-                    Connection = mSqlConnection,
-                    CommandType = CommandType.Text,
-                    Transaction = mSqlTransaction
-                };
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            // 4.) Insert all the rows from the temp table into Destination
-            mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-            {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            // 5.) finally delete the temporary table
-            mCommandText = string.Format("DROP TABLE {0}", bulkInsertParameters.TempTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-            {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            mSqlTransaction.Commit();
         }
     }
 
@@ -183,9 +183,10 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
         string mRetVal = stringValue;
         if (!string.IsNullOrEmpty(mRetVal))
         {
-            mRetVal = mRetVal.Replace(";", "");
-            mRetVal = mRetVal.Replace("'", "");
-            mRetVal = mRetVal.Replace("\"", "");
+            mRetVal = mRetVal.Replace(";", "");  // Remove semicolons
+            mRetVal = mRetVal.Replace("'", "");  // Remove single quotes
+            mRetVal = mRetVal.Replace("\"", ""); // Remove double quotes
+            mRetVal = mRetVal.Trim();            // Remove leading and trailing spaces
         }
         return mRetVal;
     }

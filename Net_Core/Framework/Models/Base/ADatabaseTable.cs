@@ -33,10 +33,10 @@ public class DBColumnName : Attribute // [DBColumnName("The_Column_Name")]
 public abstract class ADatabaseTable : IDatabaseTable
 {
 
-#region Member Fields
+    #region Member Fields
 
     private DateTime? m_DefaultSystemDateTime = null;
-    
+
     private bool m_DisposedValue;
 
     protected static HashSet<Type> m_NumTypes = new HashSet<Type>
@@ -56,9 +56,9 @@ public abstract class ADatabaseTable : IDatabaseTable
 
     private const string INSERT_STATEMENT_TEMPLATE = "INSERT INTO {0} ({1}) VALUES ({2});";
 
-#endregion
+    #endregion
 
-#region Public Properties
+    #region Public Properties
 
     /// <summary>
     /// The default system date for Growthware
@@ -88,13 +88,23 @@ public abstract class ADatabaseTable : IDatabaseTable
     [DBIgnoreProperty]
     public abstract bool IsForeignKeyNumeric { get; }
 
+    [DBIgnoreProperty]
+    public string PrimaryKeyName
+    {
+        get
+        {
+            PropertyInfo[] mPropertiesArray = this.GetType().GetProperties();
+            return getPrimaryKeyName(mPropertiesArray);
+        }
+    }
+
     /// <summary>
     /// The table name in the database
     /// </summary>
     [DBIgnoreProperty]
     public abstract string TableName { get; }
 
-#endregion
+    #endregion
 
     /// <summary>
     /// Implements Dispose
@@ -222,7 +232,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL INSERT statement for the specified table and set of properties.</returns>
-    public static string GenerateInsertUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new ()
+    public static string GenerateInsertUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
         PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
             propertyInfo.CanRead
@@ -249,7 +259,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL INSERT statement for the specified table and set of properties with values.</returns>
-    public string GenerateInsertUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new ()
+    public string GenerateInsertUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
         PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
             propertyInfo.CanRead
@@ -276,7 +286,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL UPDATE statement for the specified table and set of properties using parameterised values.</returns>
-    public static string GenerateUpdateUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new ()
+    public static string GenerateUpdateUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
         PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
             propertyInfo.CanRead
@@ -287,14 +297,14 @@ public abstract class ADatabaseTable : IDatabaseTable
         m_StringBuilder.Clear();
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
-        string mPrimaryKeyName = getPrimaryKeyName<T>(getProperties<T>());
+        string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>());
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
-            if (!mFirstLoop) 
+            if (!mFirstLoop)
             {
                 m_StringBuilder.Append("      ,[").Append(getColumnName(mPropertyItem)).Append("]").Append(" @").AppendLine(getColumnName(mPropertyItem));
-            } 
-            else 
+            }
+            else
             {
                 mFirstLoop = false;
                 m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("]").Append(" @").AppendLine(getColumnName(mPropertyItem));
@@ -314,7 +324,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL UPDATE statement for the specified table and set of properties using actual values.</returns>
-    public string GenerateUpdateUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new ()
+    public string GenerateUpdateUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
         PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
             propertyInfo.CanRead
@@ -325,14 +335,14 @@ public abstract class ADatabaseTable : IDatabaseTable
         m_StringBuilder.Clear();
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
-        string mPrimaryKeyName = getPrimaryKeyName<T>(getProperties<T>());
+        string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>());
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
-            if (!mFirstLoop) 
+            if (!mFirstLoop)
             {
                 m_StringBuilder.Append("      ,[").Append(getColumnName(mPropertyItem)).Append("]").Append(" = ").AppendLine(getPropertyValue(mPropertyItem));
-            } 
-            else 
+            }
+            else
             {
                 mFirstLoop = false;
                 m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("]").Append(" = ").AppendLine(getPropertyValue(mPropertyItem));
@@ -356,7 +366,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         return DataRowHelper.GetBool(dataRow, columnName);
     }
-    
+
     /// <summary>
     /// Gets the "column name" associated with the given property.
     /// The column name is the value of the <see cref="DBColumnName"/> attribute if it exists, otherwise it is the name of the property.
@@ -409,7 +419,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         return DataRowHelper.GetDateTime(dataRow, columnName, defaultDateTime);
     }
 
-    
+
     /// <summary>
     /// Returns a DataTable with the same schema as the table represented by the given type,
     /// but with no rows. The table name is set to the tableName parameter.
@@ -419,51 +429,77 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated table.</param>
     /// <returns>A DataTable with the same schema as the table represented by the given type, but with no rows.</returns>
     /// <exception cref="ArgumentNullException">tableName is null.</exception>
-    public static DataTable GetEmptyTable<T>(string tableName, bool includePrimaryKey) where T : ADatabaseTable
+    public DataTable GetEmptyTable(string tableName, bool includePrimaryKey, string[] columnNamesInOrder)
     {
-        if (string.IsNullOrWhiteSpace(tableName))
-        {
-            throw new ArgumentNullException(nameof(tableName), "tableName cannot be a null reference (Nothing in Visual Basic) or an empty string.");
-        }
         DataTable mTempRetTable = null;
         DataTable mRetTable = null;
-        mTempRetTable = new DataTable(tableName)
-        {
-            Locale = CultureInfo.InvariantCulture
-        };
+        mTempRetTable = new DataTable(tableName);
+        string mPrimaryKeyName = handleBrackets(this.PrimaryKeyName, false);
         try
         {
-            string mPrimaryKeyName = handleBrackets(getPrimaryKeyName<T>(getProperties<T>()), false);
-            PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
+            mTempRetTable.Locale = CultureInfo.InvariantCulture;
+            // PropertyInfo[] mPropertyInfo = this.GetType().GetProperties();
+            PropertyInfo[] mPropertiesArray = this.GetType().GetProperties().Where((propertyInfo) =>
                 propertyInfo.CanRead
                 && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
                 && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
             ).ToArray();
-            foreach (PropertyInfo mPropertyItem in mPropertiesArray)
+            foreach (string mColumnName in columnNamesInOrder)
             {
-                var mPropertyType = mPropertyItem.PropertyType;
-                if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                // Find the PropertyInfo that matches the column name
+                var mPropertyItem = mPropertiesArray.FirstOrDefault(p => string.Equals(p.Name, mColumnName, StringComparison.OrdinalIgnoreCase));
+                if (mPrimaryKeyName.ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
                 {
-                    mPropertyType = mPropertyType.GetGenericArguments()[0];
+                    Type mPropertyType = mPropertyItem.PropertyType;
+                    if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        mPropertyType = mPropertyType.GetGenericArguments()[0];
+                    }
+
+                    // Create a DataColumn object
+                    DataColumn mColumn = null;
+                    switch (Type.GetTypeCode(mPropertyType))
+                    {
+                        case TypeCode.String:
+                            mColumn = new DataColumn(mPropertyItem.Name, typeof(string));
+                            break;
+                        case TypeCode.DateTime:
+                            mColumn = new DataColumn(mPropertyItem.Name, typeof(DateTime));
+                            break;
+                        case TypeCode.Int32:
+                        case TypeCode.Int64:
+                        case TypeCode.Double:
+                        case TypeCode.Decimal:
+                            mColumn = new DataColumn(mPropertyItem.Name, typeof(decimal)); // Use decimal for all numeric types
+                            break;
+                        case TypeCode.Boolean:
+                            mColumn = new DataColumn(mPropertyItem.Name, typeof(int)); // Use NUMBER (0 or 1) for boolean
+                            break;
+                        default:
+                            mColumn = new DataColumn(mPropertyItem.Name, typeof(object));
+                            break;
+                    }
+
+                    // Add the column to the DataTable
+                    if (mColumn != null)
+                    {
+                        mTempRetTable.Columns.Add(mColumn);
+                    }
                 }
-                if(mPropertyItem.Name.ToLowerInvariant() != mPrimaryKeyName.ToLowerInvariant()) 
+                else if (includePrimaryKey)
                 {
-                    mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
-                } 
-                else if (includePrimaryKey) 
-                {
-                    mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
-                }
+                    mTempRetTable.Columns.Add(new DataColumn(mPropertyItem.Name, mPropertyItem.PropertyType));
+                }                
             }
             mRetTable = mTempRetTable;
         }
-        catch (System.Exception)
+        catch (NullReferenceException)
         {
             throw;
         }
         finally
         {
-            mTempRetTable?.Dispose();
+            if (mTempRetTable != null) mTempRetTable.Dispose();
         }
         return mRetTable;
     }
@@ -478,7 +514,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// Because a data table can only have 1 primary key, this method returns the first property that has the DBPrimaryKey attribute.
     /// Note: this method does not handle compound primary key.
     /// </remarks>
-    private static string getPrimaryKeyName<T>(PropertyInfo[] propertyInfoArray) where T : ADatabaseTable
+    private static string getPrimaryKeyName(PropertyInfo[] propertyInfoArray)
     {
         // TODO: add support for compound primary key
         PropertyInfo mPrimaryKeyProperty = propertyInfoArray.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
@@ -490,6 +526,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         return mRetVal;
     }
 
+
     /// <summary>
     /// Returns an int given the DataRow and Column name
     /// </summary>
@@ -500,7 +537,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         return DataRowHelper.GetInt(dataRow, columnName);
     }
-    
+
     /// <summary>
     /// Gets an array of PropertyInfo objects with the BindingFlasts of Public, Instance, and Static.
     /// </summary>
@@ -540,7 +577,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         if (propertyInfo == null)
         {
-            throw new ArgumentNullException(nameof(propertyInfo), "propertyInfo cannot be a null reference (Nothing in Visual Basic)"); 
+            throw new ArgumentNullException(nameof(propertyInfo), "propertyInfo cannot be a null reference (Nothing in Visual Basic)");
         }
         string mRetVal = formatValue(propertyInfo.GetValue(this));
         return mRetVal;
@@ -565,7 +602,7 @@ public abstract class ADatabaseTable : IDatabaseTable
             throw new ArgumentNullException(nameof(propertyInfoArray), "propertyInfoArray cannot be a null reference (Nothing in Visual Basic)");
         }
         PropertyInfo mRetVal = propertyInfoArray.Where(item => item.Name == propertyName).First();
-        if (mRetVal == null) 
+        if (mRetVal == null)
         {
             throw new ArgumentException($"The property name {propertyName} was not found.");
         }
