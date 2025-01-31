@@ -94,7 +94,11 @@ public abstract class AbstractFeedbackController : ControllerBase
                 int mAnonymousId = AccountUtility.GetAccount("Anonymous").Id;
                 int mAssigneeId = AccountUtility.GetAccount(feedback.Assignee).Id;
                 int mFunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
-                int mVerifiedById = AccountUtility.GetAccount(feedback.VerifiedBy).Id;
+                int mVerifiedById = -1;
+                if (!string.IsNullOrEmpty(feedback.VerifiedBy))
+                {
+                    mVerifiedById = AccountUtility.GetAccount(feedback.VerifiedBy).Id;
+                }
                 if (mAssigneeId == 0)
                 {
                     // this must be set to an existing account id so we'll use the Anonymous account
