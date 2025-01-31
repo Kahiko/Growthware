@@ -11,31 +11,33 @@ namespace GrowthWare.Framework.Models.Base;
 [Serializable()]
 public abstract class AAddedUpdated : ADatabaseTable, IAddedUpdated
 {
-    #region Public Properties
-        /// <summary>
-        /// Account ID used to add
-        /// </summary>
-        [DBColumnName("Added_By")]
-        public int AddedBy { get; set; }
+    
+#region Public Properties
+    /// <summary>
+    /// Account ID used to add
+    /// </summary>
+    [DBColumnName("Added_By")]
+    public int AddedBy { get; set; }
 
-        /// <summary>
-        /// Date the row was added.
-        /// </summary>
-        [DBColumnName("Added_Date")]
-        public DateTime AddedDate { get; set; }
+    /// <summary>
+    /// Date the row was added.
+    /// </summary>
+    [DBColumnName("Added_Date")]
+    public DateTime AddedDate { get; set; }
 
-        /// <summary>
-        /// Account ID used to update
-        /// </summary>
-        [DBColumnName("Updated_By")]
-        public int UpdatedBy { get; set; }
+    /// <summary>
+    /// Account ID used to update
+    /// </summary>
+    [DBColumnName("Updated_By")]
+    public int UpdatedBy { get; set; }
 
-        /// <summary>
-        /// The date lasted updated
-        /// </summary>
-        [DBColumnName("Updated_Date")]
-        public DateTime UpdatedDate { get; set; }
-    #endregion
+    /// <summary>
+    /// The date lasted updated
+    /// </summary>
+    [DBColumnName("Updated_Date")]
+    public DateTime UpdatedDate { get; set; }
+
+#endregion
 
     /// <summary>
     /// Initializes properties given a DataRow
