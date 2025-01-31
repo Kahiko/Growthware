@@ -33,9 +33,6 @@ public class DBColumnName : Attribute // [DBColumnName("The_Column_Name")]
 public abstract class ADatabaseTable : IDatabaseTable
 {
 
-
-
-
 #region Private Fields
 
     private DateTime? m_DefaultSystemDateTime = null;
