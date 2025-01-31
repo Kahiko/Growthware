@@ -412,6 +412,65 @@ public abstract class ADatabaseTable : IDatabaseTable
         return DataRowHelper.GetDateTime(dataRow, columnName, defaultDateTime);
     }
 
+    
+    /// <summary>
+    /// Returns a DataTable with the same schema as the table represented by the given type,
+    /// but with no rows. The table name is set to the tableName parameter.
+    /// </summary>
+    /// <typeparam name="T">The object type in wich the column names and data types will be derived.</typeparam>
+    /// <param name="tableName">Used to populate the emptyTable.TableName property of the returned DataTable.</param>
+    /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated table.</param>
+    /// <returns>A DataTable with the same schema as the table represented by the given type, but with no rows.</returns>
+    /// <exception cref="ArgumentNullException">tableName is null.</exception>
+    public static DataTable GetEmptyTable<T>(string tableName, bool includePrimaryKey) where T : ADatabaseTable
+    {
+        if (string.IsNullOrWhiteSpace(tableName))
+        {
+            throw new ArgumentNullException(nameof(tableName), "tableName cannot be a null reference (Nothing in Visual Basic) or an empty string.");
+        }
+        DataTable mTempRetTable = null;
+        DataTable mRetTable = null;
+        mTempRetTable = new DataTable(tableName)
+        {
+            Locale = CultureInfo.InvariantCulture
+        };
+        try
+        {
+            string mPrimaryKeyName = handleBrackets(getPrimaryKeyName<T>(getProperties<T>()), false);
+            PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
+                propertyInfo.CanRead
+                && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
+                && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
+            ).ToArray();
+            foreach (PropertyInfo mPropertyItem in mPropertiesArray)
+            {
+                var mPropertyType = mPropertyItem.PropertyType;
+                if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    mPropertyType = mPropertyType.GetGenericArguments()[0];
+                }
+                if(mPropertyItem.Name.ToLowerInvariant() != mPrimaryKeyName.ToLowerInvariant()) 
+                {
+                    mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
+                } 
+                else if (includePrimaryKey) 
+                {
+                    mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
+                }
+            }
+            mRetTable = mTempRetTable;
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            mTempRetTable?.Dispose();
+        }
+        return mRetTable;
+    }
+
     /// <summary>
     /// Gets the name of the property that has the DBPrimaryKey attribute.
     /// </summary>
