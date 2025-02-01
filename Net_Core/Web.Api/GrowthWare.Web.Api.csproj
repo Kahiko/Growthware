@@ -15,4 +15,9 @@
     <ProjectReference Include="..\Web.Support\GrowthWare.Web.Support.csproj" />
     <ProjectReference Include="..\Framework\GrowthWare.Framework.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyGrowthWareJson" AfterTargets="Build">
+    <Copy SourceFiles="..\GrowthWare.json" DestinationFolder="$(OutDir)" />
+  </Target>
+
 </Project>
