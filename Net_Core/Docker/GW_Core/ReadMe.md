@@ -19,8 +19,8 @@ We do this by staring with a Dockerfile that uses the "mcr.microsoft.com/dotnet/
 The process will install GIT as well as clone the repository.
 
 pull_Images.cmd - Pull the two images used to create the net_core container
-build_N_Start.cmd - Will build and start the net_core container without using cache
-start.cmd - Will start the net_core container using cache
+build_NoCache_N_Start.cmd - Will build and start the net_core container without using cache
+build_N_Start.cmd - Will build and start the net_core container using cache
 
 After you have built the container the first time you will need to run the command "ng completion" from the Web.Angular folder.
     1.) Start VS Code (code .)
