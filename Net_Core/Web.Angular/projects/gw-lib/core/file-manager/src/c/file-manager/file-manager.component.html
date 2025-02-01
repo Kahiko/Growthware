@@ -1,5 +1,6 @@
-<div class="file-manager-container">
+<div class="file-manager">
   <div class="toolbar">
+    <!-- Place toolbar items here -->
     <mat-toolbar>
       <span>
         <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName()}}" name="btnNewFolder_{{configurationName()}}" (click)="onCreateDirectory()">
@@ -33,13 +34,17 @@
       </span>
     </mat-toolbar>
   </div>
-  <div class="content">
-    <div class="directory-tree">
-      <!-- Directory tree content -->
+
+  <div class="main-section">
+    <div class="left-pane">
+      <!-- Directory list will go here -->
       <gw-core-directory-tree />
     </div>
-    <div class="file-list">
-      <!-- File list content -->
+
+    <div #divider class="divider" (mousedown)="onMouseDown($event)"></div>
+
+    <div class="right-pane">
+      <!-- Files list will go here -->
       @if ((skin$()); as layout) {
         @switch (layout) {
           @case ('snake') {
@@ -58,39 +63,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #helpText>
-  <div class="formSectionContents">
-    <p>
-      File manage uses "right click" context menu to manage files and folders.
-    </p>
-    <p>
-      Foler:
-    </p>
-    <ul>
-      <li>Select the desired folder by "left" clicking on the folder</li>
-      <li>"Right" click on the selected folder to open the context menu</li>
-    </ul>
-    <p>
-      File:
-    </p>
-    <ul>
-      <li>"Right" click on the file to open the context menu</li>
-      <li>
-        Checkboxes are used to select multiple files to be deleted.
-        <ul>
-          <li>Checkboxes will be reset:</li>
-          <ul>
-            <li>When changing pages</li>
-            <li>When filtering</li>
-            <li>When changing the view from "List" to "Table"</li>
-          </ul>
-          <p>
-            <br/>
-            <b>Note:</b> Checkboxes are reset because no file should be deleted without being seen.
-          </p>
-      </ul>
-      </li>
-    </ul>
-  </div>
-</ng-template>

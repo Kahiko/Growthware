@@ -1,40 +1,57 @@
-$file-list-width: 875px;
+// Define the widths for the sections
 $directory-tree-width: 300px;
-$content-width: calc(#{$directory-tree-width} - 16px + #{$file-list-width});
+$file-list-width: 875px;
 
-.file-manager-container {
+// Calculate content width dynamically based on the above variables
+$content-width: calc(#{$directory-tree-width} - 64px + #{$file-list-width});
+
+.file-manager {
     display: flex;
     flex-direction: column;
-    align-items: start; // Ensure toolbar matches content width
-    height: 100vh; // Full viewport height
-
+    height: 100vh;
+  
     .toolbar {
-        width: $content-width; // Match content width
-        height: 50px; // Fixed height
-        background: #f4f4f4;
-        display: flex;
-        align-items: center;
-        padding: 0 16px;
-        border-bottom: 1px solid #ddd;
+      background-color: #f5f5f5;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+  
+    .main-section {
+      display: flex;
+      flex-grow: 1;
+      background-color: #fff;
+  
+      .left-pane {
+        width: 300px;
+        height: 100%;
+        // min-width: 300px;
+        min-width: 0px;  // Allow collapsing fully
+        // background-color: #e9ecef;
+        padding: 10px;
+        overflow-y: auto;
+      }
+  
+      .divider {
+        width: 5px;
+        cursor: ew-resize;
+        background-color: #ccc;
+        user-select: none;
+      }
+  
+      .right-pane {
+        flex-grow: 1;
+        padding: 10px;
+        overflow-y: auto;
+      }
 
-    .content {
-        display: grid;
-        grid-template-columns: $directory-tree-width auto; // Left fixed, right flexible
-        height: 100%; // Take remaining height
-        width: $content-width; // Use calculated width
-        overflow: hidden;
-    }
+    //   .right-pane {
+    //     flex-grow: 1;
+    //     min-width: 0;
+    //     overflow-x: auto; // Enable horizontal scrollbar when needed
+    //     overflow-y: hidden; // Adjust as necessary
+    //   }
 
-    .directory-tree {
-        width: $directory-tree-width; // Fixed width
-        overflow: auto; // Scrollable both ways
-        border-right: 1px solid #ddd; // give a dividing "bar"
     }
-
-    .file-list {
-        padding-top: 5px; // Keep the text in the mat-form-field of the search bar from being cut off
-        min-width: $file-list-width; // Fixed width
-        overflow: auto; // Scrollable both ways
-    }
-}
+  }

@@ -1,3 +1,12 @@
+// :host {
+//   display: block;
+//   width: 100%;
+//   height: 100%;
+//   overflow-x: auto; // Enables horizontal scrolling when needed
+//   overflow-y: auto; // Enables vertical scrolling if necessary
+//   white-space: nowrap; // Prevents content from wrapping
+// }
+
 li {
   display: flex;
   flex-direction: row;
@@ -5,7 +14,7 @@ li {
 }
 
 .grid-list__ul {
-  position: absolute;
+  // position: absolute;
   left: 295px;
   margin-top: 0;
   list-style-type: none;
