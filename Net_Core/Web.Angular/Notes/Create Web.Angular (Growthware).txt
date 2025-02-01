@@ -59,13 +59,23 @@ From a command prompt and the directory you would like to create your new projec
 	@angular-eslint/schematics - Optional but very usefull
 
 	npm install run-script-os --save
-  npm install roboto-fontface --save
 	--npm install bootstrap --save
 	--npm install @ngrx/store --save
 	--npm install @ngrx/effects --save
 	--npm install @ngrx/router-store --save
 	--rem npm install ngx-toastr --save -- attempting self atm
 	--npm install @types/bootstrap --save -- may not need
+
+	  --Install the Angular roboto fonts and Angular Material Icons via npm
+  npm install @fontsource/roboto material-icons --save
+	  --Modify the angular.json file and add the two entries (remember to use commas):
+	  --	"node_modules/@fontsource/roboto/index.css"
+	  --	"node_modules/material-icons/iconfont/material-icons.css"
+	  --Required: 
+	  --	projects > [yourProjectName] > architect > build > options > styles
+	  --Optionally if your testing involves testing: 
+	  --	projects > [yourProjectName] > architect > test > options > styles
+	  --Please be aware when you "debug" the application the startup time is much longer!
 
 	npm install @auth0/angular-jwt --save
 
