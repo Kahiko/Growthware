@@ -29,7 +29,7 @@
             "request": "launch",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
-            "url": "https://localhost:44455",
+            "url": "https://127.0.0.1:44455",
             "webRoot": "${workspaceFolder}/Web.Angular",
             "sourceMaps": true,
             // "trace": true,
@@ -45,7 +45,7 @@
             "request": "launch",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
-            "url": "https://localhost:44455",
+            "url": "https://127.0.0.1:44455",
             "webRoot": "${workspaceFolder}/Web.Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {

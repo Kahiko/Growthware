@@ -26,8 +26,8 @@ RUN git config --global --add safe.directory /growthware
 RUN git clone --branch feature/feedback https://github.com/Kahiko/Growthware.git growthware
 
 # Setup the dev certs
-RUN mkdir -p /root/.aspnet/https
-RUN chmod 777 /root/.aspnet/https
+# RUN mkdir -p $HOME/.aspnet/https
+# RUN chmod 777 $HOME/.aspnet/https
 RUN dotnet dev-certs https
 RUN dotnet dev-certs https --trust
 WORKDIR /growthware/Net_Core
