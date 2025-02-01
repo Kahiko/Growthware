@@ -55,6 +55,7 @@ public class CacheHelper
     private CacheHelper()
     {
         this.s_CacheDirectory = Path.Combine(Environment.CurrentDirectory, "CacheDependency");
+        this.prepDirectory();
         this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
         this.m_FileProvider = new PhysicalFileProvider(s_CacheDirectory);  // Use a single instance
     }
