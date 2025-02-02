@@ -46,6 +46,6 @@ public class MCalendar : AAddedUpdated
 
     protected override void setDefaults()
     {
-        throw new NotImplementedException();
+        this.Id = -1;
     }
 }
