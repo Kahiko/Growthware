@@ -38,6 +38,7 @@
         - MAccountProfile           to AAddedUpdated
         - MRefreshToken             to ADatabaseTable
         - MCalendarEvent            to AAddedUpdated
+        - MCalendar                 to AAddedUpdated
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 
 ### Known Bugs
