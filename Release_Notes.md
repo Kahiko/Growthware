@@ -39,6 +39,7 @@
         - MRefreshToken             to ADatabaseTable
         - MCalendarEvent            to AAddedUpdated
         - MCalendar                 to AAddedUpdated
+        - MDBInformation            to AAddedUpdated
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 
 ### Known Bugs
