@@ -302,12 +302,12 @@ public abstract class ADatabaseTable : IDatabaseTable
         {
             if (!mFirstLoop)
             {
-                m_StringBuilder.Append("      ,[").Append(getColumnName(mPropertyItem)).Append("]").Append(" @").AppendLine(getColumnName(mPropertyItem));
+                m_StringBuilder.Append("      ,[").Append(getColumnName(mPropertyItem)).Append("] = ").Append('@').AppendLine(getColumnName(mPropertyItem));
             }
             else
             {
                 mFirstLoop = false;
-                m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("]").Append(" @").AppendLine(getColumnName(mPropertyItem));
+                m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("] = ").Append('@').AppendLine(getColumnName(mPropertyItem));
             }
         }
         m_StringBuilder.Append("WHERE ").Append(mPrimaryKeyName).Append(" = @").AppendLine(mPrimaryKeyName);
@@ -336,6 +336,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
         string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>());
+        PropertyInfo mPrimaryKeyProperty = getProperties<T>().Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
             if (!mFirstLoop)
@@ -348,7 +349,7 @@ public abstract class ADatabaseTable : IDatabaseTable
                 m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("]").Append(" = ").AppendLine(getPropertyValue(mPropertyItem));
             }
         }
-        m_StringBuilder.Append("WHERE ").Append(mPrimaryKeyName).Append(" = @").AppendLine(mPrimaryKeyName);
+        m_StringBuilder.Append("WHERE [").Append(mPrimaryKeyName).Append("] = ").AppendLine(getPropertyValue(mPrimaryKeyProperty));
         string mRetVal = m_StringBuilder.ToString();
         m_StringBuilder.Clear();
         mRetVal = handleBrackets(mRetVal, useBrackets);
