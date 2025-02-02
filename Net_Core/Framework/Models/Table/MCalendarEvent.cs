@@ -7,53 +7,68 @@ namespace GrowthWare.Framework.Models;
 /// Properties for a calendar event.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MCalendarEvent : AbstractBaseModel
+public class MCalendarEvent : AAddedUpdated
 {
-    #region Public Properties
-        public bool AllDay {get; set;}
 
-        public int CalendarSeqId {get; set;}
+#region Public Properties
+    public bool AllDay {get; set;}
 
-        public string Color {get; set;}
+    public int CalendarSeqId {get; set;}
 
-        public string Description {get; set;}
+    public string Color {get; set;}
 
-        /// <summary>
-        /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
-        /// </summary>
-        public string End {get; set;}
+    public string Description {get; set;}
 
-        public string Link {get; set;}
+    /// <summary>
+    /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
+    /// </summary>
+    public string End {get; set;}
 
-        public string Location {get; set;}
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "CalendarSeqId";
 
-        [DBIgnoreProperty]
-        public string Owner {get; set;}
+    [DBPrimaryKey]
+    [DBColumnName("CalendarEventSeqId")]
+    public int Id {get; set;}
 
-        /// <summary>
-        /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
-        /// </summary>
-        public string Start {get; set;}
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
 
-        public string Title {get; set;}
-    #endregion
+    public string Link {get; set;}
+
+    public string Location {get; set;}
+
+    [DBIgnoreProperty]
+    public string Owner {get; set;}
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWOptional].[Calendar_Events]";
+
+    /// <summary>
+    /// The expected format is ISO 8601.  Example '2024-04-18T14:00:00.000Z'
+    /// </summary>
+    public string Start {get; set;}
+
+    public string Title {get; set;}
+#endregion
 
     #region Constructors
         public MCalendarEvent()
         {
+            this.setDefaults();
         }
 
         public MCalendarEvent(DataRow detailRow)
         {
+            this.setDefaults();
             this.Initialize(detailRow);
         }
     #endregion
 
     protected new void Initialize(DataRow dataRow)
     {
-        this.IdColumnName = "CalendarEventSeqId";
-        // this.NameColumnName = "Title";
         base.Initialize(dataRow);
+        this.Id = base.GetInt(dataRow, "CalendarEventSeqId");
         this.AllDay = base.GetBool(dataRow, "AllDay");
         this.CalendarSeqId = base.GetInt(dataRow, "CalendarSeqId");
         this.Color = base.GetString(dataRow, "Color");
@@ -64,5 +79,10 @@ public class MCalendarEvent : AbstractBaseModel
         this.Owner = base.GetString(dataRow, "Owner");
         this.Start = base.GetDateTime(dataRow, "Start", DateTime.Now).ToString();
         this.Title = base.GetString(dataRow, "Title");
+    }
+
+    protected override void setDefaults()
+    {
+        this.Id = -1;
     }
 }
