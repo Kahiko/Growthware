@@ -41,6 +41,7 @@
         - MCalendar                 to AAddedUpdated
         - MDBInformation            to AAddedUpdated
         - MDirectoryProfile         to AAddedUpdated
+        - MFeedback                 to ADatabaseTable (The [ZGWOptional].[Feedbacks] is an "in-line" history table, use only with the stored procedures)
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 
 ### Known Bugs
