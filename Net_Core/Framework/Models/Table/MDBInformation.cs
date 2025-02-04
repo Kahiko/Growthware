@@ -59,14 +59,14 @@ public class MDBInformation : AAddedUpdated
     }
 
     [DBIgnoreProperty]
-    public override string ForeignKeyName => throw new System.NotImplementedException();
+    public override string ForeignKeyName => "not used";
 
     [DBPrimaryKey]
     [DBColumnName("Database_InformationSeqId")]
     public int Id { get; set; }
 
     [DBIgnoreProperty]
-    public override bool IsForeignKeyNumeric => throw new System.NotImplementedException();
+    public override bool IsForeignKeyNumeric => false;
 
 #endregion
 
