@@ -67,6 +67,7 @@
 - Fixed Upload was not setting startingByte and endingByte correctly in FileManagerService.uploadFile for the first call to multiPartFileUpload
 - Fixed CacheHelper where the item was not being removed from the MemoryCache collection in the changeCallback method
 - Fixed sorting in the TableFileListComponent, it was not sorting the size correctly
+- Fixed multiple modal windows closing when using the ESC key
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 

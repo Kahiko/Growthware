@@ -18,6 +18,7 @@ type Content<T> = string | TemplateRef<T> | Type<T>;
 export class ModalService {
 	private _ActiveModals: IContentObject[] = [];
 	private _ContentType: ContentType = ContentType.String;
+	private _IsKeyDownListenerActive: boolean = false;
 
 	constructor(
 		private _ApplicationRef: ApplicationRef,
@@ -25,6 +26,27 @@ export class ModalService {
 		private _GWCommon: GWCommon,
 		// private _LoggingSvc: LoggingService,
 	) { }
+
+	/**
+	 * Handles the keydown event.
+	 * If the key pressed is ESC, stop the propagation and close the last modal if there are any.
+	 * @param {KeyboardEvent} event - The keydown event.
+	 */
+	private handleKeyDown(event: KeyboardEvent): void {
+		// We handle the ESC key here so that we can limit the closing or canceling
+		// of a modal to the last one opened.
+		if (event.key === 'Escape') {
+			event.stopPropagation();
+			if (this._ActiveModals.length > 0) {
+				// Get the last modal in the active modals array
+				const mLastModal = this._ActiveModals[this._ActiveModals.length - 1];
+				if (mLastModal) {
+					// Call the cancel method for the last modal
+					mLastModal.modalComponentRef.instance.onCancel();
+				}
+			}
+		}
+	}
 
 	/**
 	 * Closes a modal for the specified key.
@@ -53,6 +75,11 @@ export class ModalService {
 			this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
 			mContentObj.modalComponentRef.destroy();
 			this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
+			// Add the keydown event listener for ESC key if not already added
+			if (!this._IsKeyDownListenerActive) {
+				this._Document.addEventListener('keydown', this.handleKeyDown.bind(this));
+				this._IsKeyDownListenerActive = true; // Set the flag to true
+			}
 		}
 	}
 
@@ -87,6 +114,7 @@ export class ModalService {
 			projectableNodes: [mNgContent], // pass the child here
 		});
 		mModalComponentRef.instance.setUp(options); // sets up UI properties (height, width, show components, etc.)
+
 		this.setupModalCallbacks(options, mModalComponentRef.instance);
 		// append to body, we will use platform document for this
 		const mDialogElement = (<EmbeddedViewRef<unknown>>mModalComponentRef.hostView).rootNodes[0];
@@ -95,7 +123,16 @@ export class ModalService {
 		if (this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
 			mContentObject.payloadRef = mResolvedNgContent;
 		}
+
+		// Add the keydown event listener for ESC key if not already added
+		if (!this._IsKeyDownListenerActive) {
+			this._Document.addEventListener('keydown', this.handleKeyDown.bind(this));
+			this._IsKeyDownListenerActive = true; // Set the flag to true
+		}
+
+		// add the new modal to the array
 		this._ActiveModals.push(mContentObject);
+
 		// append the dialog element to the body :-)
 		this._Document.body.append(mDialogElement);
 		// attach the ModalComponentRef host view to the application view
@@ -139,7 +176,7 @@ export class ModalService {
 	 * @return {any} - The resolved ngContent.
 	 * @memberof ModalDirective
 	 */
-	private resolveNgContent<T>(content: Content<T>) {
+	private resolveNgContent<T>(content: Content<T>): any {
 		this._ContentType = ContentType.String;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mRetVal: any;

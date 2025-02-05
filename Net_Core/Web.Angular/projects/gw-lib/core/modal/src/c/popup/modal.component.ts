@@ -104,21 +104,12 @@ export class ModalComponent implements OnDestroy, OnInit {
 
   }
 
-  private keyDownHandler(e: KeyboardEvent): void {
-    // console.log(`Key "${e.key}" released [event: keyup]`);
-    if (e.key === 'Escape') {
-      this.onCancel();
-    }
-  }
-
   ngOnDestroy(): void {
-    document.removeEventListener('keyup', this.keyDownHandler);
+    // do nothing atm
   }
 
   ngOnInit(): void {
-    document.addEventListener('keyup', (e) => {
-      this.keyDownHandler(e);
-    });
+    // do nothing atm
   }
 
   onCancel(): void {
