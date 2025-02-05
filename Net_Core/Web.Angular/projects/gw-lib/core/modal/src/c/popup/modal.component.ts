@@ -4,7 +4,6 @@ import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 // Interfaces / Common Code
 import { CallbackButton, ICallbackButton } from '@growthware/common/interfaces';
 import { IModalOptions } from '../../modal-options.model';
@@ -19,8 +18,7 @@ import { CommonModule } from '@angular/common';
     CdkDragHandle,
     CommonModule, 
     MatButtonModule, 
-    MatIconModule, 
-    MatToolbarModule
+    MatIconModule
   ],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']

@@ -1,11 +1,8 @@
 <div class="modal-background">
   <div class="modal__div" [ngStyle]="{ 'width.px': width + 10 }" cdkDrag>
-    <div cdkDragHandle>
-      <mat-toolbar class="mat-toolbar toolbar" color="accent">
-        <h2>{{header}}</h2>
-        <span class="spacer"></span>
-        <span id="{{cancelBtn.id}}" (click)="onCancel()" class="button__link" aria-label="Close">&times;</span>
-      </mat-toolbar>
+    <div class="modal-header__div" cdkDragHandle>
+      <span>{{ header }}</span>
+      <button class="modal-close" (click)="onCancel()">&times;</button>
     </div>
     <div class="modal-body__div" [ngStyle]="{ 'height.px': height, 'width.px': width }">
       <ng-content></ng-content>
