@@ -78,3 +78,35 @@
   -moz-border-top-right-radius: 10px;
   -webkit-border-top-right-radius: 10px;
 }
+
+.resize-handle {
+  position: absolute;
+  background-color: transparent; // Make it transparent
+  width: 5px; // Adjust width for a subtle look
+  height: 5px; // Adjust height for a subtle look
+  z-index: 10; // Ensure it's above other elements
+}
+
+.right {
+  width: 10px;                        /* Width of the right resize handle */
+  height: 100%;                       /* Full height */
+  right: -5px;                        /* Align to the right */
+  top: 0;                             /* Align to the top */
+  cursor: ew-resize;
+}
+
+.bottom {
+  width: 100%;                        /* Full width */
+  height: 10px;                       /* Height of the bottom resize handle */
+  bottom: -5px;                       /* Align to the bottom */
+  left: 0;                            /* Align to the left */
+  cursor: ns-resize;
+}
+
+.bottom-right {
+  width: 10px;                        /* Width of the lower right resize handle */
+  height: 10px;                       /* Height of the lower right resize handle */
+  bottom: -5px;                       /* Align to the bottom */
+  right: -5px;                        /* Align to the right */
+  cursor: nwse-resize;                /* Diagonal resize cursor */
+}

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 // Angular Material cdk
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
@@ -24,15 +24,23 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnDestroy, OnInit {
+
+  private _IsResizing: boolean = false;
+
+  @ViewChild('modalDiv') modalElement!: ElementRef; // Reference to the modal element
+  @ViewChild('bottomRightHandle') bottomRightHandle!: ElementRef; // Reference to the bottom right handle
+  @ViewChild('rightHandle') rightHandle!: ElementRef; // Reference to the right handle
+  @ViewChild('bottomHandle') bottomHandle!: ElementRef; // Reference to the bottom handle
+
   public header: string = '';
-  public height: number = 0;
+  public height: number = 0; // Default height
+  public width: number = 0; // Default width
   public modalId: string = '';
   public showFooter: boolean = false;
   public showCloseBtn: boolean = false;
   public showOkBtn: boolean = false;
-  public width: number = 0;
   public returnData: unknown;
-  // 'text', 'id', 'name', 'visible', className: string = 'btn btn-primary', color: string = 'primary'
+
   public cancelBtn: ICallbackButton = new CallbackButton('Cancel', this.modalId + '_CancelBtn', this.modalId + '_CancelBtn');
   public closeBtn: ICallbackButton = new CallbackButton('Close', this.modalId + '_CloseBtn', this.modalId + '_CloseBtn', true);
   public okBtn: ICallbackButton = new CallbackButton('OK', this.modalId + '_OkBtn', this.modalId + '_OkBtn', true);
@@ -41,16 +49,22 @@ export class ModalComponent implements OnDestroy, OnInit {
   public closeCallBackMethod?: (arg?: unknown) => void;
   public oKCallBackMethod?: (arg?: unknown) => void;
 
+  private currentDirection: string = ''; // Property to store current resize direction
+
   constructor() { }
+
+  ngOnInit() {
+    // do nothing atm
+  }
 
   private getWindowSize(options: IModalOptions): IWindowSize {
     /**
-	 * 3 - ExtraLarge = 95,
-	 * 2 - Large = 60,
-	 * 0 - Normal = 40,
-	 * 1 - Small = 20,
-	 * Custom = -1,
-	 */
+     * 3 - ExtraLarge = 95,
+     * 2 - Large = 60,
+     * 0 - Normal = 40,
+     * 1 - Small = 20,
+     * Custom = -1,
+     */
 
     let mPercentage = .40;
     const mRetVal = new WindowSize(0, 0);
@@ -99,14 +113,72 @@ export class ModalComponent implements OnDestroy, OnInit {
     if(this.closeBtn.visible || this.okBtn.visible) {
       this.showFooter = true;
     }
+  }
 
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(event: MouseEvent) {
+    if (event && event.target) {
+      if (
+        event.target === this.bottomRightHandle.nativeElement ||
+        event.target === this.rightHandle.nativeElement ||
+        event.target === this.bottomHandle.nativeElement
+      ) {
+        event.preventDefault();
+        event.stopPropagation(); // Prevent drag from firing
+        this._IsResizing = true; // Set resizing flag
+        this.currentDirection = this.getResizeDirection(event.target); // Set the current direction
+        document.addEventListener('mousemove', this.resizeModal.bind(this)); // No direction passed here
+        document.addEventListener('mouseup', this.stopResize.bind(this));
+      }
+    }
+  }
+
+  getResizeDirection(target: EventTarget) {
+    if (target === this.bottomRightHandle.nativeElement) return 'bottom-right';
+    if (target === this.rightHandle.nativeElement) return 'right';
+    if (target === this.bottomHandle.nativeElement) return 'bottom';
+    return '';
+  }
+
+  resizeModal(event: MouseEvent) {
+    const modalRect = this.modalElement.nativeElement.getBoundingClientRect(); // Get current dimensions and position of the modal
+
+    switch (this.currentDirection) { // Use the stored direction
+      case 'left':
+        const newWidthLeft = modalRect.right - event.clientX; // Calculate new width
+        this.width = Math.max(newWidthLeft, 100); // Set minimum width
+        this.modalElement.nativeElement.style.left = `${event.clientX}px`; // Adjust position
+        break;
+      case 'right':
+        const newWidthRight = event.clientX - modalRect.left; // Calculate new width
+        this.width = Math.max(newWidthRight, 100); // Set minimum width
+        break;
+      case 'top':
+        const newHeightTop = modalRect.bottom - event.clientY; // Calculate new height
+        this.height = Math.max(newHeightTop, 100); // Set minimum height
+        this.modalElement.nativeElement.style.top = `${event.clientY}px`; // Adjust position
+        break;
+      case 'bottom':
+        const newHeightBottom = event.clientY - modalRect.top; // Calculate new height
+        this.height = Math.max(newHeightBottom, 100); // Set minimum height
+        break;
+      case 'bottom-right':
+        const newWidthBR = event.clientX - modalRect.left; // Calculate new width
+        const newHeightBR = event.clientY - modalRect.top; // Calculate new height
+        this.width = Math.max(newWidthBR, 100); // Set minimum width
+        this.height = Math.max(newHeightBR, 100); // Set minimum height
+        break;
+    }
+  }
+
+  stopResize() {
+    this._IsResizing = false; // Reset resizing flag
+    document.removeEventListener('mousemove', this.resizeModal.bind(this));
+    document.removeEventListener('mouseup', this.stopResize.bind(this));
+    this.currentDirection = ''; // Reset the direction
   }
 
   ngOnDestroy(): void {
-    // do nothing atm
-  }
-
-  ngOnInit(): void {
     // do nothing atm
   }
 

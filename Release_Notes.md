@@ -44,6 +44,7 @@
         - MFeedback                 to ADatabaseTable (The [ZGWOptional].[Feedbacks] is an "in-line" history table, use only with the stored procedures)
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 - The modal window is now centered vertically
+- Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
 
 
 ### Known Bugs

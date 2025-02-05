@@ -1,5 +1,5 @@
 <div class="modal-background">
-  <div class="modal__div" cdkDrag>
+  <div class="modal__div" #modalDiv cdkDrag>
     <div class="modal-header__div" cdkDragHandle>
       <span>{{ header }}</span>
       <button class="modal-close" (click)="onCancel()">&times;</button>
@@ -17,5 +17,9 @@
         }
       </div>
     }
+    <!-- Resize Handles -->
+    <div class="resize-handle right" #rightHandle></div>
+    <div class="resize-handle bottom" #bottomHandle></div>
+    <div class="resize-handle bottom-right" #bottomRightHandle></div> <!-- Lower right corner -->
   </div>
 </div>
