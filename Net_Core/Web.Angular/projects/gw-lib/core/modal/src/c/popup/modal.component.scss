@@ -1,23 +1,25 @@
 /* The Modal (background) */
 .modal-background {
-  position: fixed;                      /* Stay in place */
-  z-index: 1;                           /* Sit on top */
-  padding-top: 100px;                   /* Location of the box */
-  top: 0;
-  width: 100%;                          /* Full width */
-  height: 100%;                         /* Full height */
-  overflow: auto;                       /* Enable scroll if needed */
-  background-color: rgb(0,0,0);       /* Fallback color */
-  background-color: rgba(0,0,0,0.4);  /* Black w/ opacity */
-  display: block;
+  position: fixed;                          /* Stay in place */
+  z-index: 1000;                            /* Sit on top */
+  top: 0;                                   /* Ensure it starts from the top */
+  left: 0;                                  /* Ensure it starts from the left */
+  width: 100%;                              /* Full width */
+  height: 100%;                             /* Full height */
+  background-color: rgba(0, 0, 0, 0.4);   /* Black w/ opacity */
+  display: flex;                            /* Use flexbox for centering */
+  align-items: center;                      /* Center vertically */
+  justify-content: center;                  /* Center horizontally */
 }
 
 .modal__div {
   @extend .rounded-top;
-  margin-left: auto;
-  margin-right: auto;
   box-shadow: 0px 2px 7px #292929;
   background-color: whitesmoke;
+  position: relative;                 /* Keep relative positioning */
+  z-index: 1001;                      /* Higher than modal-background */
+  max-width: 90%;                     /* Optional: limit the width */
+  max-height: 90%;                    /* Optional: limit the height */
 }
 
 .modal-header__div {
