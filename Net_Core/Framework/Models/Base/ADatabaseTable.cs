@@ -264,7 +264,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
             propertyInfo.CanRead
             && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-            && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
+            || propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
         ).ToArray();
         string mTableName = (string)(new T()).TableName;
         string mColumnNames = getColumnNames(mPropertiesArray, useBrackets);
