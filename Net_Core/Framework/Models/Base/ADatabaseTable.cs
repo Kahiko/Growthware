@@ -551,11 +551,15 @@ public abstract class ADatabaseTable : IDatabaseTable
     private static string getPrimaryKeyName(PropertyInfo[] propertyInfoArray)
     {
         // TODO: add support for compound primary key
-        PropertyInfo mPrimaryKeyProperty = propertyInfoArray.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
+        PropertyInfo mPrimaryKeyProperty = propertyInfoArray.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).FirstOrDefault();
         string mRetVal = string.Empty;
         if (mPrimaryKeyProperty != null)
         {
             mRetVal = handleBrackets(getColumnName(mPrimaryKeyProperty), true);
+        }
+        else
+        {
+            throw new NullReferenceException("No primary key found.");
         }
         return mRetVal;
     }
