@@ -33,15 +33,16 @@
     - Making some of the methods and properties static
     - Added addtributes to the properties giving clairty to them
     - Converted:
-        - MSecurityEntity           to AAddedUpdated
-        - MRegistrationInformation  to AAddedUpdated
-        - MAccountProfile           to AAddedUpdated
-        - MRefreshToken             to ADatabaseTable
-        - MCalendarEvent            to AAddedUpdated
-        - MCalendar                 to AAddedUpdated
-        - MDBInformation            to AAddedUpdated
-        - MDirectoryProfile         to AAddedUpdated
-        - MFeedback                 to ADatabaseTable (The [ZGWOptional].[Feedbacks] is an "in-line" history table, use only with the stored procedures)
+        - MSecurityEntity                       to AAddedUpdated
+        - MRegistrationInformation              to AAddedUpdated
+        - MAccountProfile                       to AAddedUpdated
+        - MRefreshToken                         to ADatabaseTable
+        - MCalendarEvent                        to AAddedUpdated
+        - MCalendar                             to AAddedUpdated
+        - MDBInformation                        to AAddedUpdated
+        - MDirectoryProfile                     to AAddedUpdated
+        - MFeedback                             to ADatabaseTable (The Feedback is an "in-line" history table, Stored Procedures ONLY)
+        - AbstractGroupRolePermissionSecurity   to AAddedUpdated
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 - The modal window is now centered vertically
 - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
