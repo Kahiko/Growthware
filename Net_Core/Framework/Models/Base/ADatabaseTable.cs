@@ -234,21 +234,40 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns>A SQL INSERT statement for the specified table and set of properties.</returns>
     public static string GenerateInsertUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
-        PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
-            propertyInfo.CanRead
-            && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-            && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
-        ).ToArray();
+        PropertyInfo[] mPropertiesArray = getProperties<T>(includePrimaryKey);
         string mTableName = (string)(new T()).TableName;
-        string mColumnNames = getColumnNames(mPropertiesArray, useBrackets);
+        bool mFirstLoop = true;
+        m_StringBuilder.Clear();
+        m_StringBuilder.Append("INSERT INTO ").Append(mTableName.Trim()).AppendLine(" (");
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
-            m_StringBuilder.Append("@" + getColumnName(mPropertyItem) + ", ");
+            if (!mFirstLoop)
+            {
+                m_StringBuilder.Append("	,[").Append(getColumnName(mPropertyItem)).AppendLine("]");
+            }
+            else
+            {
+                mFirstLoop = false;
+                m_StringBuilder.Append("	 [").Append(getColumnName(mPropertyItem)).AppendLine("]");
+            }
         }
-        string mParameterNames = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        m_StringBuilder.AppendLine(") VALUES (");
+        mFirstLoop = true;
+        foreach (PropertyInfo mPropertyItem in mPropertiesArray)
+        {
+            if (!mFirstLoop)
+            {
+                m_StringBuilder.Append("	,@").AppendLine(getColumnName(mPropertyItem));
+            }
+            else
+            {
+                mFirstLoop = false;
+                m_StringBuilder.Append("	 @").AppendLine(getColumnName(mPropertyItem));
+            }
+        }
+        m_StringBuilder.AppendLine(");");
+        string mRetVal = handleBrackets(m_StringBuilder.ToString(), useBrackets);
         m_StringBuilder.Clear();
-        string mRetVal = $"INSERT INTO {mTableName} ({mColumnNames}) VALUES ({mParameterNames});";
-        mRetVal = handleBrackets(mRetVal, useBrackets);
         return mRetVal;
     }
 
@@ -261,20 +280,40 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <returns>A SQL INSERT statement for the specified table and set of properties with values.</returns>
     public string GenerateInsertUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
     {
-        PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
-            propertyInfo.CanRead
-            && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-            || propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
-        ).ToArray();
+        PropertyInfo[] mPropertiesArray = getProperties<T>(includePrimaryKey);
         string mTableName = (string)(new T()).TableName;
-        string mColumnNames = getColumnNames(mPropertiesArray, useBrackets);
+        bool mFirstLoop = true;
+        m_StringBuilder.Clear();
+        m_StringBuilder.Append("INSERT INTO ").Append(mTableName.Trim()).AppendLine(" (");
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
-            m_StringBuilder.Append(getPropertyValue(mPropertyItem) + ", ");
+            if (!mFirstLoop)
+            {
+                m_StringBuilder.Append("	, [").Append(getColumnName(mPropertyItem)).AppendLine("]");
+            }
+            else
+            {
+                mFirstLoop = false;
+                m_StringBuilder.Append("	  [").Append(getColumnName(mPropertyItem)).AppendLine("]");
+            }
         }
-        string mValues = m_StringBuilder.ToString().Substring(0, m_StringBuilder.ToString().Length - 2);
+        m_StringBuilder.AppendLine(") VALUES (");
+        mFirstLoop = true;
+        foreach (PropertyInfo mPropertyItem in mPropertiesArray)
+        {
+            if (!mFirstLoop)
+            {
+                m_StringBuilder.Append("	,  ").AppendLine(getPropertyValue(mPropertyItem));
+            }
+            else
+            {
+                mFirstLoop = false;
+                m_StringBuilder.Append("	   ").AppendLine(getPropertyValue(mPropertyItem));
+            }
+        }
+        m_StringBuilder.AppendLine(");");
+        string mRetVal = handleBrackets(m_StringBuilder.ToString(), useBrackets);
         m_StringBuilder.Clear();
-        string mRetVal = $"INSERT INTO {mTableName} ({mColumnNames}) VALUES ({mValues});";
         mRetVal = handleBrackets(mRetVal, useBrackets);
         return mRetVal;
     }
@@ -286,18 +325,14 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL UPDATE statement for the specified table and set of properties using parameterised values.</returns>
-    public static string GenerateUpdateUsingParameters<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
+    public static string GenerateUpdateUsingParameters<T>(bool useBrackets) where T : ADatabaseTable, new()
     {
-        PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
-            propertyInfo.CanRead
-            && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-            && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
-        ).ToArray();
+        PropertyInfo[] mPropertiesArray = getProperties<T>(false);
         string mTableName = (string)(new T()).TableName;
         m_StringBuilder.Clear();
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
-        string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>());
+        string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>(true));
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
             if (!mFirstLoop)
@@ -324,19 +359,17 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="useBrackets">Indicates whether to include brackets around table and column names in the SQL statement.</param>
     /// <param name="includePrimaryKey">Indicates whether to include the primary key in the generated SQL statement.</param>
     /// <returns>A SQL UPDATE statement for the specified table and set of properties using actual values.</returns>
-    public string GenerateUpdateUsingValues<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
+    public string GenerateUpdateUsingValues<T>(bool useBrackets) where T : ADatabaseTable, new()
     {
-        PropertyInfo[] mPropertiesArray = getProperties<T>().Where((propertyInfo) =>
-            propertyInfo.CanRead
-            && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-            && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
-        ).ToArray();
+        PropertyInfo[] mPropertiesArray = getProperties<T>(false);
         string mTableName = (string)(new T()).TableName;
         m_StringBuilder.Clear();
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
-        string mPrimaryKeyName = getPrimaryKeyName(getProperties<T>());
-        PropertyInfo mPrimaryKeyProperty = getProperties<T>().Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
+        PropertyInfo[] mAllProperties = getProperties<T>(true);
+        PropertyInfo mPrimaryKeyProperty = mAllProperties.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
+        string mPrimaryKeyName = getPrimaryKeyName(mAllProperties);
+        string mPrimaryKeyValue = getColumnName(mPrimaryKeyProperty);
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
             if (!mFirstLoop)
@@ -349,7 +382,7 @@ public abstract class ADatabaseTable : IDatabaseTable
                 m_StringBuilder.Append("   SET [").Append(getColumnName(mPropertyItem)).Append("]").Append(" = ").AppendLine(getPropertyValue(mPropertyItem));
             }
         }
-        m_StringBuilder.Append("WHERE [").Append(mPrimaryKeyName).Append("] = ").AppendLine(getPropertyValue(mPrimaryKeyProperty));
+        m_StringBuilder.Append("WHERE [").Append(mPrimaryKeyName).Append("] = ").AppendLine(mPrimaryKeyValue);
         string mRetVal = m_StringBuilder.ToString();
         m_StringBuilder.Clear();
         mRetVal = handleBrackets(mRetVal, useBrackets);
@@ -443,7 +476,7 @@ public abstract class ADatabaseTable : IDatabaseTable
             PropertyInfo[] mPropertiesArray = this.GetType().GetProperties().Where((propertyInfo) =>
                 propertyInfo.CanRead
                 && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-                && propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
+                || propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
             ).ToArray();
             foreach (string mColumnName in columnNamesInOrder)
             {
@@ -547,6 +580,17 @@ public abstract class ADatabaseTable : IDatabaseTable
     private static PropertyInfo[] getProperties<T>() where T : ADatabaseTable
     {
         PropertyInfo[] mRetVal = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+        return mRetVal;
+    }
+
+    private static PropertyInfo[] getProperties<T>(bool includePrimaryKey) where T : ADatabaseTable, new()
+    {
+        PropertyInfo[] mRetVal = getProperties<T>().Where(propertyInfo => 
+            propertyInfo.CanRead &&
+            !Attribute.IsDefined(propertyInfo, typeof(DBIgnoreProperty)) &&
+            (includePrimaryKey || !Attribute.IsDefined(propertyInfo, typeof(DBPrimaryKey)))
+        ).ToArray();
+
         return mRetVal;
     }
 
