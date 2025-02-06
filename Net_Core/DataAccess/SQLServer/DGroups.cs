@@ -143,7 +143,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_Name", Profile.Name), 
                 new SqlParameter("@P_Description", Profile.Description), 
                 new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), 
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)), 
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile, Profile.Id)), 
                 GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) 
             ];
             return mParameters;
