@@ -29,8 +29,17 @@
 	ADatabaseTable as a replacement for AbstractDatabaseFunctions
 	AAddedUpdated as a replacement for AbstractBaseModel
 	MTestDatabaseTable to aid in testing ADatabaseTable and AAddedUpdated abstract classes
-- Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions.
-    - Making some of the methods and properties static
+- Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions and adding the following changes:
+    - Added the following methods:
+        public static string GenerateDeleteUsingParameter
+        public string GenerateDeleteUsingValues
+        public string GenerateDeleteUsingValues
+
+        public static string GenerateInsertUsingParameters
+        public string GenerateInsertUsingValues
+
+        public static string GenerateUpdateUsingParameters
+        public string GenerateUpdateUsingValues
     - Added addtributes to the properties giving clairty to them
     - Converted:
         - MSecurityEntity                       to AAddedUpdated
