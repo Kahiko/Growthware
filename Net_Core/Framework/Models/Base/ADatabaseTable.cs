@@ -453,7 +453,6 @@ public abstract class ADatabaseTable : IDatabaseTable
         return DataRowHelper.GetDateTime(dataRow, columnName, defaultDateTime);
     }
 
-
     /// <summary>
     /// Returns a DataTable with the same schema as the table represented by the given type,
     /// but with no rows. The table name is set to the tableName parameter.
