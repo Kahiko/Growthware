@@ -440,6 +440,12 @@ public abstract class ADatabaseTable : IDatabaseTable
         return mColumnNames;
     }
 
+    public static string GetColumnNames<T>(bool useBrackets, bool includePrimaryKey = false) where T : ADatabaseTable, new()
+    {
+        PropertyInfo[] mPropertiesArray = getProperties<T>(includePrimaryKey);
+        return getColumnNames(mPropertiesArray, useBrackets);
+    }
+
     /// <summary>
     /// Returns a DateTime given the a DataRow and Column name and the default value.
     /// </summary>
