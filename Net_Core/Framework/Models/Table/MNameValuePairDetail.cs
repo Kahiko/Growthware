@@ -147,9 +147,9 @@ public class MNameValuePairDetail : AbstractBaseModel
     {
         /*
          * At the time of this writing, the following tables are "Name/Value Pair" created tables:
+         *    [ZGWCoreWeb].[Link_Behaviors]
          *    [ZGWSecurity].[Navigation_Types]
          *    [ZGWSecurity].[Permissions]
-         *    [ZGWCoreWeb].[Link_Behaviors]
          *    [ZGWCoreWeb].[Work_Flows]
          */
         m_TableName = $"[{schemaName}].[{tableName}]";
