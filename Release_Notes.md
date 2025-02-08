@@ -54,7 +54,8 @@
         - AbstractGroupRolePermissionSecurity   to AAddedUpdated
         - MFunctionTypeProfile                  to AAddedUpdated
         - MGroupProfile                         to AAddedUpdated
-        - MGroupRoles                           to AAddedUpdated (Inserts fail now primary key defined)
+        - MGroupRoles                           to AAddedUpdated (Inserts fail no primary key defined)
+        - MLoggingProfile                       to ADatabaseTable
         
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 - The modal window is now centered vertically

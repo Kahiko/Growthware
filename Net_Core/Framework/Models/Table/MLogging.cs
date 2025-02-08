@@ -9,7 +9,7 @@ namespace GrowthWare.Framework.Models;
 /// Class MLoggingProfile
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MLoggingProfile : AbstractDatabaseFunctions
+public class MLoggingProfile : ADatabaseTable
 {
 
 #region Member Fields
@@ -44,7 +44,14 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     /// <summary>
     /// Indicates where the log event occurred.
     /// </summary>
+    [DBIgnoreProperty]
     public LogDestination[] Destination { get; set; }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
 
     /// <summary>
     /// Indicates what component the log event occurred.
@@ -75,6 +82,9 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     /// </summary>
     public string Msg { get; set; }
 
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWSystem].[Logging]";
+
 #endregion
 
 #region Constructors
@@ -83,7 +93,7 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     /// </summary>
     public MLoggingProfile()
     {
-        this.SetupClass();
+        this.setDefaults();
     }
 
     /// <summary>
@@ -93,7 +103,7 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     /// <remarks></remarks>
     public MLoggingProfile(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Account = base.GetString(dataRow, "Account");
         this.ClassName = base.GetString(dataRow, "ClassName");
         this.Component = base.GetString(dataRow, "Component");
@@ -105,12 +115,9 @@ public class MLoggingProfile : AbstractDatabaseFunctions
     }
 #endregion
 
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        LogSeqId = -1;
-
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSystem].[Logging]";        
+        LogSeqId = -1;     
     }
 
 }
