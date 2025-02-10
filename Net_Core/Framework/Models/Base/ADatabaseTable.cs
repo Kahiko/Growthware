@@ -680,7 +680,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     /// <param name="sqlStatement">The SQL statement.</param>
     /// <param name="useBrackets">Indicates whether to retain brackets in the statement.</param>
     /// <returns>The modified SQL statement with brackets removed if useBrackets is false.</returns>
-    private static string handleBrackets(string sqlStatement, bool useBrackets)
+    protected static string handleBrackets(string sqlStatement, bool useBrackets)
     {
         // strings are inmutable so no need to create a copy.
         if (!useBrackets)

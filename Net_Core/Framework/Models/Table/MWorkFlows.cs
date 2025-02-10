@@ -46,9 +46,9 @@ public class MWorkFlows : MNameValuePairDetail
     /// <summary>
     /// Sets up the common and specific class properties
     /// </summary>
-    protected new void SetupClass()
+    private void SetupClass()
     {
-        base.SetupClass(); // setup common properties
+        base.setDefaults(); // setup common properties
         base.SetTableName("ZGWCoreWeb", "Work_Flows");
         // this.Id = -1;
         // base.m_ForeignKeyName = "NOT_USED";

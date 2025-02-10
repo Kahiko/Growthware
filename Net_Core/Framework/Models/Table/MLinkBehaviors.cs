@@ -47,12 +47,10 @@ public class MLinkBehaviors : MNameValuePairDetail
     /// <summary>
     /// Sets up the common and specific class properties
     /// </summary>
-    protected new void SetupClass()
+    private void SetupClass()
     {
-        base.SetupClass(); // setup common properties
+        base.setDefaults(); // setup common properties
         base.SetTableName("ZGWCoreWeb", "Link_Behaviors");
-        // this.Id = -1;
-        // base.m_ForeignKeyName = "NOT_USED";
     }
 
 }

@@ -8,11 +8,12 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an Name Value Pair Detail.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MNameValuePairDetail : AbstractBaseModel
+public class MNameValuePairDetail : AAddedUpdated
 {
 
 #region Member Fields
     private int m_NameValuePairSeqId = -1;
+    private string m_TableName = string.Empty;
     private string m_Text = string.Empty;
     private string m_Value = string.Empty;
     private int m_SortOrder = 0;
@@ -20,18 +21,23 @@ public class MNameValuePairDetail : AbstractBaseModel
 #endregion
 
 #region Public Properties
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("NVP_DetailSeqId")]
-    // public int Id { get; set; }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBColumnName("NVP_Detail_Name")]
-    // public string Name
-    // {
-    //     get { return m_Text; }
-    //     set { if (!String.IsNullOrEmpty(value)) m_Text = value.Trim(); }
-    // }
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+
+    [DBPrimaryKey]
+    [DBColumnName("NVP_DetailSeqId")]
+    public int Id { get; set; }
+    
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
+
+    [DBIgnoreProperty]
+    public string Name
+    {
+        get { return m_Text; }
+        set { if (!String.IsNullOrEmpty(value)) m_Text = value.Trim(); }
+    }
 
     /// <summary>
     /// Gets or sets the Name Value Pair SeqId.
@@ -65,6 +71,9 @@ public class MNameValuePairDetail : AbstractBaseModel
         get { return m_Status; }
         set { m_Status = value; }
     }
+    
+    [DBIgnoreProperty]
+    public override string TableName { get{ return this.m_TableName; } }
 
     /// <summary>
     /// Gets or sets the text.
@@ -96,7 +105,7 @@ public class MNameValuePairDetail : AbstractBaseModel
     /// <remarks></remarks>
     public MNameValuePairDetail()
     {
-        this.SetupClass();
+        this.setDefaults();
     }
 
     /// <summary>
@@ -108,7 +117,7 @@ public class MNameValuePairDetail : AbstractBaseModel
     /// </remarks>
     public MNameValuePairDetail(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Initialize(dataRow);
     }
 #endregion
@@ -120,20 +129,20 @@ public class MNameValuePairDetail : AbstractBaseModel
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
-        m_Text = base.Name;
-        m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
-        m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
-        m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
+        this.m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID");
+        this.Id = base.GetInt(dataRow, "NVP_SEQ_DET_ID");
+        this.m_Text = base.GetString(dataRow, "NVP_DET_TEXT");
+        this.m_Value = base.GetString(dataRow, "NVP_DET_VALUE");
+        this.m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
+        this.m_SortOrder = base.GetInt(dataRow, "SORT_ORDER");
     }
 
     /// <summary>
     /// Sets up the common class properties
     /// </summary>
-    protected virtual void SetupClass()
+    protected override void setDefaults()
     {
-        base.IdColumnName = "NVP_SEQ_DET_ID";
-        base.NameColumnName = "NVP_DET_TEXT";
+        this.m_NameValuePairSeqId = -1;
     }
 
     /// <summary>
@@ -152,11 +161,8 @@ public class MNameValuePairDetail : AbstractBaseModel
          *    [ZGWSecurity].[Permissions]
          *    [ZGWCoreWeb].[Work_Flows]
          */
-        m_TableName = $"[{schemaName}].[{tableName}]";
-        if (!useBrackets)
-        {
-            m_TableName = m_TableName.Replace("[", "").Replace("]", "");
-        }
+        // m_TableName = $"[{schemaName}].[{tableName}]";
+        m_TableName = handleBrackets($"[{schemaName}].[{tableName}]", useBrackets);
     }
 
 }

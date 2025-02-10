@@ -60,6 +60,11 @@
         - MNameValuePair                        to AAddedUpdated
         - MRole                                 to AAddedUpdated
         - MState                                to AAddedUpdated
+        - MNameValuePairDetails                 to AAddedUpdated
+            - MLinkBehaviors    - Renamed SetupClass to setDefaults
+            - MNavigationType   - Renamed SetupClass to setDefaults
+            - MPermissions      - Renamed SetupClass to setDefaults
+            - MWorkFlows        - Renamed SetupClass to setDefaults
         
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 - The modal window is now centered vertically
