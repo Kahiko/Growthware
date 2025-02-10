@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
 
 namespace GrowthWare.Framework.Models.Base;
