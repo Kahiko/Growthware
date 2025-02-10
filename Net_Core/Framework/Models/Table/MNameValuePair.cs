@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using GrowthWare.Framework.Models.Base;
 
@@ -8,10 +9,11 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MNameValuePair : AbstractBaseModel
+public class MNameValuePair : AAddedUpdated
 {
 
 #region Member Fields
+    private int m_NVPSeqId = -1;
     private string m_SchemaName = "dbo";
     private string m_StaticName = "NEW";
     private string m_Display = string.Empty;
@@ -20,6 +22,17 @@ public class MNameValuePair : AbstractBaseModel
 #endregion
 
 #region Public Properties
+     
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    /// <value>The description.</value>
+    public string Description
+    {
+        get { return m_Description; }
+        set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
+    }
+
     /// <summary>
     /// Gets or sets the display.
     /// </summary>
@@ -30,10 +43,15 @@ public class MNameValuePair : AbstractBaseModel
         set { if (!String.IsNullOrEmpty(value)) m_Display = value.Trim(); }
     }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("NVPSeqId")]
-    // public int Id { get; set; }
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
+
+    [DBPrimaryKey]
+    [DBColumnName("NVPSeqId")]
+    public int Id { get{ return m_NVPSeqId; } set{ m_NVPSeqId = value; } }
 
     /// <summary>
     /// Gets or sets the name of the schema.
@@ -70,15 +88,9 @@ public class MNameValuePair : AbstractBaseModel
         set { m_Status = value; }
     }
 
-    /// <summary>
-    /// Gets or sets the description.
-    /// </summary>
-    /// <value>The description.</value>
-    public string Description
-    {
-        get { return m_Description; }
-        set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
-    }
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWSystem].[Name_Value_Pairs]";
+
 #endregion
 
 #region Constructors
@@ -88,7 +100,7 @@ public class MNameValuePair : AbstractBaseModel
     /// <remarks></remarks>
     public MNameValuePair()
     {
-        this.SetupClass();
+        this.setDefaults();
     }
 
     /// <summary>
@@ -100,7 +112,7 @@ public class MNameValuePair : AbstractBaseModel
     /// </remarks>
     public MNameValuePair(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Initialize(dataRow);
     }
 #endregion
@@ -112,23 +124,19 @@ public class MNameValuePair : AbstractBaseModel
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        m_SchemaName = base.GetString(dataRow, "SCHEMA_NAME");
-        m_StaticName = base.Name;
-        m_Display = base.GetString(dataRow, "DISPLAY");
-        m_Description = base.GetString(dataRow, "DESCRIPTION");
-        m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
+        this.m_NVPSeqId = base.GetInt(dataRow, "NVP_SEQ_ID");
+        this.m_SchemaName = base.GetString(dataRow, "SCHEMA_NAME");
+        this.m_StaticName = base.GetString(dataRow, "STATIC_NAME");
+        this.m_Display = base.GetString(dataRow, "DISPLAY");
+        this.m_Description = base.GetString(dataRow, "DESCRIPTION");
+        this.m_Status = base.GetInt(dataRow, "STATUS_SEQ_ID");
     }
 
     /// <summary>
     /// Sets up the class default properties
     /// </summary>
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        base.NameColumnName = "STATIC_NAME";
-        base.IdColumnName = "NVP_SEQ_ID";
-
         this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSystem].[Name_Value_Pairs]";
     }
 }
