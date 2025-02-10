@@ -66,6 +66,26 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         CONSTRAINT [UK_Feedback] UNIQUE CLUSTERED ([Start_Date] DESC, [End_Date] DESC, [FeedbackId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
 	) ON [PRIMARY];
 GO
+IF NOT EXISTS (SELECT 1
+            FROM sys.indexes I
+                INNER JOIN sys.tables T
+                    ON I.object_id = T.object_id
+                INNER JOIN sys.schemas S
+                    ON S.schema_id = T.schema_id
+            WHERE I.Name = 'IX_FeedbackId_End_Date_Start_Date' -- Index name
+                AND T.Name = 'Feedbacks' -- Table name
+                AND S.Name = 'ZGWOptional') --Schema Name
+    BEGIN
+        CREATE UNIQUE NONCLUSTERED INDEX [IX_FeedbackId_End_Date_Start_Date] ON [ZGWOptional].[Feedbacks]
+        (
+            [FeedbackId] ASC,
+            [Start_Date] ASC,
+            [End_Date] ASC
+        )
+        WHERE End_Date IS NULL
+        WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)
+    END
+-- END IF
 -- Add constraints
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'D' AND [name] LIKE 'DF_ZGWOptional_Feedbacks_Date_Opened')
     BEGIN
@@ -108,10 +128,10 @@ IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGW
 GO
 -- Add extended properties
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = 0)
-	EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'An "inline" history table of feedbacks/issues. The row idenifier for the table is the combination of FeedbackId + Start_Date + End_Date!  The reason for this table is to provide an example of an "inline" history table, not, to provide a comprehensive feedback/issue tracking system' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks';
+	EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'An "inline" history table of feedbacks/issues. The row idenifier for the table is the combination of FeedbackId + Start_Date + End_Date!  The reason for this table is to provide an example of an "inline" history table, not, to provide a comprehensive feedback/issue tracking system.  It best if working with the data you use the stored procedures ([ZGWOptional].[Get_Feedback] and [ZGWOptional].[Set_Feedback])!' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'FeedbackId' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
-    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A unique identifier for the feedback/issue (not the row).' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FeedbackId';
+    EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A "unique" identifier for the feedback/issue (not the row).' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'FeedbackId';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'AssigneeId' AND [object_id] = OBJECT_ID('[ZGWOptional].[Feedbacks]')))
     EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'A FK from [ZGWSecurity].[Accounts].[AccountSeqId].' , @level0type=N'SCHEMA',@level0name=N'ZGWOptional', @level1type=N'TABLE',@level1name=N'Feedbacks', @level2type=N'COLUMN',@level2name=N'AssigneeId';
