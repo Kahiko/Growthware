@@ -144,7 +144,7 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Is_System", m_Profile.IsSystem), 
 				new SqlParameter("@P_Is_System_Only", m_Profile.IsSystemOnly), 
 				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID), 
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
 				GetSqlParameter("@P_Primary_Key", m_Profile.Id, ParameterDirection.Output) 
 			};
             return myParameters;

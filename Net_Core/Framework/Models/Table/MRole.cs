@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Interfaces;
 using GrowthWare.Framework.Models.Base;
 using GrowthWare.Framework.Models.UI;
 
@@ -9,7 +10,7 @@ namespace GrowthWare.Framework.Models;
 /// Model object representing a Role.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MRole : AbstractBaseModel
+public class MRole : AAddedUpdated
 {
 
 #region Member Fields
@@ -30,11 +31,16 @@ public class MRole : AbstractBaseModel
         set { if (!String.IsNullOrEmpty(value)) m_Description = value.Trim(); }
     }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("RoleSeqId")]
-    // public int Id { get; set; }
-    
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+
+    [DBPrimaryKey]
+    [DBColumnName("RoleSeqId")]
+    public int Id { get; set; }
+
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
+
     /// <summary>
     /// Gets or sets the is system.
     /// </summary>
@@ -57,6 +63,8 @@ public class MRole : AbstractBaseModel
         set { m_IsSystemOnly = value; }
     }
 
+    public string Name { get; set; }
+
     // // Commented out for now this should need to come back when we fix the base class
     // public string Name { get; set; }
 
@@ -71,6 +79,9 @@ public class MRole : AbstractBaseModel
         set { m_SecurityEntityID = value; }
     }
 
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWSecurity].[Roles]";
+
 #endregion
 
 #region Constructors
@@ -79,7 +90,7 @@ public class MRole : AbstractBaseModel
     /// </summary>
     public MRole()
     {
-        this.SetupClass();
+        this.setDefaults();
     }
 
     /// <summary>
@@ -88,7 +99,7 @@ public class MRole : AbstractBaseModel
     /// <param name="roleProfile"></param>
     public MRole(MRole roleProfile)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.AddedBy = roleProfile.AddedBy;
         this.AddedDate = roleProfile.AddedDate;
         this.Description = roleProfile.Description;
@@ -110,7 +121,7 @@ public class MRole : AbstractBaseModel
     /// <param name="uiRole"></param>
     public MRole(UIRole uiRole)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Description = uiRole.Description;
         this.Id = uiRole.Id;
         this.IsSystem = uiRole.IsSystem;
@@ -127,7 +138,7 @@ public class MRole : AbstractBaseModel
     /// <param name="dataRow">The dataRow.</param>
     public MRole(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Initialize(dataRow);
     }
 #endregion
@@ -139,19 +150,16 @@ public class MRole : AbstractBaseModel
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        m_Description = base.GetString(dataRow, "DESCRIPTION");
-        m_IsSystem = base.GetBool(dataRow, "IS_SYSTEM");
-        m_IsSystemOnly = base.GetBool(dataRow, "IS_SYSTEM_ONLY");
+        this.Id = base.GetInt(dataRow, "ROLE_SEQ_ID");
+        this.Name = base.GetString(dataRow, "NAME");
+        this.m_Description = base.GetString(dataRow, "DESCRIPTION");
+        this.m_IsSystem = base.GetBool(dataRow, "IS_SYSTEM");
+        this.m_IsSystemOnly = base.GetBool(dataRow, "IS_SYSTEM_ONLY");
     }
 
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        base.NameColumnName = "NAME";
-        base.IdColumnName = "ROLE_SEQ_ID";
-
         this.Id = -1;
-        base.m_ForeignKeyName = "NOT_USED";
-        m_TableName = "[ZGWSecurity].[Roles]";
     }
 
 }
