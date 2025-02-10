@@ -63,7 +63,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptio
         [VerifiedById] INT NULL,
 		[Start_Date] DATETIME NOT NULL,
 		[End_Date] DATETIME NULL,
-        CONSTRAINT [UK_Feedback] UNIQUE CLUSTERED ([Start_Date] DESC, [End_Date] DESC, [FeedbackId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+        CONSTRAINT [UI_CLX_Feedback] UNIQUE CLUSTERED ([FeedbackId] ASC, [Start_Date] DESC, [End_Date] DESC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
 	) ON [PRIMARY];
 GO
 IF NOT EXISTS (SELECT 1
@@ -72,14 +72,13 @@ IF NOT EXISTS (SELECT 1
                     ON I.object_id = T.object_id
                 INNER JOIN sys.schemas S
                     ON S.schema_id = T.schema_id
-            WHERE I.Name = 'IX_FeedbackId_End_Date_Start_Date' -- Index name
+            WHERE I.Name = 'UIX_FeedbackId_End_Date' -- Index name
                 AND T.Name = 'Feedbacks' -- Table name
                 AND S.Name = 'ZGWOptional') --Schema Name
     BEGIN
-        CREATE UNIQUE NONCLUSTERED INDEX [IX_FeedbackId_End_Date_Start_Date] ON [ZGWOptional].[Feedbacks]
+        CREATE UNIQUE NONCLUSTERED INDEX [UIX_FeedbackId_End_Date] ON [ZGWOptional].[Feedbacks]
         (
             [FeedbackId] ASC,
-            [Start_Date] ASC,
             [End_Date] ASC
         )
         WHERE End_Date IS NULL
