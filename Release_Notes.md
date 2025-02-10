@@ -76,7 +76,6 @@
 - The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
 - Manage Name/Value Pairs is not updating the search results after saving
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
-- Looks like the API is not working correctly with Docker
 
 ### Bug Fixes
 - Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.
@@ -95,6 +94,7 @@
 - Fixed CacheHelper where the item was not being removed from the MemoryCache collection in the changeCallback method
 - Fixed sorting in the TableFileListComponent, it was not sorting the size correctly
 - Fixed multiple modal windows closing when using the ESC key
+- Fixed Docker by hosting the both the Angular Material Icons and Fonts
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 
