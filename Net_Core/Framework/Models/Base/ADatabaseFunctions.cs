@@ -12,6 +12,7 @@ namespace GrowthWare.Framework.Models.Base
     /// Code only no properties.
     /// Inherit from MProfile if you need the base properties as well.
     /// </summary>
+    [Obsolete("Obsolete replaced by ADatabaseTable", false)]
     public abstract class AbstractDatabaseFunctions : IDatabaseFunctions
     {
         // Only needs to be set if you intend on using BulkInsert
