@@ -12,15 +12,16 @@ namespace GrowthWare.Framework.Models;
 /// Class MMessage
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MMessage : AbstractBaseModel, IMessage
+public class MMessage : AAddedUpdated, IMessage
 {
 
 #region Member Fields
     private int m_SecurityEntity_Seq_Id = 1;
     private string m_Description = string.Empty;
-    private string[] m_ExcludedTags = new string[] { "Body", "Title", "IdColumnName", "NameColumnName", "AddedBy", "AddedDate", "UpdatedBy", "UpdatedDate" };
+    private readonly string[] m_ExcludedTags = new string[] { "Body", "Title", "ForeignKeyName", "IsForeignKeyNumeric", "MessageSeqId", "TableName", "AddedBy", "AddedDate", "UpdatedBy", "UpdatedDate" };
     private string m_Title = string.Empty;
     private bool m_FormatAsHTML = false;
+    private int m_MessageSeqId = -1;
     private string m_Body = string.Empty;
 #endregion
 
@@ -49,6 +50,12 @@ public class MMessage : AbstractBaseModel, IMessage
             if (value != null) m_Description = value.Trim();
         }
     }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWCoreWeb].[Messages]";
 
     /// <summary>
     /// Sets or gets the Title property
@@ -85,13 +92,17 @@ public class MMessage : AbstractBaseModel, IMessage
         set { m_FormatAsHTML = value; }
     }
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // [DBPrimaryKey]
-    // [DBColumnName("MessageSeqId")]
-    // public int Id { get; set; }
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
 
-    // // Commented out for now this should need to come back when we fix the base class
-    // public string Name { get; set; }
+    [DBIgnoreProperty]
+    public int Id { get{ return m_MessageSeqId; } set{ m_MessageSeqId = value; } }
+
+    [DBPrimaryKey]
+    [DBColumnName("MessageSeqId")]
+    public int MessageSeqId { get{ return m_MessageSeqId; } set{ m_MessageSeqId = value; } }
+
+    public string Name { get; set; }
 #endregion
 
 #region Constructors
@@ -101,7 +112,7 @@ public class MMessage : AbstractBaseModel, IMessage
     /// <remarks></remarks>
     public MMessage()
     {
-        this.SetupClass();
+        this.setDefaults();
     }
 
     /// <summary>
@@ -110,7 +121,7 @@ public class MMessage : AbstractBaseModel, IMessage
     /// <param name="profile">MMessage</param>
     public MMessage(MMessage profile)
     {
-        this.SetupClass();
+        this.setDefaults();
         if (profile != null)
         {
             this.AddedBy = profile.AddedBy;
@@ -134,7 +145,7 @@ public class MMessage : AbstractBaseModel, IMessage
     /// <param name="dataRow">The DataRow.</param>
     public MMessage(DataRow dataRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Initialize(dataRow);
     }
 #endregion
@@ -188,18 +199,20 @@ public class MMessage : AbstractBaseModel, IMessage
     protected new void Initialize(DataRow dataRow)
     {
         base.Initialize(dataRow);
-        m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "SecurityEntityID");
-        m_Title = base.GetString(dataRow, "TITLE");
-        m_Description = base.GetString(dataRow, "DESCRIPTION");
-        m_FormatAsHTML = base.GetBool(dataRow, "FORMAT_AS_HTML");
-        m_Body = base.GetString(dataRow, "BODY");
+        this.Name = base.GetString(dataRow, "Name");
+        this.m_MessageSeqId = base.GetInt(dataRow, "MESSAGE_SEQ_ID");
+        this.m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "SecurityEntityID");
+        this.m_Title = base.GetString(dataRow, "TITLE");
+        this.m_Description = base.GetString(dataRow, "DESCRIPTION");
+        this.m_FormatAsHTML = base.GetBool(dataRow, "FORMAT_AS_HTML");
+        this.m_Body = base.GetString(dataRow, "BODY");
     }
 
-    private void SetupClass() 
+    protected override void setDefaults() 
     {
-        base.NameColumnName = "Name";
-        base.IdColumnName = "MESSAGE_SEQ_ID";
-        // this.Id = -1; // it's implemented in the base but will move to the derived classes
-        m_TableName = "[ZGWCoreWeb].[Messages]";
+        // base.NameColumnName = "Name";
+        // base.IdColumnName = "MESSAGE_SEQ_ID";
+        this.Id = -1; // it's implemented in the base but will move to the derived classes
+        // m_TableName = "[ZGWCoreWeb].[Messages]";
     }
 }
