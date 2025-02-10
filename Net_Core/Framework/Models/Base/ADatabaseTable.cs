@@ -10,17 +10,17 @@ using GrowthWare.Framework.Interfaces;
 namespace GrowthWare.Framework.Models.Base;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class DBIgnoreProperty : Attribute { } // [DBIgnoreProperty]
+public class DBIgnorePropertyAttribute : Attribute { } // [DBIgnoreProperty]
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-public class DBPrimaryKey : Attribute { } // [DBPrimaryKey]
+public class DBPrimaryKeyAttribute : Attribute { } // [DBPrimaryKey]
 
 [AttributeUsage(AttributeTargets.Property)]
-public class DBColumnName : Attribute // [DBColumnName("The_Column_Name")]
+public class DBColumnNameAttribute : Attribute // [DBColumnName("The_Column_Name")]
 {
     public string Name { get; }
 
-    public DBColumnName(string name)
+    public DBColumnNameAttribute(string name)
     {
         Name = name;
     }
@@ -366,7 +366,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         m_StringBuilder.Append("UPDATE ").AppendLine(mTableName);
         bool mFirstLoop = true;
         PropertyInfo[] mAllProperties = getProperties<T>(true);
-        PropertyInfo mPrimaryKeyProperty = mAllProperties.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
+        PropertyInfo mPrimaryKeyProperty = mAllProperties.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKeyAttribute), false)).First();
         string mPrimaryKeyName = getPrimaryKeyName(mAllProperties);
         string mPrimaryKeyValue = getPropertyValue(mPrimaryKeyProperty);
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
@@ -413,7 +413,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         {
             throw new ArgumentNullException(nameof(propertyInfo), "propertyInfo cannot be a null reference (Nothing in Visual Basic)");
         }
-        var attribute = propertyInfo.GetCustomAttribute<DBColumnName>();
+        var attribute = propertyInfo.GetCustomAttribute<DBColumnNameAttribute>();
         return attribute?.Name ?? propertyInfo.Name; // Use the attribute name if available, otherwise use the property name
     }
 
@@ -479,8 +479,8 @@ public abstract class ADatabaseTable : IDatabaseTable
             // PropertyInfo[] mPropertyInfo = this.GetType().GetProperties();
             PropertyInfo[] mPropertiesArray = this.GetType().GetProperties().Where((propertyInfo) =>
                 propertyInfo.CanRead
-                && propertyInfo.IsDefined(typeof(DBIgnoreProperty), false) == false
-                || propertyInfo.IsDefined(typeof(DBPrimaryKey), false) == includePrimaryKey
+                && propertyInfo.IsDefined(typeof(DBIgnorePropertyAttribute), false) == false
+                || propertyInfo.IsDefined(typeof(DBPrimaryKeyAttribute), false) == includePrimaryKey
             ).ToArray();
             foreach (string mColumnName in columnNamesInOrder)
             {
@@ -555,7 +555,7 @@ public abstract class ADatabaseTable : IDatabaseTable
     private static string getPrimaryKeyName(PropertyInfo[] propertyInfoArray)
     {
         // TODO: add support for compound primary key
-        PropertyInfo mPrimaryKeyProperty = propertyInfoArray.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).FirstOrDefault();
+        PropertyInfo mPrimaryKeyProperty = propertyInfoArray.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKeyAttribute), false)).FirstOrDefault();
         string mRetVal = string.Empty;
         if (mPrimaryKeyProperty != null)
         {
@@ -595,8 +595,8 @@ public abstract class ADatabaseTable : IDatabaseTable
     {
         PropertyInfo[] mRetVal = getProperties<T>().Where(propertyInfo => 
             propertyInfo.CanRead &&
-            !Attribute.IsDefined(propertyInfo, typeof(DBIgnoreProperty)) &&
-            (includePrimaryKey || !Attribute.IsDefined(propertyInfo, typeof(DBPrimaryKey)))
+            !Attribute.IsDefined(propertyInfo, typeof(DBIgnorePropertyAttribute)) &&
+            (includePrimaryKey || !Attribute.IsDefined(propertyInfo, typeof(DBPrimaryKeyAttribute)))
         ).ToArray();
 
         return mRetVal;
