@@ -59,6 +59,7 @@
         - MMessage                              to AAddedUpdated
         - MNameValuePair                        to AAddedUpdated
         - MRole                                 to AAddedUpdated
+        - MState                                to AAddedUpdated
         
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
 - The modal window is now centered vertically

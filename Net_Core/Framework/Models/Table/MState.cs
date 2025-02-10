@@ -8,28 +8,38 @@ namespace GrowthWare.Framework.Models;
 /// Properties that represent the table [ZGWOptional].[States]
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MState : AbstractBaseModel
+public class MState : AAddedUpdated
 {
 
 #region Public Properties
     public string Description { get; set; }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "NOT USED";
+ 
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
 
     [DBPrimaryKey]
     public string State { get; set; }
 
     [DBColumnName("StatusSeqId")]
     public int StatusId { get; set; }
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWOptional].[States]";
+
 #endregion
 
 #region Constructors
     public MState() 
     { 
-        this.SetupClass();
+        this.setDefaults();
     }
 
     public MState(DataRow detailRow)
     {
-        this.SetupClass();
+        this.setDefaults();
         this.Description = this.GetString(detailRow, "Description");
         this.State = this.GetString(detailRow, "State");
         this.StatusId = this.GetInt(detailRow, "StatusSeqId");
@@ -37,10 +47,9 @@ public class MState : AbstractBaseModel
     }
 #endregion
 
-    private void SetupClass()
+    protected override void setDefaults()
     {
-        base.NameColumnName = "State";
-        // base.IdColumnName = "State";
+        this.State = string.Empty;
     }
 
 }
