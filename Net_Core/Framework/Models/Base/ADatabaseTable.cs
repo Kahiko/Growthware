@@ -369,7 +369,7 @@ public abstract class ADatabaseTable : IDatabaseTable
         PropertyInfo[] mAllProperties = getProperties<T>(true);
         PropertyInfo mPrimaryKeyProperty = mAllProperties.Where(propertyInfo => propertyInfo.IsDefined(typeof(DBPrimaryKey), false)).First();
         string mPrimaryKeyName = getPrimaryKeyName(mAllProperties);
-        string mPrimaryKeyValue = getColumnName(mPrimaryKeyProperty);
+        string mPrimaryKeyValue = getPropertyValue(mPrimaryKeyProperty);
         foreach (PropertyInfo mPropertyItem in mPropertiesArray)
         {
             if (!mFirstLoop)
