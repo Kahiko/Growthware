@@ -76,6 +76,7 @@
     - Improved event listener management and resize functionality in the modal window
     - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
     - Added support for initial data for template modals
+    - Enhance JSDoc documentation
 
 
 ### Known Bugs

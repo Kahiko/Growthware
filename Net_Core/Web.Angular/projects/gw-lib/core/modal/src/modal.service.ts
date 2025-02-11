@@ -12,10 +12,71 @@ import { IModalOptions } from './modal-options.model';
 
 type Content<T> = string | TemplateRef<T> | Type<T>;
 
+/**
+ * Modal Service for creating dynamic, flexible modal dialogs
+ * 
+ * @description
+ * Supports three primary content types:
+ * - Plain text strings
+ * - Angular Template References
+ * - Angular Components
+ * 
+ * @example
+ * // Opening a simple text modal
+ * this._ModalService.open({
+ *   modalId: 'confirmDelete',
+ *   headerText: 'Confirm Deletion',
+ *   contentPayLoad: 'Are you sure you want to delete this item?',
+ *   buttons: {...}
+ * });
+ * 
+ * @example
+ * // Opening a template modal with initial data
+ * this._ModalService.open({
+ *   modalId: 'editUser',
+ *   headerText: 'Edit User',
+ *   contentPayLoad: this.editTemplate,
+ *   initialData: { user: currentUser },
+ *   buttons: {...}
+ * });
+ * 
+ * @example
+ * // Opening a component modal
+ * this._ModalService.open({
+ *   modalId: 'accountDetails',
+ *   headerText: 'Account Details',
+ *   contentPayLoad: AccountDetailsComponent,
+ *   buttons: {...}
+ * });
+ * 
+ * @remarks
+ * Key Features and Best Practices:
+ * 
+ * 1. Modal Identification
+ * - Always provide a unique `modalId`
+ * - `modalId` is case-insensitive
+ * 
+ * 2. Content Types
+ * - Supports string, TemplateRef, and Component payloads
+ * - Use `initialData` only with TemplateRef
+ * 
+ * 3. Button Configuration
+ * - Customize buttons via `buttons` property
+ * - Can show/hide cancel, close, and OK buttons
+ * 
+ * 4. Window Sizing
+ * - Control modal size using `windowSize`
+ * - Can be a preset number or custom IWindowSize
+ * 
+ * 5. Callbacks
+ * - Use `onOk`, `onCancel` for handling modal interactions
+ * - `returnData` can be passed back through these callbacks
+ */
 @Injectable({
 	providedIn: 'root'
 })
 export class ModalService {
+
 	private _ActiveModals: IContentObject[] = [];
 	private _ContentType: ContentType = ContentType.String;
 	private _IsKeyDownListenerActive: boolean = false;
@@ -31,6 +92,9 @@ export class ModalService {
 	 * Handles the keydown event.
 	 * If the key pressed is ESC, stop the propagation and close the last modal if there are any.
 	 * @param {KeyboardEvent} event - The keydown event.
+	 * @private
+	 * 
+	 * @memberof ModalService
 	 */
 	private handleKeyDown(event: KeyboardEvent): void {
 		// We handle the ESC key here so that we can limit the closing or canceling
@@ -49,9 +113,15 @@ export class ModalService {
 	}
 
 	/**
-	 * Closes a modal for the specified key.
-	 *
-	 * @param {string} key - The key of the modal to close.
+	 * Closes a specific modal by its modalId
+	 * 
+	 * @param {string} key - The modalId of the modal to close
+	 * 
+	 * @example
+	 * // Close a modal with a specific ID
+	 * this._ModalService.close('confirmDelete');
+	 * 
+	 * @memberof ModalService
 	 */
 	public close(key: string) {
 		const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
@@ -88,6 +158,8 @@ export class ModalService {
 	 *
 	 * @param {IModalOptions} options - The options for the modal dialog.
 	 * @return {void} 
+	 * 
+	 * @memberof ModalService
 	 */
 	public open(options: IModalOptions): void {
 		if (this._GWCommon.isNullOrEmpty(options.modalId)) {
@@ -139,6 +211,15 @@ export class ModalService {
 		this._ApplicationRef.attachView(mModalComponentRef.hostView);
 	}
 
+	/**
+	 * Logs a message to the console with an optional log type
+	 * 
+	 * @param {string} message - The message to log
+	 * @param {string} [type='Log'] - The type of log (e.g., 'Error', 'Warn', 'Log')
+	 * @private
+	 * 
+	 * @memberof ModalService
+	 */
 	private logConsole(msg: string, level: string): void {
 		const mMsg =
 			this._GWCommon.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
@@ -174,7 +255,8 @@ export class ModalService {
 	 * @template T - The type of the content.
 	 * @param {Content<T>} content - The content to resolve.
 	 * @return {any} - The resolved ngContent.
-	 * @memberof ModalDirective
+	 * 
+	 * @memberof ModalService
 	 */
 	private resolveNgContent<T>(content: Content<T>): any {
 		this._ContentType = ContentType.String;
@@ -204,6 +286,8 @@ export class ModalService {
 	 *
 	 * @param {IModalOptions} modalOptions - The modal options.
 	 * @param {ModalComponent} mModalComponentInstance - The instace of the ModalComponent
+	 * 
+	 * @memberof ModalService
 	 */
 	private setupModalCallbacks(modalOptions: IModalOptions, mModalComponentInstance: ModalComponent) {
 		if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
