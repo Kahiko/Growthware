@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2 } from '@angular/core';
 // Angular Material cdk
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
@@ -53,10 +53,14 @@ export class ModalComponent implements OnDestroy {
   private _BoundResizeModal = this.resizeModal.bind(this); // class properties to maintain consistent function references
   private _BoundStopResize = this.stopResize.bind(this);   // class properties to maintain consistent function references
   private _CurrentDirection: string = ''; // Property to store current resize direction
+  private _RemoveMouseMoveListener: (() => void) | undefined;
+  private _RemoveMouseUpListener: (() => void) | undefined;
   private _OriginalHeight: number = 0;
   private _OriginalWidth: number = 0;
 
-  constructor() { }
+  constructor(
+    private _Renderer: Renderer2
+  ) { }
 
   private getWindowSize(options: IModalOptions): IWindowSize {
     /**
@@ -130,8 +134,13 @@ export class ModalComponent implements OnDestroy {
         event.stopPropagation(); // Prevent drag from firing
         this._IsResizing = true; // Set resizing flag
         this._CurrentDirection = this.getResizeDirection(event.target); // Set the current direction
-        document.addEventListener('mousemove', this._BoundResizeModal); // Use the bound method
-        document.addEventListener('mouseup', this._BoundStopResize);
+        this._RemoveMouseMoveListener = this._Renderer.listen(document, 'mousemove', (moveEvent: MouseEvent) => {
+          this.resizeModal(moveEvent);
+        });
+        
+        this._RemoveMouseUpListener = this._Renderer.listen(document, 'mouseup', () => {
+          this.stopResize();
+        });
       }
     }
   }
@@ -141,6 +150,17 @@ export class ModalComponent implements OnDestroy {
     if (target === this._RightHandle.nativeElement) return 'right';
     if (target === this._BottomHandle.nativeElement) return 'bottom';
     return '';
+  }
+
+  removeListeners() {
+    if (this._RemoveMouseMoveListener) {
+      this._RemoveMouseMoveListener();
+      this._RemoveMouseMoveListener = undefined;
+    }
+    if (this._RemoveMouseUpListener) {
+      this._RemoveMouseUpListener();
+      this._RemoveMouseUpListener = undefined;
+    }
   }
 
   resizeModal(event: MouseEvent) {
@@ -188,13 +208,14 @@ export class ModalComponent implements OnDestroy {
 
   stopResize() {
     this._IsResizing = false; // Reset resizing flag
-    document.removeEventListener('mousemove', this._BoundResizeModal);
-    document.removeEventListener('mouseup', this._BoundStopResize);
     this._CurrentDirection = ''; // Reset the direction
+    this.removeListeners();
   }
 
   ngOnDestroy(): void {
-    // do nothing atm
+    // Clean up event listeners is a precautionary measure
+    // in case this.stopResize() was not called for some reason (better to avoid memory leaks!)
+    this.removeListeners();
   }
 
   onCancel(): void {

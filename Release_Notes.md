@@ -68,10 +68,13 @@
             - MNavigationType   - Renamed SetupClass to setDefaults
             - MPermissions      - Renamed SetupClass to setDefaults
             - MWorkFlows        - Renamed SetupClass to setDefaults
-        
+
+### Improvements
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
-- The modal window is now centered vertically
-- Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
+- ## Modal:
+    - The modal window is now centered vertically
+    - Improved event listener management and resize functionality in the modal window
+    - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
 
 
 ### Known Bugs
