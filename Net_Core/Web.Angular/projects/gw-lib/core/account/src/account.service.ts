@@ -347,12 +347,13 @@ export class AccountService extends BaseService {
 				if (navigate) {
 					this._Router.navigate(['generic_home']);
 				}
-				this.stopRefreshTokenTimer();
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
 			},
-			// complete: () => {}
+			complete: () => {
+				this.stopRefreshTokenTimer();
+			}
 		});
 	}
 
