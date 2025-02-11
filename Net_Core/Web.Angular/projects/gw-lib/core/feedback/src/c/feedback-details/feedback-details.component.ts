@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
@@ -19,6 +19,7 @@ import { ISelectedableAction } from '@growthware/core/account';
 // Feature
 import { IFeedback, Feedback } from '../../feedback.model';
 import { FeedbackService } from '../../feedback.service';
+import { GWCommon } from '@growthware/common/services';
 
 @Component({
   selector: 'gw-core-feedback-details',
@@ -39,12 +40,13 @@ import { FeedbackService } from '../../feedback.service';
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
   private _AccountSvc: AccountService = inject(AccountService);
+  private _GWCommon: GWCommon = inject(GWCommon);
   private _SearchSvc: SearchService = inject(SearchService);
   private _FormBuilder: FormBuilder = inject(FormBuilder);
   private _Profile: IFeedback = new Feedback('Anonymous', '');
 
-  avalibleDevelopers: Array<string> = [];
-  avalibleQA: Array<string> = [];
+  avalibleDevelopers = signal<Array<string>>([]);
+  avalibleQA = signal<Array<string>>([]);
   avalibleStatuses: Array<string> = ['Submitted', 'Open', 'Open-in progress', 'Closed', 'Closed-cannot reproduce', 'Closed-works as designed'];
   avalibleTypes: Array<string> = ['Bug', 'Feature-change', 'Feature-request', 'Question', 'Other'];
   selectedAction: string = '--';
@@ -66,8 +68,9 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
   ngOnInit(): void {
     this._ProfileSvc.getFeedbackAccounts().then((response: any) => {  // Request and Response Handler #1 (getFeedbackAccounts)
       // console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
-      this.avalibleDevelopers = response.item1;
-      this.avalibleQA = response.item2;
+      // this.avalibleDevelopers = response.item1;
+      this.avalibleDevelopers.set(response.item1);
+      this.avalibleQA.set(response.item2);
       return this._AccountSvc.getSelectableActions();                 // Request #2 (getSelectableActions)
     }).catch((error: any) => {                                        // Error Handler #1 (getFeedbackAccounts)
       this._LoggingSvc.toast('Error getting Accounts:\r\n' + error, 'Feedback Details:', LogLevel.Error);

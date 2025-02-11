@@ -25,7 +25,7 @@
               <mat-form-field class="half-width">
                 <mat-label>Assigned To</mat-label>
                 <mat-select formControlName="assignee">
-                  @for (item of avalibleDevelopers; track item) {
+                  @for (item of avalibleDevelopers(); track item) {
                   <mat-option [value]="item">
                       {{item}}
                   </mat-option>
@@ -35,7 +35,7 @@
               <mat-form-field class="half-width">
                 <mat-label>Verified By</mat-label>
                 <mat-select formControlName="verifiedBy">
-                  @for (item of avalibleQA; track item) {
+                  @for (item of avalibleQA(); track item) {
                   <mat-option [value]="item">
                       {{item}}
                   </mat-option>
