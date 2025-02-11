@@ -25,8 +25,6 @@ import { CommonModule } from '@angular/common';
 })
 export class ModalComponent implements OnDestroy {
 
-  private _IsResizing: boolean = false;
-
   @ViewChild('modalDiv') _ModalElement!: ElementRef; // Reference to the modal element
   @ViewChild('bottomRightHandle') _BottomRightHandle!: ElementRef; // Reference to the bottom right handle
   @ViewChild('rightHandle') _RightHandle!: ElementRef; // Reference to the right handle
@@ -132,7 +130,6 @@ export class ModalComponent implements OnDestroy {
       ) {
         event.preventDefault();
         event.stopPropagation(); // Prevent drag from firing
-        this._IsResizing = true; // Set resizing flag
         this._CurrentDirection = this.getResizeDirection(event.target); // Set the current direction
         this._RemoveMouseMoveListener = this._Renderer.listen(document, 'mousemove', (moveEvent: MouseEvent) => {
           this.resizeModal(moveEvent);
@@ -207,7 +204,6 @@ export class ModalComponent implements OnDestroy {
   }
 
   stopResize() {
-    this._IsResizing = false; // Reset resizing flag
     this._CurrentDirection = ''; // Reset the direction
     this.removeListeners();
   }
