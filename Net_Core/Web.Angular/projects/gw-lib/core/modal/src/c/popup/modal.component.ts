@@ -27,10 +27,10 @@ export class ModalComponent implements OnDestroy, OnInit {
 
   private _IsResizing: boolean = false;
 
-  @ViewChild('modalDiv') modalElement!: ElementRef; // Reference to the modal element
-  @ViewChild('bottomRightHandle') bottomRightHandle!: ElementRef; // Reference to the bottom right handle
-  @ViewChild('rightHandle') rightHandle!: ElementRef; // Reference to the right handle
-  @ViewChild('bottomHandle') bottomHandle!: ElementRef; // Reference to the bottom handle
+  @ViewChild('modalDiv') _ModalElement!: ElementRef; // Reference to the modal element
+  @ViewChild('bottomRightHandle') _BottomRightHandle!: ElementRef; // Reference to the bottom right handle
+  @ViewChild('rightHandle') _RightHandle!: ElementRef; // Reference to the right handle
+  @ViewChild('bottomHandle') _BottomHandle!: ElementRef; // Reference to the bottom handle
 
   public header: string = '';
   public height: number = 0; // Default height
@@ -49,7 +49,9 @@ export class ModalComponent implements OnDestroy, OnInit {
   public closeCallBackMethod?: (arg?: unknown) => void;
   public oKCallBackMethod?: (arg?: unknown) => void;
 
-  private currentDirection: string = ''; // Property to store current resize direction
+  private _CurrentDirection: string = ''; // Property to store current resize direction
+  private _BoundResizeModal = this.resizeModal.bind(this); // class properties to maintain consistent function references
+  private _BoundStopResize = this.stopResize.bind(this);   // class properties to maintain consistent function references
 
   constructor() { }
 
@@ -119,52 +121,54 @@ export class ModalComponent implements OnDestroy, OnInit {
   onMouseDown(event: MouseEvent) {
     if (event && event.target) {
       if (
-        event.target === this.bottomRightHandle.nativeElement ||
-        event.target === this.rightHandle.nativeElement ||
-        event.target === this.bottomHandle.nativeElement
+        event.target === this._BottomRightHandle.nativeElement ||
+        event.target === this._RightHandle.nativeElement ||
+        event.target === this._BottomHandle.nativeElement
       ) {
         event.preventDefault();
         event.stopPropagation(); // Prevent drag from firing
         this._IsResizing = true; // Set resizing flag
-        this.currentDirection = this.getResizeDirection(event.target); // Set the current direction
-        document.addEventListener('mousemove', this.resizeModal.bind(this)); // No direction passed here
-        document.addEventListener('mouseup', this.stopResize.bind(this));
+        this._CurrentDirection = this.getResizeDirection(event.target); // Set the current direction
+        // document.addEventListener('mousemove', this.resizeModal.bind(this)); // No direction passed here
+        // document.addEventListener('mouseup', this.stopResize.bind(this));
+        document.addEventListener('mousemove', this._BoundResizeModal); // Use the bound method
+        document.addEventListener('mouseup', this._BoundStopResize);
       }
     }
   }
 
   getResizeDirection(target: EventTarget) {
-    if (target === this.bottomRightHandle.nativeElement) return 'bottom-right';
-    if (target === this.rightHandle.nativeElement) return 'right';
-    if (target === this.bottomHandle.nativeElement) return 'bottom';
+    if (target === this._BottomRightHandle.nativeElement) return 'bottom-right';
+    if (target === this._RightHandle.nativeElement) return 'right';
+    if (target === this._BottomHandle.nativeElement) return 'bottom';
     return '';
   }
 
   resizeModal(event: MouseEvent) {
-    const modalRect = this.modalElement.nativeElement.getBoundingClientRect(); // Get current dimensions and position of the modal
+    const mModalRect = this._ModalElement.nativeElement.getBoundingClientRect(); // Get current dimensions and position of the modal
 
-    switch (this.currentDirection) { // Use the stored direction
+    switch (this._CurrentDirection) { // Use the stored direction
       case 'left':
-        const newWidthLeft = modalRect.right - event.clientX; // Calculate new width
+        const newWidthLeft = mModalRect.right - event.clientX; // Calculate new width
         this.width = Math.max(newWidthLeft, 100); // Set minimum width
-        this.modalElement.nativeElement.style.left = `${event.clientX}px`; // Adjust position
+        this._ModalElement.nativeElement.style.left = `${event.clientX}px`; // Adjust position
         break;
       case 'right':
-        const newWidthRight = event.clientX - modalRect.left; // Calculate new width
+        const newWidthRight = event.clientX - mModalRect.left; // Calculate new width
         this.width = Math.max(newWidthRight, 100); // Set minimum width
         break;
       case 'top':
-        const newHeightTop = modalRect.bottom - event.clientY; // Calculate new height
+        const newHeightTop = mModalRect.bottom - event.clientY; // Calculate new height
         this.height = Math.max(newHeightTop, 100); // Set minimum height
-        this.modalElement.nativeElement.style.top = `${event.clientY}px`; // Adjust position
+        this._ModalElement.nativeElement.style.top = `${event.clientY}px`; // Adjust position
         break;
       case 'bottom':
-        const newHeightBottom = event.clientY - modalRect.top; // Calculate new height
+        const newHeightBottom = event.clientY - mModalRect.top; // Calculate new height
         this.height = Math.max(newHeightBottom, 100); // Set minimum height
         break;
       case 'bottom-right':
-        const newWidthBR = event.clientX - modalRect.left; // Calculate new width
-        const newHeightBR = event.clientY - modalRect.top; // Calculate new height
+        const newWidthBR = event.clientX - mModalRect.left; // Calculate new width
+        const newHeightBR = event.clientY - mModalRect.top; // Calculate new height
         this.width = Math.max(newWidthBR, 100); // Set minimum width
         this.height = Math.max(newHeightBR, 100); // Set minimum height
         break;
@@ -173,9 +177,11 @@ export class ModalComponent implements OnDestroy, OnInit {
 
   stopResize() {
     this._IsResizing = false; // Reset resizing flag
-    document.removeEventListener('mousemove', this.resizeModal.bind(this));
-    document.removeEventListener('mouseup', this.stopResize.bind(this));
-    this.currentDirection = ''; // Reset the direction
+    // document.removeEventListener('mousemove', this.resizeModal.bind(this));
+    // document.removeEventListener('mouseup', this.stopResize.bind(this));
+    document.removeEventListener('mousemove', this._BoundResizeModal);
+    document.removeEventListener('mouseup', this._BoundStopResize);
+    this._CurrentDirection = ''; // Reset the direction
   }
 
   ngOnDestroy(): void {
