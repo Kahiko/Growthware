@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2, TemplateRef } from '@angular/core';
 // Angular Material cdk
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
@@ -34,6 +34,7 @@ export class ModalComponent implements OnDestroy {
   public header: string = '';
   public height: number = 0; // Default height
   public width: number = 0; // Default width
+  public modalContext: any = {};
   public modalId: string = '';
   public showFooter: boolean = false;
   public showCloseBtn: boolean = false;
@@ -110,7 +111,11 @@ export class ModalComponent implements OnDestroy {
     this.width = mWindowSize.pxWidth;
     this._OriginalWidth = mWindowSize.pxWidth;
     this.modalId = options.modalId;
-
+    if (options.contentPayLoad instanceof TemplateRef && options.initialData !== undefined) {
+      this.modalContext = {
+        data: options.initialData
+      };
+    }
     // set the buttons so we can use the id, name, class, text and visible properties in the modal component
     this.cancelBtn = options.buttons.cancelButton;
     this.closeBtn = options.buttons.closeButton;

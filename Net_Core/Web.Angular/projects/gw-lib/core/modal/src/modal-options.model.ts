@@ -2,6 +2,7 @@ import { CallbackButton, ICallbackButton, } from '@growthware/common/interfaces'
 import { IWindowSize } from './window-size.model';
 
 export interface IModalOptions {
+  initialData?: any;
   modalId: string;
   headerText: string;
   windowSize: number | IWindowSize;
@@ -14,7 +15,8 @@ export interface IModalOptions {
 }
 
 export class ModalOptions implements IModalOptions {
-	public buttons = {
+	public initialData = undefined;
+  public buttons = {
 		cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn', false),
 		closeButton: new CallbackButton('Close', 'closeBtn', 'closeBtn', false),
 		okButton: new CallbackButton('OK', 'okBtn', 'okBtn', false)
