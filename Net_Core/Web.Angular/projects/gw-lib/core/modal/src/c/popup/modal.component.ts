@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 // Angular Material cdk
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnDestroy, OnInit {
+export class ModalComponent implements OnDestroy {
 
   private _IsResizing: boolean = false;
 
@@ -32,6 +32,7 @@ export class ModalComponent implements OnDestroy, OnInit {
   @ViewChild('rightHandle') _RightHandle!: ElementRef; // Reference to the right handle
   @ViewChild('bottomHandle') _BottomHandle!: ElementRef; // Reference to the bottom handle
 
+  public isModalBodyScrollable: boolean = false;
   public header: string = '';
   public height: number = 0; // Default height
   public width: number = 0; // Default width
@@ -49,15 +50,13 @@ export class ModalComponent implements OnDestroy, OnInit {
   public closeCallBackMethod?: (arg?: unknown) => void;
   public oKCallBackMethod?: (arg?: unknown) => void;
 
-  private _CurrentDirection: string = ''; // Property to store current resize direction
   private _BoundResizeModal = this.resizeModal.bind(this); // class properties to maintain consistent function references
   private _BoundStopResize = this.stopResize.bind(this);   // class properties to maintain consistent function references
+  private _CurrentDirection: string = ''; // Property to store current resize direction
+  private _OriginalHeight: number = 0;
+  private _OriginalWidth: number = 0;
 
   constructor() { }
-
-  ngOnInit() {
-    // do nothing atm
-  }
 
   private getWindowSize(options: IModalOptions): IWindowSize {
     /**
@@ -105,7 +104,9 @@ export class ModalComponent implements OnDestroy, OnInit {
     const mWindowSize: IWindowSize = this.getWindowSize(options);
     this.header = options.headerText;
     this.height = mWindowSize.pxHeight;
+    this._OriginalHeight = mWindowSize.pxHeight;
     this.width = mWindowSize.pxWidth;
+    this._OriginalWidth = mWindowSize.pxWidth;
     this.modalId = options.modalId;
 
     // set the buttons so we can use the id, name, class, text and visible properties in the modal component
@@ -129,8 +130,6 @@ export class ModalComponent implements OnDestroy, OnInit {
         event.stopPropagation(); // Prevent drag from firing
         this._IsResizing = true; // Set resizing flag
         this._CurrentDirection = this.getResizeDirection(event.target); // Set the current direction
-        // document.addEventListener('mousemove', this.resizeModal.bind(this)); // No direction passed here
-        // document.addEventListener('mouseup', this.stopResize.bind(this));
         document.addEventListener('mousemove', this._BoundResizeModal); // Use the bound method
         document.addEventListener('mouseup', this._BoundStopResize);
       }
@@ -173,12 +172,22 @@ export class ModalComponent implements OnDestroy, OnInit {
         this.height = Math.max(newHeightBR, 100); // Set minimum height
         break;
     }
+    
+    // Check if modal body needs scrollbars
+    const bodyElement = this._ModalElement.nativeElement.querySelector('.modal-body__div');
+    if (bodyElement) {
+      const contentHeight = bodyElement.scrollHeight;
+      const contentWidth = bodyElement.scrollWidth;
+
+      // Set scrollable state based on current size compared to original
+      this.isModalBodyScrollable = 
+        (this.height < this._OriginalHeight && contentHeight > this.height) || 
+        (this.width < this._OriginalWidth && contentWidth > this.width);
+    }
   }
 
   stopResize() {
     this._IsResizing = false; // Reset resizing flag
-    // document.removeEventListener('mousemove', this.resizeModal.bind(this));
-    // document.removeEventListener('mouseup', this.stopResize.bind(this));
     document.removeEventListener('mousemove', this._BoundResizeModal);
     document.removeEventListener('mouseup', this._BoundStopResize);
     this._CurrentDirection = ''; // Reset the direction
