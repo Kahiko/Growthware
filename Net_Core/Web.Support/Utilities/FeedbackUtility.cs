@@ -11,6 +11,11 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class FeedbackUtility
 {
+/*
+ * The feedback feature was added more for the database table desing showing how
+ * to keep history of a record in the same table utilizing a "Identifier" column,
+ * StartDate and EndDate.  A null EndDate means the record is current.
+ */
     private static BFeedbacks m_BusinessLogic = null;
     private static readonly Logger m_Logger = Logger.Instance();
 
