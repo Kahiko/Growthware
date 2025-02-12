@@ -70,19 +70,11 @@ export class ForgotPasswordComponent implements AfterViewInit, OnInit {
   }
 
   onCancel(): void {
-    // this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
-		// mModalOptions.buttons.okButton.callbackMethod = () => {
-		// 	this.onModalOk;
-		// };
     this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
 		this._ModalSvc.open(mModalOptions);
   }
-
-	// onModalOk() {
-	// 	this._ModalSvc.close(this._AccountSvc.logInModalId);
-	// }
 
   onSubmit(form: FormGroup): void {
     if(form.valid) {
