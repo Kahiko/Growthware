@@ -106,10 +106,13 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 		this._ModalSvc.close(this._AccountSvc.logInModalId);
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.forgotPasswordModalId, 'Forgot Password', ForgotPasswordComponent, mWindowSize);
-		mModalOptions.buttons.okButton.callbackMethod = () => {
-			// this.onModalOk;
+		mModalOptions.buttons.cancelButton.callbackMethod = () => {
+			// Gives the illusion of just closing the current "window"
+			const mWindowSize: WindowSize = new WindowSize(225, 450);
+			const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
 			this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
-		};
+			this._ModalSvc.open(mModalOptions);			
+		}
 		this._ModalSvc.open(mModalOptions);
 
 	}
