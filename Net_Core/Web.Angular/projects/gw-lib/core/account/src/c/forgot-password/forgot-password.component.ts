@@ -73,6 +73,7 @@ export class ForgotPasswordComponent implements AfterViewInit, OnInit {
     if (this._Router.url.toLowerCase() !== '/accounts/logon') {
       const mWindowSize: WindowSize = new WindowSize(225, 450);
       const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
+      this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
       this._ModalSvc.open(mModalOptions);
     } else {
       this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
