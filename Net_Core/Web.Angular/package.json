@@ -28,6 +28,7 @@
     "@angular/router": "^18.2.2",
     "@auth0/angular-jwt": "^5.2.0",
     "@fontsource/roboto": "^5.1.1",
+    "@microsoft/signalr": "^8.0.7",
     "eslint-plugin-html": "^8.0.0",
     "material-icons": "^1.13.13",
     "roboto-fontface": "^0.10.0",

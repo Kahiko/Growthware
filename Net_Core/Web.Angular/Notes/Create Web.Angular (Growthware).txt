@@ -78,6 +78,7 @@ From a command prompt and the directory you would like to create your new projec
 	  --Please be aware when you "debug" the application the startup time is much longer!
 
 	npm install @auth0/angular-jwt --save
+  npm install @microsoft/signalr --save
 
 	--npm install ng-samurai --save-dev
 	--npm install @ngrx/store-devtools --save-dev
