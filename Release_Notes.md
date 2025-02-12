@@ -71,13 +71,16 @@
 
 ### Improvements
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
+- Enhanced logout functionality in LogoutComponent
+    - Added LogoutComponent to handle user logout.
+    - Integrated AccountService to call the logout method on initialization.
+    - Updated the component's structure with necessary imports and lifecycle hooks.
 - ## Modal:
     - The modal window is now centered vertically
     - Improved event listener management and resize functionality in the modal window
     - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
     - Added support for initial data for template modals
     - Enhance JSDoc documentation
-
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
