@@ -483,7 +483,7 @@ export class FileManagerService implements OnInit {
 						this._GWCommon.hierarchyReplaceItem(mNewDirectoryArray, mOriginalDirectory.key, 'key', 'children', mNewDirectory);
 						this.directoriesChanged$.update(() => mNewDirectoryArray);
 						this.setSelectedDirectory(mNewDirectory.relitivePath);
-						this.getDirectories(action, mNewDirectory.relitivePath).then(() => { 
+						this.getDirectories(action, mNewDirectory.relitivePath).then(() => {
 							resolve(true);
 						}).catch((error) => {
 							this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameDirectory');
@@ -531,32 +531,32 @@ export class FileManagerService implements OnInit {
 	 */
 	public sortFileInfoList(sortType: string): void {
 		if (!sortType) return;
-	  
+
 		switch (sortType) {
-		  case 'name-asc':
-			// mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => a.shortFileName.localeCompare(b.shortFileName)));
-			break;
-		  case 'name-desc':
-			// mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => b.shortFileName.localeCompare(a.shortFileName)));
-			break;
-		  case 'date-asc':
-			// mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()));
-			break;
-		  case 'date-desc':
-			// mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()));
-			break;
-		  case 'size-asc':
-			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size)));
-			break;
-		  case 'size-desc':
-			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
-			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size)));
-			break;
+			case 'name-asc':
+				// mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => a.shortFileName.localeCompare(b.shortFileName)));
+				break;
+			case 'name-desc':
+				// mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => b.shortFileName.localeCompare(a.shortFileName)));
+				break;
+			case 'date-asc':
+				// mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()));
+				break;
+			case 'date-desc':
+				// mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()));
+				break;
+			case 'size-asc':
+				// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size)));
+				break;
+			case 'size-desc':
+				// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
+				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size)));
+				break;
 		}
 	}
 
