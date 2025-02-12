@@ -106,6 +106,7 @@
 - Fixed sorting in the TableFileListComponent, it was not sorting the size correctly
 - Fixed multiple modal windows closing when using the ESC key
 - Fixed Docker by hosting the both the Angular Material Icons and Fonts
+- Fixed error when renaming a directory then clicking on subdirectories
 
 ## Net_Core Version 5.1.1.x (YYYY-MM-DD)
 

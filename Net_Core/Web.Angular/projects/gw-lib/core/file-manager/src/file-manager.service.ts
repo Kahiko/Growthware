@@ -483,7 +483,12 @@ export class FileManagerService implements OnInit {
 						this._GWCommon.hierarchyReplaceItem(mNewDirectoryArray, mOriginalDirectory.key, 'key', 'children', mNewDirectory);
 						this.directoriesChanged$.update(() => mNewDirectoryArray);
 						this.setSelectedDirectory(mNewDirectory.relitivePath);
-						resolve(true);
+						this.getDirectories(action, mNewDirectory.relitivePath).then(() => { 
+							resolve(true);
+						}).catch((error) => {
+							this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameDirectory');
+							resolve(false);
+						});
 					},
 					error: (error) => {
 						this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameDirectory');
