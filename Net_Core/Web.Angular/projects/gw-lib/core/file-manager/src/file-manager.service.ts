@@ -28,6 +28,7 @@ export class FileManagerService implements OnInit {
 	private _Api_RenameDirectory: string = '';
 	private _Api_RenameFile: string = '';
 	private _Api_UploadFile: string = '';
+	private _FileInfoList: Array<IFileInfoLight> = [];
 	private _SelectedPath: string = '\\';
 	private _ChunkSize: number = 29696000; // The default value is 30MB in Kestrel so this is a bit smaller
 	private _Concurrency = 3; // Number of parallel uploads
@@ -437,6 +438,9 @@ export class FileManagerService implements OnInit {
 		});
 	}
 
+	private notifyFilesListChanged() {
+		this.fileInfoList$.set(this._FileInfoList);
+	}
 
 	/**
 	 * Refreshes the current directory and file list by retrieving the latest 
@@ -449,6 +453,11 @@ export class FileManagerService implements OnInit {
 	refresh(action: string): void {
 		this.getDirectories(action, this.selectedPath);
 		this.getFiles(action, this.selectedPath);
+	}
+
+	removeFromFileList(fileName: string): void {
+		this._FileInfoList = this._FileInfoList.filter((item) => { return item.name.toLowerCase() !== fileName.toLowerCase(); });
+		this.notifyFilesListChanged();
 	}
 
 	/**
@@ -586,7 +595,8 @@ export class FileManagerService implements OnInit {
 			};
 			this._HttpClient.delete<boolean>(this._Api_DeleteFile, mHttpOptions).subscribe({
 				next: (response: boolean) => {
-					this.getFiles(action, this._SelectedPath);
+					this.removeFromFileList(fileName);
+					this.notifyFilesListChanged();
 					resolve(response);
 				},
 				error: (error) => {
@@ -618,7 +628,8 @@ export class FileManagerService implements OnInit {
 			});
 			this._HttpClient.delete<boolean>(this._Api_DeleteFiles, { body: mFormData }).subscribe({
 				next: (response: boolean) => {
-					this.getFiles(action, this._SelectedPath);
+					this._FileInfoList = this._FileInfoList.filter(file => !mFileNames.includes(file.name));
+					this.notifyFilesListChanged();
 					resolve(response);
 				},
 				error: (error) => {
@@ -762,7 +773,8 @@ export class FileManagerService implements OnInit {
 		this._SelectedPath = selectedPath;
 		this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
 			next: (response) => {
-				this.fileInfoList$.set(response);
+				this._FileInfoList = response;
+				this.notifyFilesListChanged();
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
