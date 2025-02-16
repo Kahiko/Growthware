@@ -239,7 +239,6 @@ $altTheme: mat.m2-define-dark-theme((
 .theme-alternate {
   @include mat.all-component-colors($altTheme);
 }
-// Done Theme
 // Specific component overrides, pieces that are not in line with the general theming
 
 // Handle buttons appropriately, with respect to line-height
