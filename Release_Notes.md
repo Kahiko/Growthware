@@ -71,11 +71,12 @@
 
 ### Improvements
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
+- Moved files from assets folder to the public folder to better conform to Augular 18
 - Enhanced logout functionality in LogoutComponent
     - Added LogoutComponent to handle user logout.
     - Integrated AccountService to call the logout method on initialization.
     - Updated the component's structure with necessary imports and lifecycle hooks.
-- ## Modal:
+- #### Modal:
     - The modal window is now centered vertically
     - Improved event listener management and resize functionality in the modal window
     - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
