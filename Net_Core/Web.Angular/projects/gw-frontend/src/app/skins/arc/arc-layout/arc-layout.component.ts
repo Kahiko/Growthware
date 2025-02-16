@@ -13,12 +13,14 @@ import { HorizontalComponent, HierarchicalVerticalComponent, VerticalComponent }
 // Feature
 import { ArcFooterComponent } from '../arc-footer/arc-footer.component';
 import { ArcHeaderComponent } from '../arc-header/arc-header.component';
+import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({
 	selector: 'gw-frontend-arc-layout',
 	standalone: true,
 	templateUrl: './arc-layout.component.html',
 	styleUrls: ['./arc-layout.component.scss'],
+	animations: [sideNavTextAnimation],
 	encapsulation: ViewEncapsulation.None,
 	imports: [
 		CommonModule,
