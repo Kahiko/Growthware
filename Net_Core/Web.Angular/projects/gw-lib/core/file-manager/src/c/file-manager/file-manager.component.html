@@ -63,3 +63,38 @@
     </div>
   </div>
 </div>
+<ng-template #helpText>
+  <div class="formSectionContents">
+    <p>
+      File manage uses "right click" context menu to manage files and folders.
+    </p>
+    <p>
+      Foler:
+    </p>
+    <ul>
+      <li>Select the desired folder by "left" clicking on the folder</li>
+      <li>"Right" click on the selected folder to open the context menu</li>
+    </ul>
+    <p>
+      File:
+    </p>
+    <ul>
+      <li>"Right" click on the file to open the context menu</li>
+      <li>
+        Checkboxes are used to select multiple files to be deleted.
+        <ul>
+          <li>Checkboxes will be reset:</li>
+          <ul>
+            <li>When changing pages</li>
+            <li>When filtering</li>
+            <li>When changing the view from "List" to "Table"</li>
+          </ul>
+          <p>
+            <br/>
+            <b>Note:</b> Checkboxes are reset because no file should be deleted without being seen.
+          </p>
+      </ul>
+      </li>
+    </ul>
+  </div>
+</ng-template>
