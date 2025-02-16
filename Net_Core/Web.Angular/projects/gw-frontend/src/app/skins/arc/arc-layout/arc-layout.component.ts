@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,7 @@ import { ArcHeaderComponent } from '../arc-header/arc-header.component';
 	standalone: true,
 	templateUrl: './arc-layout.component.html',
 	styleUrls: ['./arc-layout.component.scss'],
+	encapsulation: ViewEncapsulation.None,
 	imports: [
 		CommonModule,
 		RouterOutlet,
