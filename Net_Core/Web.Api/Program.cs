@@ -109,8 +109,8 @@ app.UseSwagger();                       // moved out of if (app.Environment.IsDe
 app.UseSwaggerUI(mSwaggerUIOptions => { // moved out of if (app.Environment.IsDevelopment())
     mSwaggerUIOptions.DocumentTitle = "Growthware API";
     mSwaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
-    mSwaggerUIOptions.InjectJavascript("/assets/swagger-ui/custom-script.js");
-    mSwaggerUIOptions.InjectStylesheet("/assets/swagger-ui/custom-style.css");
+    mSwaggerUIOptions.InjectJavascript("/swagger-ui/custom-script.js");
+    mSwaggerUIOptions.InjectStylesheet("/swagger-ui/custom-style.css");
 });
 app.UseHttpsRedirection();
 
