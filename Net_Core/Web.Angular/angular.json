@@ -26,6 +26,10 @@
             "tsConfig": "projects/gw-frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/gw-frontend/public"
+              },
               "projects/gw-frontend/src/favicon.ico",
               "projects/gw-frontend/src/assets"
             ],
@@ -90,6 +94,10 @@
             "tsConfig": "projects/gw-frontend/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/gw-frontend/public"
+              },
               "projects/gw-frontend/src/favicon.ico",
               "projects/gw-frontend/src/assets"
             ],
