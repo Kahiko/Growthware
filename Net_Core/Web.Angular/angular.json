@@ -30,11 +30,10 @@
                 "glob": "**/*",
                 "input": "projects/gw-frontend/public"
               },
-              "projects/gw-frontend/src/favicon.ico",
               "projects/gw-frontend/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "node_modules/@fontsource/roboto/index.css",
               "node_modules/material-icons/iconfont/material-icons.css",
               "projects/gw-frontend/src/styles.scss"
@@ -51,7 +50,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "170kb",
+                  "maximumWarning": "160kb",
                   "maximumError": "320kb"
                 }
               ],
@@ -97,12 +96,10 @@
               {
                 "glob": "**/*",
                 "input": "projects/gw-frontend/public"
-              },
-              "projects/gw-frontend/src/favicon.ico",
-              "projects/gw-frontend/src/assets"
+              }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "node_modules/@fontsource/roboto/index.css",
               "node_modules/material-icons/iconfont/material-icons.css",
               "projects/gw-frontend/src/styles.scss"
