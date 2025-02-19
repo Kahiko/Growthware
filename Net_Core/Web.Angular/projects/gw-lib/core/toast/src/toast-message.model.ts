@@ -10,8 +10,16 @@ export interface IToastMessage {
 
 export class ToastMessage implements IToastMessage {
   public dateTime: string = new Date().toLocaleString();
-  public id = this.message + this.dateTime;
+  public id: string = '';
+  public message: string = ''; 
+  public title: string = ''; 
+  public eventType!: EventType
 
-  constructor(public message: string, public title: string, public eventType: EventType) { }
+  constructor(message: string, title: string, eventType: EventType) { 
+    this.message = message;
+    this.title = title;
+    this.eventType = eventType;
+    this.id = this.message + this.dateTime
+  }
 
 }

@@ -76,9 +76,9 @@ export class AccountDetailsComponent implements OnInit {
   litLastNameWarning: string = '';
   litStatusWarning: string = '';
 
-	pickListTableContentsBackground = this._AccountSvc.clientChoices().evenRow;
-	pickListTableContentsFont = this._AccountSvc.clientChoices().evenFont;
-	pickListTableHeaderBackground = this._AccountSvc.clientChoices().oddRow;
+	pickListTableContentsBackground: string = '';
+	pickListTableContentsFont: string = '';
+	pickListTableHeaderBackground: string = '';
 
   rolesAvailable: Array<string> = ['one', 'two'];
   rolesSelected: Array<string> = [];
@@ -133,7 +133,11 @@ export class AccountDetailsComponent implements OnInit {
     private _RoleSvc: RoleService,
     private _Router: Router,
     private _SecuritySvc: SecurityService
-  ) { }
+  ) { 
+    this.pickListTableContentsBackground = this._AccountSvc.clientChoices().evenRow;
+    this.pickListTableContentsFont = this._AccountSvc.clientChoices().evenFont;
+    this.pickListTableHeaderBackground = this._AccountSvc.clientChoices().oddRow;
+  }
 
   ngOnInit(): void {
     let mDesiredAccount: string = '';

@@ -70,7 +70,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
 	avalibleParents = [{ key: -1, value: 'None' }];
 
-	clientChoices: IClientChoices = this._AccountSvc.clientChoices();
+	clientChoices!: IClientChoices;
 
 	derivedRolesId: string = 'derivedRoles';
 
@@ -149,6 +149,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;
 		this._SecuritySvc = securitySvc;
+		this.clientChoices = this._AccountSvc.clientChoices();
 	}
 
 	ngOnInit(): void {

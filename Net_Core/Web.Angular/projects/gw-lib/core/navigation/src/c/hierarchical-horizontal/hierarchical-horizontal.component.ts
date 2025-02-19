@@ -18,6 +18,6 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
 	encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class HierarchicalHorizontalComponent extends NavigationComponentBase {
-	@ViewChild('firstLevel', { static: false }) override firstLevel!: ElementRef<HTMLUListElement>;
+	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;
 	override _MenuType: MenuTypes = MenuTypes.Hierarchical;
   }
