@@ -861,6 +861,11 @@ IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 16)
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 63)
     UPDATE [ZGWSecurity].[Functions] SET [Action] = '/securityEntity/SelectASecurityEntity' WHERE FunctionSeqId = 63
 
+UPDATE 
+	[ZGWSecurity].[Functions] 
+SET [Source] = 'https://127.0.0.1:44455/swagger/index.html' 
+WHERE [FunctionSeqId] = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SwaggerAPI')
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '5.2.0.0'
