@@ -13,7 +13,7 @@
             "request": "launch",
             "preLaunchTask": "Task: DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net9.0/GrowthWare.DatabaseManager.dll",
+            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net8.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
                 "5.2.0.0"
@@ -60,7 +60,7 @@
             "request": "launch",
             "preLaunchTask": "Task: Api-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Api/bin/Debug/net9.0/GrowthWare.Web.Api.dll",
+            "program": "${workspaceFolder}/Web.Api/bin/Debug/net8.0/GrowthWare.Web.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Api",
             "stopAtEntry": false,
