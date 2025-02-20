@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
-import { encapsulateStyle } from '@angular/compiler';
 
 @Component({
 	selector: 'gw-core-list',
