@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/gw-frontend",
+            "outputPath": "dist/growthware/gw-frontend",
             "index": "projects/gw-frontend/src/index.html",
             "browser": "projects/gw-frontend/src/main.ts",
             "polyfills": [
