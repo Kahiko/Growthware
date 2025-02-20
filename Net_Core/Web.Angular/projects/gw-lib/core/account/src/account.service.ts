@@ -100,7 +100,7 @@ export class AccountService extends BaseService {
 		} else {
 			this.stopRefreshTokenTimer();
 		}
-	};
+	}
 
 	/**
 	 * @description Authenticates an account VIA the API using the provided account and password
