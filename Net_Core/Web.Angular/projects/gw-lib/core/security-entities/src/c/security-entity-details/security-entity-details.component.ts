@@ -151,7 +151,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			}
 			this._RegistrationInformation.id = this._Profile.id;
 			this.populateForm();
-			console.log('SecurityEntityDetailsComponent.ngOnInit this._RegistrationInformation', this._RegistrationInformation);
+			// console.log('SecurityEntityDetailsComponent.ngOnInit this._RegistrationInformation', this._RegistrationInformation);
 		}).catch((error) => {																	// #5 Error Handler
 			this._LoggingSvc.errorHandler(error, 'SecurityEntityDetailsComponent', 'ngOnInit');
 		});
