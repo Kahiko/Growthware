@@ -1,39 +1,20 @@
-.pickListTable {
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    -moz-box-shadow: 2px 2px 3px #666;
-    -webkit-box-shadow: 2px 2px 3px #666;
-    box-shadow: 2px 2px 3px #666;
-    padding: 2px;
-    font-family: verdana, arial;
-    font-size: 1rem;
-    background-color: white;
-}
-
-.pickListTableHeader td {
-    background-color: #B2B2B2;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    padding: 3px;
-    text-align: center;
-    vertical-align: middle;
-    font-size: .8rem;
+.pickListHeaderDiv {
+    @extend .rounded-top;
     background-color: var(--pickListTableHeaderBackground);
+    padding: 4px;
+    color: var(--fontColor);
 }
 
-.pickListTableHelp td {
-    padding: 2px;
-    font-size: .5rem;
-}
-
-// TODO: need to implement the color as a property but for now we'll just use black
-.pickListTableContents {
+.pickListTableContentsDiv {
     padding: 2px;
     font-size: .8rem;
     background-color: var(--pickListTableContentsBackground);
     color: var(--pickListTableContentsFont);
+}
+
+.pickListSelect {
+    min-height: 132px;
+    max-height: 132px;
 }
 
 .help {
@@ -41,3 +22,12 @@
     text-align: center;
     vertical-align: middle;
 }
+
+.rounded-top {
+    border-top-left-radius: 10px;
+    -moz-border-top-left-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    -moz-border-top-right-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+  }

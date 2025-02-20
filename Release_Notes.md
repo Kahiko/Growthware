@@ -75,7 +75,8 @@
 - Enhanced logout functionality in LogoutComponent
     - Added LogoutComponent to handle user logout.
     - Integrated AccountService to call the logout method on initialization.
-    - Updated the component's structure with necessary imports and lifecycle hooks.
+    - Updated the component's structure with necessary imports and lifecycle hooks
+- Picklist: Converted from tables to div cleaned up stylesheet
 - #### Modal:
     - The modal window is now centered vertically
     - Improved event listener management and resize functionality in the modal window

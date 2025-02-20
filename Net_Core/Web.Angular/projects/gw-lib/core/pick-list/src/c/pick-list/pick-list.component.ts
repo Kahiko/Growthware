@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnDestroy, OnInit } from '@angular/core';
+import { Component, input, output, OnDestroy, OnInit, effect } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -46,6 +46,7 @@ export class PickListComponent implements OnDestroy, OnInit {
 	selectedItemsText = input<string>('');
 	size = input<string>('8');
 	width = input<string>('120');
+	overAllWidth = 0;
 
 	private _AvailableItems: Array<string> = [];
 	private _FirstLoadAvailableItems: boolean = true;
@@ -59,7 +60,12 @@ export class PickListComponent implements OnDestroy, OnInit {
 	constructor(
 		private _GWCommon: GWCommon,
 		private _LoggingSvc: LoggingService,
-		private _ModalSvc: ModalService) { }
+		private _ModalSvc: ModalService
+	) { 
+		effect(() => {
+			this.overAllWidth = (+this.width() * 2) + 50;
+		});
+	}
 
 	ngOnInit(): void {
 		this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp());
