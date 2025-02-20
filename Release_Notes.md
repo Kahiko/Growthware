@@ -82,6 +82,10 @@
     - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
     - Added support for initial data for template modals
     - Enhance JSDoc documentation
+- Rebuilt Web.Angular project from scratch using Angular 18.2.0
+    - Fixes serveral hidden errors
+    - Ensures that the project is compatible with Angular 18.2.0
+    - Prepares the project for upgrade to Angular 19.x
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
