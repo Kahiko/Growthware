@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, input, InputSignal, output, OnDestroy, OnInit, computed, EffectRef } from '@angular/core';
+import { Component, input, output, OnDestroy, OnInit } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
-import { INameDataPair } from '@growthware/common/interfaces';
 import { GWCommon } from '@growthware/common/services';
-import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
+import { LoggingService } from '@growthware/core/logging';
 import { ModalOptions, ModalService } from '@growthware/core/modal';
 import { Observable, Subscription } from 'rxjs';
 
