@@ -1,9 +1,10 @@
 /* custom-style.css */
 
 /* Replace the Swagger UI logo with your own image */
-.swagger-ui .topbar img {
-    content: url('../../favicon.ico');
-    height: 24px;
-    width: 24px;
-    max-width: 200px; /* Set a maximum width for the logo */
+.swagger-ui .topbar svg:not(:root) {
+    display: none;
+}
+
+.topbar-wrapper .link:before {
+    content: url('/images/happy-pineapple-gradient-by-vexels_32x32.png');
 }
