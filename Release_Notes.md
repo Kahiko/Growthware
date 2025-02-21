@@ -89,6 +89,7 @@
     - Ensures that the project is compatible with Angular 18.2.0
     - Prepares the project for upgrade to Angular 19.x
 - Replaced the Swagger UI logo
+- Moved the swagger-ui folder from the assets folder to the public folder
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
