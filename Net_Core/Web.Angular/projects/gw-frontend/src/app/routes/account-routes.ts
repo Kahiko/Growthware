@@ -6,7 +6,7 @@ import { LogoutComponent, LoginComponent, SearchAccountsComponent, SelectPrefere
 import { VerifyAccountComponent } from '@growthware/core/account';
 
 export const accountRoutes: Routes = [
-    { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
+	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
 	{ path: 'edit-account',  component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'register', component: AccountDetailsComponent, canActivate: [AuthGuard] },

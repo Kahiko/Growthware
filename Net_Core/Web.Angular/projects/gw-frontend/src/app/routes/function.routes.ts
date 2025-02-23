@@ -3,6 +3,6 @@ import { Routes } from '@angular/router';
 import { CopyFunctionSecurityComponent, SearchfunctionsComponent } from '@growthware/core/function';
 
 export const functionRoutes: Routes = [
-    { path: '', component: SearchfunctionsComponent },
-    { path: 'copyfunctionsecurity', component: CopyFunctionSecurityComponent },
+	{ path: '', component: SearchfunctionsComponent },
+	{ path: 'copyfunctionsecurity', component: CopyFunctionSecurityComponent },
 ];

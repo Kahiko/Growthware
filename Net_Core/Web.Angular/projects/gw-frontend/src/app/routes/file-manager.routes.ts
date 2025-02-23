@@ -3,5 +3,5 @@ import { Routes } from '@angular/router';
 import { FileManagerComponent } from '@growthware/core/file-manager';
 
 export const fileManagerRoutes: Routes = [
-    { path: '', component: FileManagerComponent },
+	{ path: '', component: FileManagerComponent },
 ];

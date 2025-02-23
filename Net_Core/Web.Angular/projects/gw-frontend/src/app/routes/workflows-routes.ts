@@ -4,5 +4,5 @@ import { AuthGuard } from '@growthware/common/services';
 import { SearchWorkflowsComponent } from '@growthware/core/workflows';
 
 export const workflowRoutes: Routes = [
-    { path: '', component: SearchWorkflowsComponent , canActivate: [AuthGuard]},
+	{ path: '', component: SearchWorkflowsComponent , canActivate: [AuthGuard]},
 ];

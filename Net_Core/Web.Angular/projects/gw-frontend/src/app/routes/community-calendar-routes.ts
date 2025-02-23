@@ -3,5 +3,5 @@ import { Routes } from '@angular/router';
 import { CalendarComponent } from '@growthware/core/community-calendar';
 
 export const communityCalendarRoutes: Routes = [
-    { path: '', component: CalendarComponent } ,
+	{ path: '', component: CalendarComponent } ,
 ]
