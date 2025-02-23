@@ -29,16 +29,16 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
   public results: unknown;
 
   constructor() {
-	effect(() => {
-		const criteria = this._SearchSvc.searchCriteriaChanged$();
-		if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-			this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
-				this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
-			}).catch((error) => {
-				console.log(error);
-			});
-		}		
-	});
+  	effect(() => {
+  		const criteria = this._SearchSvc.searchCriteriaChanged$();
+  		if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
+  			this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
+  				this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
+  			}).catch((error) => {
+  				console.log(error);
+  			});
+  		}		
+  	});
   }
 
   ngAfterViewInit(): void {

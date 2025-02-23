@@ -226,26 +226,26 @@ export class ModalService {
 			'\n  ' +
 			msg;
 		switch (level) {
-			case 'Debug':
-				console.debug(mMsg);
-				break;
-			case 'Error':
-			case 'Fatal':
-				console.error(mMsg);
-				break;
-			case 'Info':
-				console.info(mMsg);
-				break;
-			case 'Warn':
-				console.warn(mMsg);
-				break;
-			case 'Trace':
-				console.trace(mMsg);
-				break;
-			case 'Success':
-			default:
-				console.log(mMsg);
-				break;
+		case 'Debug':
+			console.debug(mMsg);
+			break;
+		case 'Error':
+		case 'Fatal':
+			console.error(mMsg);
+			break;
+		case 'Info':
+			console.info(mMsg);
+			break;
+		case 'Warn':
+			console.warn(mMsg);
+			break;
+		case 'Trace':
+			console.trace(mMsg);
+			break;
+		case 'Success':
+		default:
+			console.log(mMsg);
+			break;
 		}
 	}
 

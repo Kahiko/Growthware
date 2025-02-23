@@ -27,4 +27,4 @@ import { MenuTypes } from '../../menu-types.enum';
 export class HorizontalComponent extends NavigationComponentBase {
 	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;
 	override _MenuType: MenuTypes = MenuTypes.Horizontal;
-  }
+}

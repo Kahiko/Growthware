@@ -23,21 +23,21 @@ export class ToastComponent implements OnInit {
 
 	ngOnInit() {
 		switch (EventType[this.toastMessage().eventType]) {
-			case 'Info':
-				this.typeClass = 'bg-info text-dark';
-				break;
-			case 'Warning':
-				this.typeClass = 'bg-warning text-dark';
-				break;
-			case 'Success':
-				this.typeClass = 'bg-success text-white';
-				break;
-			case 'Error':
-				this.typeClass = 'bg-danger text-white';
-				break;
-			default:
-				this.typeClass = 'bg-primary text-white';
-				break;
+		case 'Info':
+			this.typeClass = 'bg-info text-dark';
+			break;
+		case 'Warning':
+			this.typeClass = 'bg-warning text-dark';
+			break;
+		case 'Success':
+			this.typeClass = 'bg-success text-white';
+			break;
+		case 'Error':
+			this.typeClass = 'bg-danger text-white';
+			break;
+		default:
+			this.typeClass = 'bg-primary text-white';
+			break;
 		}
 	}
 

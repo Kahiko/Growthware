@@ -22,28 +22,28 @@ export interface IFeedback {
 }
 
 export class Feedback implements IFeedback {
-    feedbackId = -1;
-    action = '';
-    assigneeId = 1;
-    assignee = 'Anonymous';
-    dateClosed = '1753-01-01T00:00:00';
-    dateOpened = '1753-01-01T00:00:00';
-    details = '';
-    foundInVersion = '';
-    functionSeqId = -1;
-    notes = '';
-    severity = '';
-    status = '';
-    submittedBy = '';
-    submittedById = -1;
-    targetVersion = '';
-    type = '';
-    updatedBy = '';
-    updatedById = -1;
-    verifiedBy = '';
-    verifiedById = 1;
-    constructor (areaFound: string, details: string) {
-        this.action = areaFound;
-        this.details = details;
-    }
+	feedbackId = -1;
+	action = '';
+	assigneeId = 1;
+	assignee = 'Anonymous';
+	dateClosed = '1753-01-01T00:00:00';
+	dateOpened = '1753-01-01T00:00:00';
+	details = '';
+	foundInVersion = '';
+	functionSeqId = -1;
+	notes = '';
+	severity = '';
+	status = '';
+	submittedBy = '';
+	submittedById = -1;
+	targetVersion = '';
+	type = '';
+	updatedBy = '';
+	updatedById = -1;
+	verifiedBy = '';
+	verifiedById = 1;
+	constructor (areaFound: string, details: string) {
+		this.action = areaFound;
+		this.details = details;
+	}
 }

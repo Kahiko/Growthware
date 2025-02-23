@@ -9,7 +9,7 @@ export interface IFormDataParameters {
 }
 
 export class FormDataParameters implements IFormDataParameters {
-  constructor(
+	constructor(
     public action: string,
     public doMerge: boolean,
     public formFile: Blob | null | undefined,
@@ -17,5 +17,5 @@ export class FormDataParameters implements IFormDataParameters {
     public fileName: string,
     public uploadIndex: number,
     public totalUploads: number
-  ) { }
+	) { }
 }

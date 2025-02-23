@@ -113,10 +113,10 @@ export class MessageDetailsComponent implements OnInit {
 
 	onHelp(controleName: string): void {
 		switch (controleName) {
-			case 'Tags':
-				this._HelpOptions.windowSize = new WindowSize(150, 480);
-				this._HelpOptions.contentPayLoad = this._HelpTags;
-				break;
+		case 'Tags':
+			this._HelpOptions.windowSize = new WindowSize(150, 480);
+			this._HelpOptions.contentPayLoad = this._HelpTags;
+			break;
 		}
 		this._ModalSvc.open(this._HelpOptions);
 	}

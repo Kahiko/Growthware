@@ -20,4 +20,4 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
 export class HierarchicalHorizontalComponent extends NavigationComponentBase {
 	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;
 	override _MenuType: MenuTypes = MenuTypes.Hierarchical;
-  }
+}

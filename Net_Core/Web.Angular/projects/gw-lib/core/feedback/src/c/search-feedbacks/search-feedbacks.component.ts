@@ -9,13 +9,13 @@ import { FeedbackDetailsComponent } from '../feedback-details/feedback-details.c
 import { FeedbackService } from '../../feedback.service';
 
 @Component({
-  selector: 'gw-core-search-feedbacks',
-  standalone: true,
-  imports: [
-	DynamicTableComponent
-  ],
-  templateUrl: './search-feedbacks.component.html',
-  styleUrl: './search-feedbacks.component.scss'
+	selector: 'gw-core-search-feedbacks',
+	standalone: true,
+	imports: [
+		DynamicTableComponent
+	],
+	templateUrl: './search-feedbacks.component.html',
+	styleUrl: './search-feedbacks.component.scss'
 })
 export class SearchFeedbacksComponent extends BaseSearchComponent {
 

@@ -116,13 +116,13 @@ export class RoleDetailsComponent implements OnInit {
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-			case 'name':
-				if (this.controls['name'].hasError('required')) {
-					return 'Required';
-				}
-				break;
-			default:
-				break;
+		case 'name':
+			if (this.controls['name'].hasError('required')) {
+				return 'Required';
+			}
+			break;
+		default:
+			break;
 		}
 		return undefined;
 	}

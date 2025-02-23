@@ -81,37 +81,37 @@ export class PagerComponent {
 	onPageChange(direction: string): void {
 		const value = direction.trim().toLowerCase();
 		switch (value) {
-			case 'first':
-				if (this._SearchCriteria.selectedPage > 1) {
-					this._SearchCriteria.selectedPage = 1;
-					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-				}
-				break;
-			case 'last':
-				if (this._SearchCriteria.selectedPage < this.totalPages) {
-					this._SearchCriteria.selectedPage = this.totalPages;
-					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-				}
-				break;
-			case 'next':
-				if (this._SearchCriteria.selectedPage < this.totalPages) {
-					this._SearchCriteria.selectedPage++;
-					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-				}
-				break;
-			case 'previous':
-				if (this._SearchCriteria.selectedPage > 1) {
-					this._SearchCriteria.selectedPage--;
-					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-				}
-				break;
-			default:
-				if (Number(value)) {
-					console.log(value);
-				} else {
-					throw '"' + value + '" is not supported';
-				}
-				break;
+		case 'first':
+			if (this._SearchCriteria.selectedPage > 1) {
+				this._SearchCriteria.selectedPage = 1;
+				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+			}
+			break;
+		case 'last':
+			if (this._SearchCriteria.selectedPage < this.totalPages) {
+				this._SearchCriteria.selectedPage = this.totalPages;
+				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+			}
+			break;
+		case 'next':
+			if (this._SearchCriteria.selectedPage < this.totalPages) {
+				this._SearchCriteria.selectedPage++;
+				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+			}
+			break;
+		case 'previous':
+			if (this._SearchCriteria.selectedPage > 1) {
+				this._SearchCriteria.selectedPage--;
+				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+			}
+			break;
+		default:
+			if (Number(value)) {
+				console.log(value);
+			} else {
+				throw '"' + value + '" is not supported';
+			}
+			break;
 		}
 		this.selectedPage = this._SearchCriteria.selectedPage.toString();
 	}

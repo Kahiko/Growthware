@@ -181,13 +181,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 */
 	getErrorMessage(fieldName: string): string | undefined {
 		switch (fieldName) {
-			case 'newName':
-				if (this.getControls['newPassword'].hasError('required')) {
-					return 'Required';
-				}
-				break;
-			default:
-				break;
+		case 'newName':
+			if (this.getControls['newPassword'].hasError('required')) {
+				return 'Required';
+			}
+			break;
+		default:
+			break;
 		}
 		return undefined;
 	}
