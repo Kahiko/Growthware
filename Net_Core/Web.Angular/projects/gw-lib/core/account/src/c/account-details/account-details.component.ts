@@ -76,9 +76,9 @@ export class AccountDetailsComponent implements OnInit {
   litLastNameWarning: string = '';
   litStatusWarning: string = '';
 
-	pickListTableContentsBackground: string = '';
-	pickListTableContentsFont: string = '';
-	pickListTableHeaderBackground: string = '';
+  pickListTableContentsBackground: string = '';
+  pickListTableContentsFont: string = '';
+  pickListTableHeaderBackground: string = '';
 
   rolesAvailable: Array<string> = ['one', 'two'];
   rolesSelected: Array<string> = [];
@@ -203,7 +203,7 @@ export class AccountDetailsComponent implements OnInit {
     }).then((accountProfile) => {                                         // Response Handler #6 getAccountForEdit(mDesiredAccount)
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
-        let mRoles: string[] = [];
+        const mRoles: string[] = [];
         let mGroups: string[] = [];
         this.isSysAdmin = this._AccountProfile.isSystemAdmin;
         if(this._AccountProfile && this._AccountProfile.assignedRoles) {
