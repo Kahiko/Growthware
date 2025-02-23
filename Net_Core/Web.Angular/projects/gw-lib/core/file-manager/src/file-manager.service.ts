@@ -1,4 +1,4 @@
-import { effect, Injectable, OnInit, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 // Library
@@ -16,7 +16,7 @@ import { IUploadStatus, UploadStatus } from './interfaces/upload-status.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class FileManagerService implements OnInit {
+export class FileManagerService {
 	private _Api: string = '';
 	private _Api_GetDirectories: string = '';
 	private _Api_GetFile: string = '';
@@ -70,12 +70,7 @@ export class FileManagerService implements OnInit {
 		this._Api_RenameDirectory = this._Api + 'RenameDirectory';
 		this._Api_RenameFile = this._Api + 'RenameFile';
 		this._Api_UploadFile = this._Api + 'UploadFile';
-	}
-
-	ngOnInit(): void {
-		effect(() => {
-			this._ChunkSize = this._ConfigSvc.chunkSize();
-		});
+		this._ChunkSize = this._ConfigSvc.chunkSize();
 	}
 
 	/**
