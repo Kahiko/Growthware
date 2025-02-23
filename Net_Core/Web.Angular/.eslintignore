@@ -1,5 +1,6 @@
 *.html
 *.spec.ts
+*.js
 /**/node_modules/*
 node_modules/
 /**/dist/*
