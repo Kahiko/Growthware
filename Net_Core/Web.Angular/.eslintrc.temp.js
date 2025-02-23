@@ -7,6 +7,7 @@ module.exports = {
 		'indent': ['error', 'tab'], // Enforce tabs for indentation
 		// Disable all other rules
 		'no-unused-vars': 'off',
+		'no-case-declarations': 'off',
 		'no-console': 'off',
 		'semi': 'off',
 		'no-extra-semi': 'off',
