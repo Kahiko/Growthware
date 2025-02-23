@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@growthware/common/services';
@@ -15,14 +15,20 @@ export class ConfigurationService {
 	private _ApiAppSettingsURL: string = '';
 	private _ApiGetDBInformationURL: string = '';
 	private _ApiSetDBInformationURL: string = '';
+	private _ApplicationName = signal<string>('');
+	private _ChunkSize = signal<number>(0); // The default value is 30MB in Kestrel so this is a bit smaller
+	private _Environment = signal<string>('');
 	private _Loaded: boolean = false;
+	private _LogPriority = signal<string>('');
+	private _SecurityEntityTranslation = signal<string>('');
+	private _Version = signal<string>('');
 
-	readonly applicationName = signal<string>('');
-	readonly chunkSize = signal<number>(29696000); // The default value is 30MB in Kestrel so this is a bit smaller
-	readonly environment = signal<string>('');
-	readonly logPriority = signal<string>('');
-	readonly securityEntityTranslation = signal<string>('');
-	readonly version = signal<string>('');
+	readonly applicationName = computed(() => this._ApplicationName());
+	readonly chunkSize = computed(() => this._ChunkSize());
+	readonly environment = computed(() => this._Environment());
+	readonly logPriority = computed(() => this._LogPriority());
+	readonly securityEntityTranslation = computed(() => this._SecurityEntityTranslation());
+	readonly version = computed(() => this._Version());
 
 	constructor(
 		private _GWCommon: GWCommon,
@@ -62,12 +68,12 @@ export class ConfigurationService {
 			const mUrl = this._ApiAppSettingsURL;
 			this._HttpClient.get<IAppSettings>(mUrl).subscribe({
 				next: (response: IAppSettings) => {
-					if (response.name) { this.applicationName.set(response.name); }
-					if (response.chunkSize) { this.chunkSize.set(response.chunkSize); }
-					if (response.environment) { this.environment.set(response.environment); }
-					if (response.logPriority) { this.logPriority.set(response.logPriority); }
-					if (response.securityEntityTranslation) { this.securityEntityTranslation.set(response.securityEntityTranslation); }
-					if (response.version) { this.version.set(response.version); }
+					if (response.name) { this._ApplicationName.set(response.name); }
+					if (response.chunkSize) { this._ChunkSize.set(response.chunkSize); }
+					if (response.environment) { this._Environment.set(response.environment); }
+					if (response.logPriority) { this._LogPriority.set(response.logPriority); }
+					if (response.securityEntityTranslation) { this._SecurityEntityTranslation.set(response.securityEntityTranslation); }
+					if (response.version) { this._Version.set(response.version); }
 					this._Loaded = true;
 				},
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
