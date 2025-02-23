@@ -1,6 +1,6 @@
 import { effect, Injectable, OnInit, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 // Library
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DirectoryTree, IDirectoryTree } from '@growthware/common/interfaces';
@@ -189,9 +189,9 @@ export class FileManagerService implements OnInit {
 		let chunkUploadPromises: Promise<void>[] = [];
 
 		for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-			let start = chunkIndex * this._ChunkSize;
-			let end = Math.min(start + this._ChunkSize, file.size);
-			let chunk = file.slice(start, end);
+			const start = chunkIndex * this._ChunkSize;
+			const end = Math.min(start + this._ChunkSize, file.size);
+			const chunk = file.slice(start, end);
 
 			chunkUploadPromises.push(
 				this._uploadChunkWithRetry(action, doMerge, fileId, chunk, file.name, chunkIndex, totalChunks, this._MaxRetries).then(() => {
@@ -291,29 +291,29 @@ export class FileManagerService implements OnInit {
 		let mRetVal = 0;
 
 		switch (mUnit) {
-			case 'B':
-			case 'BYTE':
-			case 'BYTES':
-				mRetVal = mValue;
-				break;
-			case 'KB':
-				mRetVal = mValue * 1024;
-				break;
-			case 'MB':
-				mRetVal = mValue * 1024 * 1024;
-				break;
-			case 'GB':
-				mRetVal = mValue * 1024 * 1024 * 1024;
-				break;
-			case 'TB':
-				mRetVal = mValue * 1024 * 1024 * 1024 * 1024;
-				break;
-			case 'PB':
-				mRetVal = mValue * 1024 * 1024 * 1024 * 1024 * 1024;
-				break;
-			default:
-				console.warn(`Unknown unit: ${mUnit}`); // Handle unexpected units
-				mRetVal = mValue; // Assume bytes if unknown unit
+		case 'B':
+		case 'BYTE':
+		case 'BYTES':
+			mRetVal = mValue;
+			break;
+		case 'KB':
+			mRetVal = mValue * 1024;
+			break;
+		case 'MB':
+			mRetVal = mValue * 1024 * 1024;
+			break;
+		case 'GB':
+			mRetVal = mValue * 1024 * 1024 * 1024;
+			break;
+		case 'TB':
+			mRetVal = mValue * 1024 * 1024 * 1024 * 1024;
+			break;
+		case 'PB':
+			mRetVal = mValue * 1024 * 1024 * 1024 * 1024 * 1024;
+			break;
+		default:
+			console.warn(`Unknown unit: ${mUnit}`); // Handle unexpected units
+			mRetVal = mValue; // Assume bytes if unknown unit
 		}
 		return Math.round(mRetVal); // Round to the nearest whole byte
 	}
@@ -542,30 +542,30 @@ export class FileManagerService implements OnInit {
 		if (!sortType) return;
 
 		switch (sortType) {
-			case 'name-asc':
-				// mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => a.shortFileName.localeCompare(b.shortFileName)));
-				break;
-			case 'name-desc':
-				// mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => b.shortFileName.localeCompare(a.shortFileName)));
-				break;
-			case 'date-asc':
-				// mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()));
-				break;
-			case 'date-desc':
-				// mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()));
-				break;
-			case 'size-asc':
-				// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size)));
-				break;
-			case 'size-desc':
-				// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
-				this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size)));
-				break;
+		case 'name-asc':
+			// mSortArray.sort((a, b) => a.shortFileName.localeCompare(b.shortFileName));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => a.shortFileName.localeCompare(b.shortFileName)));
+			break;
+		case 'name-desc':
+			// mSortArray.sort((a, b) => b.shortFileName.localeCompare(a.shortFileName));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => b.shortFileName.localeCompare(a.shortFileName)));
+			break;
+		case 'date-asc':
+			// mSortArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()));
+			break;
+		case 'date-desc':
+			// mSortArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()));
+			break;
+		case 'size-asc':
+			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(a.size) - this._FileManagerSvc.convertSizeToBytes(b.size));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(a.size) - this.convertSizeToBytes(b.size)));
+			break;
+		case 'size-desc':
+			// mSortArray.sort((a, b) => this._FileManagerSvc.convertSizeToBytes(b.size) - this._FileManagerSvc.convertSizeToBytes(a.size));
+			this.fileInfoList$.update(currentItems => [...currentItems].sort((a, b) => this.convertSizeToBytes(b.size) - this.convertSizeToBytes(a.size)));
+			break;
 		}
 	}
 
