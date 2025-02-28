@@ -47,6 +47,7 @@ Of course it is not necessary to install any third party frameworks.  Here are s
 2. npm install @auth0/angular-jwt --save<br/>
 3. npm install eslint @angular-eslint/builder @angular-eslint/eslint-plugin @angular-eslint/eslint-plugin-template @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-import --save-dev<br/>
     3.1 At the root of your workspace (next to package.json), create a .eslintrc.json file
+    3.2 You should now be able to lint your Angular project: ng lint
 4. npx eslint --init    (optional)<br/>
 5. npm install eslint-plugin-html --save<br/>
 6. npm install @angular-eslint/eslint-plugin --save<br/>
