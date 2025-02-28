@@ -1,0 +1,29 @@
+{
+    "root": true,
+    "overrides": [
+      {
+        "files": ["*.ts", "*.html"],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        },
+        "plugins": [
+          "@angular-eslint",
+          "@typescript-eslint"
+        ],
+        "extends": [
+          "eslint:recommended",
+          "plugin:@angular-eslint/recommended",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:import/errors",
+          "plugin:import/warnings"
+        ],
+        "rules": {
+          "no-console": "warn",
+          "@typescript-eslint/no-explicit-any": "off",
+          "import/no-unresolved": "off"
+        }
+      }
+    ]
+  }
+  

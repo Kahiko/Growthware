@@ -45,8 +45,9 @@ Net_Core<br/>
 Of course it is not necessary to install any third party frameworks.  Here are some that I find useful.<br/>
 1. ng add @angular/material --project gw-frontend<br/>
 2. npm install @auth0/angular-jwt --save<br/>
-3. ng add @angular-eslint/schematics<br/>
-4. eslint --init    (optional)<br/>
+3. npm install eslint @angular-eslint/builder @angular-eslint/eslint-plugin @angular-eslint/eslint-plugin-template @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-import --save-dev<br/>
+    3.1 At the root of your workspace (next to package.json), create a .eslintrc.json file
+4. npx eslint --init    (optional)<br/>
 5. npm install eslint-plugin-html --save<br/>
 6. npm install @angular-eslint/eslint-plugin --save<br/>
 --npm install @microsoft/signalr<br/>
@@ -419,5 +420,36 @@ module.exports = PROXY_CONFIG;
             "type": "shell"
         }
     ]
+}
+```
+### .eslintrc.json EXAMPLE
+```json
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts", "*.html"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "plugins": [
+        "@angular-eslint",
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+      ],
+      "rules": {
+        "no-console": "warn",
+        "@typescript-eslint/no-explicit-any": "off",
+        "import/no-unresolved": "off"
+      }
+    }
+  ]
 }
 ```
