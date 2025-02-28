@@ -5,8 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 // Library Standalone
 import { LoaderComponent } from '@growthware/core/loader';
-import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
-import { VerticalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent, VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { ProfessionalFooterComponent } from '../professional-footer/professional-footer.component';
 import { ProfessionalHeaderComponent } from '../professional-header/professional-header.component';
