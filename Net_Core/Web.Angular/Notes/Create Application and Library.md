@@ -7,8 +7,10 @@
   padding: 10px;
 }    
 </style>
+
 ## Directory Structure
-In this example we'll be using Angular 18 along with multiple .Net projects.  The directory structure will simular to the following:
+
+In this example we'll be using Angular 18 along with multiple .Net projects. The directory structure will simular to the following:
 
 [yourProjectsDirectory]<br/>
 ├── [businessLogic]<br/>
@@ -18,44 +20,54 @@ In this example we'll be using Angular 18 along with multiple .Net projects.  Th
 In my particular case I have 7 projets, 6 are .Net projects and 1 is the Angular workspace.<br/>
 
 Net_Core<br/>
-├── .vscode             * Important for the launch.json and task.json<br/>
-├── BusinessLogic       - .Net Project included in the solution<br/>
-├── DataAccess          - .Net Project included in the solution<br/>
-├── DatabaseManager     - .Net Project included in the solution<br/>
-├── Framework           - .Net Project included in the solution<br/>
-├── Web.Angular         * This is the Angular workspace and not included in the solution<br/>
-├── Web.Api             - .Net Project included in the solution<br/>
-├── Web.Support         - .Net Project included in the solution<br/>
+├── .vscode _ Important for the launch.json and task.json<br/>
+├── BusinessLogic - .Net Project included in the solution<br/>
+├── DataAccess - .Net Project included in the solution<br/>
+├── DatabaseManager - .Net Project included in the solution<br/>
+├── Framework - .Net Project included in the solution<br/>
+├── Web.Angular _ This is the Angular workspace and not included in the solution<br/>
+├── Web.Api - .Net Project included in the solution<br/>
+├── Web.Support - .Net Project included in the solution<br/>
 └── GrowthwareCore.sln<br/>
 
 ## Creating the Angular Workspace, Application and Library
+
 1. Create an Angular Workspace In this case at the same level as all the other projects
     1. Disabling analytics is optional:<br/>
-        ng analytics disable --global true
+       ng analytics disable --global true
     2. Create the Angular workspace:<br/>
-        ng new Web.Angular --create-application=false --skip-install<br/>
-	3. Change directory:<br/>
-        cd Web.Angular
+       ng new Web.Angular --create-application=false --skip-install<br/>
+    3. Change directory:<br/>
+       cd Web.Angular
 2. Create the Application and Library
     1. Create the Application<br/>
-	    ng generate application gw-frontend --prefix gw-frontend --ssr false --style "scss"  --skip-install<br/>
+       ng generate application gw-frontend --prefix gw-frontend --ssr false --style "scss" --skip-install<br/>
     2. Create the Library<br/>
-	    ng generate library gw-lib --prefix gw-core --skip-install<br/>
+       ng generate library gw-lib --prefix gw-core --skip-install<br/>
+
 ## Install any third party frameworks
-Of course it is not necessary to install any third party frameworks.  Here are some that I find useful.<br/>
+
+Of course it is not necessary to install any third party frameworks. Here are some that I find useful.<br/>
+
 1. ng add @angular/material --project gw-frontend<br/>
 2. npm install @auth0/angular-jwt --save<br/>
 3. npm install eslint @angular-eslint/builder @angular-eslint/eslint-plugin @angular-eslint/eslint-plugin-template @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-import --save-dev<br/>
-    3.1 At the root of your workspace (next to package.json), create a .eslintrc.json file
-    3.2 You should now be able to lint your Angular project: ng lint
-4. npx eslint --init    (optional)<br/>
+    1. At the root of your workspace (next to package.json), create a .eslintrc.json file
+    2. You should now be able to lint your Angular project: ng lint
+    3. You can now convert from .eslintrc.json to .eslintrc.js
+        1. npx @eslint/migrate-config .eslintrc.json
+            1. This will prompt you to install the following outlined in the next step
+        2. npm install --save-dev @eslint/compat @eslint/js @eslint/eslintrc
+        3. npm install prettier --save-dev --save-exact
+4. npx eslint --init (optional)<br/>
 5. npm install eslint-plugin-html --save<br/>
 6. npm install @angular-eslint/eslint-plugin --save<br/>
---npm install @microsoft/signalr<br/>
-
+   --npm install @microsoft/signalr<br/>
 
 ## Give the Library a name similar to "@angular" instead of the name passed in the "ng generate library" command
-To name your entry point replace the "name" section in Web.Angular/projects/gw-lib/package.json.  If you have built your library you will have package-lock.json file, you can either delete it (it will be recreated the next time you build) or you can edit it and change the name.  I find that I delete the package-lock.json file often expecially when I change version numbers in package.json.<br/>
+
+To name your entry point replace the "name" section in Web.Angular/projects/gw-lib/package.json. If you have built your library you will have package-lock.json file, you can either delete it (it will be recreated the next time you build) or you can edit it and change the name. I find that I delete the package-lock.json file often expecially when I change version numbers in package.json.<br/>
+
 <table>
     <tr>
         <td style="text-align:right;">Path:</td>
@@ -73,6 +85,7 @@ To name your entry point replace the "name" section in Web.Angular/projects/gw-l
 --Note: If you changed the entry point name, you should see that name when you build your library.  In this case "Building entry point '@growthware'"<br/>
 
 At this point you should be able to build
+
 <table>
     <tr>
         <td style="text-align:right;">Your library:</td>
@@ -89,11 +102,8 @@ At this point you should be able to build
 </table><br/>
 
 The next 5 steps are optional but having the "projects\gw-lib\src\lib" directory when the library is named "gw-lib" and it's going to contain all of the source seems redundent.<br/>
-So here are the steps to remove the "projects\gw-lib\src\lib" directory<br/>
-	1. Move public-api.ts file in the projects/gw-lib/src up one directory to projects/gw-lib. It is the lib directory and the public-api.ts<br/>
-	2. Edit the public-api.ts and replace it's contents with the example from the bottom<br/>
-	3. Delete the projects/gw-lib/src it's no longer needed<br/>
-	4. Replace the entryFile section in projects\gw-lib\ng-package.json (Serves as the entry point to the library)
+So here are the steps to remove the "projects\gw-lib\src\lib" directory<br/> 1. Move public-api.ts file in the projects/gw-lib/src up one directory to projects/gw-lib. It is the lib directory and the public-api.ts<br/> 2. Edit the public-api.ts and replace it's contents with the example from the bottom<br/> 3. Delete the projects/gw-lib/src it's no longer needed<br/> 4. Replace the entryFile section in projects\gw-lib\ng-package.json (Serves as the entry point to the library)
+
 <table>
     <tr>
         <td style="text-align:right;">path:</td>
@@ -139,8 +149,9 @@ So here are the steps to remove the "projects\gw-lib\src\lib" directory<br/>
 Replace the "paths" section in Web.Angular\tsconfig.json. Basically we need to add the two
 parts of the path and change the name so other can reference the library as @growthware.
 Make sure the directories match your structure!<br/><br/>
-    Path: compilerOptions/paths Change - <br/>
-    FROM: <br/>
+Path: compilerOptions/paths Change - <br/>
+FROM: <br/>
+
 ```json
     "paths": {
         "gw-lib": [
@@ -148,7 +159,9 @@ Make sure the directories match your structure!<br/><br/>
         ]
     },
 ```
+
     TO:
+
 ```json
     "paths": {
         "@growthware/*": [
@@ -163,8 +176,10 @@ Make sure the directories match your structure!<br/><br/>
 ```
 
 ## To host Angular Material fonts and icons locally
-	1. npm install @fontsource/roboto material-icons --save
-	2. Add the next two lines to the "scripts" section in Web.Angular\angular.json
+
+    1. npm install @fontsource/roboto material-icons --save
+    2. Add the next two lines to the "scripts" section in Web.Angular\angular.json
+
 <table>
     <tr>
         <td style="padding-left: 30px;"></td>
@@ -193,10 +208,12 @@ Make sure the directories match your structure!<br/><br/>
 	*Note: The @fontsource is based on the font you chose in step 1. In this case @fontsource/roboto
 
 ## To host both Angular and the Web.Api on the same machine (say during development) you'll need to do the following
-	1. npm install run-script-os --save<br/>
+
+    1. npm install run-script-os --save<br/>
           - run-script-os lets you use different commands in npm scripts depending on the operating system. Learn how to install, use, and customize it with examples and aliases.
-	2. Create the aspnetcore-https.js (see... aspnetcore-https.js EXAMPLE) in the [angularWorkSpace] (Web.Angular)
-	3. Add the aspnetcore-https to the "scripts" section in Web.Angular\package.json
+    2. Create the aspnetcore-https.js (see... aspnetcore-https.js EXAMPLE) in the [angularWorkSpace] (Web.Angular)
+    3. Add the aspnetcore-https to the "scripts" section in Web.Angular\package.json
+
 <table>
     <tr>
         <td style="text-align:right;">Path:</td>
@@ -228,8 +245,8 @@ Make sure the directories match your structure!<br/><br/>
     </tr>
 </table><br/>
 
-	4. Create the proxy.conf.js (see... public-api.ts EXAMPLE) in the <baseAngular> (Web.Angular)<br/>
-	5. Add the proxy.conf.js to the "development" section in Web.Angular\angular.json<br/>
+    4. Create the proxy.conf.js (see... public-api.ts EXAMPLE) in the <baseAngular> (Web.Angular)<br/>
+    5. Add the proxy.conf.js to the "development" section in Web.Angular\angular.json<br/>
 
 <table>
     <tr>
@@ -248,78 +265,68 @@ The Angular project will be available at http://127.0.0.1:44455 and it should au
 ## File Examples
 
 ### public-api.ts EXAMPLE
+
 ```typescript
 /*
  * Public API Surface of @growthware
  */
 
-export const GROWTHWARE_GW_LIB = '@growthware/gw-lib';
+export const GROWTHWARE_GW_LIB = "@growthware/gw-lib";
 ```
 
 ### aspnetcore-https.js EXAMPLE
+
 ```javascript
 // This script sets up HTTPS for the application using the ASP.NET Core HTTPS certificate
-const fs = require('fs');
-const spawn = require('child_process').spawn;
-const path = require('path');
+const fs = require("fs");
+const spawn = require("child_process").spawn;
+const path = require("path");
 
-const baseFolder =
-  process.env.APPDATA !== undefined && process.env.APPDATA !== ''
-    ? `${process.env.APPDATA}/ASP.NET/https`
-    : `${process.env.HOME}/.aspnet/https`;
+const baseFolder = process.env.APPDATA !== undefined && process.env.APPDATA !== "" ? `${process.env.APPDATA}/ASP.NET/https` : `${process.env.HOME}/.aspnet/https`;
 
-const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
+const certificateArg = process.argv.map((arg) => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
 const certificateName = certificateArg ? certificateArg.groups.value : process.env.npm_package_name;
 
 if (!certificateName) {
-  console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
-  process.exit(-1);
+    console.error("Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.");
+    process.exit(-1);
 }
 
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
 if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
-  spawn('dotnet', [
-    'dev-certs',
-    'https',
-    '--export-path',
-    certFilePath,
-    '--format',
-    'Pem',
-    '--no-password',
-  ], { stdio: 'inherit', })
-  .on('exit', (code) => process.exit(code));
+    spawn("dotnet", ["dev-certs", "https", "--export-path", certFilePath, "--format", "Pem", "--no-password"], { stdio: "inherit" }).on("exit", (code) => process.exit(code));
 }
 ```
 
 proxy.conf.js **<em>Notes</em>**:<br/>
-The "context:" exclues the https call from Angular and allows the call to pass through to the API.  The context is determined by the class name of the controller(s).  For example a controller class is named "public class weatherforecastController : ControllerBase" then the context is "/weatherforecast".  Note that the context property is a JSON array object where each element is a string separated by a comma.<br/>
-You can find the "ASPNETCORE_ENVIRONMENT" environment variable in the launch.json file.  Typically I will remove any of the .vscode directories except the one at the root of my project directories (the same level as the solution.sln file).  Having the .vscode directory at the root allows for multiple "configuration" that you can "run" or "debug".<br/>
+The "context:" exclues the https call from Angular and allows the call to pass through to the API. The context is determined by the class name of the controller(s). For example a controller class is named "public class weatherforecastController : ControllerBase" then the context is "/weatherforecast". Note that the context property is a JSON array object where each element is a string separated by a comma.<br/>
+You can find the "ASPNETCORE_ENVIRONMENT" environment variable in the launch.json file. Typically I will remove any of the .vscode directories except the one at the root of my project directories (the same level as the solution.sln file). Having the .vscode directory at the root allows for multiple "configuration" that you can "run" or "debug".<br/>
 
 ### proxy.conf.js EXAMPLE
-```javascript
-const { env } = require('process');
 
-const target = env.ASPNETCORE_HTTPS_PORT ? `https://127.0.0.1:${env.ASPNETCORE_HTTPS_PORT}` :
-  env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://127.0.0.1:35360';
+```javascript
+const { env } = require("process");
+
+const target = env.ASPNETCORE_HTTPS_PORT ? `https://127.0.0.1:${env.ASPNETCORE_HTTPS_PORT}` : env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(";")[0] : "http://127.0.0.1:35360";
 
 const PROXY_CONFIG = [
-  {
-    context: [
-      "/weatherforecast",
-   ],
-    target: target,
-    secure: false,
-    headers: {
-      Connection: 'Keep-Alive'
-    }
-  }
-]
+    {
+        context: ["/weatherforecast"],
+        target: target,
+        secure: false,
+        headers: {
+            Connection: "Keep-Alive",
+        },
+    },
+];
 
 module.exports = PROXY_CONFIG;
 ```
+
 ### launch.json EXAMPLE
+
 ```json
 {
     // Use IntelliSense to find out which attributes exist for C# debugging
@@ -338,7 +345,7 @@ module.exports = PROXY_CONFIG;
             "sourceMaps": true,
             // "trace": true,
             "sourceMapPathOverrides": {
-            "webpack:///./*": "${webRoot}/*"
+                "webpack:///./*": "${webRoot}/*"
             },
             "preLaunchTask": "Task: Start NodeJS",
             "postDebugTask": "Task: Stop NodeJS"
@@ -366,11 +373,13 @@ module.exports = PROXY_CONFIG;
         {
             "name": "1.) API + Chrome",
             "configurations": ["Web.Api", "PWA Chrome"]
-        }   
+        }
     ]
 }
 ```
+
 ### tasks.json EXAMPLE
+
 ```json
 {
     "version": "2.0.0",
@@ -379,12 +388,7 @@ module.exports = PROXY_CONFIG;
             "label": "Task: Api-Build",
             "command": "dotnet",
             "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Web.Api/GrowthWare.Web.Api.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
+            "args": ["build", "${workspaceFolder}/Web.Api/GrowthWare.Web.Api.csproj", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
             "problemMatcher": "$msCompile"
         },
         {
@@ -395,25 +399,29 @@ module.exports = PROXY_CONFIG;
                 "cwd": "${workspaceFolder}/Web.Angular"
             },
             "command": "npm",
-            "args": [
-                "start"
-            ],
-            "presentation": { 
+            "args": ["start"],
+            "presentation": {
                 "reveal": "always",
                 "panel": "new"
             },
-            "problemMatcher": [{
-              "pattern": [{
-                "regexp": ".",
-                "file": 1,"line": 1,
-                "column": 1,"message": 1
-              }],
-              "background": {
-                  "activeOnStart": true,
-                  "beginsPattern": { "regexp": "." },
-                  "endsPattern": { "regexp": "." }
-              },
-            }]
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "line": 1,
+                            "column": 1,
+                            "message": 1
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": { "regexp": "." },
+                        "endsPattern": { "regexp": "." }
+                    }
+                }
+            ]
         },
         {
             "label": "Task: Stop NodeJS",
@@ -423,34 +431,80 @@ module.exports = PROXY_CONFIG;
     ]
 }
 ```
+
 ### .eslintrc.json EXAMPLE
+
 ```json
 {
-  "root": true,
-  "overrides": [
-    {
-      "files": ["*.ts", "*.html"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": "./tsconfig.json"
-      },
-      "plugins": [
-        "@angular-eslint",
-        "@typescript-eslint"
-      ],
-      "extends": [
-        "eslint:recommended",
-        "plugin:@angular-eslint/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings"
-      ],
-      "rules": {
-        "no-console": "warn",
-        "@typescript-eslint/no-explicit-any": "off",
-        "import/no-unresolved": "off"
-      }
-    }
-  ]
+    "root": true,
+    "overrides": [
+        {
+            "files": ["*.ts", "*.html"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "project": "./tsconfig.json"
+            },
+            "plugins": ["@angular-eslint", "@typescript-eslint"],
+            "extends": ["eslint:recommended", "plugin:@angular-eslint/recommended", "plugin:@typescript-eslint/recommended", "plugin:import/errors", "plugin:import/warnings"],
+            "rules": {
+                "no-console": "warn",
+                "@typescript-eslint/no-explicit-any": "off",
+                "import/no-unresolved": "off"
+            }
+        }
+    ]
 }
+```
+
+### eslint.config.mjs
+
+```javascript
+import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
+import angularEslint from "@angular-eslint/eslint-plugin";
+import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import js from "@eslint/js";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+    baseDirectory: __dirname,
+    recommendedConfig: js.configs.recommended,
+    allConfig: js.configs.all,
+});
+
+export default [
+    ...fixupConfigRules(compat.extends("eslint:recommended", "plugin:@angular-eslint/recommended", "plugin:@typescript-eslint/recommended", "plugin:import/errors", "plugin:import/warnings")).map((config) => ({
+        ...config,
+        files: ["**/*.ts", "**/*.html"],
+    })),
+    {
+        files: ["**/*.ts", "**/*.html"],
+
+        plugins: {
+            "@angular-eslint": fixupPluginRules(angularEslint),
+            "@typescript-eslint": fixupPluginRules(typescriptEslint),
+        },
+
+        languageOptions: {
+            parser: tsParser,
+            ecmaVersion: 5,
+            sourceType: "script",
+
+            parserOptions: {
+                project: "./tsconfig.json",
+            },
+        },
+
+        rules: {
+            "no-console": "warn",
+            "@typescript-eslint/no-explicit-any": "off",
+            "import/no-unresolved": "off",
+        },
+        ignores: ["dist/*, node_modules/*"],
+    },
+];
 ```
