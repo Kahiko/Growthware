@@ -11,8 +11,7 @@
         "start:default": "ng serve --host=127.0.0.1 --port 44455 --ssl --ssl-cert $HOME/.aspnet/https/${npm_package_name}.pem --ssl-key $HOME/.aspnet/https/${npm_package_name}.key",
         "test": "ng test",
         "watch": "ng build --watch --configuration development",
-        "bundle-report": "ng build gw-frontend --configuration production --source-map && source-map-explorer dist/gw-frontend/browser/*.js",
-        "format": "prettier --check \"**/*.{ts,scss}\""
+        "bundle-report": "ng build gw-frontend --configuration production --source-map && source-map-explorer dist/gw-frontend/browser/*.js"
     },
     "private": true,
     "dependencies": {
@@ -36,21 +35,9 @@
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^18.2.14",
-        "@angular-eslint/builder": "^19.1.0",
-        "@angular-eslint/eslint-plugin": "^19.1.0",
-        "@angular-eslint/eslint-plugin-template": "^19.1.0",
         "@angular/cli": "^18.2.14",
         "@angular/compiler-cli": "^18.2.0",
-        "@eslint/compat": "^1.2.7",
-        "@eslint/eslintrc": "^3.3.0",
-        "@eslint/js": "^9.21.0",
         "@types/jasmine": "~5.1.0",
-        "@typescript-eslint/eslint-plugin": "^8.25.0",
-        "@typescript-eslint/parser": "^8.25.0",
-        "eslint": "^9.21.0",
-        "eslint-config-prettier": "^10.0.2",
-        "eslint-plugin-import": "^2.31.0",
-        "eslint-plugin-prettier": "^5.2.3",
         "jasmine-core": "~5.2.0",
         "karma": "~6.4.0",
         "karma-chrome-launcher": "~3.2.0",
@@ -58,7 +45,6 @@
         "karma-jasmine": "~5.1.0",
         "karma-jasmine-html-reporter": "~2.1.0",
         "ng-packagr": "^18.2.0",
-        "prettier": "^3.5.2",
         "typescript": "~5.5.2"
     }
 }
