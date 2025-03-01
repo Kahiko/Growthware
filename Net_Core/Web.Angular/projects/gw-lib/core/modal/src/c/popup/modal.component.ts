@@ -16,8 +16,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CdkDrag,
     CdkDragHandle,
-    CommonModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatButtonModule,
     MatIconModule
   ],
   templateUrl: './modal.component.html',
@@ -34,7 +34,7 @@ export class ModalComponent implements OnDestroy {
   public header: string = '';
   public height: number = 0; // Default height
   public width: number = 0; // Default width
-  public modalContext: any = {};
+  public modalContext: unknown = {};
   public modalId: string = '';
   public showFooter: boolean = false;
   public showCloseBtn: boolean = false;
@@ -76,22 +76,22 @@ export class ModalComponent implements OnDestroy {
     /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
     switch (options.windowSize) {
       case 0:
-        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxHeight = window.innerHeight * (mPercentage - .05);
         mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 1:
         mPercentage = .20;
-        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxHeight = window.innerHeight * (mPercentage - .05);
         mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 2:
         mPercentage = .60;
-        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxHeight = window.innerHeight * (mPercentage - .05);
         mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 3:
         mPercentage = .95;
-        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxHeight = window.innerHeight * (mPercentage - .05);
         mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       default:
@@ -120,7 +120,7 @@ export class ModalComponent implements OnDestroy {
     this.cancelBtn = options.buttons.cancelButton;
     this.closeBtn = options.buttons.closeButton;
     this.okBtn = options.buttons.okButton;
-    if(this.closeBtn.visible || this.okBtn.visible) {
+    if (this.closeBtn.visible || this.okBtn.visible) {
       this.showFooter = true;
     }
   }
@@ -139,7 +139,7 @@ export class ModalComponent implements OnDestroy {
         this._RemoveMouseMoveListener = this._Renderer.listen(document, 'mousemove', (moveEvent: MouseEvent) => {
           this.resizeModal(moveEvent);
         });
-        
+
         this._RemoveMouseUpListener = this._Renderer.listen(document, 'mouseup', () => {
           this.stopResize();
         });
@@ -169,32 +169,37 @@ export class ModalComponent implements OnDestroy {
     const mModalRect = this._ModalElement.nativeElement.getBoundingClientRect(); // Get current dimensions and position of the modal
 
     switch (this._CurrentDirection) { // Use the stored direction
-      case 'left':
-        const newWidthLeft = mModalRect.right - event.clientX; // Calculate new width
-        this.width = Math.max(newWidthLeft, 100); // Set minimum width
+      case 'left': {
+        const mNewWidthLeft = mModalRect.right - event.clientX; // Calculate new width
+        this.width = Math.max(mNewWidthLeft, 100); // Set minimum width
         this._ModalElement.nativeElement.style.left = `${event.clientX}px`; // Adjust position
         break;
-      case 'right':
-        const newWidthRight = event.clientX - mModalRect.left; // Calculate new width
-        this.width = Math.max(newWidthRight, 100); // Set minimum width
+      }
+      case 'right': {
+        const mNewWidthRight = event.clientX - mModalRect.left; // Calculate new width
+        this.width = Math.max(mNewWidthRight, 100); // Set minimum width
         break;
-      case 'top':
-        const newHeightTop = mModalRect.bottom - event.clientY; // Calculate new height
-        this.height = Math.max(newHeightTop, 100); // Set minimum height
+      }
+      case 'top': {
+        const mNewHeightTop = mModalRect.bottom - event.clientY; // Calculate new height
+        this.height = Math.max(mNewHeightTop, 100); // Set minimum height
         this._ModalElement.nativeElement.style.top = `${event.clientY}px`; // Adjust position
         break;
-      case 'bottom':
-        const newHeightBottom = event.clientY - mModalRect.top; // Calculate new height
-        this.height = Math.max(newHeightBottom, 100); // Set minimum height
+      }
+      case 'bottom': {
+        const mNewHeightBottom = event.clientY - mModalRect.top; // Calculate new height
+        this.height = Math.max(mNewHeightBottom, 100); // Set minimum height
         break;
-      case 'bottom-right':
-        const newWidthBR = event.clientX - mModalRect.left; // Calculate new width
-        const newHeightBR = event.clientY - mModalRect.top; // Calculate new height
-        this.width = Math.max(newWidthBR, 100); // Set minimum width
-        this.height = Math.max(newHeightBR, 100); // Set minimum height
+      }
+      case 'bottom-right': {
+        const mNewWidthBR = event.clientX - mModalRect.left; // Calculate new width
+        const mNewHeightBR = event.clientY - mModalRect.top; // Calculate new height
+        this.width = Math.max(mNewWidthBR, 100); // Set minimum width
+        this.height = Math.max(mNewHeightBR, 100); // Set minimum height
         break;
+      }
     }
-    
+
     // Check if modal body needs scrollbars
     const bodyElement = this._ModalElement.nativeElement.querySelector('.modal-body__div');
     if (bodyElement) {
@@ -202,8 +207,8 @@ export class ModalComponent implements OnDestroy {
       const contentWidth = bodyElement.scrollWidth;
 
       // Set scrollable state based on current size compared to original
-      this.isModalBodyScrollable = 
-        (this.height < this._OriginalHeight && contentHeight > this.height) || 
+      this.isModalBodyScrollable =
+        (this.height < this._OriginalHeight && contentHeight > this.height) ||
         (this.width < this._OriginalWidth && contentWidth > this.width);
     }
   }
