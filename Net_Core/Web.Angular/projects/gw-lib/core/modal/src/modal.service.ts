@@ -18,7 +18,7 @@ import { ContentType } from './content-type.enum';
 import { ModalComponent } from './c/popup/modal.component';
 import { IModalOptions } from './modal-options.model';
 
-type Content<T> = string | TemplateRef<T> | Type<T>;
+type Content<T> = string | TemplateRef<T> | ComponentRef<T> | Type<unknown>;
 
 /**
  * Modal Service for creating dynamic, flexible modal dialogs
@@ -183,7 +183,7 @@ export class ModalService {
 			// console.log('ModalService.open', options);
 			return;
 		}
-		if (this._GWCommon.isNullOrEmpty(options.contentPayLoad) && typeof (options.contentPayLoad) !== 'function') {
+		if (!options.contentPayLoad || (typeof (options.contentPayLoad) === 'string' && this._GWCommon.isNullOrEmpty(options.contentPayLoad)) && typeof (options.contentPayLoad) !== 'function') {
 			this.logConsole('Please set the contentPayLoad property', 'Error');
 			return;
 		}
@@ -271,7 +271,7 @@ export class ModalService {
 	 * 
 	 * @memberof ModalService
 	 */
-	private resolveNgContent<T>(content: Content<T>): Text | ComponentRef<Component> | TemplateRef<T> {
+	private resolveNgContent<T>(content: Content<T>): Text | Type<unknown> | TemplateRef<T> {
 		this._ContentType = ContentType.String;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mRetVal: any;
@@ -284,7 +284,7 @@ export class ModalService {
 			const mViewRef = content.createEmbeddedView(mTemplateRef);
 			this._ApplicationRef.attachView(mViewRef);
 			mRetVal = [mViewRef.rootNodes];
-		} else if (content instanceof Type) {         /** Otherwise it's a component */
+		} if (typeof content === 'function') {         /** Otherwise it's a component */
 			this._ContentType = ContentType.Component;
 			mRetVal = createComponent(content, { environmentInjector: this._ApplicationRef.injector });
 			// attach ComponentRef to the application reference
