@@ -51,17 +51,53 @@ Of course it is not necessary to install any third party frameworks. Here are so
 
 1. ng add @angular/material --project gw-frontend<br/>
 2. npm install @auth0/angular-jwt --save<br/>
-3. npm install eslint @angular-eslint/builder @angular-eslint/eslint-plugin @angular-eslint/eslint-plugin-template @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-import --save-dev<br/>
-    1. At the root of your workspace (next to package.json), create a .eslintrc.json file
-    2. You should now be able to lint your Angular project: ng lint
-    3. You can now convert from .eslintrc.json to .eslintrc.js
-        1. npx @eslint/migrate-config .eslintrc.json
-            1. This will prompt you to install the following outlined in the next step
-        2. npm install --save-dev @eslint/compat @eslint/js @eslint/eslintrc
-        3. npm install prettier --save-dev --save-exact
-4. npx eslint --init (optional)<br/>
-5. npm install eslint-plugin-html --save<br/>
-6. npm install @angular-eslint/eslint-plugin --save<br/>
+3. ng add @angular-eslint/schematics<br/>
+    1. Edit the angular.json file in the Web.Angular directory and add the following to the both of the"architect" sections of the "gw-frontend" and "gw-lib"</br>
+<br/>
+
+Path: projects/gw-frontend/architect<br/>
+ADD: <br/>
+
+```json
+"lint": {
+    "builder": "@angular-eslint/builder:lint",
+    "options": {
+        "lintFilePatterns": [
+            "projects/gw-lib/**/*.ts",
+            "projects/gw-lib/**/*.html"
+        ]
+    }
+}
+```
+<br/>
+Path: projects/gw-lib/architec<br/>
+ADD: <br/>
+
+```json
+"lint": {
+    "builder": "@angular-eslint/builder:lint",
+    "options": {
+        "lintFilePatterns": [
+            "projects/gw-lib/**/*.ts",
+            "projects/gw-lib/**/*.html"
+        ]
+    }
+}
+```
+<br/>
+4. Create the .eslint.config.mjs file<br/>
+    1. npx eslint --init<br/>
+5. Install ESLint extention (dbaeumer.vscode-eslint)
+Create or update the settings.json<br/>
+Path: .vscode<br/>
+Add
+
+```json
+  "eslint.workingDirectories": [
+    "Web.Angular", // The Angular workspace and location of the eslint.config.mjs
+  ]
+```
+<br/>
    --npm install @microsoft/signalr<br/>
 
 ## Give the Library a name similar to "@angular" instead of the name passed in the "ng generate library" command

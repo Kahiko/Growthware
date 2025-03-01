@@ -4,5 +4,8 @@
     "Growthware",
     "searchfunctions"
   ],
-  "dotnet.defaultSolution": "GrowthwareCore.sln"
+  "dotnet.defaultSolution": "GrowthwareCore.sln",
+  "eslint.workingDirectories": [
+    "Web.Angular",
+  ]
 }

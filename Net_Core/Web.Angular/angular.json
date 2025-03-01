@@ -101,6 +101,15 @@
                         ],
                         "scripts": []
                     }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "projects/gw-lib/**/*.ts",
+                            "projects/gw-lib/**/*.html"
+                        ]
+                    }
                 }
             }
         },
@@ -130,6 +139,15 @@
                     "options": {
                         "tsConfig": "projects/gw-lib/tsconfig.spec.json",
                         "polyfills": ["zone.js", "zone.js/testing"]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "projects/gw-lib/**/*.ts",
+                            "projects/gw-lib/**/*.html"
+                        ]
                     }
                 }
             }
