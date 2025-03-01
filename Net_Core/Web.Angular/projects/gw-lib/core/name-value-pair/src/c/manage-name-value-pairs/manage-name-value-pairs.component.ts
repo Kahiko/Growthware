@@ -2,7 +2,7 @@ import { Component, AfterViewInit, OnInit, ViewChild, signal, effect } from '@an
 import { CommonModule } from '@angular/common';
 // Library
 import { DynamicTableBtnMethods, DynamicTableComponent } from '@growthware/core/dynamic-table';
-import { ISearchCriteriaNVP, SearchService } from '@growthware/core/search';
+import { SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 // Feature
@@ -56,7 +56,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 		this.nvpParentModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
 		// console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
 		effect(() => {
-			let criteria = this._SearchSvc.searchCriteriaChanged$();
+			const criteria = this._SearchSvc.searchCriteriaChanged$();
 			if (criteria.name.trim().toLowerCase() === this._NameValuePairService.parentConfigurationName.trim().toLowerCase()) {
 				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
 					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
@@ -75,7 +75,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 				}).catch((error) => {
 					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
 				});
-			}			
+			}
 		})
 	}
 
