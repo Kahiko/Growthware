@@ -141,10 +141,6 @@ export class ModalService {
 						this._ApplicationRef.detachView(mContentObj.payloadRef.rootNodes[0]);
 					} else if (mContentObj.payloadRef instanceof ComponentRef) {
 						// Handle the case when payloadRef is a ComponentRef
-						// You might want to throw an error or set payloadRef to null
-						throw new Error('mContentObj.payloadRef is not an EmbeddedViewRef');
-					}
-					if (mContentObj.payloadRef instanceof ComponentRef) {
 						mContentObj.payloadRef.destroy();
 					}
 				} catch (error) {
