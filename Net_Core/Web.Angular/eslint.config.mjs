@@ -5,6 +5,8 @@ import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     files: ["**/*.{js,mjs,cjs,ts}"]
   },
@@ -21,7 +23,5 @@ export default [
       "no-unused-vars": "warn",
       "@typescript-eslint/no-unused-vars": "warn"
     } 
-  },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  }
 ];
