@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -10,12 +9,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { AccountService } from '@growthware/core/account';
+import { AccountService, ISelectedableAction } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { SearchService } from '@growthware/core/search';
-import { ISelectedableAction } from '@growthware/core/account';
 // Feature
 import { IFeedback, Feedback } from '../../feedback.model';
 import { FeedbackService } from '../../feedback.service';
@@ -66,23 +64,23 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 	}
 
 	ngOnInit(): void {
-		this._ProfileSvc.getFeedbackAccounts().then((response: any) => {  // Request and Response Handler #1 (getFeedbackAccounts)
+		this._ProfileSvc.getFeedbackAccounts().then((response: { item1: Array<string>, item2: Array<string> }) => {    // Request and Response Handler #1 (getFeedbackAccounts)
 			// console.log('FeedbackDetailsComponent.ngOnInit.accounts', response);
 			// this.avalibleDevelopers = response.item1;
 			this.avalibleDevelopers.set(response.item1);
 			this.avalibleQA.set(response.item2);
 			return this._AccountSvc.getSelectableActions();                 // Request #2 (getSelectableActions)
-		}).catch((error: any) => {                                        // Error Handler #1 (getFeedbackAccounts)
+		}).catch((error: unknown) => {                                      // Error Handler #1 (getFeedbackAccounts)
 			this._LoggingSvc.toast('Error getting Accounts:\r\n' + error, 'Feedback Details:', LogLevel.Error);
-		}).then((actions: ISelectedableAction[]) => {                     // Response Handler #2 (getSelectableActions)
+		}).then((actions: ISelectedableAction[]) => {                       // Response Handler #2 (getSelectableActions)
 			this.validLinks = actions;
 			return this._ProfileSvc.getFeedback(this._ProfileSvc.selectedRow.FeedbackId); // Request #3 (getFeedback)
-		}).catch((error: any) => {
+		}).catch((error: unknown) => {
 			this._LoggingSvc.toast('Error getting Avalible Actions:\r\n' + error, 'Feedback Details:', LogLevel.Error);
-		}).then((profile: IFeedback) => {                                 // Response Handler #3 (getFeedback)
+		}).then((profile: IFeedback) => {                                   // Response Handler #3 (getFeedback)
 			this._Profile = profile;
 			this.createForm();
-		}).catch((error: any) => {                                        // Error Handler #3 (getFeedback)
+		}).catch((error: unknown) => {                                          // Error Handler #3 (getFeedback)
 			this._LoggingSvc.toast('Error getting Feedback details:\r\n' + error, 'Feedback Details:', LogLevel.Error);
 		});
 		this._Profile = new Feedback('Anonymous', '');
@@ -95,18 +93,18 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'status':
-			if (this.selectedStatus === '--') {
-				return 'The Status is required.';
-			}
-			break;
-		case 'severity':
-			if (this.frmProfile.get('severity')?.hasError('required') || (this.frmProfile.get('severity')?.value < 1 || this.frmProfile.get('severity')?.value > 5)) {
-				return 'The Severity is required and must be between 1 and 5.';
-			}
-			break;
-		default:
-			break;
+			case 'status':
+				if (this.selectedStatus === '--') {
+					return 'The Status is required.';
+				}
+				break;
+			case 'severity':
+				if (this.frmProfile.get('severity')?.hasError('required') || (this.frmProfile.get('severity')?.value < 1 || this.frmProfile.get('severity')?.value > 5)) {
+					return 'The Severity is required and must be between 1 and 5.';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -156,7 +154,7 @@ export class FeedbackDetailsComponent extends BaseDetailComponent implements IBa
 		this._Profile.action = mSelectedAction?.action ?? '';
 		this._Profile.assignee = mFrmProfile.assignee;
 		// this._Profile.assigneeId: number;      // Set in API
-		if (mDateClosed  && !isNaN(mDateClosed.getFullYear()) && mDateClosed.getFullYear() !== 1753) {
+		if (mDateClosed && !isNaN(mDateClosed.getFullYear()) && mDateClosed.getFullYear() !== 1753) {
 			this._Profile.dateClosed = mDateClosed.toISOString();
 		}
 		// this._Profile.dateOpened: string;      // We don't change this
