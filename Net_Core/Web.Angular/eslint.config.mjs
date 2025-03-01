@@ -23,5 +23,17 @@ export default [
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "warn"
     } 
+  },
+  {
+    ignores: [
+      ".angular/**/*",
+      "node_modules/**/*",
+      "dist/**/*",
+      "Notes/**/*",
+      "Documentation/**/*",
+      "aspnetcore-https.js",
+      "proxy.conf.js",
+      "**/*.spec.ts"
+    ]
   }
 ];
