@@ -1,6 +1,14 @@
-import { ApplicationRef, ComponentRef, createComponent } from '@angular/core';
-import { Inject, Injectable, TemplateRef, Type } from '@angular/core';
-import { EmbeddedViewRef } from '@angular/core';
+import {
+	ApplicationRef,
+	Component,
+	ComponentRef,
+	createComponent,
+	Inject,
+	Injectable,
+	EmbeddedViewRef,
+	TemplateRef,
+	Type
+} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 // Library
 import { GWCommon } from '@growthware/common/services';
@@ -77,7 +85,7 @@ type Content<T> = string | TemplateRef<T> | Type<T>;
 })
 export class ModalService {
 
-	private _ActiveModals: IContentObject[] = [];
+	private _ActiveModals: IContentObject<ComponentRef<unknown> | TemplateRef<unknown> | null>[] = [];
 	private _ContentType: ContentType = ContentType.String;
 	private _IsKeyDownListenerActive: boolean = false;
 
@@ -124,13 +132,21 @@ export class ModalService {
 	 * @memberof ModalService
 	 */
 	public close(key: string) {
-		const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
+		const mContentObj = this._ActiveModals.find((obj: IContentObject<unknown>) => obj.key.toUpperCase() === key.toUpperCase() as string);
 		if (mContentObj !== undefined) {
 			if (mContentObj.contentType === ContentType.Component) {
 				try {
-					// destroy child
-					this._ApplicationRef.detachView(mContentObj.payloadRef.hostView);
-					mContentObj.payloadRef.destroy();
+					if (mContentObj.payloadRef instanceof EmbeddedViewRef) {
+						// destroy child
+						this._ApplicationRef.detachView(mContentObj.payloadRef.rootNodes[0]);
+					} else if (mContentObj.payloadRef instanceof ComponentRef) {
+						// Handle the case when payloadRef is a ComponentRef
+						// You might want to throw an error or set payloadRef to null
+						throw new Error('mContentObj.payloadRef is not an EmbeddedViewRef');
+					}
+					if (mContentObj.payloadRef instanceof ComponentRef) {
+						mContentObj.payloadRef.destroy();
+					}
 				} catch (error) {
 					let mMsg;
 					if (error instanceof Error) {
@@ -176,32 +192,29 @@ export class ModalService {
 		// first, create the child
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mNgContent: any = mResolvedNgContent;
-		if (this._ContentType === ContentType.Component) {
-			// get root nodes
-			mNgContent = (<EmbeddedViewRef<unknown>>mResolvedNgContent.hostView).rootNodes;
+		if (this._ContentType === ContentType.Component && mResolvedNgContent instanceof ComponentRef) {
+			mNgContent = ((mResolvedNgContent as ComponentRef<Component>).hostView as EmbeddedViewRef<unknown>).rootNodes;
 		}
 		// then create the dialog that will host it
 		const mModalComponentRef: ComponentRef<ModalComponent> = createComponent(ModalComponent, {
 			environmentInjector: this._ApplicationRef.injector,
 			projectableNodes: [mNgContent], // pass the child here
 		});
+		// const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
+		const mContentObject: IContentObject<TemplateRef<unknown> | ComponentRef<unknown> | null> = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
+		if (this._ContentType === ContentType.Component) {
+			if (typeof mResolvedNgContent === 'object' && mResolvedNgContent instanceof ComponentRef) {
+				mContentObject.payloadRef = mResolvedNgContent as ComponentRef<TemplateRef<unknown> | ComponentRef<unknown> | null>;
+			} else {
+				// Handle the case when mResolvedNgContent is of type Text
+				// You might want to throw an error or set payloadRef to null
+				throw new Error('mResolvedNgContent is not a ComponentRef or TemplateRef');
+			}
+		}
 		mModalComponentRef.instance.setUp(options); // sets up UI properties (height, width, show components, etc.)
-
 		this.setupModalCallbacks(options, mModalComponentRef.instance);
 		// append to body, we will use platform document for this
 		const mDialogElement = (<EmbeddedViewRef<unknown>>mModalComponentRef.hostView).rootNodes[0];
-		// setup a ContentObject to add to the array
-		const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
-		if (this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
-			mContentObject.payloadRef = mResolvedNgContent;
-		}
-
-		// Add the keydown event listener for ESC key if not already added
-		if (!this._IsKeyDownListenerActive) {
-			this._Document.addEventListener('keydown', this.handleKeyDown.bind(this));
-			this._IsKeyDownListenerActive = true; // Set the flag to true
-		}
-
 		// add the new modal to the array
 		this._ActiveModals.push(mContentObject);
 
@@ -226,26 +239,26 @@ export class ModalService {
 			'\n  ' +
 			msg;
 		switch (level) {
-		case 'Debug':
-			console.debug(mMsg);
-			break;
-		case 'Error':
-		case 'Fatal':
-			console.error(mMsg);
-			break;
-		case 'Info':
-			console.info(mMsg);
-			break;
-		case 'Warn':
-			console.warn(mMsg);
-			break;
-		case 'Trace':
-			console.trace(mMsg);
-			break;
-		case 'Success':
-		default:
-			console.log(mMsg);
-			break;
+			case 'Debug':
+				console.debug(mMsg);
+				break;
+			case 'Error':
+			case 'Fatal':
+				console.error(mMsg);
+				break;
+			case 'Info':
+				console.info(mMsg);
+				break;
+			case 'Warn':
+				console.warn(mMsg);
+				break;
+			case 'Trace':
+				console.trace(mMsg);
+				break;
+			case 'Success':
+			default:
+				console.log(mMsg);
+				break;
 		}
 	}
 
@@ -258,7 +271,7 @@ export class ModalService {
 	 * 
 	 * @memberof ModalService
 	 */
-	private resolveNgContent<T>(content: Content<T>): any {
+	private resolveNgContent<T>(content: Content<T>): Text | ComponentRef<Component> | TemplateRef<T> {
 		this._ContentType = ContentType.String;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mRetVal: any;
