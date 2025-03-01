@@ -3,9 +3,8 @@ import { Component, input, OnInit } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 // Library
-import { INameDataPair } from '@growthware/common/interfaces';
 import { GWCommon } from '@growthware/common/services';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
+import { LoggingService } from '@growthware/core/logging';
 
 @Component({
 	selector: 'gw-core-snake-list',
