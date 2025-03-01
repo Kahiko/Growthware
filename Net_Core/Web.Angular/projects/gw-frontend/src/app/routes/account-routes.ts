@@ -1,13 +1,20 @@
 import { Routes } from '@angular/router';
 // Library
 import { AuthGuard } from '@growthware/common/services';
-import { AccountDetailsComponent, ChangePasswordComponent, ForgotPasswordComponent } from '@growthware/core/account';
-import { LogoutComponent, LoginComponent, SearchAccountsComponent, SelectPreferencesComponent } from '@growthware/core/account';
-import { VerifyAccountComponent } from '@growthware/core/account';
+import {
+	AccountDetailsComponent,
+	ChangePasswordComponent,
+	ForgotPasswordComponent,
+	LogoutComponent,
+	LoginComponent,
+	SearchAccountsComponent,
+	SelectPreferencesComponent,
+	VerifyAccountComponent
+} from '@growthware/core/account';
 
 export const accountRoutes: Routes = [
-	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
-	{ path: 'edit-account',  component: AccountDetailsComponent, canActivate: [AuthGuard] },
+	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard] },
+	{ path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'register', component: AccountDetailsComponent, canActivate: [AuthGuard] },
 	{ path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
