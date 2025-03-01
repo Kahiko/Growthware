@@ -1,5 +1,19 @@
-import { AfterViewInit, Component, computed, effect, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+	AfterViewInit,
+	Component,
+	effect,
+	OnDestroy,
+	OnInit,
+	TemplateRef,
+	ViewChild
+} from '@angular/core';
+import {
+	FormBuilder,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
@@ -26,7 +40,7 @@ import { FileManagerService } from '../../file-manager.service';
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
-		
+
 		MatButtonModule,
 		MatFormFieldModule,
 		MatIconModule,
@@ -70,12 +84,12 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
 	// reference to the MatMenuTrigger in the DOM 
-	@ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
-	@ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!:TemplateRef<unknown>;
+	@ViewChild(MatMenuTrigger, { static: true }) private _MatMenuTrigger!: MatMenuTrigger;
+	@ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!: TemplateRef<unknown>;
 	@ViewChild('deleteSelected', { read: TemplateRef }) private _DeleteSelected!: TemplateRef<unknown>;
-	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!:TemplateRef<unknown>;
-	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<unknown>;
-	
+	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!: TemplateRef<unknown>;
+	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
+
 	constructor(
 		private _FileManagerSvc: FileManagerService,
 		private _FormBuilder: FormBuilder,
@@ -84,7 +98,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		private _ModalSvc: ModalService,
 		private _Router: Router,
 		private _SecuritySvc: SecurityService
-	) { 
+	) {
 		effect(() => {
 			this.dataSource.data = this._FileManagerSvc.fileInfoList$();
 		});
@@ -129,13 +143,13 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	 */
 	getErrorMessage(fieldName: string): string | undefined {
 		switch (fieldName) {
-		case 'newName':
-			if (this.getControls['newPassword'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'newName':
+				if (this.getControls['newPassword'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -176,12 +190,12 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 	ngAfterViewInit() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
-  		// Custom sorting logic for size column
-		this.dataSource.sortingDataAccessor = (item: IFileInfoLight, property) => {
+		// Custom sorting logic for size column
+		this.dataSource.sortingDataAccessor = (item: IFileInfoLight, property: string) => {
 			if (property === 'size') {
 				return this._FileManagerSvc.convertSizeToBytes(item.size); // Convert to bytes for sorting
 			}
-			return (item as any)[property]; // Fallback for dynamic properties
+			return item[property as keyof IFileInfoLight].toString(); // Fallback for dynamic properties
 		};
 		this._Subscription.add(
 			this.paginator.page.subscribe(() => {
@@ -225,7 +239,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 			}).catch((error) => {
 				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onDeleteSelected');
 				this._LoggingSvc.toast('Was not able to delete the files', 'Delete files error', LogLevel.Error);
-			});			
+			});
 			this._ModalSvc.close(this._ModalId_Delete);
 		};
 		this._ModalSvc.open(mModalOptions);
@@ -306,7 +320,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 		};
 		this._ModalSvc.open(mModalOptions);
 	}
-	
+
 	/**
 	 * Method called when the user click with the right button
 	 * @param event MouseEvent, it contains the coordinates
@@ -324,7 +338,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 
 		// we open the menu
 		// we pass to the menu the information about our object
-		this._MatMenuTrigger.menuData = {item: item};
+		this._MatMenuTrigger.menuData = { item: item };
 
 		// we open the menu
 		this._MatMenuTrigger.openMenu();
