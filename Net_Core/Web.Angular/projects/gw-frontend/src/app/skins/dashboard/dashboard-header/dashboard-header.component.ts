@@ -7,9 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
-import { AccountService } from '@growthware/core/account';
+import { AccountService, LoginComponent } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
-import { LoginComponent } from '@growthware/core/account';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { ConfigurationService } from '@growthware/core/configuration';
 
@@ -20,7 +19,7 @@ import { ConfigurationService } from '@growthware/core/configuration';
 	styleUrls: ['./dashboard-header.component.scss'],
 	imports: [
 		RouterLink,
-		
+
 		MatButtonModule,
 		MatIconModule,
 		MatMenuModule,
@@ -47,7 +46,7 @@ export class DashboardHeaderComponent {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
 		mModalOptions.buttons.okButton.callbackMethod = () => {
-			this.onModalOk;
+			this.onModalOk();
 		};
 		this._ModalSvc.open(mModalOptions);
 	}
