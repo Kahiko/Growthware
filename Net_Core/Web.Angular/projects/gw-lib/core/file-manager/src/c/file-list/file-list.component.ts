@@ -1,23 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+	Component,
+	computed,
+	TemplateRef,
+	inject,
+	input,
+	OnDestroy,
+	OnInit,
+	ViewChild
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TemplateRef } from '@angular/core';
+import {
+	FormsModule,
+	FormGroup,
+	FormBuilder,
+	Validators,
+	ReactiveFormsModule
+} from '@angular/forms';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-import { ISecurityInfo } from '@growthware/core/security';
+import { ISecurityInfo, SecurityService } from '@growthware/core/security';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
-import { SecurityService } from '@growthware/core/security';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
 import { IFileInfoLight } from '../../interfaces/file-info-light.model';
@@ -111,7 +122,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 * @param {any} filterValue - The value used to filter the file list.
 	 * @returns {void} No return value.
 	 */
-	applyFilter(filterValue: any) {
+	applyFilter(filterValue: string) {
 		this._FileManagerSvc.filterFileInfoList(filterValue);
 	}
 
@@ -154,7 +165,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 			}).catch((error) => {
 				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onDeleteSelected');
 				this._LoggingSvc.toast('Was not able to delete the files', 'Delete files error', LogLevel.Error);
-			});			
+			});
 			this._ModalSvc.close(this._ModalId_Delete);
 		};
 		this._ModalSvc.open(mModalOptions);
@@ -181,13 +192,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 */
 	getErrorMessage(fieldName: string): string | undefined {
 		switch (fieldName) {
-		case 'newName':
-			if (this.getControls['newPassword'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'newName':
+				if (this.getControls['newPassword'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
