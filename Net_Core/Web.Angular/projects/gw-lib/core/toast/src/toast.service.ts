@@ -8,7 +8,7 @@ import { IToastMessage, ToastMessage } from './toast-message.model';
 })
 export class ToastService {
 
-	private _Timer: any;
+	private _Timer: ReturnType<typeof setTimeout> | undefined;
 
 	public currentToasts = signal<Array<IToastMessage>>([]);
 
@@ -55,7 +55,7 @@ export class ToastService {
 	addOrUpdateToasts(toastMessage: ToastMessage): void {
 
 		const mExistingToast: IToastMessage | undefined = this.currentToasts().find(item => item.message === toastMessage.message);
-		
+
 		if (mExistingToast === undefined) {
 			// Added the incomming toast message
 			this.currentToasts.update((items) => [...items, toastMessage]);
