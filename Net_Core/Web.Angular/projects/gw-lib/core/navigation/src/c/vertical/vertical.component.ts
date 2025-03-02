@@ -1,13 +1,9 @@
-import { Component, ElementRef, input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 // Library
-import { AccountService } from '@growthware/core/account';
-import { GWCommon } from '@growthware/common/services';
-import { LoggingService } from '@growthware/core/logging';
-import { ModalService } from '@growthware/core/modal';
 // Feature
 import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 import { MenuTypes } from '../../menu-types.enum';
