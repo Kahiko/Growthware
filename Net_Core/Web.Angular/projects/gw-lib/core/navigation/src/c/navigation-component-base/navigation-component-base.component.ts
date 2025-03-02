@@ -61,7 +61,7 @@ export abstract class NavigationComponentBase implements OnInit {
 					this._LoggingSvc.errorHandler(error, 'NavigationComponentBase', 'constructor');
 				});
 			} else {
-				this._NavigationSvc.getMenuData(this._MenuType, this.id()).then((response) => {
+				this._NavigationSvc.getMenuData(this._MenuType).then((response) => {
 					// convert the retunred data into IMenuItem
 					const mNavItems: INavItem[] = [];
 					this._GWCommon.buildNavItems(response).forEach((item) => {

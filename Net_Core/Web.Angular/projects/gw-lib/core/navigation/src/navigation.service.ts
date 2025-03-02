@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
-import { toObservable } from '@angular/core/rxjs-interop';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
@@ -9,6 +8,7 @@ import { LoggingService } from '@growthware/core/logging';
 import { INavLink, NavLink } from './nav-link.model';
 import { MenuTypes } from './menu-types.enum';
 import { LinkBehaviors } from './link-behaviors.enum';
+import { IMenuData } from '@growthware/common/interfaces';
 
 @Injectable({
 	providedIn: 'root',
@@ -28,10 +28,10 @@ export class NavigationService {
 	readonly showNavText$ = signal<boolean>(true);
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService,
-    private _Router: Router
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService,
+		private _Router: Router
 	) {
 		// TODO: look into the following: Search: (angular mat-list-item expand on refresh)
 		// 	https://dzhavat.github.io/2022/09/14/auto-expand-menu-using-angular-material.html
@@ -51,7 +51,7 @@ export class NavigationService {
 		});
 	}
 
-	public getMenuData(menuType: MenuTypes, configuarionName: string): Promise<any[]> {
+	public getMenuData(menuType: MenuTypes): Promise<IMenuData[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -60,9 +60,9 @@ export class NavigationService {
 			}),
 			params: mQueryParameter
 		};
-		return new Promise<INavLink[]>((resolve, reject) => {
-			this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
-				next: (response: any[]) => {
+		return new Promise<IMenuData[]>((resolve, reject) => {
+			this._HttpClient.get<IMenuData[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
+				next: (response: IMenuData[]) => {
 					resolve(response);
 				},
 				error: (error) => {
@@ -76,7 +76,7 @@ export class NavigationService {
 		});
 	}
 
-	public getNavLinks(menuType: MenuTypes, configuarionName: string = ''): Promise<INavLink[]> {
+	public getNavLinks(menuType: MenuTypes): Promise<INavLink[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('menuType', menuType);
 		const mHttpOptions = {
@@ -97,7 +97,7 @@ export class NavigationService {
 				complete: () => {
 					// here as example
 				}
-			});	
+			});
 		});
 	}
 
@@ -111,29 +111,29 @@ export class NavigationService {
 			if (!arg.children || !arg.children.length) {
 				this.currentNavLink$.update(() => arg);
 				switch (arg.linkBehavior) {
-				case LinkBehaviors.Internal:
-					this._Router.navigate([arg.action.toLowerCase()]);
-					break;
-				case LinkBehaviors.Popup:
-					this._Router.navigate([arg.action.toLowerCase()]);
-					// TODO: need to fingure out how to get the windows size to here.
-					// I don't like the idea of putting into the DB but that may be the best way.
-					// this._Router.navigate([item.action.toLowerCase()]);
-					break;
-				case LinkBehaviors.External:
-					window.open(arg.link, '_blank');
-					break;
-				case LinkBehaviors.NewPage:
-					window.open('/' + arg.link.toLowerCase(), '_blank');
-					break;
-				default:
-					this._Router.navigate([arg.action.toLowerCase()]);
-					break;
+					case LinkBehaviors.Internal:
+						this._Router.navigate([arg.action.toLowerCase()]);
+						break;
+					case LinkBehaviors.Popup:
+						this._Router.navigate([arg.action.toLowerCase()]);
+						// TODO: need to fingure out how to get the windows size to here.
+						// I don't like the idea of putting into the DB but that may be the best way.
+						// this._Router.navigate([item.action.toLowerCase()]);
+						break;
+					case LinkBehaviors.External:
+						window.open(arg.link, '_blank');
+						break;
+					case LinkBehaviors.NewPage:
+						window.open('/' + arg.link.toLowerCase(), '_blank');
+						break;
+					default:
+						this._Router.navigate([arg.action.toLowerCase()]);
+						break;
 				}
-			}  
+			}
 		} else {
 			this._Router.navigate([arg.toLowerCase()]);
-		}  
+		}
 	}
 
 
