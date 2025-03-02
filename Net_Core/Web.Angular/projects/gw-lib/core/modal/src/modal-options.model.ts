@@ -2,12 +2,12 @@ import { TemplateRef, Type } from '@angular/core';
 import { CallbackButton, ICallbackButton, } from '@growthware/common/interfaces';
 import { IWindowSize } from './window-size.model';
 
-export interface IModalOptions<T = unknown> {
+export interface IModalOptions {
   initialData?: unknown;
   modalId: string;
   headerText: string;
   windowSize: number | IWindowSize;
-  contentPayLoad: string | TemplateRef<T> | Type<unknown>;
+  contentPayLoad: string | TemplateRef<unknown> | Type<unknown>;
   buttons: {
     cancelButton: ICallbackButton;
     closeButton: ICallbackButton;
@@ -15,7 +15,7 @@ export interface IModalOptions<T = unknown> {
   };
 }
 
-export class ModalOptions<T = unknown> implements IModalOptions {
+export class ModalOptions implements IModalOptions {
   public initialData = undefined;
   public buttons = {
     cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn', false),
@@ -26,7 +26,7 @@ export class ModalOptions<T = unknown> implements IModalOptions {
   constructor(
     public modalId: string,
     public headerText: string,
-    public contentPayLoad: string | TemplateRef<T> | Type<unknown>,
+    public contentPayLoad: string | TemplateRef<unknown> | Type<unknown>,
     public windowSize: number | IWindowSize = 0
   ) { }
 }

@@ -18,7 +18,7 @@ import { ContentType } from './content-type.enum';
 import { ModalComponent } from './c/popup/modal.component';
 import { IModalOptions } from './modal-options.model';
 
-type Content<T> = string | TemplateRef<T> | ComponentRef<T> | Type<unknown>;
+type ContentPayloadType<T> = string | TemplateRef<T> | ComponentRef<T> | Type<unknown>;
 
 /**
  * Modal Service for creating dynamic, flexible modal dialogs
@@ -85,7 +85,7 @@ type Content<T> = string | TemplateRef<T> | ComponentRef<T> | Type<unknown>;
 })
 export class ModalService {
 
-	private _ActiveModals: IContentObject<ComponentRef<unknown> | TemplateRef<unknown> | null>[] = [];
+	private _ActiveModals: IContentObject[] = [];
 	private _ContentType: ContentType = ContentType.String;
 	private _IsKeyDownListenerActive: boolean = false;
 
@@ -132,26 +132,21 @@ export class ModalService {
 	 * @memberof ModalService
 	 */
 	public close(key: string) {
-		const mContentObj = this._ActiveModals.find((obj: IContentObject<unknown>) => obj.key.toUpperCase() === key.toUpperCase() as string);
+		const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
 		if (mContentObj !== undefined) {
-			if (mContentObj.contentType === ContentType.Component) {
-				try {
-					if (mContentObj.payloadRef instanceof EmbeddedViewRef) {
-						// destroy child
-						this._ApplicationRef.detachView(mContentObj.payloadRef.rootNodes[0]);
-					} else if (mContentObj.payloadRef instanceof ComponentRef) {
-						// Handle the case when payloadRef is a ComponentRef
-						mContentObj.payloadRef.destroy();
-					}
-				} catch (error) {
-					let mMsg;
-					if (error instanceof Error) {
-						mMsg = error.message;
-					} else {
-						mMsg = String(error);
-					}
-					this.logConsole(mMsg, 'Error');
+			try {
+				// If the payload is a component we need to call destroy so the Angular lifecycle is preserved.
+				if (mContentObj.payloadRef instanceof ComponentRef) {
+					mContentObj.payloadRef.destroy();
 				}
+			} catch (error) {
+				let mMsg;
+				if (error instanceof Error) {
+					mMsg = error.message;
+				} else {
+					mMsg = String(error);
+				}
+				this.logConsole(mMsg, 'Error');
 			}
 			// remove and destroy the modal component
 			this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
@@ -185,11 +180,25 @@ export class ModalService {
 		}
 		// resolve the ngContent
 		const mResolvedNgContent = this.resolveNgContent(options.contentPayLoad);
-		// first, create the child
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		let mNgContent: any = mResolvedNgContent;
-		if (this._ContentType === ContentType.Component && mResolvedNgContent instanceof ComponentRef) {
-			mNgContent = ((mResolvedNgContent as ComponentRef<Component>).hostView as EmbeddedViewRef<unknown>).rootNodes;
+		let mNgContent: Node[] = [];
+		switch (true) {
+			case mResolvedNgContent instanceof TemplateRef:
+				if (options.contentPayLoad instanceof TemplateRef) {
+					const mViewRef = options.contentPayLoad.createEmbeddedView(mResolvedNgContent);
+					mNgContent = mViewRef.rootNodes;
+					this._ApplicationRef.attachView(mViewRef);
+				}
+				break;
+			case mResolvedNgContent instanceof ComponentRef:
+				this._ApplicationRef.attachView(mResolvedNgContent.hostView);
+				mNgContent = ((mResolvedNgContent as ComponentRef<Component>).hostView as EmbeddedViewRef<unknown>).rootNodes;
+				break;
+			case mResolvedNgContent instanceof Text:
+				mNgContent = [mResolvedNgContent];
+				break;
+			default:
+				this.logConsole('Unsupported ngContent type', 'Error');
+				return;
 		}
 		// then create the dialog that will host it
 		const mModalComponentRef: ComponentRef<ModalComponent> = createComponent(ModalComponent, {
@@ -197,16 +206,9 @@ export class ModalService {
 			projectableNodes: [mNgContent], // pass the child here
 		});
 		// const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
-		const mContentObject: IContentObject<TemplateRef<unknown> | ComponentRef<unknown> | null> = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
-		if (this._ContentType === ContentType.Component) {
-			if (typeof mResolvedNgContent === 'object' && mResolvedNgContent instanceof ComponentRef) {
-				mContentObject.payloadRef = mResolvedNgContent as ComponentRef<TemplateRef<unknown> | ComponentRef<unknown> | null>;
-			} else {
-				// Handle the case when mResolvedNgContent is of type Text
-				// You might want to throw an error or set payloadRef to null
-				throw new Error('mResolvedNgContent is not a ComponentRef or TemplateRef');
-			}
-		}
+		const mContentObject: IContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
+		mContentObject.payloadRef = mResolvedNgContent;
+
 		mModalComponentRef.instance.setUp(options); // sets up UI properties (height, width, show components, etc.)
 		this.setupModalCallbacks(options, mModalComponentRef.instance);
 		// append to body, we will use platform document for this
@@ -262,30 +264,28 @@ export class ModalService {
 	 * Resolves the ngContent of a given Content object.
 	 *
 	 * @template T - The type of the content.
-	 * @param {Content<T>} content - The content to resolve.
-	 * @return {any} - The resolved ngContent.
+	 * @param {ContentPayloadType<T>} contentPayload - The content to resolve.
+	 * @return {TemplateRef<unknown> | ComponentRef<unknown> | Text} - The resolved ngContent.
 	 * 
 	 * @memberof ModalService
 	 */
-	private resolveNgContent<T>(content: Content<T>): Text | Type<unknown> | TemplateRef<T> {
+	private resolveNgContent<T>(contentPayload: ContentPayloadType<T>): TemplateRef<unknown> | ComponentRef<unknown> | Text {
 		this._ContentType = ContentType.String;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		let mRetVal: any;
-		if (typeof content === 'string') {            /** String */
-			const element = this._Document.createTextNode(content);
-			mRetVal = [[element]];
-		} else if (content instanceof TemplateRef) {  /** ngTemplate */
-			this._ContentType = ContentType.Template;
-			const mTemplateRef = Object.create(content) as T;
-			const mViewRef = content.createEmbeddedView(mTemplateRef);
-			this._ApplicationRef.attachView(mViewRef);
-			mRetVal = [mViewRef.rootNodes];
-		} if (typeof content === 'function') {         /** Otherwise it's a component */
-			this._ContentType = ContentType.Component;
-			mRetVal = createComponent(content, { environmentInjector: this._ApplicationRef.injector });
-			// attach ComponentRef to the application reference
-			this._ApplicationRef.attachView(mRetVal.hostView);
-
+		let mRetVal: TemplateRef<unknown> | ComponentRef<unknown> | Text = document.createTextNode('');
+		switch (true) {
+			case typeof contentPayload === 'function':	 	/** component */
+				this._ContentType = ContentType.Component;
+				mRetVal = createComponent(contentPayload, { environmentInjector: this._ApplicationRef.injector });
+				break;
+			case contentPayload instanceof TemplateRef:		/** ngTemplate */
+				this._ContentType = ContentType.Template;
+				mRetVal = contentPayload;
+				break;
+			case typeof contentPayload === 'string':		/** String */
+				mRetVal = this._Document.createTextNode(contentPayload);
+				break;
+			default:
+				this.logConsole('Unsupported content type', 'Error');
 		}
 		return mRetVal;
 	}
