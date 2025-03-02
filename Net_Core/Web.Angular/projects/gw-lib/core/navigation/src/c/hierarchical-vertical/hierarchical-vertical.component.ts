@@ -1,11 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 // Library
-import { AccountService } from '@growthware/core/account';
-import { GWCommon } from '@growthware/common/services';
-import { LoggingService } from '@growthware/core/logging';
 // Feature
 import { HierarchicalNavListItemComponent } from '../hierarchical-nav-list-item/hierarchical-nav-list-item';
 import { MenuTypes } from '../../menu-types.enum';
