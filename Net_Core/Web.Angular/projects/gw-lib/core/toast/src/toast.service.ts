@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { EventType } from './event-type.enum';
 // Feature
 import { IToastMessage, ToastMessage } from './toast-message.model';
@@ -18,7 +18,7 @@ export class ToastService {
 	refreshToasts(): void {
 		const mRemovableToasts = this.currentToasts().filter((item) => {
 			return item.eventType !== EventType.Error
-		}).reduce((acc, item) => acc + 1, 0);
+		}).reduce((acc) => acc + 1, 0);
 		if (mRemovableToasts > 0) {
 			const mCurrentDateTime: Date = new Date();
 			// console.log('ToastService.autoUpdateToasts.mTestDateTime', mCurrentDateTime);
