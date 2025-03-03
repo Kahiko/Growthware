@@ -1,15 +1,15 @@
 export interface IFileInfoLight {
-  created: Date;
-  createdShort: string;
-  extension: string;
-  fullName: string;
-  modified: Date;
-  modifiedShort: string
-  name: string;
-  selected: boolean;
-  shortFileName: string;
-  size: string;
-  visible: boolean;
+	created: Date;
+	createdShort: string;
+	extension: string;
+	fullName: string;
+	modified: Date;
+	modifiedShort: string
+	name: string;
+	selected: boolean;
+	shortFileName: string;
+	size: string;
+	visible: boolean;
 }
 
 export class FileInfoLight implements IFileInfoLight {
@@ -24,7 +24,7 @@ export class FileInfoLight implements IFileInfoLight {
 	shortFileName: string = '';
 	size: string = '';
 	visible: boolean = false;
-  
+
 	constructor(
 		created: Date,
 		createdShort: string,
@@ -35,7 +35,15 @@ export class FileInfoLight implements IFileInfoLight {
 		name: string,
 		shortFileName: string,
 		size: string,
-	) { 
-
+	) {
+		this.created = created;
+		this.createdShort = createdShort;
+		this.extension = extension;
+		this.fullName = fullName;
+		this.modified = modified;
+		this.modifiedShort = modifiedShort;
+		this.name = name;
+		this.shortFileName = shortFileName;
+		this.size = size;
 	}
 }
