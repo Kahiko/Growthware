@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -116,13 +115,13 @@ export class RoleDetailsComponent implements OnInit {
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
