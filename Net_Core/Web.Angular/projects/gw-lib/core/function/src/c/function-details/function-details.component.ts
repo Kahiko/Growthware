@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -26,8 +25,7 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { IKeyValuePair, KeyValuePair } from '@growthware/common/interfaces';
 import { RoleService } from '@growthware/core/role';
-import { PickListComponent } from '@growthware/core/pick-list';
-import { ListComponent } from '@growthware/core/pick-list';
+import { ListComponent, PickListComponent } from '@growthware/core/pick-list';
 import { SecurityService } from '@growthware/core/security';
 // Feature
 import { FunctionService } from '../../function.service';
@@ -154,7 +152,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 		this.clientChoices = this._AccountSvc.clientChoices();
 		this.pickListTableContentsBackground = this.clientChoices.evenRow;
 		this.pickListTableContentsFont = this.clientChoices.evenFont;
-		this.pickListTableHeaderBackground = this.clientChoices.oddRow;		
+		this.pickListTableHeaderBackground = this.clientChoices.oddRow;
 	}
 
 	ngOnInit(): void {
@@ -280,18 +278,18 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		case 'action':
-			if (this.controls['action'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			case 'action':
+				if (this.controls['action'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -299,24 +297,24 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	onHelp(controleName: string): void {
 		this._HelpOptions.windowSize = 1;
 		switch (controleName) {
-		case 'Action':
-			this._HelpOptions.contentPayLoad = this._HelpAction;
-			break;
-		case 'Source':
-			this._HelpOptions.contentPayLoad = this._HelpSource;
-			break;
-		case 'Control':
-			this._HelpOptions.contentPayLoad = this._HelpControl;
-			break;
-		case 'Passord':
-			this._HelpOptions.windowSize = new WindowSize(150, 480);
-			this._HelpOptions.contentPayLoad = this._HelpPassword;
-			break;
-		case 'impersonation':
-			this._HelpOptions.contentPayLoad = this._HelpImpersonation;
-			break;
-		default:
-			break;
+			case 'Action':
+				this._HelpOptions.contentPayLoad = this._HelpAction;
+				break;
+			case 'Source':
+				this._HelpOptions.contentPayLoad = this._HelpSource;
+				break;
+			case 'Control':
+				this._HelpOptions.contentPayLoad = this._HelpControl;
+				break;
+			case 'Passord':
+				this._HelpOptions.windowSize = new WindowSize(150, 480);
+				this._HelpOptions.contentPayLoad = this._HelpPassword;
+				break;
+			case 'impersonation':
+				this._HelpOptions.contentPayLoad = this._HelpImpersonation;
+				break;
+			default:
+				break;
 		}
 		this._ModalSvc.open(this._HelpOptions);
 	}
