@@ -320,6 +320,7 @@ Library: (core) From Web.Angular
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/LineCount 		--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/NaturalSort 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/UpdateSession 	--standalone --style scss --project gw-lib
-
+	Testing:
+		ng generate component --path=projects/gw-lib/core/testing/src c/TestLogging --standalone --style scss --project gw-lib
 Installer:
 	https://www.youtube.com/watch?v=6Yf-eDsRrnM

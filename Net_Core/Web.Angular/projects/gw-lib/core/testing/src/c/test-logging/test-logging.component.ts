@@ -13,9 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
-import { LoggingService } from '../../logging.service';
-import { ILogOptions, LogOptions } from '../../log-options.model';
-import { LogDestination } from '../../log-destination.enum';
+import { ILogOptions, LogDestination, LogOptions, LoggingService } from '@growthware/core/logging';
 
 @Component({
 	selector: 'gw-core-test-logging',

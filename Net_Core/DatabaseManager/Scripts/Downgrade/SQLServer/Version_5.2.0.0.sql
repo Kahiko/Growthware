@@ -103,7 +103,11 @@ IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 79)
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 85)
 	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 85;
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 88)
-	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 88;
+	UPDATE [ZGWSecurity].[Functions] SET 
+		[Action] = '/logging/test-logging',
+		[Sort_Order] = 1 
+	WHERE [FunctionSeqId] = 88;
+
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 24)
 	UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 1 WHERE [FunctionSeqId] = 25;
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 26)
