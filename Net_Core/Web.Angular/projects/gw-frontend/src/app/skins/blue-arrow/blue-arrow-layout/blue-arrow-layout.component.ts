@@ -10,10 +10,8 @@ import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { GWCommon } from '@growthware/common/services';
 // Library Standalone
-import { HorizontalComponent } from '@growthware/core/navigation';
-import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent, HorizontalComponent, VerticalComponent } from '@growthware/core/navigation';
 import { LoaderComponent } from '@growthware/core/loader';
-import { VerticalComponent } from '@growthware/core/navigation';
 // Feature
 import { BlueArrowFooterComponent } from '../blue-arrow-footer/blue-arrow-footer.component';
 
