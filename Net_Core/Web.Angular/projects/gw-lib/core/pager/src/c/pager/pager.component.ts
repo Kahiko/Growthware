@@ -1,8 +1,8 @@
-import { Component, effect, input, OnDestroy } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Library
 import { GWCommon } from '@growthware/common/services';
-import { SearchService, SearchCriteria, ISearchResultsNVP } from '@growthware/core/search';
+import { SearchService, SearchCriteria } from '@growthware/core/search';
 
 @Component({
 	selector: 'gw-core-pager',
@@ -25,7 +25,7 @@ export class PagerComponent {
 	constructor(
 		private _GWCommon: GWCommon,
 		private _SearchSvc: SearchService
-	) { 
+	) {
 		effect(() => {
 			const mSearchDataResults = this._SearchSvc.searchDataChanged$();
 			if (this.name().trim().toLowerCase() === mSearchDataResults.name.trim().toLowerCase()) {
@@ -58,7 +58,7 @@ export class PagerComponent {
 				} else {
 					this.totalPages = 0;
 				}
-			}			
+			}
 		});
 	}
 
@@ -81,37 +81,37 @@ export class PagerComponent {
 	onPageChange(direction: string): void {
 		const value = direction.trim().toLowerCase();
 		switch (value) {
-		case 'first':
-			if (this._SearchCriteria.selectedPage > 1) {
-				this._SearchCriteria.selectedPage = 1;
-				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-			}
-			break;
-		case 'last':
-			if (this._SearchCriteria.selectedPage < this.totalPages) {
-				this._SearchCriteria.selectedPage = this.totalPages;
-				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-			}
-			break;
-		case 'next':
-			if (this._SearchCriteria.selectedPage < this.totalPages) {
-				this._SearchCriteria.selectedPage++;
-				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-			}
-			break;
-		case 'previous':
-			if (this._SearchCriteria.selectedPage > 1) {
-				this._SearchCriteria.selectedPage--;
-				this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
-			}
-			break;
-		default:
-			if (Number(value)) {
-				console.log(value);
-			} else {
-				throw '"' + value + '" is not supported';
-			}
-			break;
+			case 'first':
+				if (this._SearchCriteria.selectedPage > 1) {
+					this._SearchCriteria.selectedPage = 1;
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+				}
+				break;
+			case 'last':
+				if (this._SearchCriteria.selectedPage < this.totalPages) {
+					this._SearchCriteria.selectedPage = this.totalPages;
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+				}
+				break;
+			case 'next':
+				if (this._SearchCriteria.selectedPage < this.totalPages) {
+					this._SearchCriteria.selectedPage++;
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+				}
+				break;
+			case 'previous':
+				if (this._SearchCriteria.selectedPage > 1) {
+					this._SearchCriteria.selectedPage--;
+					this._SearchSvc.setSearchCriteria(this.name(), this._SearchCriteria);
+				}
+				break;
+			default:
+				if (Number(value)) {
+					console.log(value);
+				} else {
+					throw '"' + value + '" is not supported';
+				}
+				break;
 		}
 		this.selectedPage = this._SearchCriteria.selectedPage.toString();
 	}
