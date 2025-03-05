@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,11 +41,11 @@ export class CopyFunctionSecurityComponent implements OnInit {
 	validTargetEntities: IKeyValuePair[] = [];
 
 	constructor(
-    private _FormBuilder: FormBuilder,
-    private _FunctionSvc: FunctionService,
-    private _LoggingSvc: LoggingService,
-    private _SecuritySvc: SecurityEntityService
-	) { 
+		private _FormBuilder: FormBuilder,
+		private _FunctionSvc: FunctionService,
+		private _LoggingSvc: LoggingService,
+		private _SecuritySvc: SecurityEntityService
+	) {
 		this.createForm();
 	}
 
@@ -69,7 +68,7 @@ export class CopyFunctionSecurityComponent implements OnInit {
 	}
 
 	onSubmit(): void {
-		if(this.selectedSource != this.selectedTarget) {
+		if (this.selectedSource != this.selectedTarget) {
 			this._FunctionSvc.copyFunctionSecurity(this.selectedSource, this.selectedTarget).then((response: boolean) => {
 				if (response) {
 					this._LoggingSvc.toast('Function Security has been copied', 'Copy Function:', LogLevel.Success);
