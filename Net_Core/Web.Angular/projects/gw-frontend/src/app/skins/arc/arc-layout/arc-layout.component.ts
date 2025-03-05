@@ -9,7 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
 import { LoaderComponent } from '@growthware/core/loader';
-import { HorizontalComponent, HierarchicalVerticalComponent, VerticalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent, VerticalComponent } from '@growthware/core/navigation';
 // Feature
 import { ArcFooterComponent } from '../arc-footer/arc-footer.component';
 import { ArcHeaderComponent } from '../arc-header/arc-header.component';
