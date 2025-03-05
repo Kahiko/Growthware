@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
-import { SearchService } from '@growthware/core/search';
 // Feature
 import { SelectedRow } from './selected-row.model';
 import { IFeedback } from './feedback.model';
@@ -35,7 +34,7 @@ export class FeedbackService extends BaseService {
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
-	) { 
+	) {
 		super();
 		this._Api_GetFeedbackAccounts = this._GWCommon.baseURL + this._ApiName + 'GetFeedbackAccounts';
 		this._Api_GetFeedbackForEdit = this._GWCommon.baseURL + this._ApiName + 'GetFeedbackForEdit';
@@ -65,15 +64,15 @@ export class FeedbackService extends BaseService {
 		});
 	}
 
-	public async getFeedbackAccounts(): Promise<{developers: Array<string>, qa: Array<string>}> { 
-		return new Promise<{developers: Array<string>, qa: Array<string>}>((resolve, reject) => {
+	public async getFeedbackAccounts(): Promise<{ developers: Array<string>, qa: Array<string> }> {
+		return new Promise<{ developers: Array<string>, qa: Array<string> }>((resolve, reject) => {
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
 				}),
 			};
-			this._HttpClient.get<{developers: Array<string>, qa: Array<string>}>(this._Api_GetFeedbackAccounts, mHttpOptions).subscribe({
-				next: (response: {developers: Array<string>, qa: Array<string>}) => {
+			this._HttpClient.get<{ developers: Array<string>, qa: Array<string> }>(this._Api_GetFeedbackAccounts, mHttpOptions).subscribe({
+				next: (response: { developers: Array<string>, qa: Array<string> }) => {
 					resolve(response);
 				},
 				error: (error) => {
