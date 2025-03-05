@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -49,7 +47,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 	) { }
 
 	ngAfterViewInit(): void {
-		if(this.hideOldPassword) {
+		if (this.hideOldPassword) {
 			this.newPassword.nativeElement.focus();
 		} else {
 			this.oldPassword.nativeElement.focus();
@@ -112,32 +110,32 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 	getErrorMessage(fieldName: string) {
 		let mRetVal: string = '';
 		switch (fieldName) {
-		case 'oldPassword':
-			if (this._AccountSvc.authenticationResponse().status != 4) {
-				if (this.getControls['oldPassword'].hasError('required')) {
+			case 'oldPassword':
+				if (this._AccountSvc.authenticationResponse().status != 4) {
+					if (this.getControls['oldPassword'].hasError('required')) {
+						return 'Required';
+					}
+				}
+				break;
+			case 'newPassword':
+				if (this.getControls['newPassword'].hasError('required')) {
 					return 'Required';
 				}
-			}
-			break;
-		case 'newPassword':
-			if (this.getControls['newPassword'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		case 'confirmPassword':
-			if (this.getControls['confirmPassword'].hasError('required')) {
-				mRetVal = 'Required';
-			} else {
-				if (this.getControls['confirmPassword'].value != this.getControls['newPassword'].value) {
-					mRetVal = 'New and Confirm must match exactly!';
+				break;
+			case 'confirmPassword':
+				if (this.getControls['confirmPassword'].hasError('required')) {
+					mRetVal = 'Required';
+				} else {
+					if (this.getControls['confirmPassword'].value != this.getControls['newPassword'].value) {
+						mRetVal = 'New and Confirm must match exactly!';
+					}
 				}
-			}
-			if (!this._GWCommon.isNullOrEmpty(mRetVal)) {
-				return mRetVal;
-			}
-			break;
-		default:
-			break;
+				if (!this._GWCommon.isNullOrEmpty(mRetVal)) {
+					return mRetVal;
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
