@@ -1,7 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,7 +47,7 @@ export class MessageDetailsComponent implements OnInit {
 		this.populateForm(); // need to make sure the form controls are set ¯\_(ツ)_/¯
 		let mIdToGet = -1;
 		// console.log('selectedRow', this._MessageSvc.selectedRow);
-		if(this._MessageSvc.modalReason.toLowerCase() != 'newprofile') {
+		if (this._MessageSvc.modalReason.toLowerCase() != 'newprofile') {
 			mIdToGet = this._MessageSvc.selectedRow.MessageSeqId;
 		}
 		// console.log('mIdToGet', mIdToGet);
@@ -59,7 +57,7 @@ export class MessageDetailsComponent implements OnInit {
 		}).catch((error) => {                                        // Request #1 Error Handler
 			this._LoggingSvc.toast('Error getting the security :\r\n' + error, 'Message Details:', LogLevel.Error);
 		}).then((response) => {                                           // Request 2 Handler
-			if(response) {
+			if (response) {
 				this._Profile = response;
 			}
 			this.populateForm();
@@ -70,12 +68,12 @@ export class MessageDetailsComponent implements OnInit {
 	}
 
 	private applySecurity(): void {
-		if(this._SecurityInfo) {
-			if(this._SecurityInfo.mayEdit) {
+		if (this._SecurityInfo) {
+			if (this._SecurityInfo.mayEdit) {
 				this.canSave = true;
 			}
 		}
-		if(this._MessageSvc.modalReason.toLowerCase() != 'newprofile') {
+		if (this._MessageSvc.modalReason.toLowerCase() != 'newprofile') {
 			this.controls['name'].disable();
 		}
 	}
@@ -95,7 +93,7 @@ export class MessageDetailsComponent implements OnInit {
  * @return {void} This function does not return a value.
  */
 	onSubmit(form: FormGroup): void {
-		if(form.valid) {
+		if (form.valid) {
 			this.populateProfile();
 			// console.log('Profile', this._Profile);
 			this._MessageSvc.save(this._Profile).then(() => {
@@ -113,31 +111,31 @@ export class MessageDetailsComponent implements OnInit {
 
 	onHelp(controleName: string): void {
 		switch (controleName) {
-		case 'Tags':
-			this._HelpOptions.windowSize = new WindowSize(150, 480);
-			this._HelpOptions.contentPayLoad = this._HelpTags;
-			break;
+			case 'Tags':
+				this._HelpOptions.windowSize = new WindowSize(150, 480);
+				this._HelpOptions.contentPayLoad = this._HelpTags;
+				break;
 		}
 		this._ModalSvc.open(this._HelpOptions);
 	}
 
 	private populateForm(): void {
-		if(this._Profile.id > -1) {
+		if (this._Profile.id > -1) {
 			this.frmMessage = this._FormBuilder.group({
-				avalibleTags: [{value: this._Profile.avalibleTags, disabled: true }],
+				avalibleTags: [{ value: this._Profile.avalibleTags, disabled: true }],
 				description: [this._Profile.description],
-				formatAsHtml:[this._Profile.formatAsHtml],
+				formatAsHtml: [this._Profile.formatAsHtml],
 				messageBody: [this._Profile.body, Validators.required],
-				name: [{value : this._Profile.name, disabled: false }],
+				name: [{ value: this._Profile.name, disabled: false }],
 				title: [this._Profile.title, Validators.required],
 			});
 		} else {
 			this.frmMessage = this._FormBuilder.group({
-				avalibleTags: [{value: this._Profile.avalibleTags, disabled: true }],
+				avalibleTags: [{ value: this._Profile.avalibleTags, disabled: true }],
 				description: [this._Profile.description],
-				formatAsHtml:[this._Profile.formatAsHtml],
+				formatAsHtml: [this._Profile.formatAsHtml],
 				messageBody: [this._Profile.body, Validators.required],
-				name: [{value : this._Profile.name, disabled: this._Profile.id > -1}, Validators.required],
+				name: [{ value: this._Profile.name, disabled: this._Profile.id > -1 }, Validators.required],
 				title: [this._Profile.title, Validators.required],
 			});
 		}
