@@ -1,25 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, computed, effect, input, ViewChild } from '@angular/core';
-import { OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import {
+	Component,
+	computed,
+	effect,
+	input,
+	OnDestroy,
+	OnInit,
+	TemplateRef,
+	ViewChild
+} from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 // Library Imports
 import { GWCommon } from '@growthware/common/services';
-import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
+import { LogDestination, LoggingService, ILogOptions, LogOptions, LogLevel } from '@growthware/core/logging';
 import { PagerComponent } from '@growthware/core/pager';
-import { SearchService, SearchCriteria } from '@growthware/core/search';
-import { ISearchCriteria } from '@growthware/core/search';
+import { ISearchCriteria, SearchService, SearchCriteria } from '@growthware/core/search';
 
 // Interfaces/Models
 import { CallbackMethod } from '@growthware/common/interfaces';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 
 // Features (Components/Interfaces/Models/Services)
-import { IDynamicTableColumn, IDynamicTableConfiguration, DynamicTableBtnMethods } from '../../../public-api';
+import { IDynamicTableColumn } from '../../dynamic-table-column.model';
+import { IDynamicTableConfiguration } from '../../dynamic-table-configuration.model';
+import { DynamicTableBtnMethods } from '../../dynamic-table-btn-methods.model';
 import { DynamicTableService } from '../../../public-api';
 
 @Component({
@@ -46,7 +54,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	private _Subscriptions: Subscription = new Subscription();
 
 	configurationName = input.required<string>();
-	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
+	@ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!: TemplateRef<unknown>;
 
 	activeRow: number = -1;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -75,7 +83,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	public set rowClickBackMethod(callbackMethod: CallbackMethod) {
-		if(callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
+		if (callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
 			this._OnRowClickCallBackMethod = callbackMethod;
 		}
 	}
@@ -86,7 +94,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	public set rowDoubleClickBackMethod(callbackMethod: CallbackMethod) {
-		if(callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
+		if (callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
 			this._OnRowDoubleClickCallbackMethod = callbackMethod;
 		}
 	}
@@ -147,7 +155,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	formatData(data: any, type: string): void {
-  		return this._GWCommon.formatData(data, type);
+		return this._GWCommon.formatData(data, type);
 	}
 
 	/**
@@ -168,14 +176,14 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 		this.tableConfiguration.columns.forEach((element, index) => {
 			if (element.name !== columnName) {
 				this.tableConfiguration.columns[index].sortSelected = false;
-				if(this.tableConfiguration.columns[index].searchSelected) {
+				if (this.tableConfiguration.columns[index].searchSelected) {
 					mColumnInfo = this.tableConfiguration.columns[index].name;
 					mRetVal.push(mColumnInfo);
 				}
 			} else {
-				if(columnType === 'sort') {
+				if (columnType === 'sort') {
 					this.tableConfiguration.columns[index].sortSelected = true;
-					this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
+					this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc' : 'asc';
 					mColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
 				} else {
 					this.tableConfiguration.columns[index].searchSelected = true;
@@ -188,13 +196,13 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
-  		this._Subscriptions.unsubscribe();
+		this._Subscriptions.unsubscribe();
 	}
 
 	ngOnInit(): void {
 		this.configurationName.apply(this.configurationName().trim());
 		const mClientChoicesString = sessionStorage.getItem('clientChoices') ?? '';
-		if(!this._GWCommon.isNullOrEmpty(mClientChoicesString)) {
+		if (!this._GWCommon.isNullOrEmpty(mClientChoicesString)) {
 			this.clientChoices = JSON.parse(mClientChoicesString);
 		}
 		if (!this._GWCommon.isNullOrEmpty(this.configurationName())) {
@@ -244,7 +252,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 						this._SearchSvc.setSearchCriteria(this.configurationName(), mSearchCriteria);
 					} else {
 						this.recordsPerPageMsg =
-				'Value must be numeric and greater than zero!';
+							'Value must be numeric and greater than zero!';
 					}
 				})
 		);
@@ -275,7 +283,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 		setTimeout(() => {
 			if (this._RowClickCount === 1) {
 				// single
-				if(this._OnRowClickCallBackMethod && this._GWCommon.isFunction(this._OnRowClickCallBackMethod)) {
+				if (this._OnRowClickCallBackMethod && this._GWCommon.isFunction(this._OnRowClickCallBackMethod)) {
 					this._OnRowClickCallBackMethod(rowNumber);
 				}
 				if (this.activeRow !== rowNumber) {
@@ -303,7 +311,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 		if (this.activeRow !== rowNumber) {
 			this.activeRow = rowNumber;
 		}
-		if(this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
+		if (this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
 			this._OnRowDoubleClickCallbackMethod(rowNumber);
 		}
 	}
@@ -313,10 +321,10 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @param { string } columnName
 	 * @param { any } event The $event of the HTML object
 	 */
-	onSearchClick(columnName: string, event: Event):void {
+	onSearchClick(columnName: string, event: Event): void {
 		const mFleInput = event.target as HTMLInputElement;
 		let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
-		if(mFleInput && !mFleInput.checked) {
+		if (mFleInput && !mFleInput.checked) {
 			mColumns = mColumns.filter(obj => { return obj !== columnName; });
 		}
 		const mSearchCriteria: ISearchCriteria = {
@@ -353,7 +361,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	onTopLeft(): void {
-  		this._LoggingSvc.toast('You have not set the onTopLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
+		this._LoggingSvc.toast('You have not set the onTopLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
 	}
 
 	/**
@@ -365,7 +373,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	onTopRight(): void {
-  		this._LoggingSvc.toast('You have not set the onTopRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
+		this._LoggingSvc.toast('You have not set the onTopRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
 	}
 
 	/**
@@ -377,7 +385,7 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	onBottomLeft(): void {
-  		this._LoggingSvc.toast('You have not set the onBottomLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
+		this._LoggingSvc.toast('You have not set the onBottomLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
 	}
 
 	/**
@@ -389,11 +397,11 @@ export class DynamicTableComponent implements OnDestroy, OnInit {
 	 * @memberof DynamicTableComponent
 	 */
 	onBottomRight(): void {
-  		this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
+		this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
 	}
 
 	onEditClick(rowNumber: number) {
-		if(this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
+		if (this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
 			this._OnRowDoubleClickCallbackMethod(rowNumber);
 		}
 	}
