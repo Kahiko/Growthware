@@ -1,1 +1,15 @@
-<p>test-modal works!</p>
+<button type="button" (click)="onOpenModal('string')" mat-button class="Form_Button" color="primary">Open
+    String
+</button>
+<button type="button" (click)="onOpenModal('component')" mat-button class="Form_Button" color="primary">Open
+    Component
+</button>
+<button type="button" (click)="onOpenModal('templateRef')" mat-button class="Form_Button" color="primary">Open
+    TemplateRef
+</button>
+
+<ng-template #templateRef>
+    <div style="width: 100%;">
+        Are you sure you would like to delete all of the selected files?
+    </div>
+</ng-template>
