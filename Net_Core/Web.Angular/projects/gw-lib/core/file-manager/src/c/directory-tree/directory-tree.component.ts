@@ -1,23 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { IDirectoryTree } from '@growthware/common/interfaces';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
-import { ISecurityInfo, SecurityInfo } from '@growthware/core/security';
-import { SecurityService } from '@growthware/core/security';
+import { ISecurityInfo, SecurityInfo, SecurityService } from '@growthware/core/security';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
@@ -80,7 +75,7 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 		});
 		effect(() => {
 			const mSelectedDirectory = this._FileManagerSvc.selectedDirectoryChanged$();
-			if(this.selectedPath !== mSelectedDirectory.relitivePath || this._FileManagerSvc.needToExpand) {
+			if (this.selectedPath !== mSelectedDirectory.relitivePath || this._FileManagerSvc.needToExpand) {
 				this.selectedPath = mSelectedDirectory.relitivePath;
 				if (this._GWCommon.isNullOrEmpty(mSelectedDirectory.relitivePath)) {
 					this.selectedPath = '\\';
@@ -120,9 +115,9 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	 */
 	expand(data: IDirectoryTree[], relitivePath: string): void {
 		this.treeControl.expand(data[0]);
-		for	(let i: number = 0; i < data.length; i++) {
+		for (let i: number = 0; i < data.length; i++) {
 			const node = data[i];
-			if(node.children && node.children.find(c => c.relitivePath === relitivePath)) {
+			if (node.children && node.children.find(c => c.relitivePath === relitivePath)) {
 				this.treeControl.expand(node);
 				break;
 			}
