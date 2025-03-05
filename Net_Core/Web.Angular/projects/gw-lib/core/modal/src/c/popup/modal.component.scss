@@ -1,25 +1,25 @@
-/* The Modal (background) */
+// The Modal (background)
 .modal-background {
-  position: fixed;                          /* Stay in place */
-  z-index: 1000;                            /* Sit on top */
-  top: 0;                                   /* Ensure it starts from the top */
-  left: 0;                                  /* Ensure it starts from the left */
-  width: 100%;                              /* Full width */
-  height: 100%;                             /* Full height */
-  background-color: rgba(0, 0, 0, 0.4);   /* Black w/ opacity */
-  display: flex;                            /* Use flexbox for centering */
-  align-items: center;                      /* Center vertically */
-  justify-content: center;                  /* Center horizontally */
+  position: fixed; // Stay in place
+  z-index: 1000; // Sit on top
+  top: 0; // Ensure it starts from the top
+  left: 0; // Ensure it starts from the left
+  width: 100%; // Full width
+  height: 100%; // Full height
+  background-color: rgba(0, 0, 0, 0.4); // Black w/ opacity
+  display: flex; // Use flexbox for centering
+  align-items: center; // Center vertically
+  justify-content: center; // Center horizontally
 }
 
 .modal__div {
   @extend .rounded-top;
   box-shadow: 0px 2px 7px #292929;
   background-color: whitesmoke;
-  position: relative;                 /* Keep relative positioning */
-  z-index: 1001;                      /* Higher than modal-background */
-  max-width: 90%;                     /* Optional: limit the width */
-  max-height: 90%;                    /* Optional: limit the height */
+  position: relative; // Keep relative positioning
+  z-index: 1001; // Higher than modal-background
+  max-width: 90%; // Optional: limit the width
+  max-height: 90%; // Optional: limit the height
 }
 
 .modal-header__div {
@@ -40,24 +40,24 @@
   }
 }
 
-
 .modal-body__div {
   display: flex;
   justify-content: center;
   margin: 5px;
 
   &.scrollable {
-    overflow-y: auto;  // Add vertical scrollbar when content exceeds height
-    overflow-x: auto;  // Add horizontal scrollbar when content exceeds width
-    max-height: 60vh;  // 60% of viewport height
-    max-width: 80vw;   // 80% of viewport width
+    overflow-y: auto; // Add vertical scrollbar when content exceeds height
+    overflow-x: auto; // Add horizontal scrollbar when content exceeds width
+    max-height: 60vh; // 60% of viewport height
+    max-width: 80vw; // 80% of viewport width
   }
 }
 
 .modal-footer__div {
   padding-top: 5px;
   padding-bottom: 5px;
-  display: flex; justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
   border-top: 1px solid;
 }
 
@@ -83,25 +83,25 @@
 }
 
 .right {
-  width: 10px;                        /* Width of the right resize handle */
-  height: 100%;                       /* Full height */
-  right: -5px;                        /* Align to the right */
-  top: 0;                             /* Align to the top */
+  width: 10px; // Width of the right resize handle
+  height: 100%; // Full height
+  right: -5px; // Align to the right
+  top: 0; // Align to the top
   cursor: ew-resize;
 }
 
 .bottom {
-  width: 100%;                        /* Full width */
-  height: 10px;                       /* Height of the bottom resize handle */
-  bottom: -5px;                       /* Align to the bottom */
-  left: 0;                            /* Align to the left */
+  width: 100%; // Full width
+  height: 10px; // Height of the bottom resize handle
+  bottom: -5px; // Align to the bottom
+  left: 0; // Align to the left
   cursor: ns-resize;
 }
 
 .bottom-right {
-  width: 10px;                        /* Width of the lower right resize handle */
-  height: 10px;                       /* Height of the lower right resize handle */
-  bottom: -5px;                       /* Align to the bottom */
-  right: -5px;                        /* Align to the right */
-  cursor: nwse-resize;                /* Diagonal resize cursor */
+  width: 10px; // Width of the lower right resize handle
+  height: 10px; // Height of the lower right resize handle
+  bottom: -5px; // Align to the bottom
+  right: -5px; // Align to the right
+  cursor: nwse-resize; // Diagonal resize cursor
 }
