@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -68,7 +67,7 @@ export class GroupDetailsComponent implements OnInit {
 		this.pickListTableContentsBackground = mClientChoices.evenRow;
 		this.pickListTableContentsFont = mClientChoices.evenFont;
 		this.pickListTableHeaderBackground = mClientChoices.oddRow;
-		
+
 		let mIdToGet = -1;
 		if (this._GroupSvc.modalReason.toLowerCase() != 'newprofile') {
 			// console.log('selectedRow', this._GroupSvc.selectedRow);
@@ -104,13 +103,13 @@ export class GroupDetailsComponent implements OnInit {
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'name':
-			if (this.controls['name'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		default:
-			break;
+			case 'name':
+				if (this.controls['name'].hasError('required')) {
+					return 'Required';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -121,7 +120,7 @@ export class GroupDetailsComponent implements OnInit {
 
 	onDelete(): void {
 		// console.log('GroupDetailsComponent.onDelete');
-		this._GroupSvc.delete(this._GroupProfile.id).then((response) => {
+		this._GroupSvc.delete(this._GroupProfile.id).then(() => {
 			this.updateSearch();
 			this._LoggingSvc.toast('The group has been deleted', 'Delete Group', LogLevel.Success);
 			this.closeModal();
@@ -131,7 +130,7 @@ export class GroupDetailsComponent implements OnInit {
 		});
 	}
 
-	onSubmit(form: FormGroup): void {
+	onSubmit(): void {
 		this.populateProfile();
 		this._GroupSvc.saveGroup(this._GroupProfile).then(() => {
 			this.updateSearch();

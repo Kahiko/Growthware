@@ -1,4 +1,4 @@
-<form [formGroup]="frmGroup" (ngSubmit)="onSubmit(frmGroup)" class="formSize">
+<form [formGroup]="frmGroup" (ngSubmit)="onSubmit()" class="formSize">
   <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
     <mat-tab label="General" class="mat-tab__tab">
       <div class="div__tab-container formSection">
@@ -13,7 +13,7 @@
               </div>
               <div class="td left">
                 @if (controls['name'].invalid) {
-                  <mat-error>{{getErrorMessage('name')}}</mat-error>
+                <mat-error>{{getErrorMessage('name')}}</mat-error>
                 }
               </div>
             </div>
@@ -30,7 +30,7 @@
               </div>
               <div class="td left">
                 @if (controls['description'].invalid) {
-                  <mat-error>{{getErrorMessage('description')}}</mat-error>
+                <mat-error>{{getErrorMessage('description')}}</mat-error>
                 }
               </div>
             </div>
@@ -41,21 +41,13 @@
     <mat-tab label="Roles" class="mat-tab__tab">
       <div class="div__tab-container formSection">
         <div class="formSectionContents center" style="padding-top: 8px;">
-          <gw-core-pick-list #rolePickList
-            [(availableItems)] = availableRoles
-            [(selectedItems)] = selectedRoles
-            id="roles"
-            name="{{rolesPickListName}}"
-            allItemsText="Available Roles"
-            header="Assign roles"
-            [pickListTableContentsBackground] = "pickListTableContentsBackground"
-            [pickListTableContentsFont] = "pickListTableContentsFont"
-            [pickListTableHeaderBackground] = "pickListTableHeaderBackground"
+          <gw-core-pick-list #rolePickList [(availableItems)]=availableRoles [(selectedItems)]=selectedRoles id="roles"
+            name="{{rolesPickListName}}" allItemsText="Available Roles" header="Assign roles"
+            [pickListTableContentsBackground]="pickListTableContentsBackground"
+            [pickListTableContentsFont]="pickListTableContentsFont"
+            [pickListTableHeaderBackground]="pickListTableHeaderBackground"
             pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-            selectedItemsText="Selected Roles"
-            size=8
-            width=120 
-          />
+            selectedItemsText="Selected Roles" size=8 width=120 />
         </div>
       </div>
     </mat-tab>
@@ -65,9 +57,9 @@
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
     </button>
     @if (canDelete) {
-      <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
-        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
-      </button>
+    <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+    </button>
     }
     <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
