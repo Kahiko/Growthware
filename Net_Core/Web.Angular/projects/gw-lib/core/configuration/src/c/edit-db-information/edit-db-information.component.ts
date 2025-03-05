@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,7 +16,7 @@ import { DBInformation, IDBInformation } from '../../db-information.model';
 	standalone: true,
 	imports: [
 		FormsModule,
-		
+
 		MatButtonModule,
 		MatSelectModule,
 		MatTabsModule,
@@ -27,12 +26,12 @@ import { DBInformation, IDBInformation } from '../../db-information.model';
 	templateUrl: './edit-db-information.component.html',
 	styleUrl: './edit-db-information.component.scss'
 })
-export class EditDbInformationComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {	
+export class EditDbInformationComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 	private _Profile: IDBInformation = new DBInformation();
 
 	validInheritanceTypes: IKeyValuePair[] = [
-		{key: 0, value: 'False'},
-		{key: 1, value: 'True'}
+		{ key: 0, value: 'False' },
+		{ key: 1, value: 'True' }
 	];
 
 	selectedInheritanceType: number = 1;
