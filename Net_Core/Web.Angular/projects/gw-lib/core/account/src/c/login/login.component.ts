@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Angular Material
@@ -68,7 +67,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 			}
 		}));
 		const mEnvironment = this._ConfigurationSvc.environment();
-		if (mEnvironment.toLocaleLowerCase() !== 'development'){
+		if (mEnvironment.toLocaleLowerCase() !== 'development') {
 			this.loginForm = this._FormBuilder.group({
 				account: ['', [Validators.required]],
 				password: ['', [Validators.required, Validators.minLength(4)]]
@@ -77,27 +76,27 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 			this.loginForm = this._FormBuilder.group({
 				account: ['Developer', [Validators.required]],
 				password: ['none', [Validators.required, Validators.minLength(4)]]
-			});			
+			});
 		}
 	}
 
 	getErrorMessage(fieldName: string) {
 		switch (fieldName) {
-		case 'account':
-			if (this.loginForm.controls['account'].hasError('required')) {
-				return 'You must enter a value';
-			}
-			break;
-		case 'password':
-			if (this.loginForm.controls['password'].hasError('required')) {
-				return 'You must enter a value';
-			}
-			if (this.loginForm.controls['password'].hasError('minlength')) {
-				return 'Value must be at least 4 character';
-			}
-			break;
-		default:
-			break;
+			case 'account':
+				if (this.loginForm.controls['account'].hasError('required')) {
+					return 'You must enter a value';
+				}
+				break;
+			case 'password':
+				if (this.loginForm.controls['password'].hasError('required')) {
+					return 'You must enter a value';
+				}
+				if (this.loginForm.controls['password'].hasError('minlength')) {
+					return 'Value must be at least 4 character';
+				}
+				break;
+			default:
+				break;
 		}
 		return undefined;
 	}
@@ -112,7 +111,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 				const mWindowSize: WindowSize = new WindowSize(225, 450);
 				const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
 				this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
-				this._ModalSvc.open(mModalOptions);			
+				this._ModalSvc.open(mModalOptions);
 			}
 		} else {
 			mModalOptions.buttons.cancelButton.callbackMethod = () => {
