@@ -1,4 +1,4 @@
-<form [formGroup]="theForm" (ngSubmit)="onSubmit(theForm)" class="formSize">
+<form [formGroup]="theForm" (ngSubmit)="onSubmit()" class="formSize">
     <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
         <mat-tab label="Test Logging" class="mat-tab__tab">
             <div class="div__tab-container formSection">
@@ -28,14 +28,15 @@
                                         <div class="td left">
                                             <mat-form-field style="width: 98%;">
                                                 <mat-label>Select a Log Level</mat-label>
-                                                <mat-select formControlName="selectedLogLevel" class="Form_Field rounded" style="width: 132px">
+                                                <mat-select formControlName="selectedLogLevel"
+                                                    class="Form_Field rounded" style="width: 132px">
                                                     @for (item of validLogLevels; track item.id) {
                                                     <mat-option [value]="item.id">
                                                         {{item.name}}
                                                     </mat-option>
                                                     }
-                                                </mat-select>    
-                                            </mat-form-field>            
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                         <div class="td top left">
                                             <div>Select the Destination(s):</div>
@@ -57,15 +58,17 @@
                                         <div class="td">
                                             <mat-form-field style="width: 98%;">
                                                 <mat-label>Component Name</mat-label>
-                                                <input matInput placeholder="Ex. componentName" formControlName="componentName">
+                                                <input matInput placeholder="Ex. componentName"
+                                                    formControlName="componentName">
                                             </mat-form-field>
-            
+
                                         </div>
                                         <div class="td">
                                             <mat-form-field style="width: 98%;">
                                                 <mat-label>Class Name</mat-label>
-                                                <input matInput placeholder="Ex. componentName" formControlName="className">
-                                            </mat-form-field>            
+                                                <input matInput placeholder="Ex. componentName"
+                                                    formControlName="className">
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +81,7 @@
                                         <mat-form-field style="width: 98%;">
                                             <mat-label>Method Name</mat-label>
                                             <input matInput placeholder="Ex. methodName" formControlName="methodName">
-                                        </mat-form-field>      
+                                        </mat-form-field>
                                     </div>
                                     <div class="td">
                                         <mat-form-field style="width: 98%;">
@@ -97,21 +100,25 @@
             <div class="div__tab-container formSection">
                 <div class="formSectionContents left">
                     <p>
-                        Not every destination will use or support all of the fields.  None of the logging destions will store the "Destination" field, it is used to send the data to the appropriate Destination(s).
+                        Not every destination will use or support all of the fields. None of the logging destions will
+                        store the "Destination" field, it is used to send the data to the appropriate Destination(s).
                     </p>
                     <ul>
-                        <li>File - <i (click)="onHelp('File')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                        <li>File - <i (click)="onHelp('File')" style="cursor: pointer"
+                                class="Form_Button_Icon material-icons">help</i>
                             <ul>
-                              <li>Message</li>
+                                <li>Message</li>
                             </ul>
                         </li>
-                        <li>Console - <i (click)="onHelp('Console')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
-                          <ul>
-                            <li>Level</li>
-                            <li>Message</li>
-                          </ul>
+                        <li>Console - <i (click)="onHelp('Console')" style="cursor: pointer"
+                                class="Form_Button_Icon material-icons">help</i>
+                            <ul>
+                                <li>Level</li>
+                                <li>Message</li>
+                            </ul>
                         </li>
-                        <li>DB - <i (click)="onHelp('DB')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                        <li>DB - <i (click)="onHelp('DB')" style="cursor: pointer"
+                                class="Form_Button_Icon material-icons">help</i>
                             <ul>
                                 <li>Account</li>
                                 <li>Component</li>
@@ -123,7 +130,8 @@
                                 <li>Msg</li>
                             </ul>
                         </li>
-                        <li>Toast - <i (click)="onHelp('Toast')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+                        <li>Toast - <i (click)="onHelp('Toast')" style="cursor: pointer"
+                                class="Form_Button_Icon material-icons">help</i>
                             <ul>
                                 <li>Level</li>
                                 <li>Message</li>
@@ -145,7 +153,8 @@
     <p>
         File only uses the "message" field to write the message to a text file.<br />
         The location of the log file is defined in the "GrowthWare.json" file in the XX_Log_Path setting.<br />
-        XX is replaced with the name of the environment.  So if the environment is "Development" then the log file will be "Development_Log.txt".<br />
+        XX is replaced with the name of the environment. So if the environment is "Development" then the log file will
+        be "Development_Log.txt".<br />
     </p>
 </ng-template>
 <ng-template #Console>
@@ -155,17 +164,21 @@
 </ng-template>
 <ng-template #DB>
     <p>
-        DB uses the most "fields" of any of the methods for logging.  It stores the information in the database via the API.<br />
+        DB uses the most "fields" of any of the methods for logging. It stores the information in the database via the
+        API.<br />
         The data is stored in a table called "[ZGWSystem].[Logging]".<br />
     </p>
 </ng-template>
 <ng-template #Toast>
     <p>
         Stacks a 'toast' message in the lower right corner of the screen.<br />
-        If a duplicate exists it will simply update the "time" and the counter and keep only one in the UI at a time.<br />
+        If a duplicate exists it will simply update the "time" and the counter and keep only one in the UI at a
+        time.<br />
         "Toasts" will be automatically removed after 3 seconds except for the "Error" Level.<br />
-        Error and Fatal will remain on the screen until it is removed manually by clicking on the "X" in the top right corner of the toast.<br />
-        If the same "message" is logged with a "Level" other than "Error" or "Fatal" then the toast will follow the same removal process.<br />
+        Error and Fatal will remain on the screen until it is removed manually by clicking on the "X" in the top right
+        corner of the toast.<br />
+        If the same "message" is logged with a "Level" other than "Error" or "Fatal" then the toast will follow the same
+        removal process.<br />
         Look at the "toast.component.scss" to see the styling/colors for each of the types.<br />
     </p>
 </ng-template>
