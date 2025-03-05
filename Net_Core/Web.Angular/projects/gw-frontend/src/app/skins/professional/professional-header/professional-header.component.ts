@@ -1,5 +1,4 @@
 import { Component, computed } from '@angular/core';
-import { Subscription } from 'rxjs';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
