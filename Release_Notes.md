@@ -68,6 +68,7 @@
             - MNavigationType   - Renamed SetupClass to setDefaults
             - MPermissions      - Renamed SetupClass to setDefaults
             - MWorkFlows        - Renamed SetupClass to setDefaults
+- Added component for testing the Modal feature
 
 ### Improvements
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)

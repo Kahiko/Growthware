@@ -133,6 +133,15 @@ UPDATE
 SET [Source] = 'https://localhost:44455/swagger/index.html' 
 WHERE [FunctionSeqId] = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SwaggerAPI')
 
+/****** Start: Removing Test Modal Action ******/
+DECLARE @V_Action VARCHAR(255) = '/testing/modal';
+IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_Action)
+	BEGIN
+		DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_Action;
+	END
+--END IF
+/****** End: Removing Test Modal Action ******/
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '5.1.0.0'

@@ -814,6 +814,59 @@ IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'feedbac
     END
 --END IF
 /****** Done: Adding Feedback Actions ******/
+/****** Start: Adding Test Modal Action ******/
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'testing/modal')
+    BEGIN
+        PRINT 'Testing Modal';
+
+        SET @V_FunctionSeqId = -1;
+        SET @V_Name = 'Test Modal';
+        SET @V_Description = 'Used for testing the modal service';
+        SET @V_FunctionTypeSeqId = 1;
+        SET @V_Is_Nav = 1;
+        SET @V_Action = '/testing/modal';
+        SET @V_ParentSeqId = 12;
+        SET @V_Notes = 'Testing the Modal Feature';
+        SET @V_Debug = 0;
+
+        EXEC ZGWSecurity.Set_Function 
+              @V_FunctionSeqId       -- FunctionSeqId (-1 indicates new record)
+            , @V_Name                -- Name
+            , @V_Description         -- Description
+            , @V_FunctionTypeSeqId   -- FunctionTypeSeqId
+            , @V_Source              -- Source
+            , @V_Controller          -- Controller
+            , NULL                   -- Resolve
+            , 0                      -- Enable_View_State
+            , 0                      -- Enable_Notifications
+            , 0                      -- Redirect_On_Timeout
+            , @V_Is_Nav              -- Is_Nav
+            , 1                      -- Link_Behavior (Internal)
+            , 0                      -- NO_UI
+            , 3                      -- NVP_DetailSeqId (Hierarchical)
+            , @V_Action              -- Action
+            , @V_META_KEY_WORDS      -- Meta_Key_Words
+            , @V_ParentSeqId         -- ParentSeqId
+            , @V_Notes               -- Notes
+            , @V_SystemID            -- Added_By
+            , @V_Debug               -- Debug flag
+
+        SET @V_FunctionSeqId = (SELECT FunctionSeqId FROM [ZGWSecurity].[Functions] WHERE action = @V_Action);
+
+        UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 13 WHERE [FunctionSeqId] = @V_FunctionSeqId
+
+        SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM [ZGWSecurity].[Permissions] WHERE NVP_Detail_Value = 'View');
+
+        EXEC [ZGWSecurity].[Set_Function_Roles] 
+            @V_FunctionSeqId   -- FunctionSeqId
+            ,1                  -- SecurityEntitySeqId
+            ,'Developer'        -- Roles
+            ,@V_ViewPermission  -- PermissionsNVPDetailSeqId
+            ,@V_SystemID        -- AccountSeqId for the 'System Administrator'
+            ,@V_Debug;          -- Debug flag
+    END
+--END IF
+/****** Done: Adding Test Modal Action ******/
 -- Update the sort order
 IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [FunctionSeqId] = 13)
     UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = 0 WHERE [FunctionSeqId] = 13;
