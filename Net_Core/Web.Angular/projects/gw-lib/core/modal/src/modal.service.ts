@@ -12,6 +12,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 // Library
 import { GWCommon } from '@growthware/common/services';
+import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Features
 import { ContentObject, IContentObject } from './content-object.model';
 import { ContentType } from './content-type.enum';
@@ -88,13 +89,16 @@ export class ModalService {
 	private _ActiveModals: IContentObject[] = [];
 	private _ContentType: ContentType = ContentType.String;
 	private _IsKeyDownListenerActive: boolean = false;
+	private _LoggingSvc: LoggingService;
 
 	constructor(
 		private _ApplicationRef: ApplicationRef,
 		@Inject(DOCUMENT) private _Document: Document,
 		private _GWCommon: GWCommon,
-		// private _LoggingSvc: LoggingService,
-	) { }
+		loggingSvc: LoggingService,
+	) {
+		this._LoggingSvc = loggingSvc;
+	}
 
 	/**
 	 * Handles the keydown event.
@@ -146,7 +150,7 @@ export class ModalService {
 				} else {
 					mMsg = String(error);
 				}
-				this.logConsole(mMsg, 'Error');
+				this._LoggingSvc.errorHandler(mMsg, 'ModalService', 'close');
 			}
 			// remove and destroy the modal component
 			this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
@@ -170,12 +174,11 @@ export class ModalService {
 	 */
 	public open(options: IModalOptions): void {
 		if (this._GWCommon.isNullOrEmpty(options.modalId)) {
-			this.logConsole('options.modalId can not be null or blank', 'Error');
-			// console.log('ModalService.open', options);
+			this._LoggingSvc.console('options.modalId can not be null or blank', LogLevel.Error);
 			return;
 		}
 		if (!options.contentPayLoad || (typeof (options.contentPayLoad) === 'string' && this._GWCommon.isNullOrEmpty(options.contentPayLoad)) && typeof (options.contentPayLoad) !== 'function') {
-			this.logConsole('Please set the contentPayLoad property', 'Error');
+			this._LoggingSvc.console('Please set the contentPayLoad property', LogLevel.Error);
 			return;
 		}
 		// resolve the ngContent
@@ -197,7 +200,7 @@ export class ModalService {
 				mNgContent = [mResolvedNgContent];
 				break;
 			default:
-				this.logConsole('Unsupported ngContent type', 'Error');
+				this._LoggingSvc.console('Unsupported ngContent type', LogLevel.Error);
 				return;
 		}
 		// then create the dialog that will host it
@@ -220,44 +223,6 @@ export class ModalService {
 		this._Document.body.append(mDialogElement);
 		// attach the ModalComponentRef host view to the application view
 		this._ApplicationRef.attachView(mModalComponentRef.hostView);
-	}
-
-	/**
-	 * Logs a message to the console with an optional log type
-	 * 
-	 * @param {string} message - The message to log
-	 * @param {string} [type='Log'] - The type of log (e.g., 'Error', 'Warn', 'Log')
-	 * @private
-	 * 
-	 * @memberof ModalService
-	 */
-	private logConsole(msg: string, level: string): void {
-		const mMsg =
-			this._GWCommon.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
-			'\n  ' +
-			msg;
-		switch (level) {
-			case 'Debug':
-				console.debug(mMsg);
-				break;
-			case 'Error':
-			case 'Fatal':
-				console.error(mMsg);
-				break;
-			case 'Info':
-				console.info(mMsg);
-				break;
-			case 'Warn':
-				console.warn(mMsg);
-				break;
-			case 'Trace':
-				console.trace(mMsg);
-				break;
-			case 'Success':
-			default:
-				console.log(mMsg);
-				break;
-		}
 	}
 
 	/**
@@ -285,7 +250,7 @@ export class ModalService {
 				mRetVal = this._Document.createTextNode(contentPayload);
 				break;
 			default:
-				this.logConsole('Unsupported content type', 'Error');
+				this._LoggingSvc.console('Unsupported content type', LogLevel.Error);
 		}
 		return mRetVal;
 	}
@@ -310,14 +275,14 @@ export class ModalService {
 			mModalComponentInstance.closeCallBackMethod = modalOptions.buttons.closeButton.callbackMethod;
 		} else {
 			if (modalOptions.buttons.closeButton.visible) {
-				this.logConsole('You have not set the options.buttons.closeButton.callbackMethod', 'Error');
+				this._LoggingSvc.console('You have not set the options.buttons.closeButton.callbackMethod', LogLevel.Error);
 			}
 		}
 		if (this._GWCommon.isFunction(modalOptions.buttons.okButton.callbackMethod)) {
 			mModalComponentInstance.oKCallBackMethod = modalOptions.buttons.okButton.callbackMethod;
 		} else {
 			if (modalOptions.buttons.okButton.visible) {
-				this.logConsole('You have not set the options.buttons.okButton.callbackMethod', 'Error');
+				this._LoggingSvc.console('You have not set the options.buttons.okButton.callbackMethod', LogLevel.Error);
 			}
 		}
 	}
