@@ -91,6 +91,7 @@
 - Replaced the Swagger UI logo
 - Moved the swagger-ui folder from the assets folder to the public folder
 - Addressed all ESLint issues
+- Replaced logConsole method with LoggingService.console in the modal.service
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
