@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -102,7 +101,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
 
   override createForm(): void {
     this.selectedEventDate.setValue(new Date(this._Profile.start));
-    this.selectedColor = this._Profile.color;  
+    this.selectedColor = this._Profile.color;
     this.endDate = new Date(this._Profile.end);
     this.startDate = new Date(this._Profile.start);
     this.frmProfile = this._FormBuilder.group({
