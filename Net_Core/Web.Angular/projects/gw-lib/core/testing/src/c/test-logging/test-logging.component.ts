@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
@@ -13,7 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
-import { ILogOptions, LogDestination, LogOptions, LoggingService } from '@growthware/core/logging';
+import { ILogOptions, LogDestination, LogLevel, LogOptions, LoggingService } from '@growthware/core/logging';
 
 @Component({
 	selector: 'gw-core-test-logging',
@@ -34,7 +34,7 @@ import { ILogOptions, LogDestination, LogOptions, LoggingService } from '@growth
 	templateUrl: './test-logging.component.html',
 	styleUrl: './test-logging.component.scss'
 })
-export class TestLoggingComponent implements OnInit {
+export class TestLoggingComponent implements OnDestroy, OnInit {
 
 	private _FormBuilder = inject(FormBuilder);
 	private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
@@ -62,6 +62,11 @@ export class TestLoggingComponent implements OnInit {
 		{ id: 5, name: 'Success' },
 		{ id: 6, name: 'Trace' },
 	];
+
+	ngOnDestroy(): void {
+		// This is here to test the modal service when the component is tested in test-modal.componet
+		this._LoggingSvc.console('TestLoggingComponent.ngOnDestroy has been called!', LogLevel.Debug);
+	}
 
 	ngOnInit(): void {
 		this.createForm();
