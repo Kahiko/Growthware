@@ -7,5 +7,6 @@
   "dotnet.defaultSolution": "GrowthwareCore.sln",
   "eslint.workingDirectories": [
     "Web.Angular",
-  ]
+  ],
+  "html.format.wrapLineLength": 0
 }
