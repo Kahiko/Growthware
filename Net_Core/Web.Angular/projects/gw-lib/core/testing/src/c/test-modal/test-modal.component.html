@@ -56,7 +56,60 @@
             </div>
         </mat-tab>
         <mat-tab label="Behaviors" class="mat-tab__tab">
-
+            <div class="div__tab-container formSection">
+                <div class="formSectionContents">
+                    <p class="left">
+                        The Modal feature facilitates the opening and closing of a modal window from any non circular reference component/service in the application via the ModalService.
+                    </p>
+                    <ul>
+                        <li>
+                            The modal feature supports the following payload options
+                            <ul>
+                                <li>
+                                    String
+                                </li>
+                                <li>
+                                    Template reference
+                                </li>
+                                <li>
+                                    Component reference
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Multiple opened modals are supported
+                            <ul>
+                                <li>
+                                    Modals are opened in a stack fasion (Last one opened is "on top")
+                                </li>
+                                <li>
+                                    Multiple modals are closed in the reverse order that they were opened (The last one opened is closed first)
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Modals can be closed by:
+                            <ul>
+                                <li>
+                                    Clicking the "x" in the top right corner
+                                </li>
+                                <li>
+                                    Using the "Close" button if it is present
+                                </li>
+                                <li>
+                                    Using the "ESC" key
+                                </li>
+                                <li>
+                                    Using a button supplied by a component opened as a modal with custom code
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="left">
+                        The purpose of this tab is to provoide you with an expectation of the behavior of the modal feature.  Implementation or usage of the modal feature can be found in gw-lib/core/modal/src/modal.service.ts.
+                    </p>
+                </div>
+            </div>
         </mat-tab>
     </mat-tab-group>
     <div class="buttonRow">

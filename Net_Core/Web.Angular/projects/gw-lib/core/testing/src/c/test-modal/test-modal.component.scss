@@ -1,5 +1,5 @@
 // Defined here
-$height: '575px';
+$height: '585px';
 $width: '575px';
 
 .formSize {
@@ -27,4 +27,8 @@ $width: '575px';
     border: 1px solid;
     max-height: calc(#{$height} - 90px);
     min-height: calc(#{$height} - 90px);
+}
+
+li {
+    text-align: left;
 }
