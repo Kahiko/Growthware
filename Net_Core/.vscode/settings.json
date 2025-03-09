@@ -8,5 +8,5 @@
   "eslint.workingDirectories": [
     "Web.Angular",
   ],
-  "html.format.wrapLineLength": 0
+  "html.format.enable": false,
 }
