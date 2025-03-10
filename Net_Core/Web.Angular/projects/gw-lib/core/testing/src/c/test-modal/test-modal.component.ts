@@ -40,6 +40,8 @@ export class TestModalComponent implements OnInit {
   private _FormBuilder = inject(FormBuilder);
   private _ModalService = inject(ModalService);
   private _ModalOptions = new ModalOptions('testComponent', 'Component', '', 1);
+  private _ModalOptionsOne = new ModalOptions('First', 'Component', '', 1);
+  private _ModalOptionsTwo = new ModalOptions('Second', 'Component', '', 1);
 
   @ViewChild('templateRef', { read: TemplateRef }) private _TemplateRef!: TemplateRef<unknown>;
   theForm: FormGroup = this._FormBuilder.group({});
@@ -79,6 +81,15 @@ export class TestModalComponent implements OnInit {
         this._ModalOptions.headerText = 'templateRef - ';
         this._ModalOptions.contentPayLoad = this._TemplateRef;
         this._ModalOptions.windowSize = ModalSize.Normal;
+        break;
+      case 'double':
+        this._ModalOptionsOne.headerText = 'String - ';
+        this._ModalOptionsOne.contentPayLoad = 'First Modal';
+        this._ModalOptionsTwo.headerText = 'String - ';
+        this._ModalOptionsTwo.contentPayLoad = 'Second Modal';
+        this._ModalService.open(this._ModalOptionsOne);
+        this._ModalService.open(this._ModalOptionsTwo);
+        return;
     }
     this._ModalOptions.headerText = this._ModalOptions.headerText + this.controls['title'].getRawValue();
     this._ModalService.open(this._ModalOptions);

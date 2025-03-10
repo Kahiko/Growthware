@@ -29,8 +29,8 @@
                         <div class="tr">
                             <div class="td">
                                 <div class="table">
-                                    <div class="tr">
-                                        <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
+                                    <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
+                                        <div class="tr">
                                             <div class="td">
                                                 <mat-radio-button [value]="'string'">
                                                     <div style="display: inline-block; width: 50px;">String </div>
@@ -46,8 +46,15 @@
                                                     <div style="display: inline-block; width: 50px;">Component </div>
                                                 </mat-radio-button>
                                             </div>
-                                        </mat-radio-group>
-                                    </div>
+                                        </div>
+                                        <div class="tr">
+                                            <div class="td">
+                                                <mat-radio-button [value]="'double'">
+                                                    <div style="display: inline-block; width: 50px;">Double </div>
+                                                </mat-radio-button>
+                                            </div>
+                                        </div>
+                                    </mat-radio-group>
                                 </div>
                             </div>
                         </div>
