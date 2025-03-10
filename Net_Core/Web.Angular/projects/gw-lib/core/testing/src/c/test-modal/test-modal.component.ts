@@ -67,7 +67,6 @@ export class TestModalComponent implements OnInit {
     const mPayload: string = this.controls['selectedPayload'].getRawValue();
     switch (mPayload) {
       case 'component':
-        /** $height: '575px'; $width: '575px';   */
         this._ModalOptions.windowSize = new WindowSize(585, 575);
         this._ModalOptions.headerText = 'Component - ';
         this._ModalOptions.contentPayLoad = TestLoggingComponent;
