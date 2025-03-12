@@ -21,38 +21,53 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="tr">
-                            <div class="td">
-                                <label id="payloadGroupLable" style="font-weight: bold;">Select the payload type</label>
+                        <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
+                            <div class="tr">
+                                <div class="td">
+                                    <label id="payloadGroupLable" style="font-weight: bold;">Test the payload type</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td">
-                                <div class="table">
-                                    <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
+                            <div class="tr">
+                                <div class="td">
+                                    <div class="table">
+                                            <div class="tr">
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'string'">
+                                                        <div>String </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'templateRef'">
+                                                        <div>Template </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'component'">
+                                                        <div>Component </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                            </div>
+                                            <div class="tr">
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'double'">
+                                                        <div>Double </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left"></div>
+                                                <div class="td left"></div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tr">
+                                <div class="td">
+                                    <label id="btnGroupLable" style="font-weight: bold;">Test the button type</label>
+                                </div>
+                            </div>
+                            <div class="tr">
+                                <div class="td">
+                                    <div class="table">
                                         <div class="tr">
-                                            <div class="td left">
-                                                <mat-radio-button [value]="'string'">
-                                                    <div>String </div>
-                                                </mat-radio-button>
-                                            </div>
-                                            <div class="td left">
-                                                <mat-radio-button [value]="'templateRef'">
-                                                    <div>Template </div>
-                                                </mat-radio-button>
-                                            </div>
-                                            <div class="td left">
-                                                <mat-radio-button [value]="'component'">
-                                                    <div>Component </div>
-                                                </mat-radio-button>
-                                            </div>
-                                        </div>
-                                        <div class="tr">
-                                            <div class="td left">
-                                                <mat-radio-button [value]="'double'">
-                                                    <div>Double </div>
-                                                </mat-radio-button>
-                                            </div>
                                             <div class="td left">
                                                 <mat-radio-button [value]="'okbtn'">
                                                     <div>OK Button </div>
@@ -63,24 +78,25 @@
                                                     <div>Close Button </div>
                                                 </mat-radio-button>
                                             </div>
-                                        </div>
-                                        <div class="tr">
                                             <div class="td left">
                                                 <mat-radio-button [value]="'closeClosebtn'">
                                                     <div>OK & Close Button </div>
                                                 </mat-radio-button>
                                             </div>
+                                        </div>
+                                        <div class="tr">
                                             <div class="td left">
                                                 <mat-radio-button [value]="'cancelbtn'">
                                                     <div>Cancel Button (&times;)</div>
                                                 </mat-radio-button>
                                             </div>
                                             <div class="td left"></div>
+                                            <div class="td left"></div>
                                         </div>
-                                    </mat-radio-group>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </mat-radio-group>
                     </div>
                 </div>
             </div>
@@ -124,6 +140,9 @@
                                     Clicking the "x" in the top right corner
                                 </li>
                                 <li>
+                                    Using the "OK" button if it is present
+                                </li>
+                                <li>
                                     Using the "Close" button if it is present
                                 </li>
                                 <li>
@@ -133,6 +152,9 @@
                                     Using a button supplied by a component opened as a modal with custom code
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            Ok, Close and Cancel buttons are overridable
                         </li>
                     </ul>
                     <p class="left">
