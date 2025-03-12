@@ -31,28 +31,51 @@
                                 <div class="table">
                                     <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
                                         <div class="tr">
-                                            <div class="td">
+                                            <div class="td left">
                                                 <mat-radio-button [value]="'string'">
-                                                    <div style="display: inline-block; width: 50px;">String </div>
+                                                    <div>String </div>
                                                 </mat-radio-button>
                                             </div>
-                                            <div class="td">
+                                            <div class="td left">
                                                 <mat-radio-button [value]="'templateRef'">
-                                                    <div style="display: inline-block; width: 50px;">Template </div>
+                                                    <div>Template </div>
                                                 </mat-radio-button>
                                             </div>
-                                            <div class="td">
+                                            <div class="td left">
                                                 <mat-radio-button [value]="'component'">
-                                                    <div style="display: inline-block; width: 50px;">Component </div>
+                                                    <div>Component </div>
                                                 </mat-radio-button>
                                             </div>
                                         </div>
                                         <div class="tr">
-                                            <div class="td">
+                                            <div class="td left">
                                                 <mat-radio-button [value]="'double'">
-                                                    <div style="display: inline-block; width: 50px;">Double </div>
+                                                    <div>Double </div>
                                                 </mat-radio-button>
                                             </div>
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'okbtn'">
+                                                    <div>OK Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'closeBtn'">
+                                                    <div>Close Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                        </div>
+                                        <div class="tr">
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'closeClosebtn'">
+                                                    <div>OK & Close Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'cancelbtn'">
+                                                    <div>Cancel Button (&times;)</div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left"></div>
                                         </div>
                                     </mat-radio-group>
                                 </div>

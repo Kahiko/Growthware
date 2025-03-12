@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { TestLoggingComponent } from '../test-logging/test-logging.component';
 import { ModalService, ModalOptions, ModalSize, WindowSize } from '@growthware/core/modal';
+import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
 
 @Component({
   selector: 'gw-core-test-modal',
@@ -65,6 +66,9 @@ export class TestModalComponent implements OnInit {
 
   onSubmit(): void {
     const mPayload: string = this.controls['selectedPayload'].getRawValue();
+    this._ModalOptions.buttons.okButton = new CallbackButton('Close', 'closeBtn', 'closeBtn', false);
+    this._ModalOptions.buttons.closeButton = new CallbackButton('Close', 'closeBtn', 'closeBtn', false);
+    this._ModalOptions.buttons.cancelButton = new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn', false);
     switch (mPayload) {
       case 'component':
         this._ModalOptions.windowSize = new WindowSize(585, 575);
@@ -89,8 +93,53 @@ export class TestModalComponent implements OnInit {
         this._ModalService.open(this._ModalOptionsOne);
         this._ModalService.open(this._ModalOptionsTwo);
         return;
+      case 'okbtn':
+        this._ModalOptions.headerText = 'String - ';
+        this._ModalOptions.contentPayLoad = 'Test OK button';
+        this._ModalOptions.buttons.okButton = new CallbackButton('OK', 'closeBtnId', 'closeBtnId', true);
+        this._ModalOptions.buttons.okButton.callbackMethod = (() => {
+          this.btnCallback();
+        });
+        break;
+      case 'closeBtn':
+        this._ModalOptions.headerText = 'String - ';
+        this._ModalOptions.contentPayLoad = 'Test Close button';
+        this._ModalOptions.buttons.closeButton = new CallbackButton('Close', 'closeBtnId', 'closeBtnId', true);
+        this._ModalOptions.buttons.closeButton.callbackMethod = (() => {
+          this.btnCallback();
+        });
+        break;
+      case 'closeClosebtn':
+        this._ModalOptions.headerText = 'String - ';
+        this._ModalOptions.contentPayLoad = 'Test OK & Close button';
+        this._ModalOptions.buttons.okButton = new CallbackButton('OK', 'closeBtnId', 'closeBtnId', true);
+        this._ModalOptions.buttons.okButton.callbackMethod = (() => {
+          this.btnCallback();
+        });
+        this._ModalOptions.buttons.closeButton = new CallbackButton('Close', 'closeBtnId', 'closeBtnId', true);
+        this._ModalOptions.buttons.closeButton.callbackMethod = (() => {
+          this.btnCallback();
+        });
+        break;
+      case 'cancelbtn':
+        this._ModalOptions.headerText = 'String - ';
+        this._ModalOptions.contentPayLoad = 'Test Cancel button';
+        this._ModalOptions.buttons.cancelButton = new CallbackButton('Close', 'closeBtnId', 'closeBtnId', true);
+        this._ModalOptions.buttons.cancelButton.callbackMethod = (() => {
+          this.btnCallback();
+        });
+        break;
     }
     this._ModalOptions.headerText = this._ModalOptions.headerText + this.controls['title'].getRawValue();
     this._ModalService.open(this._ModalOptions);
+  }
+
+  /**
+   * Closes the modal with the id in _ModalOptions.modalId when the OK, Close or Cancel button is clicked.
+   * This is a private method that is set as the callback for those buttons in the openModal method.
+   * @private
+   */
+  private btnCallback(): void {
+    this._ModalService.close(this._ModalOptions.modalId);
   }
 }
