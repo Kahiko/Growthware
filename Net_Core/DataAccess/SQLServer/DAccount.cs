@@ -107,6 +107,12 @@ public class DAccounts : AbstractDBInteraction, IAccount
     #endregion
 
     #region Public Methods
+        public DAccounts(string connectionString, int securityEntitySeqID) : base() 
+        { 
+            this.ConnectionString = connectionString;
+            this.m_SecurityEntitySeqID = securityEntitySeqID;
+        }
+
         bool IAccount.RefreshTokenExists(string refreshToken)
         {
             bool mRetVal = false;
