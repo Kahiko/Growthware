@@ -93,6 +93,7 @@
 - Moved the swagger-ui folder from the assets folder to the public folder
 - Addressed all ESLint issues
 - Replaced logConsole method with LoggingService.console in the modal.service
+- ObjectFactor.Create can now create an object using a constructor with or with out parameters.
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
@@ -100,6 +101,7 @@
 - Manage Name/Value Pairs is not updating the search results after saving
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
 - Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
+- BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
 
 ### Bug Fixes
 - Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.

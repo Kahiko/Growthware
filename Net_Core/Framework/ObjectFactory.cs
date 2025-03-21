@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace GrowthWare.Framework
@@ -22,14 +23,17 @@ namespace GrowthWare.Framework
 		/// included in your solution in order to find the file.
 		/// </param>
 		/// <param name="theNamespace">
-		/// The name space where the class is located.
+		/// The name space where the class is located (can be empty if the object is not in a namespace)
 		/// </param>
 		/// <param name="className">
 		/// The name of the class you need an instance of.
 		/// </param>
-		/// <returns>An object</returns>
+		/// <param name="constructorArgs">
+		// Optional constructor arguments.
+		// </param>
+		/// <returns>An object of the className from the statied assembly</returns>
 		/// <remarks></remarks>
-		public static object Create(string assemblyName, string theNamespace, string className)
+		public static object Create(string assemblyName, string theNamespace, string className, params object[] constructorArgs)
 		{
 			if ((assemblyName == null))
 			{
@@ -43,22 +47,46 @@ namespace GrowthWare.Framework
 			{
                 throw new ArgumentNullException(nameof(className), "className cannot be a null reference (Nothing in Visual Basic)!");
 			}
+
 			object mReturnObject = null;
+
 			try
 			{
 				Assembly mAssembly = System.Reflection.Assembly.Load(assemblyName);
-				if (theNamespace.Length > 0)
-				{
-					mReturnObject = mAssembly.CreateInstance(theNamespace + "." + className, true);
-				}
+                // If no constructor arguments are provided, use the parameterless constructor
+                if (constructorArgs.Length == 0)
+                {
+					// Allow for empty namespace
+					mReturnObject = mAssembly.CreateInstance(theNamespace + "." + className) ?? mAssembly.CreateInstance(className, true);
+                }
 				else
 				{
-					mReturnObject = mAssembly.CreateInstance(className, true);
+					Type mType = mAssembly.GetType(theNamespace + "." + className) ?? mAssembly.GetType(className, true);
+					if (mType == null)
+					{
+						string mMsg = $"Type '{theNamespace}.{className}' not found in assembly '{assemblyName}'.";
+						if (string.IsNullOrWhiteSpace(theNamespace))
+						{
+							mMsg = $"Type '{className}' not found in assembly '{assemblyName}'.";
+						}
+
+						throw new ArgumentException(mMsg);
+					}
+
+					// Check for a matching constructor
+					var mConstructorInfo = mType.GetConstructor(constructorArgs.Select(arg => arg?.GetType() ?? typeof(object)).ToArray());
+					
+					if (mConstructorInfo != null)
+					{
+						// Create an instance using the assembly's CreateInstance method
+						mReturnObject = mAssembly.CreateInstance(theNamespace + "." + className, true, BindingFlags.CreateInstance, null, constructorArgs, null, null);
+					}
 				}
+
 				if (mReturnObject == null)
 				{
-                    string exMessage = string.Concat("Object ", theNamespace, ".", className, " could not be created from assembly ", assemblyName, System.Environment.NewLine);
-                    Exception factoryEx = new ObjectFactoryException(exMessage);
+					string exMessage = $"Object '{theNamespace}.{className}' could not be created from assembly '{assemblyName}'.";
+                    ObjectFactoryException factoryEx = new(exMessage);
 					System.Diagnostics.Trace.WriteLine(factoryEx.ToString());
 					throw factoryEx;
 				}
