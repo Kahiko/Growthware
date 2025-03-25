@@ -97,6 +97,7 @@
 - DAccounts Added a constructor that accepts connectionString and securityEntitySeqID so we don't have to set the properties in BAccounts.
 - BAccounts changed the constructor to pass the connectionString and securityEntitySeqID to the DAccounts constructor
 - BAccounts now accounts for CentralManagement
+- AbstractDBInteraction Added Async methods to the base class
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
