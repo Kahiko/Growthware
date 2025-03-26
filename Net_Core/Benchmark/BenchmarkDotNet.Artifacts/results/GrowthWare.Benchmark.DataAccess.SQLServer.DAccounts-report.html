@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>GrowthWare.Benchmark.DataAccess.SQLServer.DAccounts-20250326-151010</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.3476)
+12th Gen Intel Core i7-12700KF, 1 CPU, 20 logical and 12 physical cores
+.NET SDK 9.0.201
+  [Host]   : .NET 9.0.3 (9.0.325.11113), X64 RyuJIT AVX2
+  .NET 9.0 : .NET 9.0.3 (9.0.325.11113), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>Job=.NET 9.0  Runtime=.NET 9.0  
+</code></pre>
+
+<table>
+<thead><tr><th>Method   </th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th><th>Gen0</th><th>Gen1</th><th>Allocated</th><th>Alloc Ratio</th>
+</tr>
+</thead><tbody><tr><td>GetProfile</td><td>1.126 ms</td><td>0.0767 ms</td><td>0.2251 ms</td><td>1.058 ms</td><td>1.04</td><td>0.28</td><td>11.7188</td><td>-</td><td>168.52 KB</td><td>1.00</td>
+</tr><tr><td>GetProfileAsync</td><td>1.296 ms</td><td>0.0192 ms</td><td>0.0180 ms</td><td>1.293 ms</td><td>1.19</td><td>0.21</td><td>27.3438</td><td>7.8125</td><td>366.64 KB</td><td>2.18</td>
+</tr></tbody></table>
+</body>
+</html>
