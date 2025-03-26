@@ -69,6 +69,7 @@
             - MPermissions      - Renamed SetupClass to setDefaults
             - MWorkFlows        - Renamed SetupClass to setDefaults
 - Added component for testing the Modal feature
+- Added the Benchmark project and benchmark tests for in DAccounts for GetProfile and GetProfileAsync
 
 ### Improvements
 - Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
