@@ -120,6 +120,10 @@
 - DGroups Added a constructor that accepts connectionString so we don't have to set the properties in DGroups.
     - DGroups changed the constructor to pass the connectionString and the securityEntitySeqID to the DGroups constructor
     - DGroups now accounts for CentralManagement
+- DLogging Added a constructor that accepts connectionString so we don't have to set the properties in DLogging.
+    - BLogger changed the constructor to pass the connectionString to the DLogging constructor
+    - BLogger now accounts for CentralManagement
+
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
