@@ -13,13 +13,18 @@ using System.Text.RegularExpressions;
 namespace GrowthWare.DataAccess.SQLServer;
 public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
 {
+
+#region Member Fields
     private string m_DatabaseName = string.Empty;
     private string m_ScriptPath = string.Empty;
+#endregion
 
+#region Public Properties
     public string DatabaseName
     {
         get { return this.m_DatabaseName; }
     }
+#endregion
 
     public void Create()
     {

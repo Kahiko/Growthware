@@ -68,6 +68,9 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </remarks>
         void ProcessScriptFiles(bool isUpgrade, Version currentVersion, Version desiredVersion, IEnumerable<Version> availbleVersions);
 
+        /// <summary>
+        /// Sets the DatabaseName given the ConnectionString property.
+        /// </summary>
         void SetDatabaseName();
 
         /// <summary>
