@@ -72,13 +72,15 @@ public class BGroups : AbstractBusinessLogic
     /// </example>
     public BGroups(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DGroups == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            this.m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DGroups == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DGroups.");
+            }
         }
-        m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
-        m_DGroups.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DGroups.SecurityEntitySeqID = securityEntityProfile.Id;
     }
 
     /// <summary>
