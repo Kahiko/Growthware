@@ -75,14 +75,15 @@ public class BMessages : AbstractBusinessLogic
     /// </example>
     public BMessages(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DMessages == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentException("The securityEntityProfile and not be null!");
+            this.m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages", securityEntityProfile.ConnectionString);
+            if (this.m_DMessages == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DMessages.");
+            }
         }
-        m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages");
-        m_SecurityEntityProfile = securityEntityProfile;
-        m_DMessages.ConnectionString = securityEntityProfile.ConnectionString;
-        //m_DMessages.SecurityEntitySeqID = SecurityEntityProfile.Id;
     }
 
     /// <summary>

@@ -13,7 +13,19 @@ namespace GrowthWare.DataAccess.SQLServer;
 /// </summary>
 public class DMessages : AbstractDBInteraction, IMessages
 {
+
+#region Member Fields
     private MMessage m_Profile = new MMessage();
+#endregion
+
+#region Constructors
+    public DMessages(string connectionString) : base() 
+    { 
+        this.ConnectionString = connectionString;
+    }
+#endregion
+
+
     private SqlParameter[] getInsertUpdateParameters()
     {
         SqlParameter[] myParameters = {
