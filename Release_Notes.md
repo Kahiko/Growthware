@@ -102,6 +102,10 @@
 - DClientChoices Added a constructor that accepts connectionString so we don't have to set the properties in BClientChoices.
     - BClientChoices changed the constructor to pass the connectionString to the DClientChoices constructor
     - BClientChoices now accounts for CentralManagement
+- DCommunityCalendar Added a constructor that accepts connectionString so we don't have to set the properties in BCommunityCalendar.
+    - BCommunityCalendar changed the constructor to pass the connectionString and the securityEntitySeqID to the DCommunityCalendar constructor
+    - BCommunityCalendar now accounts for CentralManagement
+
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

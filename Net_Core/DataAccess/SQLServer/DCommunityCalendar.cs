@@ -5,127 +5,139 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace GrowthWare.DataAccess.SQLServer
+namespace GrowthWare.DataAccess.SQLServer;
+
+public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
 {
-    public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
+
+#region Member Fields
+    private int m_CalendarSeqId = -2;
+    private int m_SecurityEntitySeqId = -2;
+#endregion
+
+#region Public Properties
+    int ICommunityCalendar.CalendarSeqId { get { return this.m_CalendarSeqId; } set { this.m_CalendarSeqId = value; } }
+    int ICommunityCalendar.SecurityEntitySeqId { get { return this.m_SecurityEntitySeqId; } set { this.m_SecurityEntitySeqId = value; } }
+#endregion
+
+#region Constructors
+    public DCommunityCalendar(string connectionString, int securityEntitySeqID) : base() 
+    { 
+        this.ConnectionString = connectionString;
+        this.m_SecurityEntitySeqId = securityEntitySeqID;
+    }
+#endregion
+
+    bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
     {
-        private int m_CalendarSeqId = -2;
-        private int m_SecurityEntitySeqId = -2;
+        this.checkValid();
 
-        int ICommunityCalendar.CalendarSeqId { get { return this.m_CalendarSeqId; } set { this.m_CalendarSeqId = value; } }
-        int ICommunityCalendar.SecurityEntitySeqId { get { return this.m_SecurityEntitySeqId; } set { this.m_SecurityEntitySeqId = value; } }
+        return true;
+    }
 
-        bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
+    bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
+    {
+        this.checkValid();
+        string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
+        SqlParameter[] mParameters =
         {
-            this.checkValid();
-
-            return true;
+            new ("@P_CalendarEventSeqId", calendarEventSeqId),
+        };
+        try
+        {
+            base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
-
-        bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
+        catch (System.Exception)
         {
-            this.checkValid();
-            string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
-            SqlParameter[] mParameters =
-            {
-                new ("@P_CalendarEventSeqId", calendarEventSeqId),
-            };
-            try
-            {
-                base.ExecuteNonQuery(mStoredProcedure, mParameters);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-            return true;
+            throw;
         }
+        return true;
+    }
 
-        bool ICommunityCalendar.GetCalendar(int calendarSeqId)
+    bool ICommunityCalendar.GetCalendar(int calendarSeqId)
+    {
+        this.checkValid();
+        return true;
+    }
+
+    DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+    {
+        this.checkValid();
+        string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
+        SqlParameter[] mParameters =
         {
-            this.checkValid();
-            return true;
+            new ("@P_CalendarEventSeqId", calendarEventSeqId),
+        };
+        try
+        {
+            return base.GetDataRow(mStoredProcedure, mParameters);
         }
-
-        DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+        catch (System.Exception)
         {
-            this.checkValid();
-            string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
-            SqlParameter[] mParameters =
-            {
-                new ("@P_CalendarEventSeqId", calendarEventSeqId),
-            };
-            try
-            {
-                return base.GetDataRow(mStoredProcedure, mParameters);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
-        DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
-        {
-            this.checkValid();
-            string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Events]";
-            SqlParameter[] mParameters =
-            {
-                new ("@P_FunctionSeqId", functionSeqId),
-                new ("@P_Start_Date", startDate),
-                new ("@P_End_Date", endDate),
-            };
-            try
-            {
-                return base.GetDataTable(mStoredProcedure, mParameters);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
-        DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
-        {
-            this.checkValid();
-            string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
-            SqlParameter[] mParameters =
-             {
-                new ("@P_CalendarEventSeqId", calendarEvent.Id),
-                new ("@P_FunctionSeqId", functionSeqId),
-                new ("@P_Title", calendarEvent.Title),
-                new ("@P_Start", DateTime.Parse(calendarEvent.Start)),
-                new ("@P_End", DateTime.Parse(calendarEvent.End)),
-                new ("@P_AllDay", calendarEvent.AllDay),
-                new ("@P_Description", calendarEvent.Description),
-                new ("@P_Color", calendarEvent.Color),
-                new ("@P_Link", calendarEvent.Link),
-                new ("@P_Location", calendarEvent.Location),
-                new ("@P_Added_Updated_By", calendarEvent.AddedBy),
-             };
-            try
-            {
-                return base.GetDataRow(mStoredProcedure, mParameters);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
-        #region "Private Methods"
-        private void checkValid()
-        {
-            base.IsValid();
-            if (this.m_CalendarSeqId == -2)
-            {
-                throw new DataAccessLayerException("CalendarSeqId property must be set before calling methods from this class");
-            }
-            if (this.m_SecurityEntitySeqId == -2)
-            {
-                throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
-            }
+            throw;
         }
     }
-    #endregion
+
+    DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
+    {
+        this.checkValid();
+        string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Events]";
+        SqlParameter[] mParameters =
+        {
+            new ("@P_FunctionSeqId", functionSeqId),
+            new ("@P_Start_Date", startDate),
+            new ("@P_End_Date", endDate),
+        };
+        try
+        {
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+    }
+
+    DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
+    {
+        this.checkValid();
+        string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
+        SqlParameter[] mParameters =
+            {
+            new ("@P_CalendarEventSeqId", calendarEvent.Id),
+            new ("@P_FunctionSeqId", functionSeqId),
+            new ("@P_Title", calendarEvent.Title),
+            new ("@P_Start", DateTime.Parse(calendarEvent.Start)),
+            new ("@P_End", DateTime.Parse(calendarEvent.End)),
+            new ("@P_AllDay", calendarEvent.AllDay),
+            new ("@P_Description", calendarEvent.Description),
+            new ("@P_Color", calendarEvent.Color),
+            new ("@P_Link", calendarEvent.Link),
+            new ("@P_Location", calendarEvent.Location),
+            new ("@P_Added_Updated_By", calendarEvent.AddedBy),
+            };
+        try
+        {
+            return base.GetDataRow(mStoredProcedure, mParameters);
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+    }
+
+    #region "Private Methods"
+    private void checkValid()
+    {
+        base.IsValid();
+        if (this.m_CalendarSeqId == -2)
+        {
+            throw new DataAccessLayerException("CalendarSeqId property must be set before calling methods from this class");
+        }
+        if (this.m_SecurityEntitySeqId == -2)
+        {
+            throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
+        }
+    }
 }
+#endregion
