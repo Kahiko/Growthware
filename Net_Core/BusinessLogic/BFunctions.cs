@@ -30,8 +30,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BFunctions : AbstractBusinessLogic
 {
-    private IFunction m_DFunctions;
 
+#region Member Fields
+    private IFunction m_DFunctions;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BFunctions() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -84,6 +88,7 @@ public class BFunctions : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Gets the function types.

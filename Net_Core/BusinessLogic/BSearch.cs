@@ -5,6 +5,7 @@ using System;
 using System.Data;
 
 namespace GrowthWare.BusinessLogic;
+
 /// <summary>
 /// Process business logic for accounts
 /// </summary>
@@ -28,11 +29,15 @@ namespace GrowthWare.BusinessLogic;
 public class BSearch : AbstractBusinessLogic
 {
 
+#region Member Fields
     private ISearch m_DSearch;
+#endregion
 
+#region Constructors
     private BSearch() { }
 
     private string m_DB_ClassName = "DSearch";
+#endregion
 
     /// <summary>
     /// Parameters are need to pass along to the factory for correct connection to the desired datastore.

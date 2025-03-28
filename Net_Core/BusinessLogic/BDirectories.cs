@@ -22,8 +22,12 @@ namespace GrowthWare.BusinessLogic;
 /// </remarks>
 public class BDirectories : AbstractBusinessLogic
 {
-    private IDirectories m_DDirectories;
 
+#region Member Fields
+    private IDirectories m_DDirectories;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BDirectories() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -76,6 +80,7 @@ public class BDirectories : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Gets the directories.

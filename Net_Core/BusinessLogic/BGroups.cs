@@ -6,6 +6,7 @@ using System.Collections;
 using System.Data;
 
 namespace GrowthWare.BusinessLogic;
+
 /// <summary>
 /// Process business logic for accounts
 /// </summary>
@@ -28,8 +29,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BGroups : AbstractBusinessLogic
 {
-    private IGroups m_DGroups;
 
+#region Member Fields
+    private IGroups m_DGroups;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BGroups() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -82,6 +87,7 @@ public class BGroups : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Gets the groups by security entity.

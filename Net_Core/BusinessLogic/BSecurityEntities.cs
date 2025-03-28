@@ -48,8 +48,12 @@ namespace GrowthWare.BusinessLogic;
 /// </code>	/// </example>
 public class BSecurityEntities : AbstractBusinessLogic
 {
-    private ISecurityEntities m_DSecurityEntities;
 
+#region Member Fields
+    private ISecurityEntities m_DSecurityEntities;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private constructor to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -100,6 +104,7 @@ public class BSecurityEntities : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Deletes the registration information.

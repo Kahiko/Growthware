@@ -12,8 +12,12 @@ namespace GrowthWare.BusinessLogic;
 /// </summary>
 public class BNameValuePairs : AbstractBusinessLogic
 {
-    private INameValuePairs m_DNameValuePairs;
 
+#region Member Fields
+    private INameValuePairs m_DNameValuePairs;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private sub new() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -66,6 +70,7 @@ public class BNameValuePairs : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Deletes the NVP detail.

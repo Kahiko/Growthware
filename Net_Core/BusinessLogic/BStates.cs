@@ -10,8 +10,12 @@ namespace GrowthWare.BusinessLogic;
 
 public class BStates: AbstractBusinessLogic
 {
+    
+#region Member Fields
     private IState m_DStates;
+#endregion
 
+#region Constructors
     /// <summary>
     /// Private constructor to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -62,6 +66,7 @@ public class BStates: AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     public Collection<MState> GetStates()
     {

@@ -7,8 +7,12 @@ namespace GrowthWare.BusinessLogic;
 
 public class BFeedbacks : AbstractBusinessLogic
 {
-    private IFeedbacks m_DataAccess;
 
+#region Member Fields
+    private IFeedbacks m_DataAccess;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BFeedbacks() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -61,6 +65,7 @@ public class BFeedbacks : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     public UIFeedback GetFeedback(int feedbackId)
     {

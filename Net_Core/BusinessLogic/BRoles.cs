@@ -30,8 +30,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BRoles : AbstractBusinessLogic
 {
-    private IRoles m_DRoles;
 
+#region Member Fields
+    private IRoles m_DRoles;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BRoles() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -84,6 +88,7 @@ public class BRoles : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Saves the specified profile.

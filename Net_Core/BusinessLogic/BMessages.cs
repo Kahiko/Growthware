@@ -30,9 +30,13 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BMessages : AbstractBusinessLogic
 {
+
+#region Member Fields
     private IMessages m_DMessages;
     private MSecurityEntity m_SecurityEntityProfile;
+#endregion
 
+#region Constructors
     /// <summary>
     /// Private BMessages() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -85,6 +89,7 @@ public class BMessages : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Gets all messages.

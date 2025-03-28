@@ -30,8 +30,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BAccounts : AbstractBusinessLogic
 {
-    private IAccount m_DAccounts;
 
+#region Member Fields
+    private IAccount m_DAccounts;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BAccounts() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -84,6 +88,7 @@ public class BAccounts : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     /// <summary>
     /// Deletes a record from the database.

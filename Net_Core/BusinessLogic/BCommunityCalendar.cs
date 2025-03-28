@@ -28,8 +28,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BCommunityCalendar : AbstractBusinessLogic
 {
-    private ICommunityCalendar m_DCommunityCalendar;
 
+#region Member Fields
+    private ICommunityCalendar m_DCommunityCalendar;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BCommunityCalendar() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -85,6 +89,7 @@ public class BCommunityCalendar : AbstractBusinessLogic
             }
         }
     }
+#endregion
 
     public MCalendarEvent GetEvent(int calendarEventSeqId) 
     {
