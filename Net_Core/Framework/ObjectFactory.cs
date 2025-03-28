@@ -14,10 +14,14 @@ namespace GrowthWare.Framework;
 /// </remarks>
 public sealed class ObjectFactory
 {
-	
-	private static Logger m_Logger = Logger.Instance();
 
+#region Member Fields
+	private static Logger m_Logger = Logger.Instance();
+#endregion
+
+#region Constructors
 	private ObjectFactory() { }
+#endregion
 
 	/// <summary>
 	/// Creates an instance of an object.
