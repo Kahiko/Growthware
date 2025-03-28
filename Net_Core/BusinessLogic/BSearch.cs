@@ -74,7 +74,7 @@ public class BSearch : AbstractBusinessLogic
             this.m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName, securityEntityProfile.ConnectionString, securityEntityProfile.Id);
             if (this.m_DSearch == null) 
             {
-                throw new InvalidOperationException("Failed to create an instance of DRoles.");
+                throw new InvalidOperationException("Failed to create an instance of DSecurityEntities.");
             }
         }
     }
