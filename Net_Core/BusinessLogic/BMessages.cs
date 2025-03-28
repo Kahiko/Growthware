@@ -33,7 +33,6 @@ public class BMessages : AbstractBusinessLogic
 
 #region Member Fields
     private IMessages m_DMessages;
-    private MSecurityEntity m_SecurityEntityProfile;
 #endregion
 
 #region Constructors
