@@ -9,7 +9,7 @@ BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.3476)
 Job=.NET 9.0  Runtime=.NET 9.0  
 
 ```
-| Method          | Mean     | Error     | StdDev    | Median   | Ratio | RatioSD | Gen0    | Gen1   | Allocated | Alloc Ratio |
-|---------------- |---------:|----------:|----------:|---------:|------:|--------:|--------:|-------:|----------:|------------:|
-| GetProfile      | 1.126 ms | 0.0767 ms | 0.2251 ms | 1.058 ms |  1.04 |    0.28 | 11.7188 |      - | 168.52 KB |        1.00 |
-| GetProfileAsync | 1.296 ms | 0.0192 ms | 0.0180 ms | 1.293 ms |  1.19 |    0.21 | 27.3438 | 7.8125 | 366.64 KB |        2.18 |
+| Method          | Mean     | Error     | StdDev    | Ratio | RatioSD | Gen0    | Gen1   | Allocated | Alloc Ratio |
+|---------------- |---------:|----------:|----------:|------:|--------:|--------:|-------:|----------:|------------:|
+| GetProfile      | 1.181 ms | 0.0228 ms | 0.0262 ms |  1.00 |    0.03 | 19.5313 | 3.9063 | 258.78 KB |        1.00 |
+| GetProfileAsync | 1.596 ms | 0.0312 ms | 0.0333 ms |  1.35 |    0.04 | 35.1563 | 7.8125 | 453.34 KB |        1.75 |
