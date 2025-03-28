@@ -9,9 +9,21 @@ namespace GrowthWare.Framework;
 /// </summary>
 public class SortTable
 {
+
+#region Member Fields
     private DateTime m_StartTime = DateTime.Now;
 
     private DateTime m_StopTime = DateTime.Now;
+#endregion
+
+#region Constructors
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SortTable" /> class.
+    /// </summary>
+    public SortTable()
+    {
+    }
+#endregion
 
     /// <summary>
     /// Gets the start time.
@@ -29,13 +41,6 @@ public class SortTable
     public DateTime StopTime
     {
         get { return m_StopTime; }
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SortTable" /> class.
-    /// </summary>
-    public SortTable()
-    {
     }
 
     /// <summary>
