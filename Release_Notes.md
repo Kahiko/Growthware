@@ -129,6 +129,9 @@
 - DNameValuePairs Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BNameValuePairs.
     - BNameValuePairs changed the constructor to pass the connectionString and the securityEntitySeqID to the DNameValuePairs constructor
     - BNameValuePairs now accounts for CentralManagement
+- DRoles Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BRoles.
+    - BRoles changed the constructor to pass the connectionString and the securityEntitySeqID to the DRoles constructor
+    - BRoles now accounts for CentralManagement
 
 
 ### Known Bugs
