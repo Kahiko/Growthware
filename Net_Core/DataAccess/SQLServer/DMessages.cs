@@ -25,7 +25,6 @@ public class DMessages : AbstractDBInteraction, IMessages
     }
 #endregion
 
-
     private SqlParameter[] getInsertUpdateParameters()
     {
         SqlParameter[] myParameters = {
