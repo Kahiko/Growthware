@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Framework;
 
@@ -13,6 +14,9 @@ namespace GrowthWare.Framework;
 /// </remarks>
 public sealed class ObjectFactory
 {
+	
+	private static Logger m_Logger = Logger.Instance();
+
 	private ObjectFactory() { }
 
 	/// <summary>
@@ -87,7 +91,7 @@ public sealed class ObjectFactory
 			{
 				string exMessage = $"Object '{theNamespace}.{className}' could not be created from assembly '{assemblyName}'.";
 				ObjectFactoryException factoryEx = new(exMessage);
-				System.Diagnostics.Trace.WriteLine(factoryEx.ToString());
+				m_Logger.Log(exMessage, LogPriority.Info);
 				throw factoryEx;
 			}
 		}
