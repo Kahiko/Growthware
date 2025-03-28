@@ -52,13 +52,15 @@ public class BStates: AbstractBusinessLogic
     /// </example>
     public BStates(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DStates == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DStates == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DState.");
+            }
         }
-        m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState");
-        m_DStates.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DStates.SecurityEntitySeqId = securityEntityProfile.Id;
     }
 
     public Collection<MState> GetStates()

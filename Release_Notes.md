@@ -138,6 +138,9 @@
 - DSecurityEntities Added a constructor that accepts connectionString so we don't have to set the properties in BSecurityEntities.
     - BSecurityEntities changed the constructor to pass the connectionString to the DSecurityEntities constructor
     - BSecurityEntities now accounts for CentralManagement
+- DState Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BStates.
+    - BStates changed the constructor to pass the connectionString and the securityEntitySeqID to the DState constructor
+    - BStates now accounts for CentralManagement
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
