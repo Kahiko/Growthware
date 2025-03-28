@@ -90,12 +90,15 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// </example>
     public BSecurityEntities(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DSecurityEntities == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            this.m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities", securityEntityProfile.ConnectionString);
+            if (this.m_DSecurityEntities == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DSecurityEntities.");
+            }
         }
-        m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities");
-        m_DSecurityEntities.ConnectionString = securityEntityProfile.ConnectionString;
     }
 
     /// <summary>
