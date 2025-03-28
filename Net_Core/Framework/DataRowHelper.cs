@@ -6,11 +6,11 @@ namespace GrowthWare.Framework;
 
 public static class DataRowHelper
 {
-/** 
-  * The code here was pulled out of an AbstractDatabaseFunctions old class
-  * that was replaced by ADatabaseTable class.  I felt that these methods could
-  * be usefull outside of the conext of a database table class, so separated them.
-  */
+    /** 
+      * The code here was pulled out of an AbstractDatabaseFunctions old class
+      * that was replaced by ADatabaseTable class.  I felt that these methods could
+      * be usefull outside of the conext of a database table class, so separated them.
+      */
 
     /// <summary>
     /// Returns a boolean given the DataRow and Column name for either bit or int values.

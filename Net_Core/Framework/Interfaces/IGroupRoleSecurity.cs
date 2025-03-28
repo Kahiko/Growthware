@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace GrowthWare.Framework.Interfaces
+namespace GrowthWare.Framework.Interfaces;
+
+/// <summary>
+/// Interface for anything needed group and role security
+/// </summary>
+[CLSCompliant(true)]
+public interface IGroupRoleSecurity
 {
     /// <summary>
-    /// Interface for anything needed group and role security
+    /// Roles that are directly assigned
     /// </summary>
-    [CLSCompliant(true)]
-    public interface IGroupRoleSecurity
+    Collection<String> AssignedRoles
     {
-        /// <summary>
-        /// Roles that are directly assigned
-        /// </summary>
-        Collection<String> AssignedRoles
-        {
-            get;
-        }
+        get;
+    }
 
-        /// <summary>
-        /// Roles that are derived from groups
-        /// </summary>
-        Collection<String> DerivedRoles
-        {
-            get;
-        }
+    /// <summary>
+    /// Roles that are derived from groups
+    /// </summary>
+    Collection<String> DerivedRoles
+    {
+        get;
+    }
 
-        /// <summary>
-        /// Groups that are directly assigned
-        /// </summary>
-        Collection<String> Groups
-        {
-            get;
-        }
+    /// <summary>
+    /// Groups that are directly assigned
+    /// </summary>
+    Collection<String> Groups
+    {
+        get;
     }
 }
