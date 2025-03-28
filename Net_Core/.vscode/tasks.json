@@ -81,8 +81,14 @@
         },
         {
             "label": "Task: Stop NodeJS",
-            "command": "echo ${input:terminate}",
-            "type": "shell"
+            "type": "shell",
+            "command": "taskkill",
+            "args": [
+                "/F",
+                "/IM",
+                "node.exe"
+            ],
+            "problemMatcher": []
         }
     ],
     "inputs": [
