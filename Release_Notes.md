@@ -132,6 +132,9 @@
 - DRoles Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BRoles.
     - BRoles changed the constructor to pass the connectionString and the securityEntitySeqID to the DRoles constructor
     - BRoles now accounts for CentralManagement
+- DSearch Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BSearch.
+    - BSearch changed the constructor to pass the connectionString and the securityEntitySeqID to the DSearch constructor
+    - BSearch now accounts for CentralManagement
 
 
 ### Known Bugs

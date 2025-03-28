@@ -68,24 +68,15 @@ public class BSearch : AbstractBusinessLogic
     /// </example>
     public BSearch(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DSearch == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
-        }
-        if (!ConfigSettings.CentralManagement)
-        {
-            if (m_DSearch == null)
+            this.m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName, securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DSearch == null) 
             {
-                m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
+                throw new InvalidOperationException("Failed to create an instance of DRoles.");
             }
         }
-        else
-        {
-            m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
-        }
-
-        m_DSearch.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DSearch.SecurityEntitySeqID = securityEntityProfile.Id;
     }
     public DataTable GetSearchResults(MSearchCriteria searchCriteria)
     {
