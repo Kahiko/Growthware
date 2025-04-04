@@ -5,6 +5,7 @@
 
 ### Improvements
 - Removed centralManagement from the BClientChoices constructor ... it's not needed
+- Performance Improvement - Added a BusinessLogic property to the BClientChoices to limit how many times the a BClientChoices is created
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

@@ -11,6 +11,7 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class ClientChoicesUtility
 {
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
+    private static BClientChoices m_BClientChoices = null;
 
 #region "Cache/Session Methods"
     /// <summary>
@@ -105,6 +106,18 @@ public static class ClientChoicesUtility
         }
     }
 
+    private static BClientChoices BusinessLogic
+    {
+        get
+        {
+            if (m_BClientChoices == null)
+            {
+                m_BClientChoices = new(SecurityEntityUtility.DefaultProfile());
+            }
+            return m_BClientChoices;
+        }
+    }
+
     public static void ClearSession()
     {
         SessionHelper.RemoveFromSession(MClientChoices.SessionName);
@@ -156,8 +169,7 @@ public static class ClientChoicesUtility
     /// <returns></returns>
     private static DataRow getFromDB(string forAccount)
     {
-        BClientChoices mBusinessLayer = new(SecurityEntityUtility.DefaultProfile());
-        return mBusinessLayer.GetDataRow(forAccount);
+        return BusinessLogic.GetDataRow(forAccount);
     }
 
     /// <summary>
@@ -169,8 +181,7 @@ public static class ClientChoicesUtility
     public static void Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
-        BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile());
-        mBusinessLayer.Save(clientChoicesState);
+        BusinessLogic.Save(clientChoicesState);
         getClientChoicesState(clientChoicesState.Account);
     }
 
