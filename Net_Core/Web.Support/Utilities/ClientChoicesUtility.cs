@@ -156,7 +156,7 @@ public static class ClientChoicesUtility
     /// <returns></returns>
     private static DataRow getFromDB(string forAccount)
     {
-        BClientChoices mBusinessLayer = new(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
+        BClientChoices mBusinessLayer = new(SecurityEntityUtility.DefaultProfile());
         return mBusinessLayer.GetDataRow(forAccount);
     }
 
@@ -169,7 +169,7 @@ public static class ClientChoicesUtility
     public static void Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
-        BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
+        BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile());
         mBusinessLayer.Save(clientChoicesState);
         getClientChoicesState(clientChoicesState.Account);
     }

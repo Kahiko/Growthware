@@ -47,7 +47,6 @@ public class BClientChoices : AbstractBusinessLogic
     /// Parameters are need to pass along to the factory for correct connection to the desired datastore.
     /// </summary>
     /// <param name="securityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
-    /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
     /// <remarks></remarks>
     /// <example> This sample shows how to create an instance of the class.
     /// <code language="VB.NET">
@@ -59,7 +58,7 @@ public class BClientChoices : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// BClientChoices mBClientChoices = New BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BClientChoices mBClientChoices = New BClientChoices(MSecurityEntity);
     /// ]]>
     /// </code>
     /// <code language="C#">
@@ -71,11 +70,11 @@ public class BClientChoices : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity)
     /// ]]>
     /// </code>
     /// </example>
-    public BClientChoices(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BClientChoices(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
         if(m_DClientChoices == null || ConfigSettings.CentralManagement)
