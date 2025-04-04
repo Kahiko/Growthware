@@ -11,6 +11,7 @@ public class ConfigSettings
 {
     private static readonly IConfiguration m_Configuration;
     private static readonly string m_ConnectionString = string.Empty;
+    private static readonly string m_ContainerConnectionString = string.Empty;
     private static readonly string m_SettingsDirectory = string.Empty;
     private static string s_CentralManagement = string.Empty;
     private static bool m_CentralManagement;
@@ -33,6 +34,13 @@ public class ConfigSettings
             string mDecryptedValue = string.Empty;
             CryptoUtility.TryDecrypt(m_ConnectionString, out mDecryptedValue, EncryptionType);
             m_ConnectionString = mDecryptedValue;
+        }
+        if(m_ContainerConnectionString == null || (string.IsNullOrEmpty(m_ContainerConnectionString) || string.IsNullOrWhiteSpace(m_ContainerConnectionString)))
+        {
+            m_ContainerConnectionString = GetAppSettingValue("DAL_" + mDal + "_Container_ConnectionString", true);
+            string mDecryptedValue = string.Empty;
+            CryptoUtility.TryDecrypt(m_ContainerConnectionString, out mDecryptedValue, EncryptionType);
+            m_ContainerConnectionString = mDecryptedValue;
         }
     }        
 
