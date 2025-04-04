@@ -31,13 +31,12 @@ public class BSearch : AbstractBusinessLogic
 
 #region Member Fields
     private ISearch m_DSearch;
+
+    private string m_DB_ClassName = "DSearch";
 #endregion
 
 #region Constructors
     private BSearch() { }
-
-    private string m_DB_ClassName = "DSearch";
-#endregion
 
     /// <summary>
     /// Parameters are need to pass along to the factory for correct connection to the desired datastore.
@@ -83,6 +82,7 @@ public class BSearch : AbstractBusinessLogic
             }
         }
     }
+#endregion
     public DataTable GetSearchResults(MSearchCriteria searchCriteria)
     {
         if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
