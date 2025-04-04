@@ -14,6 +14,7 @@
 - BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
 
 ### Bug Fixes
+- Removed BAccounts by adding RefreshTokenExists, VerificationTokenExists to AccountUtility and using AccountUtility in JwtUtility, this way BAccounts is only created in AccountUtility
 
 ## Net_Core Version 5.2.0.0 (2025-04-03)
 - Upgraded to .Net Core 9.0

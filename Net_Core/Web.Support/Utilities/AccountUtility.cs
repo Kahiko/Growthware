@@ -476,6 +476,27 @@ public static class AccountUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Check the database to see if the refreshToken matches any existing Tokens
+    /// already in the data store.
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <returns>bool</returns>
+    public static bool RefreshTokenExists(string refreshToken)
+    {
+        return BusinessLogic.RefreshTokenExists(refreshToken);
+    }
+
+    /// <summary>
+    /// Check the database to see if the resetToken matches any existing Tokens
+    /// </summary>
+    /// <param name="resetToken"></param>
+    /// <returns></returns>
+    public static bool ResetTokenExists(string resetToken)
+    {
+        return BusinessLogic.ResetTokenExists(resetToken);
+    }
+    
     public static MAccountProfile Register(MAccountProfile accountProfile, string origin)
     {
         // Get the security entity via the URL or use the default
@@ -764,5 +785,15 @@ public static class AccountUtility
             m_Logger.Error(mMsg);
         }
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Check the database to see if the verificationToken matches any existing Tokens
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    public static bool VerificationTokenExists(string token)
+    {
+        return BusinessLogic.VerificationTokenExists(token);
     }
 }

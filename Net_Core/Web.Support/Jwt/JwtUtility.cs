@@ -21,22 +21,6 @@ public class JwtUtility : IJwtUtility
     }
 
     /// <summary>
-    /// Returns the business logic object used to access the database.
-    /// </summary>
-    /// <returns></returns>
-    private static BAccounts BusinessLogic
-    {
-        get
-        {
-            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
-            {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
-            }
-            return m_BusinessLogic;
-        }
-    }
-
-    /// <summary>
     /// Generate a JWT token for the given account profile.
     /// </summary>
     /// <param name="account">The account profile for which the token is generated.</param>
@@ -121,7 +105,7 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        var tokenIsUnique = BusinessLogic.RefreshTokenExists(refreshToken.Token);
+        var tokenIsUnique = AccountUtility.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
             return GenerateRefreshToken(ipAddress, accountSeqId);
@@ -137,7 +121,7 @@ public class JwtUtility : IJwtUtility
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
 
-        bool mTokenIsUnique = BusinessLogic.ResetTokenExists(mRetVal);
+        bool mTokenIsUnique = AccountUtility.ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {
@@ -155,7 +139,7 @@ public class JwtUtility : IJwtUtility
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        bool mTokenExists = BusinessLogic.VerificationTokenExists(mRetVal);
+        bool mTokenExists = AccountUtility.VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
             return GenerateVerificationToken();
