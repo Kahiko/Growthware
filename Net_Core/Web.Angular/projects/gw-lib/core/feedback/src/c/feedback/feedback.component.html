@@ -1,0 +1,49 @@
+<form [formGroup]="frmSubmit" #frm="ngForm" (ngSubmit)="onSubmit()" class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+        <mat-tab label="Feedback/Issue" class="mat-tab__tab">
+            <div class="div__tab-container formSection">
+                <div class="formSectionContents">
+                    <div class="table">
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Area occurred</mat-label>
+                                    <mat-select formControlName="areaOccurred">
+                                      <mat-option>--</mat-option>
+                                      @for (item of validLinks; track item.action) {
+                                        <mat-option [value]="item.action">{{item.title}}</mat-option>
+                                      }
+                                    </mat-select>
+                                    @if (controls['areaOccurred'].invalid && controls['areaOccurred'].touched && controls['areaOccurred'].dirty) {
+                                      <mat-error>Please choose the area for feedback/issue</mat-error>
+                                    }
+                                    <mat-hint>{{controls['areaOccurred'].value?.title}}</mat-hint>
+                                  </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Please describe your feedback/issue</mat-label>
+                                    <textarea matInput formControlName="details" #details class="Form_Field rounded" style="height: 300px;"></textarea>
+                                    <mat-hint>Charactors: {{ details.value.length }}</mat-hint>
+                                    @if (controls['details'].invalid && controls['details'].touched) {
+                                    <mat-error style="display: inline-block; padding-left: 5px">{{getErrorMessage('details')}}</mat-error>
+                                    }    
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="frmSubmit.invalid" mat-button class="Form_Button" color="primary">
+          <i style="padding-right: 3px" class="Form_Button_Icon material-icons">save</i>Save
+        </button>
+        <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+          <i style="padding-right: 3px" class="Form_Button_Icon material-icons">cancel</i>Cancel
+        </button>
+      </div>
+</form>

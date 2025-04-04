@@ -1,18 +1,30 @@
 import { Component, computed, input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
-import { AccountService } from '@growthware/core/account';
+import { AccountService, LoginComponent } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
-import { LoginComponent } from '@growthware/core/account';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { ConfigurationService } from '@growthware/core/configuration';
 
 @Component({
 	selector: 'gw-frontend-dashboard-header',
+	standalone: true,
 	templateUrl: './dashboard-header.component.html',
-	styleUrls: ['./dashboard-header.component.scss']
+	styleUrls: ['./dashboard-header.component.scss'],
+	imports: [
+		RouterLink,
+
+		MatButtonModule,
+		MatIconModule,
+		MatMenuModule,
+		MatToolbarModule,
+	],
 })
 export class DashboardHeaderComponent {
 
@@ -27,13 +39,14 @@ export class DashboardHeaderComponent {
 		private _ConfigurationSvc: ConfigurationService,
 		private _GWCommon: GWCommon,
 		private _ModalSvc: ModalService,
-		private _Router: Router) { }
+		private _Router: Router
+	) { }
 
 	onLogin(): void {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
 		mModalOptions.buttons.okButton.callbackMethod = () => {
-			this.onModalOk;
+			this.onModalOk();
 		};
 		this._ModalSvc.open(mModalOptions);
 	}

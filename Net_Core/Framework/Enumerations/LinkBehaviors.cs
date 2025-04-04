@@ -1,10 +1,9 @@
-namespace GrowthWare.Framework.Enumerations
+namespace GrowthWare.Framework.Enumerations;
+
+public enum LinkBehaviors
 {
-    public enum LinkBehaviors
-    {
-        Internal = 1,
-        Popup = 2,
-        External = 3,
-        NewPage = 4,
-    }
+    Internal = 1,
+    Popup = 2,
+    External = 3,
+    NewPage = 4,
 }

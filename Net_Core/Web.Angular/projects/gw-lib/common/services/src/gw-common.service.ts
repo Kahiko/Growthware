@@ -1,10 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 // Library
-import { CallbackMethod } from '@growthware/common/interfaces';
-import { IMenuData } from '@growthware/common/interfaces';
-import { INavItem } from '@growthware/common/interfaces';
-import { ITotalRecords } from '@growthware/common/interfaces';
+import { CallbackMethod, IMenuData, INavItem, ITotalRecords } from '@growthware/common/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +9,13 @@ import { ITotalRecords } from '@growthware/common/interfaces';
 export class GWCommon {
 
   /**
-	 * Adds or updates an element in an array so long as the elements in the array
-	 * has an 'id' property.
-	 *
-	 * @param {any[]} yourArray
-	 * @param {*} objectWithProperty
-	 * @memberof GWCommon
-	 */
+   * Adds or updates an element in an array so long as the elements in the array
+   * has an 'id' property.
+   *
+   * @param {any[]} yourArray
+   * @param {*} objectWithProperty
+   * @memberof GWCommon
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public addOrUpdateArray(yourArray: any[], objectWithProperty: any, propertyName: string = 'id'): void {
     if (propertyName in objectWithProperty) {
@@ -35,11 +32,11 @@ export class GWCommon {
   }
 
   /**
-	 * A function to build hierarchical INavItem[] from the flat menuData.
-	 *
-	 * @param {IMenuData[]} menuData - description of parameter
-	 * @return {INavItem[]} description of return value
-	 */
+   * A function to build hierarchical INavItem[] from the flat menuData.
+   *
+   * @param {IMenuData[]} menuData - description of parameter
+   * @return {INavItem[]} description of return value
+   */
   public buildNavItems(menuData: IMenuData[]): INavItem[] {
     // console.log('menuData', menuData);
     const mRetItems: INavItem[] = [];
@@ -72,13 +69,13 @@ export class GWCommon {
   }
 
   /**
-	 * A function that builds an unordered list within a given HTMLUListElement based on the provided INavItem array, and optionally invokes a callback method.
-	 *
-	 * @param {HTMLUListElement} parent - The parent HTMLUListElement where the unordered list will be built.
-	 * @param {INavItem[]} items - The array of INavItem objects used to populate the unordered list.
-	 * @param {CallbackMethod} [callbackMethod] - An optional callback method to be invoked.
-	 * @return {void} This function does not return a value.
-	 */
+   * A function that builds an unordered list within a given HTMLUListElement based on the provided INavItem array, and optionally invokes a callback method.
+   *
+   * @param {HTMLUListElement} parent - The parent HTMLUListElement where the unordered list will be built.
+   * @param {INavItem[]} items - The array of INavItem objects used to populate the unordered list.
+   * @param {CallbackMethod} [callbackMethod] - An optional callback method to be invoked.
+   * @return {void} This function does not return a value.
+   */
   public buildUL(parent: HTMLUListElement, items: INavItem[], callbackMethod?: CallbackMethod): void {
     items.forEach(element => {
       if (element.label) {
@@ -108,12 +105,12 @@ export class GWCommon {
   }
 
   /**
-	 * Returns the base URL ending in a forward slash
-	 *
-	 * @readonly
-	 * @type {string}
-	 * @memberof GWCommon
-	 */
+   * Returns the base URL ending in a forward slash
+   *
+   * @readonly
+   * @type {string}
+   * @memberof GWCommon
+   */
   public get baseURL(): string {
     const mCurrentLocation = window.location;
     let mPort = mCurrentLocation.port;
@@ -126,7 +123,7 @@ export class GWCommon {
     return mURL;
   }
 
-  
+
   /**
    * Returns the base URL without the port.
    *
@@ -139,33 +136,33 @@ export class GWCommon {
   }
 
   public capitalizeFirstLetter(stringToCap: string): string {
-    if(this.isNullOrEmpty(stringToCap)){ return stringToCap; }
+    if (this.isNullOrEmpty(stringToCap)) { return stringToCap; }
     return stringToCap.charAt(0).toUpperCase() + stringToCap.slice(1);
   }
 
   /**
-	 * Compares two dates to check if they are equal.
-	 *
-	 * @param {Date} date1 - The first date to compare
-	 * @param {Date} date2 - The second date to compare
-	 * @return {boolean} true if the dates are equal, false otherwise
-	 */
+   * Compares two dates to check if they are equal.
+   *
+   * @param {Date} date1 - The first date to compare
+   * @param {Date} date2 - The second date to compare
+   * @return {boolean} true if the dates are equal, false otherwise
+   */
   public datesEqual(date1: Date, date2: Date): boolean {
     return (
       date1.getFullYear() === date2.getFullYear() &&
-			date1.getMonth() === date2.getMonth() &&
-			date1.getDate() === date2.getDate()
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
     );
   }
 
   /**
-	 * Formats data
-	 *
-	 * @param {any} data - The data to be formatted
-	 * @param {string} format - The format to be applied to the data
-	 * @returns {any} The formatted data
-	 * @memberof DynamicTableComponent
-	 */
+   * Formats data
+   *
+   * @param {any} data - The data to be formatted
+   * @param {string} format - The format to be applied to the data
+   * @returns {any} The formatted data
+   * @memberof DynamicTableComponent
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public formatData(data: any, format: string): any {
     if (this.isNullOrUndefined(data)) {
@@ -205,11 +202,11 @@ export class GWCommon {
   }
 
   /**
-	 * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
-	 *
-	 * @param {string | number | Date} sqlDate - the date to be formatted
-	 * @return {string | null} the formatted date, or null if the input is invalid
-	 */
+   * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
+   *
+   * @param {string | number | Date} sqlDate - the date to be formatted
+   * @return {string | null} the formatted date, or null if the input is invalid
+   */
   public formatDate(sqlDate: string | number | Date): string | null {
     const mDateTime = new Date(sqlDate);
     const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
@@ -232,17 +229,17 @@ export class GWCommon {
 
 
   /**
-	 * Gets the stack trace of the calling code, stripping out any irrelevant
-	 * stack frames. The stack trace is returned as a string with each caller
-	 * separated by ' => '.
-	 *
-	 * @return {string} the stack trace
-	 */
+   * Gets the stack trace of the calling code, stripping out any irrelevant
+   * stack frames. The stack trace is returned as a string with each caller
+   * separated by ' => '.
+   *
+   * @return {string} the stack trace
+   */
   public getStackTrace(): string {
     const mStackLines = new Error('').stack?.split('\n') ?? [];
     if (
       this.isNullOrUndefined(mStackLines) ||
-			mStackLines.length === 0
+      mStackLines.length === 0
     ) {
       return '';
     }
@@ -258,7 +255,7 @@ export class GWCommon {
             const mCaller = mParts[5];
             if (
               mCaller.indexOf('_next') === -1 &&
-							mCaller.indexOf('callH') === -1
+              mCaller.indexOf('callH') === -1
             ) {
               // we can stop b/c we have gotten all of our codes stack
               if (mCaller.indexOf('LoggingService') === -1) {
@@ -278,7 +275,7 @@ export class GWCommon {
     }
     if (
       !this.isNullOrUndefined(mOurCallStack) &&
-			mOurCallStack.length !== 0
+      mOurCallStack.length !== 0
     ) {
       mOurCallStack.forEach((element) => {
         mRetVal += element.caller + ' => ';
@@ -286,13 +283,13 @@ export class GWCommon {
     }
     return mRetVal;
   }
-  
+
   /**
-	 * Get the total number of records from the given data array.
-	 *
-	 * @param {Array<ITotalRecords>} data - the array of records
-	 * @return {number} the total number of records, or -1 if the data is empty or the 'TotalRecords' field is missing
-	 */
+   * Get the total number of records from the given data array.
+   *
+   * @param {Array<ITotalRecords>} data - the array of records
+   * @return {number} the total number of records, or -1 if the data is empty or the 'TotalRecords' field is missing
+   */
   public getTotalRecords(data: Array<ITotalRecords>): number {
     let mRetVal = -1;
     if (data && data.length > 0) {
@@ -308,14 +305,14 @@ export class GWCommon {
   }
 
   /**
-	 * @description Remove an object from a hierarchy of data
-	 *
-	 * @param {Array<any>} data - the tree to be searched for a record to delete
-	 * @param {string | number} searchValue - the value of the property to be searched for
-	 * @param {string} nameOfProperty - name of the property used to search for the value
-	 * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
-	 * @param {any} replacementObject - the replacement object for the match
-	 */
+   * @description Remove an object from a hierarchy of data
+   *
+   * @param {Array<any>} data - the tree to be searched for a record to delete
+   * @param {string | number} searchValue - the value of the property to be searched for
+   * @param {string} nameOfProperty - name of the property used to search for the value
+   * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
+   * @param {any} replacementObject - the replacement object for the match
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public hierarchyRemoveItem(data: any[], searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): boolean {
     let mRetVal: boolean = false;
@@ -339,15 +336,15 @@ export class GWCommon {
   }
 
   /**
-	 * @description Replaces an object in a hierarchy of data
-	 *
-	 * @param {Array<any>} data - the tree to be searched for a record to replace
-	 * @param {string | number} searchValue - the value of the property to be searched for
-	 * @param {string} nameOfProperty - name of the property used to search for the value
-	 * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
-	 * @param {any} replacementObject - the replacement object for the matching item
-	 * @return {boolean} true if the data was found and replaced, false otherwise
-	 */
+   * @description Replaces an object in a hierarchy of data
+   *
+   * @param {Array<any>} data - the tree to be searched for a record to replace
+   * @param {string | number} searchValue - the value of the property to be searched for
+   * @param {string} nameOfProperty - name of the property used to search for the value
+   * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
+   * @param {any} replacementObject - the replacement object for the matching item
+   * @return {boolean} true if the data was found and replaced, false otherwise
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public hierarchyReplaceItem(data: Array<any>, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string, replacementObject: any): boolean {
     let mRetVal = false;
@@ -365,16 +362,16 @@ export class GWCommon {
   }
 
   /**
-	 * @description Searches hierarchical data for an object with specified properties value
-	 *
-	 * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
-	 * @param {(string | number)} searchValue value of searched node's  prop
-	 * @param {string} nameOfProperty name of the property used to compare against the value parameter
-	 * @param {string} nameOfChildNodes name of prop that holds child nodes array (default value of 'children')
-	 * @return {*}  {*} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
-	 * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
-	 * @memberof GWCommon
-	 */
+   * @description Searches hierarchical data for an object with specified properties value
+   *
+   * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
+   * @param {(string | number)} searchValue value of searched node's  prop
+   * @param {string} nameOfProperty name of the property used to compare against the value parameter
+   * @param {string} nameOfChildNodes name of prop that holds child nodes array (default value of 'children')
+   * @return {*}  {*} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+   * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+   * @memberof GWCommon
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public hierarchySearch(data: any, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): object | null {
     if (Array.isArray(data)) { // if entry object is array objects, check each object
@@ -396,40 +393,42 @@ export class GWCommon {
   }
 
   /**
-	 * Determines if the obj is a function
-	 *
-	 * @static
-	 * @param {unknown} obj - the input to check
-	 * @return {boolean} true if the input is a function, false otherwise
-	 * @memberof GWCommon
-	 */
+   * Determines if the obj is a function
+   *
+   * @static
+   * @param {unknown} obj - the input to check
+   * @return {boolean} true if the input is a function, false otherwise
+   * @memberof GWCommon
+   */
   public isFunction(obj: unknown): boolean {
     return typeof obj === 'function';
   }
 
   /**
-	 * Determins if the str is null or empty (ie length === 0)
-	 *
-	 * @static
-	 * @param {string} str
-	 * @return {*}
-	 * @memberof GWCommon
-	 */
+   * Determines if the input string is null, undefined, empty, or just whitespace
+   *
+   * @param {string} str - the input string to check
+   * @return {boolean} true if the input string is null, undefined, empty, or just whitespace, false otherwise
+   * @memberof GWCommon
+   */
   public isNullOrEmpty(str: string): boolean {
-    if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
+    if (this.isNullOrUndefined(str)) {
+      return true;
+    }
+    if (0 === str.length || !str || /^\s*$/.test(str)) {
       return true;
     }
     return false;
   }
 
   /**
-	 * Determines if the obj is null or undefined
-	 *
-	 * @static
-	 * @param {unknown} obj - the input to check
-	 * @return {boolean} true if the input is null or or typeof undefined, false otherwise
-	 * @memberof GWCommon
-	 */
+   * Determines if the obj is null or undefined
+   *
+   * @static
+   * @param {unknown} obj - the input to check
+   * @return {boolean} true if the input is null or or typeof undefined, false otherwise
+   * @memberof GWCommon
+   */
   public isNullOrUndefined(obj: unknown): boolean {
     if (obj == null || obj === null || typeof obj === 'undefined') {
       return true;
@@ -438,28 +437,27 @@ export class GWCommon {
   }
 
   /**
-	 * Determines if the value is a number
-	 *
-	 * @param {(string | number)} value
-	 * @return {*}  {boolean}
-	 * @memberof GWCommon
-	 */
+   * Determines if the value is a number
+   *
+   * @param {(string | number)} value
+   * @return {*}  {boolean}
+   * @memberof GWCommon
+   */
   public isNumber(value: string | number): boolean {
     let mRetVal: boolean = false;
-    if (!this.isNullOrUndefined(value) &&
-			!this.isNullOrEmpty(value.toString()) &&
-			!isNaN(Number(value.toString()))) {
+    if (!this.isNullOrEmpty(value.toString()) &&
+      !isNaN(Number(value.toString()))) {
       mRetVal = true;
     }
     return mRetVal;
   }
 
   /**
-	 * Check if the input value is a string.
-	 *
-	 * @param {unknown} value - the value to be checked
-	 * @return {boolean} true if the value is a string, false otherwise
-	 */
+   * Check if the input value is a string.
+   *
+   * @param {unknown} value - the value to be checked
+   * @return {boolean} true if the value is a string, false otherwise
+   */
   public isString(value: unknown): boolean {
     let mRetVal: boolean = false;
     if (typeof value === 'string' || value instanceof String) {
@@ -469,10 +467,10 @@ export class GWCommon {
   }
 
   /*
-	 * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
-	 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
-	 * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
-	 */
+   * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
+   * Author: Jim Palmer (based on chunking idea from Dave Koelle)
+   * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static naturalSort(a: any, b: any): number {
     const re: RegExp = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi;
@@ -513,36 +511,36 @@ export class GWCommon {
   }
 
   /**
-	 * sleep for x number of milliseconds
-	 *
-	 * @param ms
-	 * 
-	 * @memberof UtilityService
-	 */
+   * sleep for x number of milliseconds
+   *
+   * @param ms
+   * 
+   * @memberof UtilityService
+   */
   public async sleep(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(true), ms)).then(() => {/* do nothing */ });
   }
 
   /**
-	 * @description sortData is a basic sort for an array.
-	 *
-	 * @requires #sortBy a basic comparer function
-	 *
-	 * @param dataArray this is the array to be sorted
-	 * @param columnName this is the name of the column or element in the array
-	 * @param orderByDirection this is the desired direction valid options asc or desc
-	 *
-	 * @returns a sorted array of object given a object property
-	 *
-	 * @usage:
-	 * var myArray = [
-	 *  {'First': '', 'Last': '', 'Middle': ''},
-	 *  {'First': '', 'Last': '', 'Middle': ''}
-	 * ]; // of course your array will have many "rows" not just two
-	 * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
-	 * myArray = svc.SortArray(myArray, 'Last', 'asc'); // sort your array by the element "Last"
-	 *
-	 */
+   * @description sortData is a basic sort for an array.
+   *
+   * @requires #sortBy a basic comparer function
+   *
+   * @param dataArray this is the array to be sorted
+   * @param columnName this is the name of the column or element in the array
+   * @param orderByDirection this is the desired direction valid options asc or desc
+   *
+   * @returns a sorted array of object given a object property
+   *
+   * @usage:
+   * var myArray = [
+   *  {'First': '', 'Last': '', 'Middle': ''},
+   *  {'First': '', 'Last': '', 'Middle': ''}
+   * ]; // of course your array will have many "rows" not just two
+   * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
+   * myArray = svc.SortArray(myArray, 'Last', 'asc'); // sort your array by the element "Last"
+   *
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
     const isArray = (Object.prototype.toString.call(dataArray) === '[object Array]');
@@ -563,10 +561,10 @@ export class GWCommon {
   }
 
   /**
-	 * @description Returns a function which will sort an
-	 * array of objects by the given key.
-	 *
-	 */
+   * @description Returns a function which will sort an
+   * array of objects by the given key.
+   *
+   */
   private static sortBy(key: string | number, reverse: boolean): (a: Record<string, unknown>, b: Record<string, unknown>) => number {
     // Move smaller items towards the front
     // or back of the array depending on if
@@ -581,10 +579,10 @@ export class GWCommon {
     const moveLarger: number = reverse ? -1 : 1;
 
     /**
-		 * @param  {*} a
-		 * @param  {*} b
-		 * @return {Number}
-		 */
+     * @param  {*} a
+     * @param  {*} b
+     * @return {Number}
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (a: Record<string, any>, b: Record<string, any>): number => {
       if (a[key] < b[key]) {
@@ -598,15 +596,15 @@ export class GWCommon {
   }
 
   /**
-	 * Splits an array into multiple arrays of a specified size.
-	 *
-	 * @param {T[]} arrayToSplit - The array to be split.
-	 * @param {number} numberInSubArray - The number of elements in each subarray.
-	 * @return {T[][]} The resulting array of subarrays.
-	 * 
-	 * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
-	 *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
-	 */
+   * Splits an array into multiple arrays of a specified size.
+   *
+   * @param {T[]} arrayToSplit - The array to be split.
+   * @param {number} numberInSubArray - The number of elements in each subarray.
+   * @return {T[][]} The resulting array of subarrays.
+   * 
+   * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
+   *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
+   */
   public splitArray<T>(arrayToSplit: T[], numberInSubArray: number): T[][] {
     if (numberInSubArray <= 0) {
       throw new Error('numberInSubArray must be greater than 0');
@@ -630,7 +628,7 @@ export class GWCommon {
     const hours = Math.abs(Math.floor(timezoneOffset / 60));
     const minutes = Math.abs(timezoneOffset % 60);
     const sign = timezoneOffset < 0 ? '+' : '-';
-	
+
     // Format the UTC offset as ±HH:MM
     return `${sign}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }

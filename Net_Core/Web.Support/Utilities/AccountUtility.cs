@@ -227,7 +227,7 @@ public static class AccountUtility
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         mBAccount.Delete(accountSeqId);
     }
 
@@ -247,7 +247,7 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         DataTable mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
@@ -275,7 +275,7 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         DataTable mDataTable = null;
         mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
@@ -320,14 +320,14 @@ public static class AccountUtility
         BAccounts mBAccount = null;
         if (forceDb)
         {
-            mBAccount = getBusinessLogic();
+            mBAccount = BusinessLogic;
             mRetVal = mBAccount.GetProfile(account);
             return mRetVal;
         }
         mRetVal = CurrentProfile;
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = getBusinessLogic();
+            mBAccount = BusinessLogic;
             mRetVal = mBAccount.GetProfile(account);
         }
         return mRetVal;
@@ -344,7 +344,7 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static MAccountProfile getAccountByRefreshToken(string token)
     {
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
         mRetVal = mBAccount.GetProfileByRefreshToken(token);
         return mRetVal;
@@ -369,18 +369,21 @@ public static class AccountUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts getBusinessLogic()
+    private static BAccounts BusinessLogic
     {
-        if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+        get
         {
-            m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
+            if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+            {
+                m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
+            }
+            return m_BAccounts;
         }
-        return m_BAccounts;
     }
 
     public static MAccountProfile GetProfileByResetToken(string token)
     {
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
         try
         {
@@ -401,7 +404,7 @@ public static class AccountUtility
             if (mAccountProfile.RefreshTokens.Count > 0)
             {
                 MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
-                if (!mRefreshToken.IsActive())
+                if (!mRefreshToken.IsActive)
                 {
                     removeFromCacheOrSession(forAccount);
                     RemoveInMemoryInformation(forAccount);
@@ -439,14 +442,14 @@ public static class AccountUtility
         {
             MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
-            if (mRefreshToken.IsRevoked())
+            if (mRefreshToken.IsRevoked)
             {
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(mRefreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
                 AccountUtility.Save(mAccountProfile, true, false, false);
             }
 
-            if (!mRefreshToken.IsActive())
+            if (!mRefreshToken.IsActive)
                 throw new WebSupportException("Invalid token");
 
             // replace old refresh token with a new one (rotate token)
@@ -575,7 +578,7 @@ public static class AccountUtility
         MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
         MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
-        if (!mRefreshToken.IsActive())
+        if (!mRefreshToken.IsActive)
             throw new WebSupportException("Invalid token");
 
         // revoke token and save
@@ -595,7 +598,7 @@ public static class AccountUtility
         if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
         {
             var childToken = account.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
-            if (childToken.IsActive())
+            if (childToken.IsActive)
                 revokeRefreshToken(childToken, ipAddress, reason);
             else
                 revokeDescendantRefreshTokens(childToken, account, ipAddress, reason);
@@ -623,7 +626,7 @@ public static class AccountUtility
     {
         // TODO - look at this are we sure we need to keep refresh tokens in the db for this long?
         accountProfile.RefreshTokens.RemoveAll(x => 
-            !x.IsActive() && 
+            !x.IsActive && 
             x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
         );
     }
@@ -680,7 +683,7 @@ public static class AccountUtility
             return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        BAccounts mBAccount = getBusinessLogic();
+        BAccounts mBAccount = BusinessLogic;
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
         if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))

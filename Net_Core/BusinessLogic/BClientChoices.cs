@@ -29,8 +29,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BClientChoices : AbstractBusinessLogic
 {
-    private IClientChoices m_DClientChoices;
 
+#region Member Fields
+    private IClientChoices m_DClientChoices;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BClientChoices() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -73,24 +77,18 @@ public class BClientChoices : AbstractBusinessLogic
     /// </example>
     public BClientChoices(MSecurityEntity securityEntityProfile, bool centralManagement)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DClientChoices == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentException("The securityEntityProfile and not be null!");
-        }
-        if (centralManagement)
-        {
-            if (m_DClientChoices == null)
+            this.m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices", securityEntityProfile.ConnectionString);
+            if (this.m_DClientChoices == null) 
             {
-                m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices");
+                throw new InvalidOperationException("Failed to create an instance of DClientChoices.");
             }
         }
-        else
-        {
-            m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices");
-        }
-
         m_DClientChoices.ConnectionString = securityEntityProfile.ConnectionString;
     }
+#endregion
 
     /// <summary>
     /// Retrieves a data row from the data store and populates a MClientChoicesState object.

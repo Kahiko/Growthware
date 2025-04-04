@@ -118,7 +118,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (row of tableData$(); track row; let rowIndex = $index, isEven = $even) {
+            @for (row of tableData(); track row; let rowIndex = $index, isEven = $even) {
               <tr (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight, 'color': isEven ? clientChoices.evenFont : (!isEven ? clientChoices.oddFont : null), 'background-color': isEven ? clientChoices.evenRow : (!isEven ? clientChoices.oddRow : null) }" [class.active-row]="rowIndex == activeRow">
                 @for (column of tableConfiguration.columns; track column) {
                   <td>
@@ -182,30 +182,28 @@
       }
     </div>
     <ng-template #helpTemplate>
-      <p>
-        "records per page" determines how many records will be returned in the results.
-        Just change the number value in the text box to change the results.
-      </p>
-      <p>
-        "Search" limits the results returned based on the contents of the text box.
-        The search "term" is applied to all columns with the check box selected.
-      </p>
-      Search Usage:
-      <ul>
-        <li>1.) Select desired columns</li>
-        <li>2.) Enter text in the "Search" text box<br/>
-          Results will update automatically.
-        </li>
-      </ul>
-      <section>
-        Row Click Usage:
+      <div>
+        <p>
+          "records per page" determines how many records will be returned in the results.
+          Just change the number value in the text box to change the results.
+        </p>
+        Search Usage:
         <ul>
-          <li>Single - Selects or highlights the row.</li>
-          <li>Double - If available opens a window to edit or view.</li>
+          <li>1.) Select desired columns</li>
+          <li>2.) Enter text in the "Search" text box<br/>
+            Results will update automatically.
+          </li>
         </ul>
-        Note: The double click action is dependant on multiple factors not limited to but including
-        security so may not always be available.
-      </section>
+        <section>
+          Row Click Usage:
+          <ul>
+            <li>Single - Selects or highlights the row.</li>
+            <li>Double - If available opens a window to edit or view.</li>
+          </ul>
+          Note: The double click action is dependant on multiple factors not limited to but including
+          security so may not always be available.
+        </section>
+      </div>
     </ng-template>
   </form>
 

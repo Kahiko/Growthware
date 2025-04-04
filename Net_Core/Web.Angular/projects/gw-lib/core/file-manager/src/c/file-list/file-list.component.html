@@ -1,8 +1,56 @@
+<div class="selection-controls">
+  <!-- Select/Unselect All Checkbox -->
+  <div class="select-all">
+    <label class="checkbox-label" style="width: 100px;"> <!-- set the width to keep the UI from shifting -->
+      <input type="checkbox" [checked]="allSelected" (change)="onToggleSelectAll($event)" class="select-all-checkbox" aria-label="Select or unselect all files" />
+      {{selectUnselectText}} all
+    </label>
+  </div>
+
+  <!-- Delete Selected Button -->
+  <div class="delete-button">
+    <button type="button" [disabled]="!anySelected" (click)="onDeleteSelected()" mat-button class="delete-button" color="warn" aria-label="Delete selected files">
+      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete all checked
+    </button>
+  </div>
+
+  <!-- Sorting Dropdown -->
+  <div class="sorting-dropdown">
+    <mat-form-field appearance="outline" style="width: 300px;" dense>
+      <mat-label>Select sorting option</mat-label>
+      <mat-select [(value)]="selectedSortOption" (selectionChange)="onSortChange($event.value)" aria-label="Sort files by">
+        <mat-option value="" disabled>Select an option</mat-option>
+        <mat-option value="name-asc">Name (A-Z)</mat-option>
+        <mat-option value="name-desc">Name (Z-A)</mat-option>
+        <mat-option value="date-asc">Date Created (Oldest to Newest)</mat-option>
+        <mat-option value="date-desc">Date Created (Newest to Oldest)</mat-option>
+        <mat-option value="size-asc">Size (Smallest to Largest)</mat-option>
+        <mat-option value="size-desc">Size (Largest to Smallest)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Filtering Input -->
+  <div class="filter-input">
+    <mat-form-field appearance="outline" dense style="padding-right: 20px;">
+      <mat-label>Search files...</mat-label>
+      <input matInput type="text" [(ngModel)]="filterTerm" (input)="onFilterChange($event)" aria-label="Search files">
+      <button mat-icon-button matSuffix (click)="filterTerm = ''; onFilterChange($event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Grid List -->
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
   @for (item of data$(); track item.fullName; let rowIndex = $index) {
-    <li (click)="onLeftClick(item)" (contextmenu)="onRightClick($event, item)" [ngClass]="{ 'background-highlight': selectedFile === item }">
-      <i style="padding-right: 3px" class="Form_Button_Icon material-icons">text_snippet</i>{{ item.shortFileName }}
-    </li>
+    @if (item.visible) {
+      <li (click)="item.selected = !item.selected; onLeftClick(item)" (contextmenu)="onRightClick($event, item)" [ngClass]="{ 'background-highlight': selectedFile === item }">
+        <input type="checkbox" [(ngModel)]="item.selected" />
+        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">text_snippet</i>{{ item.shortFileName }}
+      </li>
+    }
   }
 </ul>
 
@@ -33,6 +81,12 @@
 <ng-template #deleteFile>
   <div style="width: 100%;">
     Are you sure you would like to delete<br>'{{selectedFile.name}}'?
+  </div>
+</ng-template>
+
+<ng-template #deleteSelected>
+  <div style="width: 100%;">
+    Are you sure you would like to delete all of the selected files?
   </div>
 </ng-template>
 

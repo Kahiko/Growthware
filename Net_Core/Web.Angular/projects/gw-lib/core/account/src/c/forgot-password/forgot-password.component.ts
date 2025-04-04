@@ -1,15 +1,16 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 // Library
-import { ModalService } from '@growthware/core/modal';
+import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
 import { AccountService } from '../../account.service';
-import { Router } from '@angular/router';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'gw-core-forgot-password',
@@ -69,7 +70,14 @@ export class ForgotPasswordComponent implements AfterViewInit, OnInit {
   }
 
   onCancel(): void {
-    this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+    if (this._Router.url.toLowerCase() !== '/accounts/logon') {
+      const mWindowSize: WindowSize = new WindowSize(225, 450);
+      const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
+      this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+      this._ModalSvc.open(mModalOptions);
+    } else {
+      this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+    }
   }
 
   onSubmit(form: FormGroup): void {

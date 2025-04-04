@@ -28,8 +28,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BCommunityCalendar : AbstractBusinessLogic
 {
-    private ICommunityCalendar m_DCommunityCalendar;
 
+#region Member Fields
+    private ICommunityCalendar m_DCommunityCalendar;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BCommunityCalendar() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -73,10 +77,19 @@ public class BCommunityCalendar : AbstractBusinessLogic
     public BCommunityCalendar(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
-        m_DCommunityCalendar.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
+        // m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
+        // m_DCommunityCalendar.ConnectionString = securityEntityProfile.ConnectionString;
+        // m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
+        if(m_DCommunityCalendar == null || ConfigSettings.CentralManagement)
+        {
+            this.m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DCommunityCalendar == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DCommunityCalendar.");
+            }
+        }
     }
+#endregion
 
     public MCalendarEvent GetEvent(int calendarEventSeqId) 
     {

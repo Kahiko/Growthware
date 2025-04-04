@@ -1,3 +1,13 @@
 table {
     width: 100%;
 }
+
+.clear-filter, .select-all, .delete-button, .sorting-dropdown, .filter-input {
+    display: flex;        /* Use flexbox for each control */
+    align-items: center;  /* Center items vertically */
+}
+
+.selection-controls {
+    flex-direction: row;  /* Arrange controls horizontally */
+    justify-content: space-between; /* Pushes children to opposite sides */
+}

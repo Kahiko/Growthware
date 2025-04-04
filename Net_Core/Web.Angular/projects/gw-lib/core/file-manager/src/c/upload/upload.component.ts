@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { computed, effect, input } from '@angular/core';
-import { TemplateRef, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Angular Material
@@ -9,12 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 // Library
 import { GWCommon } from '@growthware/common/services';
-import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
+import { LoggingService } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
-import { IUploadStatus } from '../../interfaces/upload-status.model';
 
 @Component({
 	selector: 'gw-core-upload',
@@ -52,7 +48,7 @@ export class UploadComponent implements OnInit {
 		private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
 		private _Router: Router
-	) { 
+	) {
 		effect(() => {
 			const mData = computed(() => this._FileManagerSvc.uploadStatusChanged$());
 			if (mData().id.toLowerCase() + '_upload' === this.id.toLowerCase()) {
@@ -73,7 +69,7 @@ export class UploadComponent implements OnInit {
 					}
 				}
 			}
-		});		
+		});
 	}
 
 	ngOnInit(): void {

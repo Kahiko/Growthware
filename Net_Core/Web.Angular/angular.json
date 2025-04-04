@@ -1,158 +1,159 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "gw-frontend": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/gw-frontend",
-      "sourceRoot": "projects/gw-frontend/src",
-      "prefix": "gw-frontend",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "outputPath": "dist/gw-frontend",
-            "index": "projects/gw-frontend/src/index.html",
-            "browser": "projects/gw-frontend/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "projects/gw-frontend/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/gw-frontend/src/favicon.ico",
-              "projects/gw-frontend/src/assets"
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/gw-frontend/src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2.0mb",
-                  "maximumError": "2.5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "160kb",
-                  "maximumError": "320kb"
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "gw-frontend": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
                 }
-              ],
-              "outputHashing": "all"
             },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
+            "root": "projects/gw-frontend",
+            "sourceRoot": "projects/gw-frontend/src",
+            "prefix": "gw-frontend",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:application",
+                    "options": {
+                        "outputPath": "dist/growthware/gw-frontend",
+                        "index": "projects/gw-frontend/src/index.html",
+                        "browser": "projects/gw-frontend/src/main.ts",
+                        "polyfills": ["zone.js"],
+                        "tsConfig": "projects/gw-frontend/tsconfig.app.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            {
+                                "glob": "**/*",
+                                "input": "projects/gw-frontend/public"
+                            },
+                            "projects/gw-frontend/src/assets"
+                        ],
+                        "styles": [
+                            "@angular/material/prebuilt-themes/azure-blue.css",
+                            "node_modules/@fontsource/roboto/index.css",
+                            "node_modules/material-icons/iconfont/material-icons.css",
+                            "projects/gw-frontend/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2.0mb",
+                                    "maximumError": "2.5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "160kb",
+                                    "maximumError": "320kb"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "development": {
+                            "optimization": false,
+                            "extractLicenses": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "gw-frontend:build:production"
+                        },
+                        "development": {
+                            "buildTarget": "gw-frontend:build:development",
+                            "proxyConfig": "proxy.conf.js"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "buildTarget": "gw-frontend:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "polyfills": ["zone.js", "zone.js/testing"],
+                        "tsConfig": "projects/gw-frontend/tsconfig.spec.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            {
+                                "glob": "**/*",
+                                "input": "projects/gw-frontend/public"
+                            }
+                        ],
+                        "styles": [
+                            "@angular/material/prebuilt-themes/azure-blue.css",
+                            "node_modules/@fontsource/roboto/index.css",
+                            "node_modules/material-icons/iconfont/material-icons.css",
+                            "projects/gw-frontend/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "projects/gw-lib/**/*.ts",
+                            "projects/gw-lib/**/*.html"
+                        ]
+                    }
+                }
             }
-          },
-          "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "gw-frontend:build:production"
-            },
-            "development": {
-              "buildTarget": "gw-frontend:build:development",
-              "proxyConfig": "proxy.conf.js"
+        "gw-lib": {
+            "projectType": "library",
+            "root": "projects/gw-lib",
+            "sourceRoot": "projects/gw-lib",
+            "prefix": "gw-core",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "project": "projects/gw-lib/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/gw-lib/tsconfig.lib.prod.json"
+                        },
+                        "development": {
+                            "tsConfig": "projects/gw-lib/tsconfig.lib.json"
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "tsConfig": "projects/gw-lib/tsconfig.spec.json",
+                        "polyfills": ["zone.js", "zone.js/testing"]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "projects/gw-lib/**/*.ts",
+                            "projects/gw-lib/**/*.html"
+                        ]
+                    }
+                }
             }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "gw-frontend:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/gw-frontend/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/gw-frontend/src/favicon.ico",
-              "projects/gw-frontend/src/assets"
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/gw-frontend/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/gw-frontend/**/*.ts",
-              "projects/gw-frontend/**/*.html"
-            ]
-          }
         }
-      }
     },
-    "gw-lib": {
-      "projectType": "library",
-      "root": "projects/gw-lib",
-      "sourceRoot": "projects/gw-lib",
-      "prefix": "gw-core",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/gw-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/gw-lib/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/gw-lib/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/gw-lib/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/gw-lib/**/*.ts",
-              "projects/gw-lib/**/*.html"
-            ]
-          }
-        }
-      }
+    "cli": {
+        "analytics": false
     }
-  },
-  "cli": {
-    "analytics": false
-  }
 }

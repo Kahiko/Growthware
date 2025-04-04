@@ -1,0 +1,34 @@
+// Defined here
+$height: '585px';
+$width: '575px';
+
+.formSize {
+    max-height: calc(#{$height} - 35px);
+    min-height: calc(#{$height} - 35px);
+    max-width: calc(#{$width} - 10px);
+    min-width: calc(#{$width} - 10px);
+}
+
+.mat-tab__group {
+    // height 5px more from fromSzie
+    padding-bottom: 0px;
+    max-height: calc(#{$height} - 40px);
+    min-height: calc(#{$height} - 40px);
+}
+
+.mat-tab__tab {
+    // same as mat-tab__group
+    max-height: calc(#{$height} - 40px);
+    min-height: calc(#{$height} - 40px);
+}
+
+.div__tab-container {
+    // height of mat-tab__tab + 50px
+    border: 1px solid;
+    max-height: calc(#{$height} - 90px);
+    min-height: calc(#{$height} - 90px);
+}
+
+li {
+    text-align: left;
+}

@@ -69,7 +69,7 @@ namespace GrowthWare.DatabaseManager
             {
                 if (mDatabaseManager.Exists())
                 {
-                    Console.WriteLine(String.Format("The '{0}' database exists no need to create.", mDatabaseManager.DatabaseName));
+                    Console.WriteLine(String.Format("The '{0}' database exists.", mDatabaseManager.DatabaseName));
                 }
                 else
                 {
@@ -101,9 +101,9 @@ namespace GrowthWare.DatabaseManager
                 }
                 else
                 {
-                    Console.WriteLine("Attempting to Downgrade the database.");
                     mAvailbleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "DESC");
                 }
+                Console.WriteLine(String.Format("Attempting to {0} the database.", mUpOrDown));
                 string mVersionString = string.Empty;
                 foreach (DataRow mDataRow in mAvailbleFiles.Rows)
                 {

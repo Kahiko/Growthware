@@ -100,7 +100,7 @@ export class AccountService extends BaseService {
 		} else {
 			this.stopRefreshTokenTimer();
 		}
-	};
+	}
 
 	/**
 	 * @description Authenticates an account VIA the API using the provided account and password
@@ -347,12 +347,13 @@ export class AccountService extends BaseService {
 				if (navigate) {
 					this._Router.navigate(['generic_home']);
 				}
-				this.stopRefreshTokenTimer();
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
 			},
-			// complete: () => {}
+			complete: () => {
+				this.stopRefreshTokenTimer();
+			}
 		});
 	}
 
@@ -464,13 +465,15 @@ export class AccountService extends BaseService {
 			})
 		};
 		return new Promise<boolean>((resolve, reject) => {
-			this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
-				next: () => {
-					const mSearchCriteria = this._SearchSvc.getSearchCriteria('Accounts'); // from SearchAccountsComponent (this.configurationName)
-					if (mSearchCriteria != null) {
-						this._SearchSvc.setSearchCriteria('Accounts', mSearchCriteria);
+			this._HttpClient.post<boolean>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
+				next: (response: boolean) => {
+					if (response) {
+						const mSearchCriteria = this._SearchSvc.getSearchCriteria('Accounts'); // from SearchAccountsComponent (this.configurationName)
+						if (mSearchCriteria != null) {
+							this._SearchSvc.setSearchCriteria('Accounts', mSearchCriteria);
+						}	
 					}
-					resolve(true);
+					resolve(response);
 				}
 				, error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'AccountService', 'saveAccount');

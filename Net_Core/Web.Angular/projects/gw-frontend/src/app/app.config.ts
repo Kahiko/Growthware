@@ -6,8 +6,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 // Application
 import { routes } from './app.routes';
 import { LoaderInterceptor } from '@growthware/core/loader';
-import { ErrorInterceptor } from '@growthware/common/interceptors';
-import { JwtInterceptor } from '@growthware/common/interceptors';
+import { ErrorInterceptor, JwtInterceptor } from '@growthware/common/interceptors';
 import { appInitializer } from './app.initializer';
 // Library Services
 import { AccountService } from '@growthware/core/account';
@@ -18,21 +17,21 @@ import { NavigationService } from '@growthware/core/navigation';
 export function tokenGetter() {
 	return sessionStorage.getItem('jwt');
 }
-  
+
 export const appConfig: ApplicationConfig = {
 	// Called by main.ts:bootstrapApplication
 	providers: [
-		provideRouter(routes), 
-		provideAnimations(), 
+		provideRouter(routes),
+		provideAnimations(),
 		importProvidersFrom(
 			JwtModule.forRoot({
 				config: {
 					tokenGetter: tokenGetter,
-					allowedDomains: ['localhost:5001'],
+					allowedDomains: ['127.0.0.1:5001'],
 					disallowedRoutes: []
 				},
 			}),
-		), 
+		),
 		provideHttpClient(withInterceptors([
 			LoaderInterceptor,
 			ErrorInterceptor,

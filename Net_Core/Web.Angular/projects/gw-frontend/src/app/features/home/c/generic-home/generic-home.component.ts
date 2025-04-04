@@ -4,6 +4,7 @@ import { ConfigurationService } from '@growthware/core/configuration';
 
 @Component({
 	selector: 'gw-frontend-generic-home',
+	standalone: true,
 	templateUrl: './generic-home.component.html',
 	styleUrls: ['./generic-home.component.scss']
 })

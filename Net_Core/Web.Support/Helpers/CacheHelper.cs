@@ -3,36 +3,61 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
 namespace GrowthWare.Web.Support.Helpers;
 
-/// <summary>
-/// A Facade for Microsoft.Extensions.Caching.Memory and relys on some sort of directory/file management
-/// in order to syncronize the cache across multiple servers.
-/// A file is created for each cache entry when RemoveFromCache or RemoveAllCache is called
-/// the corresponding file is deleted. A ChangeToken is associated with the file and the
-/// value for the cache entry is remove.
-/// Any code using this class should call GetFromCache<T>(string cacheName) and if the returned value
-/// is null it's because the cache item was not found, at that point data should be retrieved from
-/// the database and added to the cache using AddToCache(string cacheName)
-/// </summary>
 [CLSCompliant(false)]
 public class CacheHelper
 {
+    /*
+     * The CacheHelper relys on the filing system to syncronize the cache directory 
+     * in order to syncronize cache across multiple servers.
+     *
+     * Any code that uses the CacheHelper should be aware that GetFromCache will return null
+     * if the cache item does not exist. At that point the calling code should do what it needs
+     * to get the data then call AddToCache.
+     *
+     * AddToCache - Adds a value to the cache and creates the corresponding file.
+     *  1.) Prepare the cache directory by creating it if need be
+     *  2.) Prepare the cache file by creating it if need be it doesn't always need to be created
+     *      because the file could have been created by another server
+     *  3.) Once the file has been dealt with the following will happen
+     *      a.) Calculate the full path of the cache file
+     *      b.) Use a per-file change token (isolated per cache entry)
+     *      d.) Create a MemoryCacheEntryOptions with the change token
+     *      e.) Set the value in the cache
+     *
+     * changeCallback - Removes the item from m_MemoryCache when the file it represents changes.
+     *
+     * GetFromCache - Returns the value from the cache or null. Null indicating the item is not in the cache.
+     *
+     * RemoveAll - Deletes all the files in the cache directory, causing the changeCallback method to be called.
+     *
+     * RemoveFromCache - Deletes the file it exists, causing the changeCallback method to be called.
+     *
+     */
+
     private static CacheHelper m_CacheHelper;
+    private static readonly object m_CacheLock = new();
     private string s_CacheDirectory = string.Empty;
-    private static readonly Mutex m_Mutex = new Mutex();
-    private IMemoryCache m_MemoryCache;
+    private Logger m_Logger = Logger.Instance();
+    private static readonly Mutex m_Mutex = new();
+    private MemoryCache m_MemoryCache;
+    private int m_NumberOfTimesCacheCallBackWasCalled = 0;
+    private PhysicalFileProvider m_FileProvider;
 
     /// <summary>
     /// Prevent any other instances of this class from being created
     /// </summary>
     private CacheHelper()
     {
-        this.s_CacheDirectory = Path.Combine(System.Environment.CurrentDirectory, "CacheDependency");
+        this.s_CacheDirectory = Path.Combine(Environment.CurrentDirectory, "CacheDependency");
+        this.prepDirectory();
         this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
+        this.m_FileProvider = new PhysicalFileProvider(s_CacheDirectory);  // Use a single instance
     }
 
     /// <summary>
@@ -61,7 +86,8 @@ public class CacheHelper
     }
 
     /// <summary>
-    /// Adds a value to the cache be sure to check for the existence of the cache item before adding
+    /// Creates or updates the cache file in order to syncronoize the cache across multiple servers then
+    /// adds or updates a value in cache.
     /// </summary>
     /// <param name="cacheName"></param>
     /// <param name="value"></param>
@@ -79,85 +105,103 @@ public class CacheHelper
     {
         if (!ConfigSettings.CentralManagement & ConfigSettings.EnableCache)
         {
-            string mFileName = cacheName + ".txt";
-            // Create the file if it does not exist
-            if (prepDirecotry())
+            lock (m_CacheLock)
             {
-                if (prepFile(cacheName))
+                if (prepDirectory() && prepFile(cacheName))
                 {
-                    // Get the file provider and create the change token
-                    PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
-                    IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
-                    // Register the change callback to remove the item from the cache
-                    mChangeToken.RegisterChangeCallback(changeCallback, cacheName);
-                    // Create entry options with the change token and add the value to the cache
-                    MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
-                    // Add the value to the cache
-                    m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
+                    // Calculate the full path of the cache file
+                    string mFileNameAndPath = getFullFileAndPath(cacheName);
+                    // Use a per-file change token (isolated per cache entry)
+                    IChangeToken mChangeToken = m_FileProvider.Watch(Path.GetFileName(mFileNameAndPath));
+                    // Create memory cache entry options with the change token and Register the change callback
+                    MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions()
+                        .AddExpirationToken(mChangeToken)
+                        .RegisterPostEvictionCallback((key, value, reason, state) => changeCallback(key, value, reason, state), cacheName);
+                    // Set the value in the cache
+                    m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);  // Store object, not file content
                 }
             }
         }
     }
 
     /// <summary>
-    /// Handles the change callback created in AddToCache
+    /// Callback method that is invoked when a cache item is removed from the memory cache.
     /// </summary>
-    /// <param name="state"></param>
-    private void changeCallback(object state)
+    /// <param name="key">The key of the cache entry that was removed.</param>
+    /// <param name="value">The value of the cache entry that was removed.</param>
+    /// <param name="reason">The reason for the eviction of the cache entry.</param>
+    /// <param name="state">Additional state information passed to the callback.</param>
+    private void changeCallback(object key, object value, EvictionReason reason, object state)
     {
-        if (state != default)
+        try
         {
-            string mCacheName = (string)state;
-            string mFileNameAndPath = Path.Combine(s_CacheDirectory, mCacheName + ".txt");
-            int mWaitCount = 0;
-            do
+            m_NumberOfTimesCacheCallBackWasCalled++;
+            m_Logger.Debug($"Call Number: {m_NumberOfTimesCacheCallBackWasCalled} Cache item {state} was removed from the cache because {reason}.");
+
+            // Ensure the cache entry is explicitly removed
+            lock (m_CacheLock)
             {
-                try
-                {
-                    File.Delete(mFileNameAndPath);
-                }
-                catch (System.Exception)
-                {
-                    mWaitCount++;
-                }
-            } while (mWaitCount < 4 && File.Exists(mFileNameAndPath));
+                m_MemoryCache.Remove(key);
+            }
+        }
+        catch (Exception ex)
+        {
+            m_Logger.Error(ex.Message);
         }
     }
 
+    /// <summary>
+    /// Returns the value from the cache or null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="cacheName"></param>
+    /// <returns></returns>
     public T GetFromCache<T>(string cacheName)
     {
-        m_MemoryCache.TryGetValue(cacheName, out T mRetVal);
-        return mRetVal;
+        lock (m_CacheLock)
+        {
+            m_MemoryCache.TryGetValue(cacheName, out T mRetVal);
+            return mRetVal;
+        }
     }
 
     /// <summary>
-    /// Removes all cache by deleting all the files.
+    /// Constructs a full file path for the cache file associated with the given cache name.
+    /// </summary>
+    /// <param name="cacheName">The name of the cache for which the file path is to be calculated.</param>
+    /// <returns>The full file path of the cache file.</returns>
+    private string getFullFileAndPath(string cacheName)
+    {
+        return Path.Combine(s_CacheDirectory, cacheName + ".txt");
+    }
+
+    /// <summary>
+    /// Removes all cache by deleting all the files in the cache directory thus triggering the changeCallback.
     /// </summary>
     public void RemoveAll()
     {
+        // Delete all the files in the cache directory triggering the changeCallback
+        // Hopefully there is some mechanism to syncronize the directory across multiple servers
         DirectoryInfo mDirectoryInfo = new DirectoryInfo(this.s_CacheDirectory);
-        foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
+        lock (m_CacheLock)
         {
-            mFileInfo.Delete();
+            foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
+            {
+                mFileInfo.Delete();
+            }
         }
-        m_MemoryCache.Dispose();
-        this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
     }
 
     /// <summary>
-    /// Removes a single item from cache by deleting the associated file.
+    /// Deletes the file it exists, causing the changeCallback method to be called.
     /// </summary>
     /// <param name="cacheName"></param>
     public void RemoveFromCache(string cacheName)
     {
-        string mFileNameAndPath = Path.Combine(s_CacheDirectory, cacheName + ".txt");
+        string mFileNameAndPath = getFullFileAndPath(cacheName);
         if (File.Exists(mFileNameAndPath))
         {
             File.Delete(mFileNameAndPath);
-        }
-        else
-        {
-            m_MemoryCache.Remove(cacheName);
         }
     }
 
@@ -165,24 +209,23 @@ public class CacheHelper
     /// Prepares the cache directory.
     /// </summary>
     /// <returns>False if unable to create cache directory</returns>
-    private bool prepDirecotry()
+    private bool prepDirectory()
     {
-        bool mRetVal = true;
         try
         {
             if (!Directory.Exists(s_CacheDirectory))
             {
                 Directory.CreateDirectory(s_CacheDirectory);
             }
+            return true;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Logger mLogger = Logger.Instance();
             mLogger.Error("Unable to create cache directory");
             mLogger.Error(ex.Message);
-            mRetVal = false;
+            return false;
         }
-        return mRetVal;
     }
 
     /// <summary>
@@ -192,22 +235,28 @@ public class CacheHelper
     /// <returns>False if unable to create cache file</returns>
     private bool prepFile(string cacheName)
     {
-        bool mRetVal = true;
         try
         {
-            string mFileNameAndPath = Path.Combine(s_CacheDirectory, cacheName + ".txt");
+            string mFileNameAndPath = getFullFileAndPath(cacheName);
+
+            // Only create if it does not exist
             if (!File.Exists(mFileNameAndPath))
             {
-                File.Create(mFileNameAndPath).Close();
+                using (var stream = new StreamWriter(mFileNameAndPath))
+                {
+                    stream.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
             }
+
+            return true;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Logger mLogger = Logger.Instance();
             mLogger.Error("Unable to create cache file");
             mLogger.Error(ex.Message);
-            mRetVal = false;
+            return false;
         }
-        return mRetVal;
     }
 }
+

@@ -409,7 +409,10 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRefreshToken = string.Empty;
         }
-        AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
+        if (AccountUtility.CurrentProfile != null && !string.IsNullOrWhiteSpace(AccountUtility.CurrentProfile.Account)) 
+        {
+            AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
+        }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
         CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile.EncryptionType);
@@ -569,39 +572,47 @@ public abstract class AbstractAccountController : ControllerBase
         MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
-        if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
+        if (mEditId != null)
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account);
-            if (mExistingAccount.Account == null)
+            if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit || mRequestingProfile.Account == mExistingAccount.Account)
             {
-                mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
-                mExistingAccount.Password = ""; // should be auto generated and 
+                if (mExistingAccount.Account == null)
+                {
+                    mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
+                    mExistingAccount.Password = ""; // should be auto generated and 
+                }
+                mExistingAccount.Account = accountProfile.Account;
+                mExistingAccount.AssignedRoles = accountProfile.AssignedRoles;
+                mExistingAccount.Email = accountProfile.Email;
+                mExistingAccount.EnableNotifications = accountProfile.EnableNotifications;
+                if (mRequestingProfile.Account != mExistingAccount.Account) 
+                {
+                    mExistingAccount.FailedAttempts = accountProfile.FailedAttempts;
+                    mExistingAccount.Status = accountProfile.Status;
+                }
+
+                mExistingAccount.FirstName = accountProfile.FirstName;
+                mExistingAccount.Groups = accountProfile.Groups;
+                mExistingAccount.Id = accountProfile.Id;
+                if (mRequestingProfile.IsSystemAdmin)
+                {
+                    mExistingAccount.IsSystemAdmin = accountProfile.IsSystemAdmin;
+                }
+                mExistingAccount.LastName = accountProfile.LastName;
+                mExistingAccount.Location = accountProfile.Location;
+                mExistingAccount.MiddleName = accountProfile.MiddleName;
+                mExistingAccount.Name = accountProfile.Account;
+                mExistingAccount.PreferredName = accountProfile.PreferredName;
+                mExistingAccount.TimeZone = accountProfile.TimeZone;
+                mExistingAccount.UpdatedBy = mRequestingProfile.Id;
+                mExistingAccount.UpdatedDate = DateTime.Now;
+                AccountUtility.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
+                mRetVal = true;
             }
-            mExistingAccount.Account = accountProfile.Account;
-            mExistingAccount.AssignedRoles = accountProfile.AssignedRoles;
-            mExistingAccount.Email = accountProfile.Email;
-            mExistingAccount.EnableNotifications = accountProfile.EnableNotifications;
-            mExistingAccount.FirstName = accountProfile.FirstName;
-            mExistingAccount.Groups = accountProfile.Groups;
-            mExistingAccount.Id = accountProfile.Id;
-            if (mRequestingProfile.IsSystemAdmin)
-            {
-                mExistingAccount.IsSystemAdmin = accountProfile.IsSystemAdmin;
-            }
-            mExistingAccount.LastName = accountProfile.LastName;
-            mExistingAccount.Location = accountProfile.Location;
-            mExistingAccount.MiddleName = accountProfile.MiddleName;
-            mExistingAccount.Name = accountProfile.Account;
-            mExistingAccount.PreferredName = accountProfile.PreferredName;
-            mExistingAccount.Status = accountProfile.Status;
-            mExistingAccount.TimeZone = accountProfile.TimeZone;
-            mExistingAccount.UpdatedBy = mRequestingProfile.Id;
-            mExistingAccount.UpdatedDate = DateTime.Now;
-            AccountUtility.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
-            mRetVal = true;
         }
-        else
+        if (mRetVal == false) 
         {
             this.m_Logger.Error(mRequestingProfile.Account + " does not have permissions to 'SaveAccount'");
         }

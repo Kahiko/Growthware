@@ -12,8 +12,12 @@ namespace GrowthWare.BusinessLogic;
 /// </summary>
 public class BNameValuePairs : AbstractBusinessLogic
 {
-    private INameValuePairs m_DNameValuePairs;
 
+#region Member Fields
+    private INameValuePairs m_DNameValuePairs;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private sub new() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -56,10 +60,17 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </example>
     public BNameValuePairs(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile can not be null (Nothing in Visual Basic)");
-        m_DNameValuePairs = (INameValuePairs)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DNameValuePairs");
-        m_DNameValuePairs.ConnectionString = securityEntityProfile.ConnectionString;
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DNameValuePairs == null || ConfigSettings.CentralManagement)
+        {
+            this.m_DNameValuePairs = (INameValuePairs)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DNameValuePairs", securityEntityProfile.ConnectionString);
+            if (this.m_DNameValuePairs == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DNameValuePairs.");
+            }
+        }
     }
+#endregion
 
     /// <summary>
     /// Deletes the NVP detail.

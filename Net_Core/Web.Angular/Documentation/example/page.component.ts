@@ -8,17 +8,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Feature
 
 @Component({
-  selector: 'gw-core-test-logging',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    // Angular Material
-    MatIconModule,
-    MatTabsModule,
-  ],
-  templateUrl: './page.component.html',
-  styleUrl: './page.component.scss'
+	selector: 'gw-core-test-logging',
+	standalone: true,
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		// Angular Material
+		MatIconModule,
+		MatTabsModule,
+	],
+	templateUrl: './page.component.html',
+	styleUrl: './page.component.scss'
 })
 export class PageComponent implements OnInit {
 

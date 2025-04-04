@@ -8,60 +8,19 @@ namespace GrowthWare.Framework.Models;
 /// Represents the properties necessary to interact with a servers directory(ies)
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public sealed class MDirectoryProfile : AbstractBaseModel
+public sealed class MDirectoryProfile : AAddedUpdated
 {
 
-    #region Constructors
-    /// <summary>
-    /// Will return a directory profile with the default vaules
-    /// </summary>
-    /// <remarks></remarks>
-    public MDirectoryProfile()
-    {
-        m_Function_Seq_ID = -1;
-        Id = -1;
-    }
+#region Member Fields
 
-    /// <summary>
-    /// Will return a directory profile with the values from the data row
-    /// </summary>
-    /// <param name="dataRow">DataRow</param>
-    public MDirectoryProfile(DataRow dataRow)
-    {
-        base.Initialize(dataRow);
-        m_Function_Seq_ID = base.GetInt(dataRow, "FUNCTION_SEQ_ID");
-        m_Directory = base.GetString(dataRow, "Directory");
-        m_Impersonate = base.GetBool(dataRow, "Impersonate");
-        m_Impersonate_Account = base.GetString(dataRow, "Impersonate_Account");
-        m_Impersonate_PWD = base.GetString(dataRow, "Impersonate_PWD");
-        base.Id = m_Function_Seq_ID;
-        base.Name = m_Directory.ToString();
-    }
-    #endregion
-
-    #region Field Objects
-    private int m_Function_Seq_ID;
     private string m_Directory = string.Empty;
     private bool m_Impersonate = false;
     private string m_Impersonate_Account = string.Empty;
     private string m_Impersonate_PWD = string.Empty;
-    #endregion
 
-    #region Public Properties
-    /// <summary>
-    /// Is the primary key
-    /// </summary>
-    public int FunctionSeqId
-    {
-        get
-        {
-            return m_Function_Seq_ID;
-        }
-        set
-        {
-            m_Function_Seq_ID = value;
-        }
-    }
+#endregion
+
+#region Public Properties
 
     /// <summary>
     /// Is the full local directory i.e. C:\temp
@@ -80,6 +39,16 @@ public sealed class MDirectoryProfile : AbstractBaseModel
             if (value != null) m_Directory = value.Trim();
         }
     }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "FunctionSeqId";
+
+    /// <summary>
+    /// Is the primary key
+    /// </summary>
+    [DBPrimaryKey]
+    [DBColumnName("FunctionSeqId")]
+    public int Id { get; set; }
 
     /// <summary>
     /// Indicates if impersonation is necessary
@@ -105,6 +74,7 @@ public sealed class MDirectoryProfile : AbstractBaseModel
     /// <value>String</value>
     /// <returns>String</returns>
     /// <remarks>Must be a valid network account with access to the information supplied in the directory property</remarks>
+    [DBColumnName("Impersonating_Account")]
     public string ImpersonateAccount
     {
         get
@@ -113,7 +83,7 @@ public sealed class MDirectoryProfile : AbstractBaseModel
         }
         set
         {
-            if (value != null) m_Impersonate_Account = value.Trim();
+            if (!string.IsNullOrEmpty(value)) m_Impersonate_Account = value.Trim();
         }
     }
 
@@ -122,6 +92,7 @@ public sealed class MDirectoryProfile : AbstractBaseModel
     /// </summary>
     /// <value>String</value>
     /// <returns>String</returns>
+    [DBColumnName("Impersonating_Password")]
     public string ImpersonatePassword
     {
         get
@@ -130,12 +101,47 @@ public sealed class MDirectoryProfile : AbstractBaseModel
         }
         set
         {
-            if (!string.IsNullOrEmpty(value))
-            {
-                m_Impersonate_PWD = value.Trim();
-            }
+            value ??= string.Empty;
+            m_Impersonate_PWD = value.Trim();
         }
     }
 
-    #endregion
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWOptional].[Directories]";
+
+#endregion
+
+#region Constructors
+    /// <summary>
+    /// Will return a directory profile with the default vaules
+    /// </summary>
+    /// <remarks></remarks>
+    public MDirectoryProfile()
+    {
+        Id = -1;
+    }
+
+    /// <summary>
+    /// Will return a directory profile with the values from the data row
+    /// </summary>
+    /// <param name="dataRow">DataRow</param>
+    public MDirectoryProfile(DataRow dataRow)
+    {
+        this.setDefaults();
+        base.Initialize(dataRow);
+        this.Id = base.GetInt(dataRow, "FUNCTION_SEQ_ID");
+        m_Directory = base.GetString(dataRow, "Directory");
+        m_Impersonate = base.GetBool(dataRow, "Impersonate");
+        m_Impersonate_Account = base.GetString(dataRow, "Impersonate_Account");
+        m_Impersonate_PWD = base.GetString(dataRow, "Impersonate_PWD");
+    }
+#endregion
+
+    protected override void setDefaults()
+    {
+        this.Id = -1;
+    }
 }

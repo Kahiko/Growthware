@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -40,10 +40,10 @@ export class CalendarComponent implements OnInit {
   public weekDayNames: string[] = [];
 
   constructor(
-		private _CalendarSvc: CalendarService,
-		private _GWCommon: GWCommon,
+    private _CalendarSvc: CalendarService,
+    private _GWCommon: GWCommon,
     private _Router: Router
-  ) { 
+  ) {
     this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
     effect(() => {
       this.calendar = this._CalendarSvc.calendarData$();
@@ -104,7 +104,6 @@ export class CalendarComponent implements OnInit {
 
   public decrease() {
     const mCurrentDate = new Date(this._CalendarSvc.selectedDate);
-    /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
     switch (this.incrementBy) {
       case 'day': {
         mCurrentDate.setDate(mCurrentDate.getDate() - 1);

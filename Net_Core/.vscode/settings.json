@@ -1,15 +1,12 @@
 {
-    "angular.enable-strict-mode-prompt": false,
-    "cSpell.words": [
-        "Growthware",
-        "searchfunctions"
-    ],
-    "eslint.enable": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    },
-    "eslint.validate": [
-      "javascript", // ...
-      "html" // Add "html" to enable linting `.html` files.
-    ]
+  "angular.enable-strict-mode-prompt": false,
+  "cSpell.words": [
+    "Growthware",
+    "searchfunctions"
+  ],
+  "dotnet.defaultSolution": "GrowthwareCore.sln",
+  "eslint.workingDirectories": [
+    "Web.Angular",
+  ],
+  "html.format.enable": false,
 }

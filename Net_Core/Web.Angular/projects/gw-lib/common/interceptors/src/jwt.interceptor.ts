@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import { Injectable, inject } from '@angular/core';
 import { HttpRequest, HttpEvent, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,7 +10,7 @@ import { GWCommon } from '@growthware/common/services';
 })
 class JwtHandler {
 	private _BaseUrl: string = '';
-  
+
 	constructor(private _AccountSvc: AccountService, private _GWCommon: GWCommon) {
 		this._BaseUrl = this._GWCommon.baseURL;
 	}
@@ -19,13 +18,13 @@ class JwtHandler {
 	intercept(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 		const mAuthenticationResponse = this._AccountSvc.authenticationResponse();
 		const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.anonymous;
-		if(mIsLoggedIn)
-		{
+		if (mIsLoggedIn) {
 			// This will need to match any Api's you have in proxy.conf.js
 			const mApiUrls = [
 				this._BaseUrl + 'GrowthwareAccount',
 				this._BaseUrl + 'GrowthwareAPI',
 				this._BaseUrl + 'GrowthwareCalendar',
+				this._BaseUrl + 'GrowthwareFeedback',
 				this._BaseUrl + 'GrowthwareFile',
 				this._BaseUrl + 'GrowthwareFunction',
 				this._BaseUrl + 'GrowthwareGroup',

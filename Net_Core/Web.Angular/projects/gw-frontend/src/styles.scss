@@ -195,6 +195,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     overflow: hidden;
   }
   
+
+  .checkbox-label {
+    display: flex;        /* Use flexbox for the label */
+    align-items: center;  /* Center checkbox and text vertically */
+    gap: 5px;             /* Space between checkbox and label text */
+  }
+
   /* Tabs */
   .div__tab-container {
     border-bottom: 1px solid lightgray;

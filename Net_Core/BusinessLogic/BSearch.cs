@@ -5,6 +5,7 @@ using System;
 using System.Data;
 
 namespace GrowthWare.BusinessLogic;
+
 /// <summary>
 /// Process business logic for accounts
 /// </summary>
@@ -28,11 +29,15 @@ namespace GrowthWare.BusinessLogic;
 public class BSearch : AbstractBusinessLogic
 {
 
+#region Member Fields
     private ISearch m_DSearch;
+#endregion
 
+#region Constructors
     private BSearch() { }
 
     private string m_DB_ClassName = "DSearch";
+#endregion
 
     /// <summary>
     /// Parameters are need to pass along to the factory for correct connection to the desired datastore.
@@ -68,24 +73,15 @@ public class BSearch : AbstractBusinessLogic
     /// </example>
     public BSearch(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DSearch == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
-        }
-        if (!ConfigSettings.CentralManagement)
-        {
-            if (m_DSearch == null)
+            this.m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName, securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DSearch == null) 
             {
-                m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
+                throw new InvalidOperationException("Failed to create an instance of DSecurityEntities.");
             }
         }
-        else
-        {
-            m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
-        }
-
-        m_DSearch.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DSearch.SecurityEntitySeqID = securityEntityProfile.Id;
     }
     public DataTable GetSearchResults(MSearchCriteria searchCriteria)
     {

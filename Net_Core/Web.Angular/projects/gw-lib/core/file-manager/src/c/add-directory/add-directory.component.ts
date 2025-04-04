@@ -79,7 +79,7 @@ export class AddDirectoryComponent implements OnInit {
 				mLogLevel = LogLevel.Error;
 			}
 			this.frmCreateDirectory.reset();
-			this._ModalSvc.close(this._FileManagerSvc.ModalId_CreateDirectory);
+			this._ModalSvc.close(this._FileManagerSvc.MODAL_ID_CREATE_DIRECTORY);
 			this._LoggingSvc.toast(mMsg, 'New Folder', mLogLevel);					
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileManagerComponent', 'onCreateDirectorySubmit');

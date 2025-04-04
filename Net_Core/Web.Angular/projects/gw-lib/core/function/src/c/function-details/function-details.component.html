@@ -58,6 +58,8 @@
                 <mat-hint align="end">{{ metaKeywords.value.length }}/512</mat-hint>
               </div>
             </div>
+          </div>
+          <div class="table">
             <div class="tr">
               <div class="td left">
                 <span class="Form_LabelText">Action:</span>
@@ -74,8 +76,6 @@
                 <mat-error style="display: inline-block; padding-left: 5px">{{getErrorMessage("action")}}</mat-error>
                 }
               </div>
-            </div>
-            <div class="tr">
               <div class="td left">
                 <span class="Form_LabelText">Type: </span>
               </div>
@@ -89,8 +89,6 @@
                   }
                 </mat-select>
               </div>
-            </div>
-            <div class="tr">
               <div class="td left">
                 <span class="Form_LabelText">Source: </span>
               </div>
@@ -111,6 +109,12 @@
               <div class="td left">
                 <input matInput type="text" formControlName="controller" class="Form_Field rounded"/>
               </div>
+              <div class="td left"></div>
+              <div class="td middleCell"></div>
+              <div class="td left"></div>
+              <div class="td left"></div>
+              <div class="td middleCell"></div>
+              <div class="td left"></div>
             </div>
           </div>
           <div class="table">
@@ -385,7 +389,9 @@
               <div class="td right">
                 <span class="Form_LabelText">Requries Impersonation: </span>
               </div>
-              <div class="td" style="width: 20px"></div>
+              <div class="td" style="width: 20px">
+                <i (click)="onHelp('impersonation')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
+              </div>
               <div class="td left">
                 <mat-checkbox formControlName="impersonate" class="Form_Field"></mat-checkbox>
               </div>
@@ -407,7 +413,7 @@
                 <i (click)="onHelp('Passord')" style="cursor: pointer" class="Form_Button_Icon material-icons">help</i>
               </div>
               <div class="td left">
-                <input matInput type="text" formControlName="impersonatePassword" #impersonatePassword class="Form_Field rounded"/>&nbsp;!Leave blank to keep the same password!
+                <input matInput type="text" formControlName="impersonatePassword" #impersonatePassword class="Form_Field rounded"/>
               </div>
             </div>
           </div>
@@ -525,4 +531,7 @@
     the<br />
     the box provided.
   </p>
+</ng-template>
+<ng-template #helpImpersonation>
+  If unchecked when saving the account and password no longer be kept for security reasons.
 </ng-template>

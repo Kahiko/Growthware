@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // Library
 import { GWCommon } from '@growthware/common/services';
@@ -79,7 +79,7 @@ export class DynamicTableService {
 	public loadDefaultTableConfig(): void {
 		// Intended to be used from appInitializer
 		// Load the default data for the growthware application
-		this._HttpClient.get('../assets/data/dynamic-table.config.json').subscribe((data) => {
+		this._HttpClient.get('^./../../data/dynamic-table.config.json').subscribe((data) => {
 			// console.log('data', data);
 			if (!this._GWCommon.isNullOrUndefined(data)) {
 				this.setTableConfiguration(data);

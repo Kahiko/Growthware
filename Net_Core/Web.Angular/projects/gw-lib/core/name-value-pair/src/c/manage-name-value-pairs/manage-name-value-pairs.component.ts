@@ -2,7 +2,7 @@ import { Component, AfterViewInit, OnInit, ViewChild, signal, effect } from '@an
 import { CommonModule } from '@angular/common';
 // Library
 import { DynamicTableBtnMethods, DynamicTableComponent } from '@growthware/core/dynamic-table';
-import { ISearchCriteriaNVP, SearchService } from '@growthware/core/search';
+import { SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 // Feature
@@ -30,7 +30,6 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 	private _Api_Name: string = 'GrowthwareNameValuePair/';
 	private _Api_Nvp_Search: string = '';
 	private _Api_Nvp_Details_Search: string = '';
-	private _SearchCriteriaNVP!: ISearchCriteriaNVP;
 	private _nameValuePairWindowSize: WindowSize = new WindowSize(300, 400);
 	private _nameValuePairChildWindowSize: WindowSize = new WindowSize(225, 400);
 
@@ -41,8 +40,8 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 
 	nameValuePairColumns: Array<string> = ['Display', 'Description'];
 	nameValuePairParentData$ = signal<INvpParentProfile[]>([]);
-	nvpChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairChildWindowSize);
-	nvpParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
+	nvpChildModalOptions!: ModalOptions;
+	nvpParentModalOptions!: ModalOptions;
 
 	constructor(
 		private _ModalSvc: ModalService,
@@ -53,9 +52,11 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 		this._Api_Nvp_Search = this._Api_Name + 'SearchNameValuePairs';
 		this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
 		this.childConfigurationName = this._NameValuePairService.childConfigurationName;
+		this.nvpChildModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairChildWindowSize)
+		this.nvpParentModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
 		// console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
 		effect(() => {
-			let criteria = this._SearchSvc.searchCriteriaChanged$();
+			const criteria = this._SearchSvc.searchCriteriaChanged$();
 			if (criteria.name.trim().toLowerCase() === this._NameValuePairService.parentConfigurationName.trim().toLowerCase()) {
 				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
 					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
@@ -74,7 +75,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 				}).catch((error) => {
 					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
 				});
-			}			
+			}
 		})
 	}
 

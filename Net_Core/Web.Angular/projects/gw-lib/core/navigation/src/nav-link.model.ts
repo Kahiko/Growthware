@@ -8,6 +8,7 @@ export interface INavLink {
   'description': string
   'disabled': boolean
   'icon': string;
+  'id': number;
   'isActive': boolean;
   'label': string;
   'link': string;
@@ -22,6 +23,7 @@ export interface INavLink {
 
 export class NavLink implements INavLink {
 	public disabled = false;
+	public id: number = -1;
 	public isActive = false;
 	// public children = new Array<INavLink>;
 

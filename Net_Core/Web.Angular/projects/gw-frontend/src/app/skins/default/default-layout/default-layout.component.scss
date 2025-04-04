@@ -10,8 +10,8 @@
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+// @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
      
 $fontConfig: mat.m2-define-legacy-typography-config(
   $display-4: mat.m2-define-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
@@ -239,7 +239,6 @@ $altTheme: mat.m2-define-dark-theme((
 .theme-alternate {
   @include mat.all-component-colors($altTheme);
 }
-// Done Theme
 // Specific component overrides, pieces that are not in line with the general theming
 
 // Handle buttons appropriately, with respect to line-height

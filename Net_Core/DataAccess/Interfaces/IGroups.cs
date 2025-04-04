@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Sets or gets the SecurityEntitySeqID
         /// </summary>
-        int SecurityEntitySeqID { get; set; }
+        int SecurityEntitySeqId { get; set; }
 
         /// <summary>
         /// GroupProfile

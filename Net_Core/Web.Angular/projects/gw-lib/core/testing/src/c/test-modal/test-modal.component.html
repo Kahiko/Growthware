@@ -1,0 +1,178 @@
+<form [formGroup]="theForm" (ngSubmit)="onSubmit()" class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+        <mat-tab label="Test Modal" class="mat-tab__tab">
+            <div class="div__tab-container formSection">
+                <div class="formSectionContents center">
+                    <div class="table">
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field style="width: 98%;">
+                                    <mat-label>Title</mat-label>
+                                    <input matInput placeholder="Ex. My Title" value="" formControlName="title">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td left">
+                                <mat-form-field style="width: 98%;">
+                                    <mat-label>Message</mat-label>
+                                    <textarea matInput placeholder="Ex. My Message" formControlName="msg"></textarea>
+                                    <mat-hint align="end">{{ controls['msg'].getRawValue().length }}/512</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedPayload">
+                            <div class="tr">
+                                <div class="td">
+                                    <label id="payloadGroupLable" style="font-weight: bold;">Test the payload type</label>
+                                </div>
+                            </div>
+                            <div class="tr">
+                                <div class="td">
+                                    <div class="table">
+                                            <div class="tr">
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'string'">
+                                                        <div>String </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'templateRef'">
+                                                        <div>Template </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'component'">
+                                                        <div>Component </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                            </div>
+                                            <div class="tr">
+                                                <div class="td left">
+                                                    <mat-radio-button [value]="'double'">
+                                                        <div>Double </div>
+                                                    </mat-radio-button>
+                                                </div>
+                                                <div class="td left"></div>
+                                                <div class="td left"></div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tr">
+                                <div class="td">
+                                    <label id="btnGroupLable" style="font-weight: bold;">Test the button type</label>
+                                </div>
+                            </div>
+                            <div class="tr">
+                                <div class="td">
+                                    <div class="table">
+                                        <div class="tr">
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'okbtn'">
+                                                    <div>OK Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'closeBtn'">
+                                                    <div>Close Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'closeClosebtn'">
+                                                    <div>OK & Close Button </div>
+                                                </mat-radio-button>
+                                            </div>
+                                        </div>
+                                        <div class="tr">
+                                            <div class="td left">
+                                                <mat-radio-button [value]="'cancelbtn'">
+                                                    <div>Cancel Button (&times;)</div>
+                                                </mat-radio-button>
+                                            </div>
+                                            <div class="td left"></div>
+                                            <div class="td left"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Behaviors" class="mat-tab__tab">
+            <div class="div__tab-container formSection">
+                <div class="formSectionContents">
+                    <p class="left">
+                        The Modal feature facilitates the opening and closing of a modal window from any non circular reference component/service in the application via the ModalService.
+                    </p>
+                    <ul>
+                        <li>
+                            The modal feature supports the following payload options
+                            <ul>
+                                <li>
+                                    String
+                                </li>
+                                <li>
+                                    Template reference
+                                </li>
+                                <li>
+                                    Component reference
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Multiple opened modals are supported
+                            <ul>
+                                <li>
+                                    Modals are opened in a stack fasion (Last one opened is "on top")
+                                </li>
+                                <li>
+                                    Multiple modals are closed in the reverse order that they were opened (The last one opened is closed first)
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Modals can be closed by:
+                            <ul>
+                                <li>
+                                    Clicking the "x" in the top right corner
+                                </li>
+                                <li>
+                                    Using the "OK" button if it is present
+                                </li>
+                                <li>
+                                    Using the "Close" button if it is present
+                                </li>
+                                <li>
+                                    Using the "ESC" key
+                                </li>
+                                <li>
+                                    Using a button supplied by a component opened as a modal with custom code
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Ok, Close and Cancel buttons are overridable
+                        </li>
+                    </ul>
+                    <p class="left">
+                        The purpose of this tab is to provoide you with an expectation of the behavior of the modal feature.  Implementation or usage of the modal feature can be found in gw-lib/core/modal/src/modal.service.ts.
+                    </p>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="theForm.invalid" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">open_in_new</i>open
+        </button>
+    </div>
+</form>
+
+<ng-template #templateRef>
+    <div style="width: 100%;">
+        Are you sure you would like to delete all of the selected files?
+    </div>
+</ng-template>

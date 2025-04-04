@@ -1,0 +1,13 @@
+/* custom-style.css */
+
+/* 
+    Hide the Swagger UI logo until it gets removed in the custom-script.js file
+*/
+.swagger-ui .topbar svg:not(:root) {
+    display: none;
+}
+
+/* Replace the Swagger UI logo with your own image */
+.topbar-wrapper .link:before {
+    content: url('/images/happy-pineapple-gradient-by-vexels_32x32.png');
+}

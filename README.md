@@ -4,7 +4,7 @@ Growthware is an idea dedicated to producing reusable and extendable core techno
 
 <b>Welcome to the Growthware source control site.</b>
 <p>
-    The Growthware code base is in essence used to produce a functioning web application/site handling Role based security.  The web application/site code provides the ability to manage Roles, Groups, Accounts, Functions and Security Entities.  Supported middle tier technologies are written with both .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
+    The Growthware code base is in essence used to produce a functioning web application/site handling Role based security.  The web application/site code provides the ability to manage Roles, Groups, Accounts, Functions and Security Entities.  Supported middle tier technologies are written with both .Net 4.8 and .Net Core 9.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 9 for each version.
 </p>
 <p>
 The framework was developed to provide a data store independent/generic code base where SQL Server has been implemented.
@@ -20,7 +20,7 @@ The following is a summary of the features available.
             <td>Feature</td>
             <td>.Net 4.8 VB</td>
             <td>.Net 4.8 C#</td>
-            <td>.Net Core 8 C#</td>
+            <td>.Net Core 9 C#</td>
             <td>UI</td>
         </tr>
     </thead>
@@ -105,7 +105,7 @@ The following is a summary of the features available.
             <td>VB</td>
             <td>C#</td>
             <td>.Net 4.8</td>
-            <td>.Net Core 8</td>
+            <td>.Net Core 9</td>
             <td>UI</td>
         </tr>
     </thead>
@@ -168,7 +168,7 @@ The following is a summary of the features available.
             <td>VB</td>
             <td>C#</td>
             <td>.Net 4.8</td>
-            <td>.Net Core 8</td>
+            <td>.Net Core 9</td>
             <td>UI</td>
         </tr>
     </thead>

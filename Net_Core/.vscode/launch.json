@@ -13,10 +13,10 @@
             "request": "launch",
             "preLaunchTask": "Task: DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net8.0/GrowthWare.DatabaseManager.dll",
+            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net9.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
-                "5.1.0.0"
+                "5.2.0.0"
             ],
             "cwd": "${workspaceFolder}/DatabaseManager",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -29,7 +29,7 @@
             "request": "launch",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
-            "url": "https://localhost:44455",
+            "url": "https://127.0.0.1:44455",
             "webRoot": "${workspaceFolder}/Web.Angular",
             "sourceMaps": true,
             // "trace": true,
@@ -45,7 +45,7 @@
             "request": "launch",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
-            "url": "https://localhost:44455",
+            "url": "https://127.0.0.1:44455",
             "webRoot": "${workspaceFolder}/Web.Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
@@ -60,7 +60,7 @@
             "request": "launch",
             "preLaunchTask": "Task: Api-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Api/bin/Debug/net8.0/GrowthWare.Web.Api.dll",
+            "program": "${workspaceFolder}/Web.Api/bin/Debug/net9.0/GrowthWare.Web.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Api",
             "stopAtEntry": false,

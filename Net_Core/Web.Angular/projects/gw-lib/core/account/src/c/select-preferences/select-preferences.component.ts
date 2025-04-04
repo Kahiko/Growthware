@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -58,11 +57,11 @@ export class SelectPreferencesComponent implements OnInit {
 	selectedAction!: string;
 
 	validColorSchemes: IColorSchemes[] = [
-		{ color_Scheme: 'Blue',   even_row: '#6699cc', even_font: 'White', odd_row: '#b6cbeb', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: 'Black' 	  },
-		{ color_Scheme: 'Green',  even_row: '#c5e095', even_font: 'Black', odd_row: '#879966', odd_font: 'White', background: '#ffffff', header_row: '#808577', header_font: 'White' 	  },
-		{ color_Scheme: 'Yellow', even_row: '#f8e094', even_font: 'Black', odd_row: '#f8bc03', odd_font: 'Black', background: '#ffffff', header_row: '#CF9C00', header_font: 'Black' 	  },
-		{ color_Scheme: 'Purple', even_row: '#91619b', even_font: 'White', odd_row: '#be9cc5', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: '#91619b' 	  },
-		{ color_Scheme: 'Red',    even_row: '#A72A49', even_font: 'White', odd_row: '#DE8587', odd_font: 'Black', background: '#ffffff', header_row: '#BA706A', header_font: 'WhiteSmoke' }
+		{ color_Scheme: 'Blue', even_row: '#6699cc', even_font: 'White', odd_row: '#b6cbeb', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: 'Black' },
+		{ color_Scheme: 'Green', even_row: '#c5e095', even_font: 'Black', odd_row: '#879966', odd_font: 'White', background: '#ffffff', header_row: '#808577', header_font: 'White' },
+		{ color_Scheme: 'Yellow', even_row: '#f8e094', even_font: 'Black', odd_row: '#f8bc03', odd_font: 'Black', background: '#ffffff', header_row: '#CF9C00', header_font: 'Black' },
+		{ color_Scheme: 'Purple', even_row: '#91619b', even_font: 'White', odd_row: '#be9cc5', odd_font: 'Black', background: '#ffffff', header_row: '#C7C7C7', header_font: '#91619b' },
+		{ color_Scheme: 'Red', even_row: '#A72A49', even_font: 'White', odd_row: '#DE8587', odd_font: 'Black', background: '#ffffff', header_row: '#BA706A', header_font: 'WhiteSmoke' }
 	];
 
 	validLinks = [
@@ -96,7 +95,6 @@ export class SelectPreferencesComponent implements OnInit {
 		return this.frmSelectPreferences.controls;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	getValue(colorSchemes: IColorSchemes, columnName: IColorSchemeColumns): string {
 		type ObjectKey = keyof typeof colorSchemes;
 		const mKey: ObjectKey = columnName.propertyName as ObjectKey;

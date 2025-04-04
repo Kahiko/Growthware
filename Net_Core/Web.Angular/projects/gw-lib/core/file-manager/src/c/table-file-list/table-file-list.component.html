@@ -1,12 +1,40 @@
 <div style="margin-left: 20px;">
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 04" #input>
-  </mat-form-field>
-  
+  <div class="clear-filter selection-controls">
+    <div>
+      <!-- Delete Selected Button -->
+      <button type="button" [disabled]="!anySelected" (click)="onDeleteSelected()" mat-button class="delete-button" color="warn" aria-label="Delete selected files">
+        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">delete</i>Delete all checked
+      </button>
+    </div>
+    <div>
+      <mat-form-field appearance="outline" dense style="padding-right: 20px;">
+        <mat-label>Search files...</mat-label>
+        <input matInput type="text" [(ngModel)]="filterTerm" (input)="onFilterChange($event)" aria-label="Search files">
+        <button mat-icon-button matSuffix (click)="filterTerm = ''; onFilterChange($event)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
-  
+
+      <!-- Selected Column -->
+      <ng-container matColumnDef="selected">
+        <th mat-header-cell *matHeaderCellDef>
+          <label class="checkbox-label" style="width: 100px;">
+            <input type="checkbox" [checked]="allSelected" (change)="onToggleSelectAll($event)" aria-label="Select or unselect all files" />
+            {{selectUnselectText}} all  
+          </label>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <input type="checkbox" [checked]="row.selected" (change)="row.selected = !row.selected;" class="select-all-checkbox" aria-label="Select or unselect the row" />
+          </div>
+        </td>
+      </ng-container>
+
       <!-- Full Name Column -->
       <ng-container matColumnDef="fullName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
@@ -36,7 +64,7 @@
   
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterTerm}}"</td>
       </tr>
     </table>
   
@@ -50,7 +78,7 @@
     [matMenuTriggerFor]="rightMenu">
   </div>
 
-  <!-- standar material menu -->
+  <!-- standard material menu -->
   <mat-menu #rightMenu="matMenu">
     <ng-template matMenuContent let-item="item">
       @if (showDelete) {
@@ -69,6 +97,12 @@
 <ng-template #deleteFile>
   <div style="width: 100%;">
     Are you sure you would like to delete<br>'{{selectedFile.name}}'?
+  </div>
+</ng-template>
+
+<ng-template #deleteSelected>
+  <div style="width: 100%;">
+    Are you sure you would like to delete all of the selected files?
   </div>
 </ng-template>
 

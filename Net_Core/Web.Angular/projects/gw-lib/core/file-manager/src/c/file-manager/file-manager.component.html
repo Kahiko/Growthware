@@ -1,55 +1,66 @@
-<mat-toolbar>
-  <span>
-    <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName()}}" name="btnNewFolder_{{configurationName()}}" (click)="onCreateDirectory()">
-      <span color="white" class="material-icons">add</span>
-      <span>New Folder</span>
-    </button>
-  </span>
-  <span>
-    <gw-core-upload id="upload" />
-  </span>
-  <span>
-    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName()}}" name="btnRefresh_{{configurationName()}}">
-      <span color="white" class="material-icons">refresh</span>
-    </button>
-  </span>
-  <span class="spacer"></span>
-  <span>
-    <button type="button" [matMenuTriggerFor]="layoutMenu" mat-button color="accent" id="btnView_{{configurationName()}}" name="btnView_{{configurationName()}}">
-      <span color="white" class="material-icons">grid_view</span>
-    </button>
-    <mat-menu #layoutMenu="matMenu">
-      @for (item of validFileContents; track $index) {
-        <button type="button" class="material-icons" mat-menu-item (click)="setLayout(item.id)"><mat-icon>{{item.icon}}</mat-icon>&nbsp;{{item.name}}</button>
-      }
-    </mat-menu>
-  </span>
-  <span>
-    <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName()}}" name="btnInfo_{{configurationName()}}">
-      <span color="white" class="material-icons">info_outline</span>
-    </button>
-  </span>
-</mat-toolbar>
-<div style="position: relative; top: 0px; left: 0px;">
-  <div class="directories">
-    <gw-core-directory-tree />
+<div class="file-manager">
+  <div class="toolbar">
+    <!-- Place toolbar items here -->
+    <mat-toolbar>
+      <span>
+        <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName()}}" name="btnNewFolder_{{configurationName()}}" (click)="onCreateDirectory()">
+          <span color="white" class="material-icons">add</span>
+          <span>New Folder</span>
+        </button>
+      </span>
+      <span>
+        <gw-core-upload id="upload" />
+      </span>
+      <span>
+        <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName()}}" name="btnRefresh_{{configurationName()}}">
+          <span color="white" class="material-icons">refresh</span>
+        </button>
+      </span>
+      <span class="spacer"></span>
+      <span>
+        <button type="button" [matMenuTriggerFor]="layoutMenu" mat-button color="accent" id="btnView_{{configurationName()}}" name="btnView_{{configurationName()}}">
+          <span color="white" class="material-icons">grid_view</span>
+        </button>
+        <mat-menu #layoutMenu="matMenu">
+          @for (item of validFileContents; track $index) {
+            <button type="button" class="material-icons" mat-menu-item (click)="setLayout(item.id)"><mat-icon>{{item.icon}}</mat-icon>&nbsp;{{item.name}}</button>
+          }
+        </mat-menu>
+      </span>
+      <span>
+        <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName()}}" name="btnInfo_{{configurationName()}}">
+          <span color="white" class="material-icons">info_outline</span>
+        </button>
+      </span>
+    </mat-toolbar>
   </div>
-  <div class="fileList">
-    @if ((skin$()); as layout) {
-      @switch (layout) {
-        @case ('snake') {
-          <gw-core-file-list id="setByCode" [numberOfColumns]=5 />
-        }
-        @case ('table') {
-          <gw-core-table-file-list />
-        }
-        @default {
-          <div>
+
+  <div class="main-section">
+    <div class="left-pane">
+      <!-- Directory list will go here -->
+      <gw-core-directory-tree />
+    </div>
+
+    <div #divider class="divider" (mousedown)="onMouseDown($event)"></div>
+
+    <div class="right-pane">
+      <!-- Files list will go here -->
+      @if ((skin$()); as layout) {
+        @switch (layout) {
+          @case ('snake') {
             <gw-core-file-list id="setByCode" [numberOfColumns]=5 />
-          </div>
+          }
+          @case ('table') {
+            <gw-core-table-file-list />
+          }
+          @default {
+            <div>
+              <gw-core-file-list id="setByCode" [numberOfColumns]=5 />
+            </div>
+          }
         }
       }
-    }
+    </div>
   </div>
 </div>
 <ng-template #helpText>
@@ -69,6 +80,21 @@
     </p>
     <ul>
       <li>"Right" click on the file to open the context menu</li>
+      <li>
+        Checkboxes are used to select multiple files to be deleted.
+        <ul>
+          <li>Checkboxes will be reset:</li>
+          <ul>
+            <li>When changing pages</li>
+            <li>When filtering</li>
+            <li>When changing the view from "List" to "Table"</li>
+          </ul>
+          <p>
+            <br/>
+            <b>Note:</b> Checkboxes are reset because no file should be deleted without being seen.
+          </p>
+      </ul>
+      </li>
     </ul>
   </div>
 </ng-template>

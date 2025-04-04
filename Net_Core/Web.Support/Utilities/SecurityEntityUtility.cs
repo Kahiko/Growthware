@@ -190,8 +190,9 @@ public static class SecurityEntityUtility
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
 
+        int mRetVal = getBusinessLogic().Save(profile);
         m_CacheHelper.RemoveFromCache(s_CacheName);
-        return getBusinessLogic().Save(profile);
+        return mRetVal;
     }
 
     public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)

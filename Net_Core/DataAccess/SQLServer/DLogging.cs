@@ -9,6 +9,13 @@ namespace GrowthWare.DataAccess.SQLServer;
 public class DLogging : AbstractDBInteraction, ILogging
 {
 
+#region Constructors
+    public DLogging(string connectionString) : base() 
+    { 
+        this.ConnectionString = connectionString;
+    }
+#endregion
+
     MLoggingProfile ILogging.GetLog(int logSeqId)
     {
         String mStoredProcedure = "[ZGWSystem].[Get_Logs]";

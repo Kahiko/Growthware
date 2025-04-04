@@ -1,11 +1,10 @@
-import { Component, input, output, OnInit, inject } from '@angular/core';
+import { Component, input, output, OnInit, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
-import { encapsulateStyle } from '@angular/compiler';
 
 @Component({
 	selector: 'gw-core-list',
@@ -30,6 +29,7 @@ export class ListComponent implements OnInit {
 	pickListTableContentsBackground = input<string>('pink');
 	fontColor = input<string>('black');
 	header = input<string>('');
+	overAllWidth = 0;
 	pickListTableHeaderBackground = input<string>('lightpink');
 	id = input<string>('');
 	name = input<string>('');
@@ -37,6 +37,12 @@ export class ListComponent implements OnInit {
 	selectedItemsText = input<string>('');
 	size = input<string>('8');
 	width = input<string>('120');
+
+	constructor() { 
+		effect(() => {
+			this.overAllWidth = +this.width() + 15;
+		});		
+	}
 
 	ngOnInit(): void {
 		this._ModalOptions = new ModalOptions(this.id() + '_Modal', this.header(), this.pickListTableHelp(), ModalSize.Small);

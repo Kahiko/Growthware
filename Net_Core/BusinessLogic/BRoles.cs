@@ -30,8 +30,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BRoles : AbstractBusinessLogic
 {
-    private IRoles m_DRoles;
 
+#region Member Fields
+    private IRoles m_DRoles;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BRoles() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -74,14 +78,17 @@ public class BRoles : AbstractBusinessLogic
     /// </example>
     public BRoles(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DRoles == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            this.m_DRoles = (IRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DRoles == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DRoles.");
+            }
         }
-        m_DRoles = (IRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
-        m_DRoles.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DRoles.SecurityEntitySeqID = securityEntityProfile.Id;
     }
+#endregion
 
     /// <summary>
     /// Saves the specified profile.

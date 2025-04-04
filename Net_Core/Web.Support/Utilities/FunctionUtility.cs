@@ -10,6 +10,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Helpers;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -18,6 +19,8 @@ public static class FunctionUtility
     private static BFunctions m_BusinessLogic = null;
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static List<UIKeyValuePair> m_FunctionTypes = null;
+
+    private static Collection<MFunctionTypeProfile> m_FunctionTypeProfiles = null;
 
     public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
@@ -105,19 +108,26 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    public static MFunctionTypeProfile GetFunctionType(int functionTypeId)
+    {
+        if(m_FunctionTypeProfiles == null) {
+            m_FunctionTypeProfiles =  getBusinessLogic().FunctionTypes();
+        }
+        return m_FunctionTypeProfiles.Where(item => item.Id == functionTypeId).FirstOrDefault();
+    }
+
     /// <summary>
     /// Retrieves all function types
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
     public static List<UIKeyValuePair> GetFunctionTypes()
     {
-        if(m_FunctionTypes == null) 
+        if(m_FunctionTypes == null || m_FunctionTypeProfiles == null) 
         {
-            BFunctions mBFunctions = getBusinessLogic();
-            DataTable mDataTable = mBFunctions.FunctionTypes();
-            m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
-                Key = int.Parse(item["FUNCTION_TYPE_SEQ_ID"].ToString()) ,
-                Value = item["Name"].ToString()
+            GetFunctionType(1);
+            m_FunctionTypes = m_FunctionTypeProfiles.AsEnumerable().Select(item => new UIKeyValuePair {
+                Key = item.Id,
+                Value = item.Name
             }).ToList() ;
 
         }

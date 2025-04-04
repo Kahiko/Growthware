@@ -10,8 +10,8 @@
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+// @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
      
 $fontConfig: mat.m2-define-legacy-typography-config(
   $display-4: mat.m2-define-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
@@ -239,27 +239,62 @@ $altTheme: mat.m2-define-dark-theme((
 .theme-alternate {
   @include mat.all-component-colors($altTheme);
 }
+// Specific component overrides, pieces that are not in line with the general theming
+
+// Handle buttons appropriately, with respect to line-height
+.mat-mdc-raised-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button {
+  padding: 0 1.15em;
+  margin: 0 .65em;
+  min-width: 3em;
+  line-height: 36.4px
+}
+
+.mat-mdc-standard-chip {
+  padding: .5em .85em;
+  min-height: 2.5em;
+}
+
+.material-icons {
+  font-size: 24px;
+  font-family: 'Material Icons', 'Material Icons';
+  .mat-mdc-badge-content {
+    font-family: 'Roboto';
+  }
+}
 // Done Theme
 
 /* Form */
 
+.pageDescription { font-family: Arial; font-size: 12px; color: #666666;}
+
 .Form_Title {font-weight: bold; font-size: 17px; font-variant: small-caps;}
 .Form_Description {font-size: 12px;}
-.Form_Table {background-color: #DADFCB; border: thick solid #000000 1px;}
-.Form_LabelRow {font-size: 10pt;}
-.Form_LabelCell {font-size: 10pt;}
-.Form_LabelText {font-size: 10pt; font-variant: small-caps;}
-.Form_FieldRow {font-size: 12px;}
-.Form_FieldCell {font-size: 12px;}
-.Form_Field {font-size: 11px;}
-.Form_SectionRow {color: white;background-color: #807C4F;}
+
+.formSection {background-color:#DCDDDE; width:500; border-collapse:collapse;}
+.formSectionHeader {background-color:#B2B2B2; padding:5px; font-family:verdana, arial; font-weight: bold; font-size: 12px; color: #FFFFFF;}
+.formSectionHelp {padding:2px;font-family:verdana, arial; font-size: 10px;}
+.formSectionContents {padding:2px;font: 14px Verdana;}
+.formSectionContents td {font: 12px Verdana;}
+.Form_SectionRow {background-color: #ccccff;}
 .Form_SectionCell {font-size: 12pt;}
 .Form_SectionText {font-weight: bold;}
-.Form_Button {font-size: 12px;}
-.Form_HelpText {font-size: 8pt;}
 .Form_SubSectionRow {font-size: 13px;}
 .Form_SubSectionCell {font-size: 13px;}
 .Form_SubSectionText {font-size: 13px;}
+
+.Form_Table {background-color: #cccccc; border: thick solid #AAAAAA 1px;}
+.Form_LabelRow {font-size: 10pt;}
+.Form_LabelCell {font-size: 10pt;}
+.Form_FieldRow {font-size: 12px;}
+.Form_FieldCell {font-size: 12px;}
+.Form_Field {font-size: 11px;}
+
+.Form_LabelText {font-size: 10pt; font-variant: small-caps; white-space: nowrap;}
+.Form_LabelTextRed {font-size: 10pt; font-variant: small-caps; color:Red;}
+
+.Form_Button {font-size: 12px;}
+.Form_Button_Icon {font-size: 16px;}
+.Form_HelpText {font-size: 8pt;}
 .Form_List {font-size: 12px;}
 .Form_Message {font-size: 12px; color: #CC0000}
 

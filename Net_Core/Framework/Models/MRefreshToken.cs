@@ -4,16 +4,59 @@ using System.Data;
 using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
-public class MRefreshToken : AbstractDatabaseFunctions
+public class MRefreshToken : ADatabaseTable
 {
+
+#region Public Properties
+    public int AccountSeqId { get; set; }
+
+    public DateTime Created { get; set; }
+
+    public string CreatedByIp { get; set; }
+
+    public DateTime Expires { get; set; }
+
+    [DBIgnoreProperty]
+    public override string ForeignKeyName => "[AccountSeqId]";
+
+    [DBIgnoreProperty]
+    public override bool IsForeignKeyNumeric => true;
+
+    public string ReasonRevoked { get; set; }
+
+    [DBPrimaryKey]
+	public int RefreshTokenId { get; set; }
+
+    public string ReplacedByToken { get; set; }
+
+    public DateTime? Revoked { get; set; }
+
+    public string RevokedByIp { get; set; }
+
+    [DBIgnoreProperty]
+    public override string TableName => "[ZGWSecurity].[RefreshTokens]";
+
+    public string Token { get; set; }
+
+    [DBIgnoreProperty]
+    public bool IsExpired { get {return DateTime.UtcNow >= Expires; } }
+
+    [DBIgnoreProperty]
+    public bool IsRevoked { get { return Revoked != null; } }
+
+    [DBIgnoreProperty]
+    public bool IsActive { get { return Revoked == null && !IsExpired; } }
+#endregion
+
+#region Constructors
     public MRefreshToken()
     {
-        this.setKeyAndTable();
+        this.setDefaults();
     }
     
     public MRefreshToken(DataRow dataRow)
     {
-        this.setKeyAndTable();
+        this.setDefaults();
         DateTime mDateTime = DateTime.Now;
         this.RefreshTokenId = base.GetInt(dataRow, "RefreshTokenId");
         this.AccountSeqId = base.GetInt(dataRow, "AccountSeqId");
@@ -31,27 +74,11 @@ public class MRefreshToken : AbstractDatabaseFunctions
         this.ReasonRevoked = base.GetString(dataRow, "ReasonRevoked");
 
     }
+#endregion
 
-    private void setKeyAndTable()
+    protected override void setDefaults()
     {
-        this.m_ForeignKeyIsNumber = true;
-        this.m_ForeignKeyName = "[AccountSeqId]";
-        this.m_PrimaryKeyName = "[RefreshTokenId]";
-        this.m_TableName = "[ZGWSecurity].[RefreshTokens]";
+        this.RefreshTokenId = -1;
     }
 
-    [Key]
-	public int RefreshTokenId { get; set; }
-    public int AccountSeqId { get; set; }
-    public string Token { get; set; }
-    public DateTime Expires { get; set; }
-    public DateTime Created { get; set; }
-    public string CreatedByIp { get; set; }
-    public DateTime? Revoked { get; set; }
-    public string RevokedByIp { get; set; }
-    public string ReplacedByToken { get; set; }
-    public string ReasonRevoked { get; set; }
-    public bool IsExpired() { return DateTime.UtcNow >= Expires; }
-    public bool IsRevoked() { return Revoked != null; }
-    public bool IsActive() { return Revoked == null && !IsExpired(); }
 }

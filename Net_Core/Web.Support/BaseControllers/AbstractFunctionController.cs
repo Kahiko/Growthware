@@ -111,7 +111,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetLinkBehaviors();
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.LinkBehaviors;
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -124,7 +124,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetNavigationTypes();
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.NavigationTypes;
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -251,7 +251,7 @@ public abstract class AbstractFunctionController : ControllerBase
                     if(mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
-                        mDirectoryProfile.FunctionSeqId = mProfileToSave.Id;
+                        mDirectoryProfile.Id = mProfileToSave.Id;
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.Impersonate = functionProfile.DirectoryData.Impersonate;
@@ -263,7 +263,7 @@ public abstract class AbstractFunctionController : ControllerBase
                             mDirectoryProfile.ImpersonatePassword = functionProfile.DirectoryData.ImpersonatePassword;
                         }
                     }
-                    mDirectoryProfile.Name = functionProfile.DirectoryData.Name;
+                    mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
                     DirectoryUtility.Save(mDirectoryProfile);
                 }

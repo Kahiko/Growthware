@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
+const string CORS_POLICYNAME = "EnableCORS";
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
@@ -65,7 +67,7 @@ builder.Services.AddSession(options => {
 });
 // Configure CORS
 builder.Services.AddCors(options => {
-    options.AddPolicy("EnableCORS", builder => {
+    options.AddPolicy(CORS_POLICYNAME, builder => {
         builder.AllowAnyOrigin()
         .AllowAnyHeader()
         .AllowAnyMethod();
@@ -82,7 +84,7 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 // Enable CORS
-app.UseCors("EnableCORS");
+app.UseCors(CORS_POLICYNAME);
 // Use Session
 app.UseSession();
 // Use custom jwt middleware
@@ -107,8 +109,8 @@ app.UseSwagger();                       // moved out of if (app.Environment.IsDe
 app.UseSwaggerUI(mSwaggerUIOptions => { // moved out of if (app.Environment.IsDevelopment())
     mSwaggerUIOptions.DocumentTitle = "Growthware API";
     mSwaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
-    mSwaggerUIOptions.InjectJavascript("/assets/swagger-ui/custom-script.js");
-    mSwaggerUIOptions.InjectStylesheet("/assets/swagger-ui/custom-style.css");
+    mSwaggerUIOptions.InjectJavascript("/swagger-ui/custom-script.js");
+    mSwaggerUIOptions.InjectStylesheet("/swagger-ui/custom-style.css");
 });
 app.UseHttpsRedirection();
 

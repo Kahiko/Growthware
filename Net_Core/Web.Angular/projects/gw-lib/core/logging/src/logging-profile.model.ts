@@ -15,7 +15,7 @@ export interface ILoggingProfile {
 export class LoggingProfile implements ILoggingProfile {
 	public logDate: string = '';
 	public logSeqId: number = 0;
-  public destination: LogDestination[] = [];
+	public destination: LogDestination[] = [];
 
 	constructor(
     public account: string,

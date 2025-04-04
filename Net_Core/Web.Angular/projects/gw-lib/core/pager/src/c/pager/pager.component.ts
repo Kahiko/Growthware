@@ -1,8 +1,8 @@
-import { Component, effect, input, OnDestroy } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Library
 import { GWCommon } from '@growthware/common/services';
-import { SearchService, SearchCriteria, ISearchResultsNVP } from '@growthware/core/search';
+import { SearchService, SearchCriteria } from '@growthware/core/search';
 
 @Component({
 	selector: 'gw-core-pager',
@@ -25,7 +25,7 @@ export class PagerComponent {
 	constructor(
 		private _GWCommon: GWCommon,
 		private _SearchSvc: SearchService
-	) { 
+	) {
 		effect(() => {
 			const mSearchDataResults = this._SearchSvc.searchDataChanged$();
 			if (this.name().trim().toLowerCase() === mSearchDataResults.name.trim().toLowerCase()) {
@@ -58,7 +58,7 @@ export class PagerComponent {
 				} else {
 					this.totalPages = 0;
 				}
-			}			
+			}
 		});
 	}
 

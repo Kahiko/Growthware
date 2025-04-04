@@ -11,8 +11,27 @@ namespace GrowthWare.Framework;
 /// </summary>
 public static class TreeHelper
 {
-    // https://www.codeproject.com/articles/23949/building-trees-from-lists-in-net
-    #region Tree structure methods
+// https://www.codeproject.com/articles/23949/building-trees-from-lists-in-net
+
+#region Private methods
+
+    [System.Diagnostics.Conditional("DEBUG")]
+    private static void EnsureTreePopulated<T>(T node, string parameterName)
+        where T : class, ITreeNode<T>
+    {
+        if (node == null)
+        {
+            throw new ArgumentNullException(parameterName, "The given node cannot be null.");
+        }
+        if (node.Children == null)
+        {
+            throw new ArgumentException("The children of " + parameterName + " is null. Have you populated the tree fully by calling TreeHelper<T>.ConvertToForest(IEnumerable<T> flatNodeList)?", parameterName);
+        }
+    }
+
+#endregion
+
+#region Tree structure methods
 
     /// <summary>
     /// Converts a heirachacle Array of Tree Nodes into a flat array of nodes. The order
@@ -33,9 +52,9 @@ public static class TreeHelper
         return treeNodeList;
     }
 
-    #endregion
+#endregion
 
-    #region Search methods
+#region Search methods
 
     /// <summary>Finds the TreeNode with the given Id in the given tree by searching the descendents.
     /// Returns null if the node cannot be found.</summary>
@@ -76,9 +95,9 @@ public static class TreeHelper
         return null;
     }
 
-    #endregion
+#endregion
 
-    #region Iterators
+#region Iterators
 
     /// <summary>
     /// Returns an Iterator which starts at the given node, and traverses the tree in
@@ -147,26 +166,6 @@ public static class TreeHelper
 
     }
 
-    #endregion
-
-
-    #region Private methods
-
-    [System.Diagnostics.Conditional("DEBUG")]
-    private static void EnsureTreePopulated<T>(T node, string parameterName)
-        where T : class, ITreeNode<T>
-    {
-        if (node == null)
-        {
-            throw new ArgumentNullException(parameterName, "The given node cannot be null.");
-        }
-        if (node.Children == null)
-        {
-            throw new ArgumentException("The children of " + parameterName + " is null. Have you populated the tree fully by calling TreeHelper<T>.ConvertToForest(IEnumerable<T> flatNodeList)?", parameterName);
-        }
-    }
-
-    #endregion
-
+#endregion
 
 }

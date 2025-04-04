@@ -25,15 +25,14 @@ public static class GroupUtility
     {
         BGroups mBGroups = getBusinessLogic();
         // Save the profile
-        int mSavedGroupSeqId = mBGroups.Save(profile);
-        MGroupProfile mSavedGroupProfile = mBGroups.GetProfile(mSavedGroupSeqId);
+        int mGroupSeqId = mBGroups.Save(profile);
         // set the groupRoles id's
-        groupRoles.Id = mSavedGroupSeqId;
-        groupRoles.GroupSeqId = groupRoles.Id;
+        // groupRoles.Id = mGroupSeqId;
+        groupRoles.GroupSeqId = mGroupSeqId;
         // Save the group roles
         mBGroups.UpdateGroupRoles(groupRoles);
         // get the profile from the DB
-        UIGroupProfile mRetVal = GetUIGroupProfile(groupRoles.Id, groupRoles.SecurityEntityID);
+        UIGroupProfile mRetVal = GetUIGroupProfile(mGroupSeqId, groupRoles.SecurityEntityID);
         return mRetVal;
     }
 
@@ -58,31 +57,35 @@ public static class GroupUtility
     /// <returns>A UIGroupProfile object representing the group and its roles.</returns>
     public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
     {
-        UIGroupProfile mRetVal = new UIGroupProfile();
+        /*
+         * Getting a Group Profile does cause multiple queries to the data store, however, in this instance 
+         * this is not a large issue since this operation is only done when editing a group.  
+         * Once Security has been set up the need to change a group will be low or even done
+         * in the data store itself, it is far more likely that the the roles/groups associated 
+         * with an Account will be changed.
+         */
         MGroupProfile mGroupProfile = new MGroupProfile();
-        MGroupRoles mGroupRoles = new MGroupRoles();
         if(groupSeqId != -1)
         {
             BGroups mBGroups = getBusinessLogic();
+            // Get the group profile from the data store
             mGroupProfile = mBGroups.GetProfile(groupSeqId);
         }
-        // Populate mRetVal
-        mRetVal.Description = mGroupProfile.Description;
-        mRetVal.Id = mGroupProfile.Id;
-        mRetVal.Name = mGroupProfile.Name;
-        // Populate mGroupRoles
-        mGroupRoles.Id = mGroupProfile.Id;
-        mGroupRoles.GroupSeqId = mGroupRoles.Id;
-        mGroupRoles.SecurityEntityID = securityEntityId;
+        // Populate mRetVal with the group profile
+        UIGroupProfile mRetVal = new (mGroupProfile);
+        // Get a Group Roles object
+        MGroupRoles mGroupRoles = new (groupSeqId, securityEntityId);
+        // Populate mRetVal with the roles associated with the group if a groupSeqId is provided
         if(groupSeqId != -1)
         {
-            mRetVal.RolesInGroup = GroupUtility.GetSelectedRoles(mGroupRoles);
+            mRetVal.RolesInGroup = GroupUtility.GetSelectedRoles(mGroupRoles);    
         }
+        // Populate mRetVal with the roles not associated with the group
         ArrayList mRolesForSecurityEntity = RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
         List<string> mRolesNotInGroup = new List<string>();
         foreach (string role in mRolesForSecurityEntity)
         {
-            if(!mRetVal.RolesInGroup.Any(s => s == role)) 
+            if(groupSeqId == -1 || !mRetVal.RolesInGroup.Any(s => s == role)) 
             {
                 mRolesNotInGroup.Add(role);
             }

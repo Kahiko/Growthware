@@ -33,6 +33,12 @@ export class RoleService extends BaseService {
 		this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
 	}
   
+	/**
+	 * Deletes a role.
+	 *
+	 * @param {number} roleSeqId The sequence ID of the role to delete.
+	 * @return {Promise<boolean>} A promise that resolves to true if the role is deleted successfully, false otherwise.
+	 */
 	public async delete(roleSeqId: number): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
@@ -57,11 +63,11 @@ export class RoleService extends BaseService {
 	}
 
 	/**
-   * Retrieves the role profile for editing based on the given role sequence ID.
-   *
-   * @param {number} roleSeqId - The sequence ID of the role to retrieve.
-   * @return {Promise<IRoleProfile>} A promise that resolves with the role profile.
-   */
+	 * Retrieves the role profile for editing based on the given role sequence ID.
+	 *
+	 * @param {number} roleSeqId - The sequence ID of the role to retrieve.
+	 * @return {Promise<IRoleProfile>} A promise that resolves with the role profile.
+	 */
 	public async getRoleForEdit(roleSeqId: number): Promise<IRoleProfile> {
 		return new Promise<IRoleProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
@@ -86,10 +92,10 @@ export class RoleService extends BaseService {
 	}
 
 	/**
-   * Retrieves the roles from the server.
-   *
-   * @return {Promise<Array<string>>} A promise that resolves with the roles data.
-   */
+	 * Retrieves the roles from the server.
+	 *
+	 * @return {Promise<Array<string>>} A promise that resolves with the roles data.
+	 */
 	public async getRoles(): Promise<Array<string>> {
 		return new Promise<Array<string>>((resolve, reject) => {
 			const mHttpOptions = {
@@ -112,11 +118,11 @@ export class RoleService extends BaseService {
 	}
 
 	/**
-   * Saves the profile information.
-   *
-   * @param {IRoleProfile} profile - The profile to be saved.
-   * @return {Promise<boolean>} A promise that resolves with the result of saving the profile.
-   */
+	 * Saves the profile information.
+	 *
+	 * @param {IRoleProfile} profile - The profile to be saved.
+	 * @return {Promise<boolean>} A promise that resolves with the result of saving the profile.
+	 */
 	public async save(profile: IRoleProfile): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			const mHttpOptions = {

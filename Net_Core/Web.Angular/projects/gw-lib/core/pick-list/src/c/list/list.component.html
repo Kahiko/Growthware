@@ -1,34 +1,32 @@
-<table class="pickListTable">
-  <tbody>
-    <tr class="pickListTableHeader">
-      <td>
-        {{header()}}&nbsp;&nbsp;
-        <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
-          <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td class="pickListTableContents">
-        <table class="listPicker">
-          <tbody>
-            <tr>
-              <td>{{allItemsText()}}</td>
-            </tr>
-            <tr>
-              <td valign="top" style="border: solid 1px;">
-                <select name="{{id()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}">
-                  @for (item of availableItems(); track item; let rowIndex = $index) {
-                    <option [value]="item" style="width: 300px;">
-                      {{item}}
-                    </option>
-                  }
-                </select>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="table" style="margin-top: 5px;" [ngStyle]="{ 'width.px': overAllWidth }">
+  <div class="tr">
+    <div class="td pickListHeaderDiv">
+      {{header()}}&nbsp;&nbsp;
+      <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
+      </button>
+    </div>
+  </div>
+  <div class="tr">
+    <div class="td pickListTableContentsDiv">
+      <div class="table">
+        <div class="tr">
+          <div class="td">
+            {{allItemsText()}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td">
+            <select name="{{id()}}_SrcList" id="{{id()}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width() }" size="{{size()}}" style="min-width: 240px;">
+              @for (item of availableItems(); track item; let rowIndex = $index) {
+                <option [value]="item" style="width: 300px;">
+                  {{item}}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

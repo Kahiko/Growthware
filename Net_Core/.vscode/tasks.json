@@ -35,6 +35,9 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
+            "presentation": {
+                "clear": true
+            },
             "problemMatcher": "$msCompile"
         },
         {
@@ -48,33 +51,52 @@
             "args": [
                 "start"
             ],
-            "presentation": { 
+            "presentation": {
+                "clear": true,
                 "reveal": "always",
                 "panel": "new"
             },
-            "problemMatcher": [{
-              "pattern": [{
-                "regexp": ".",
-                "file": 1,"line": 1,
-                "column": 1,"message": 1
-              }],
-              "background": {
-                  "activeOnStart": true,
-                  "beginsPattern": { "regexp": "." },
-                  "endsPattern": { "regexp": "." }
-              },
-            }]
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "line": 1,
+                            "column": 1,
+                            "message": 1
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": {
+                            "regexp": "."
+                        },
+                        "endsPattern": {
+                            "regexp": "."
+                        }
+                    },
+                }
+            ]
         },
         {
             "label": "Task: Stop NodeJS",
-            "command": "echo ${input:terminate}",
-            "type": "shell"
+            "type": "shell",
+            "command": "taskkill",
+            "args": [
+                "/F",
+                "/IM",
+                "node.exe"
+            ],
+            "problemMatcher": []
         }
     ],
-    "inputs": [{
-      "id": "terminate",
-      "type": "command",
-      "command": "workbench.action.tasks.terminate",
-      "args": "terminateAll"
-    }]
+    "inputs": [
+        {
+            "id": "terminate",
+            "type": "command",
+            "command": "workbench.action.tasks.terminate",
+            "args": "terminateAll"
+        }
+    ]
 }

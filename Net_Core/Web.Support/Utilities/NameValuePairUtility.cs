@@ -71,22 +71,28 @@ public static class NameValuePairUtility
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behaviors
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> GetLinkBehaviors()
+    public static List<UIKeyValuePair> LinkBehaviors
     {
-        int mNVPSeqId = 3; // From .[ZGWSystem].[Name_Value_Pairs]
-        List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
-        return mLinkBehaviorTypes;
+        get
+        {
+            int mNVPSeqId = 3; // From .[ZGWSystem].[Name_Value_Pairs]
+            List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
+            return mLinkBehaviorTypes;
+        }
     }
 
     /// <summary>
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing navigation types
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> GetNavigationTypes()
+    public static List<UIKeyValuePair> NavigationTypes
     {
-        int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
-        List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
-        return mLinkBehaviorTypes;
+        get 
+        {
+            int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
+            List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
+            return mLinkBehaviorTypes;
+        }
     }
 
     public static MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)

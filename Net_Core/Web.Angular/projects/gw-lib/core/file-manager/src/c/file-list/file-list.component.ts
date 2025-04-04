@@ -1,21 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+	Component,
+	computed,
+	TemplateRef,
+	inject,
+	input,
+	OnDestroy,
+	OnInit,
+	ViewChild
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TemplateRef } from '@angular/core';
+import {
+	FormsModule,
+	FormGroup,
+	FormBuilder,
+	Validators,
+	ReactiveFormsModule
+} from '@angular/forms';
+import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 // Library
-import { GWCommon } from '@growthware/common/services';
-import { ISecurityInfo } from '@growthware/core/security';
+import { ISecurityInfo, SecurityService } from '@growthware/core/security';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
-import { SecurityService } from '@growthware/core/security';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
 import { IFileInfoLight } from '../../interfaces/file-info-light.model';
@@ -29,10 +42,13 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 		ReactiveFormsModule,
 		// Angular Material
 		MatButtonModule,
+		MatFormFieldModule,
 		MatIconModule,
+		MatInputModule,
+		MatLabel,
 		MatMenuModule,
 		MatMenuTrigger,
-		MatTabsModule,
+		MatSelectModule,
 	],
 	templateUrl: './file-list.component.html',
 	styleUrls: ['./file-list.component.scss']
@@ -46,16 +62,21 @@ export class FileListComponent implements OnDestroy, OnInit {
 	private _SecuritySvc = inject(SecurityService);
 
 	private _Action: string = '';
+	private _FilterSubject = new Subject<string>();
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
+	private _Subscription: Subscription = new Subscription();
 
-	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.filesChanged$());
+	readonly data$ = computed<Array<IFileInfoLight>>(() => this._FileManagerSvc.fileInfoList$());
 
 	id = input.required<string>();
+	filterTerm: string = ""; // Property to hold the filter term
 	frmRenameFile!: FormGroup;
-	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates 
+	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates
+	selectUnselectText: string = 'Check';
 	selectedFile!: IFileInfoLight;
+	selectedSortOption: string = ""; // Default to empty or the first option
 	showDelete: boolean = false;
 	showDownload: boolean = false;
 	showRename: boolean = false;
@@ -65,11 +86,13 @@ export class FileListComponent implements OnDestroy, OnInit {
 	// reference to the MatMenuTrigger in the DOM 
 	@ViewChild(MatMenuTrigger, { static: true }) private _MatMenuTrigger!: MatMenuTrigger;
 	@ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!: TemplateRef<unknown>;
+	@ViewChild('deleteSelected', { read: TemplateRef }) private _DeleteSelected!: TemplateRef<unknown>;
 	@ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!: TemplateRef<unknown>;
 	@ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!: TemplateRef<unknown>;
 
 	ngOnDestroy(): void {
 		this._Action = '';
+		this._Subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -82,11 +105,83 @@ export class FileListComponent implements OnDestroy, OnInit {
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
 		});
+		this._Subscription.add(
+			this._FilterSubject.pipe(
+				debounceTime(300),
+				switchMap(filterValue => {
+					this.applyFilter(filterValue);
+					return [];
+				})
+			).subscribe()
+		);
+	}
 
+	/**
+	 * Applies a filter to the file list based on the provided filter value.
+	 *
+	 * @param {any} filterValue - The value used to filter the file list.
+	 * @returns {void} No return value.
+	 */
+	applyFilter(filterValue: string) {
+		this._FileManagerSvc.filterFileInfoList(filterValue);
+	}
+
+	/**
+	 * Checks if all the files are selected, and if so, changes the text of the
+	 * select/unselect button to 'Unselect'. If not, changes the text to 'Select'.
+	 * @returns {boolean} true if all files are selected, false otherwise
+	 */
+	get allSelected(): boolean {
+		const isChecked = this._FileManagerSvc.fileInfoList$().length > 0 && this._FileManagerSvc.fileInfoList$().every(file => file.selected);
+		this.selectUnselectText = isChecked ? 'Uncheck' : 'Check';
+		return isChecked;
+	}
+
+	/**
+	 * Determines if any of the files are selected.
+	 *
+	 * @returns {boolean} true if any of the files are selected, false otherwise
+	 */
+	get anySelected(): boolean {
+		return this._FileManagerSvc.fileInfoList$().some(file => file.selected);
 	}
 
 	get getControls() {
 		return this.frmRenameFile.controls;
+	}
+
+	/**
+	 * Handles the "Delete Selected" button click event.
+	 *
+	 * @returns {void}
+	 */
+	onDeleteSelected() {
+		const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Selected Files', this._DeleteSelected, new WindowSize(84, 300));
+		mModalOptions.buttons.okButton.visible = true;
+		mModalOptions.buttons.okButton.text = 'Yes';
+		mModalOptions.buttons.okButton.callbackMethod = () => {
+			this._FileManagerSvc.deleteFiles(this._Action).then(() => {
+				this._LoggingSvc.toast('Files were deleted', 'Delete files', LogLevel.Success);
+			}).catch((error) => {
+				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onDeleteSelected');
+				this._LoggingSvc.toast('Was not able to delete the files', 'Delete files error', LogLevel.Error);
+			});
+			this._ModalSvc.close(this._ModalId_Delete);
+		};
+		this._ModalSvc.open(mModalOptions);
+	}
+
+	/**
+	 * Filter the files based on the search term changed.
+	 *
+	 * @param {Event} event The event from the input element.
+	 *
+	 * Updates the displayed files based on the filter.
+	 */
+	onFilterChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const searchTerm = target.value ?? '';
+		this._FilterSubject.next(searchTerm);
 	}
 
 	/**
@@ -184,7 +279,6 @@ export class FileListComponent implements OnDestroy, OnInit {
 		this._ModalSvc.open(mModalOptions);
 	}
 
-
 	/**
 	 * Handle "Properties" menu click event
 	 *
@@ -231,6 +325,8 @@ export class FileListComponent implements OnDestroy, OnInit {
 	 */
 	onRightClick(event: MouseEvent, item: IFileInfoLight) {
 		this.selectedFile = item;
+		// uncomment the following line to unselect all the selected files when a file is right-clicked
+		// this._FileManagerSvc.setAllSelected(false);
 		// preventDefault avoids to show the visualization of the right-click menu of the browser
 		event.preventDefault();
 
@@ -244,6 +340,31 @@ export class FileListComponent implements OnDestroy, OnInit {
 
 		// we open the menu
 		this._MatMenuTrigger.openMenu();
+	}
+
+	/**
+	 * Handle "Sort" option click event
+	 * @param {string} sortType - the type of sorting, one of
+	 * - 'name-asc': sort by name in ascending order
+	 * - 'name-desc': sort by name in descending order
+	 * - 'date-asc': sort by date in ascending order
+	 * - 'date-desc': sort by date in descending order
+	 * - 'size-asc': sort by size in ascending order
+	 * - 'size-desc': sort by size in descending order
+	 */
+	onSortChange(sortType: string) {
+		this._FileManagerSvc.sortFileInfoList(sortType);
+	}
+
+	/**
+	 * Handle "Select All" checkbox click event
+	 * @param {Event} event - description of parameter
+	 * @return {void} description of return value
+	 */
+	onToggleSelectAll(event: Event) {
+		const isChecked = (event.target as HTMLInputElement).checked;
+		this.selectUnselectText = isChecked ? 'Unselect' : 'Select';
+		this._FileManagerSvc.setAllSelected(isChecked);
 	}
 }
 

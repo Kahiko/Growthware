@@ -6,6 +6,7 @@ using System.Collections;
 using System.Data;
 
 namespace GrowthWare.BusinessLogic;
+
 /// <summary>
 /// Process business logic for accounts
 /// </summary>
@@ -28,8 +29,12 @@ namespace GrowthWare.BusinessLogic;
 /// </example>
 public class BGroups : AbstractBusinessLogic
 {
-    private IGroups m_DGroups;
 
+#region Member Fields
+    private IGroups m_DGroups;
+#endregion
+
+#region Constructors
     /// <summary>
     /// Private BGroups() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -72,14 +77,17 @@ public class BGroups : AbstractBusinessLogic
     /// </example>
     public BGroups(MSecurityEntity securityEntityProfile)
     {
-        if (securityEntityProfile == null)
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        if(m_DGroups == null || ConfigSettings.CentralManagement)
         {
-            throw new ArgumentNullException(nameof(securityEntityProfile), "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
+            this.m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
+            if (this.m_DGroups == null) 
+            {
+                throw new InvalidOperationException("Failed to create an instance of DGroups.");
+            }
         }
-        m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups");
-        m_DGroups.ConnectionString = securityEntityProfile.ConnectionString;
-        m_DGroups.SecurityEntitySeqID = securityEntityProfile.Id;
     }
+#endregion
 
     /// <summary>
     /// Gets the groups by security entity.
@@ -159,7 +167,7 @@ public class BGroups : AbstractBusinessLogic
     public string[] GetSelectedRoles(MGroupRoles profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        ArrayList ClientRoles = new ArrayList();
+        ArrayList mRolesArray = new ArrayList();
         m_DGroups.GroupRolesProfile = profile;
         DataTable myDataTable = null;
         if (DatabaseIsOnline())
@@ -167,11 +175,9 @@ public class BGroups : AbstractBusinessLogic
             try
             {
                 myDataTable = m_DGroups.GroupRoles();
-                DataRow myDR = null;
-                foreach (DataRow myDR_loopVariable in myDataTable.Rows)
+                foreach (DataRow item in myDataTable.Rows)
                 {
-                    myDR = myDR_loopVariable;
-                    ClientRoles.Add(myDR["Role"].ToString());
+                    mRolesArray.Add(item["Role"].ToString());
                 }
             }
             catch (BusinessLogicLayerException)
@@ -179,7 +185,7 @@ public class BGroups : AbstractBusinessLogic
                 throw;
             }
         }
-        return (string[])ClientRoles.ToArray(typeof(string));
+        return (string[])mRolesArray.ToArray(typeof(string));
     }
 
     /// <summary>

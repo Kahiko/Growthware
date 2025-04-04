@@ -15,6 +15,7 @@ From a command prompt and the directory you would like to create your new projec
   npm install run-script-os --save
   npm install @auth0/angular-jwt --save
   ng add @angular-eslint/schematics --save-dev --skip-confirmation
+  npm install roboto-fontface --save
   npm init @eslint/config
     √ How would you like to use ESLint? · To check syntax, find problems, and enforce code style
     √ What type of modules does your project use? · JavaScript modules (import/export)
@@ -310,7 +311,7 @@ module.exports = PROXY_CONFIG;
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <SpaRoot>Angular\</SpaRoot>
@@ -320,9 +321,9 @@ module.exports = PROXY_CONFIG;
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>

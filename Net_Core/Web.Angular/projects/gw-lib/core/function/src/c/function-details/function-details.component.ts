@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,16 +19,14 @@ import {
 // Library
 import { AccountService } from '@growthware/core/account';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
-import { IClientChoices } from '@growthware/core/clientchoices'
+import { IClientChoices } from '@growthware/core/clientchoices';
 import { GroupService } from '@growthware/core/group';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
-import { ModalService, IModalOptions, ModalOptions } from '@growthware/core/modal';
+import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { IKeyValuePair, KeyValuePair } from '@growthware/common/interfaces';
 import { RoleService } from '@growthware/core/role';
-import { PickListComponent } from '@growthware/core/pick-list';
-import { ListComponent } from '@growthware/core/pick-list';
+import { ListComponent, PickListComponent } from '@growthware/core/pick-list';
 import { SecurityService } from '@growthware/core/security';
-import { SnakeListComponent } from '@growthware/core/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
@@ -43,7 +40,6 @@ import { IFunctionMenuOrder } from '../../function-menu-order.model';
 		ReactiveFormsModule,
 		ListComponent,
 		PickListComponent,
-		SnakeListComponent,
 		MatButtonModule,
 		MatCheckboxModule,
 		MatFormFieldModule,
@@ -65,13 +61,15 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	@ViewChild('helpControl') private _HelpControl!: TemplateRef<unknown>;
 	@ViewChild('helpSource') private _HelpSource!: TemplateRef<unknown>;
 	@ViewChild('helpPassword') private _HelpPassword!: TemplateRef<unknown>;
+	@ViewChild('helpImpersonation') private _HelpImpersonation!: TemplateRef<unknown>;
 
+	private _AccountSvc: AccountService;
 	private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 	private _Profile: IFunctionProfile = new FunctionProfile();
 
 	avalibleParents = [{ key: -1, value: 'None' }];
 
-	clientChoices: IClientChoices = this._AccountSvc.clientChoices();
+	clientChoices!: IClientChoices;
 
 	derivedRolesId: string = 'derivedRoles';
 
@@ -117,9 +115,9 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	public derivedEditGroups: Array<string> = [];
 	public derivedViewGroups: Array<string> = [];
 
-	pickListTableContentsBackground = this.clientChoices.evenRow;
-	pickListTableContentsFont = this.clientChoices.evenFont;
-	pickListTableHeaderBackground = this.clientChoices.oddRow;
+	pickListTableContentsBackground: string = '';
+	pickListTableContentsFont: string = '';
+	pickListTableHeaderBackground: string = '';
 
 	selectedFunctionType: number = 1;
 	selectedNavigationType: number = 1;
@@ -136,7 +134,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	validNavigationTypes: IKeyValuePair[] = [new KeyValuePair()];
 
 	constructor(
-		private _AccountSvc: AccountService,
+		accountSvc: AccountService,
 		private _FormBuilder: FormBuilder,
 		private _GroupSvc: GroupService,
 		private _RoleSvc: RoleService,
@@ -150,6 +148,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 		this._ModalSvc = modalSvc;
 		this._ProfileSvc = profileSvc;
 		this._SecuritySvc = securitySvc;
+		this._AccountSvc = accountSvc;
+		this.clientChoices = this._AccountSvc.clientChoices();
+		this.pickListTableContentsBackground = this.clientChoices.evenRow;
+		this.pickListTableContentsFont = this.clientChoices.evenFont;
+		this.pickListTableHeaderBackground = this.clientChoices.oddRow;
 	}
 
 	ngOnInit(): void {
@@ -292,6 +295,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 	}
 
 	onHelp(controleName: string): void {
+		this._HelpOptions.windowSize = 1;
 		switch (controleName) {
 			case 'Action':
 				this._HelpOptions.contentPayLoad = this._HelpAction;
@@ -303,7 +307,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 				this._HelpOptions.contentPayLoad = this._HelpControl;
 				break;
 			case 'Passord':
+				this._HelpOptions.windowSize = new WindowSize(150, 480);
 				this._HelpOptions.contentPayLoad = this._HelpPassword;
+				break;
+			case 'impersonation':
+				this._HelpOptions.contentPayLoad = this._HelpImpersonation;
 				break;
 			default:
 				break;

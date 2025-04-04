@@ -24,13 +24,16 @@ public class JwtUtility : IJwtUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts getBusinessLogic()
+    private static BAccounts BusinessLogic
     {
-        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        get
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+            {
+                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            }
+            return m_BusinessLogic;
         }
-        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -118,7 +121,7 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        var tokenIsUnique = getBusinessLogic().RefreshTokenExists(refreshToken.Token);
+        var tokenIsUnique = BusinessLogic.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
             return GenerateRefreshToken(ipAddress, accountSeqId);
@@ -134,7 +137,7 @@ public class JwtUtility : IJwtUtility
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
 
-        bool mTokenIsUnique = getBusinessLogic().ResetTokenExists(mRetVal);
+        bool mTokenIsUnique = BusinessLogic.ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {
@@ -152,7 +155,7 @@ public class JwtUtility : IJwtUtility
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        bool mTokenExists = getBusinessLogic().VerificationTokenExists(mRetVal);
+        bool mTokenExists = BusinessLogic.VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
             return GenerateVerificationToken();

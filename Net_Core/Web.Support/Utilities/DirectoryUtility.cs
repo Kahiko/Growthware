@@ -60,7 +60,7 @@ public static class DirectoryUtility
     public static MDirectoryProfile GetDirectoryProfile(int functionSeqId)
     {
             var mResult = from mProfile in Directories()
-                          where mProfile.FunctionSeqId == functionSeqId
+                          where mProfile.Id == functionSeqId
                           select mProfile;
             MDirectoryProfile mRetVal = null;
             try

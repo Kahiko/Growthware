@@ -5,7 +5,7 @@ namespace GrowthWare.Framework.Models.UI;
 /// <summary>
 /// Class MUIAccountChoices
 /// </summary>
-public class UIAccountChoices : AbstractBaseModel
+public class UIAccountChoices
 {
 
     /// <summary>

@@ -1,18 +1,34 @@
 import { Component, computed, input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
-import { AccountService } from '@growthware/core/account';
+import { AccountService, LoginComponent } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
-import { LoginComponent } from '@growthware/core/account';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { ConfigurationService } from '@growthware/core/configuration';
+// Library Standalone
+import { HorizontalComponent } from '@growthware/core/navigation';
 
 @Component({
 	selector: 'gw-frontend-default-header',
+	standalone: true,
 	templateUrl: './default-header.component.html',
-	styleUrls: ['./default-header.component.scss']
+	styleUrls: ['./default-header.component.scss'],
+	imports: [
+		RouterLink,
+		// Library Standalone
+		HorizontalComponent,
+		// Angular Material
+		MatButtonModule,
+		MatIconModule,
+		MatMenuModule,
+		MatToolbarModule,
+	]
 })
 export class DefaultHeaderComponent {
 
@@ -35,7 +51,7 @@ export class DefaultHeaderComponent {
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
 		mModalOptions.buttons.okButton.callbackMethod = () => {
-			this.onModalOk;
+			this.onModalOk();
 		};
 		this._ModalSvc.open(mModalOptions);
 	}

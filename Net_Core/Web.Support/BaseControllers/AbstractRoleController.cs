@@ -44,10 +44,6 @@ public abstract class AbstractRoleController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if (HttpContext.Session.GetString("EditId") != null)
-        {
-
-        }
         if (mSecurityInfo.MayEdit)
         {
             UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile.Id);

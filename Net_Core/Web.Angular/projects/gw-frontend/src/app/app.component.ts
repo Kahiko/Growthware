@@ -1,36 +1,34 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
-import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { AccountService } from '@growthware/core/account';
 import { IClientChoices } from '@growthware/core/clientchoices';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
-// Application Modules (UI Skins)
-import { ArcModule } from './skins/arc/arc.module';
-import { DashboardModule } from './skins/dashboard/dashboard.module';
-import { DefaultModule } from './skins/default/default.module';
-import { BlueArrowModule } from './skins/blue-arrow/blue-arrow.module';
-import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
-import { ProfessionalModule } from './skins/professional/professional.module';
+// Application Components (UI Skins)
+import { ArcLayoutComponent } from './skins/arc/arc-layout/arc-layout.component';
+import { BlueArrowLayoutComponent } from './skins/blue-arrow/blue-arrow-layout/blue-arrow-layout.component';
+import { DashboardLayoutComponent } from './skins/dashboard/dashboard-layout/dashboard-layout.component';
+import { DefaultLayoutComponent } from './skins/default/default-layout/default-layout.component';
+import { DevOpsLayoutComponent } from './skins/dev-ops/dev-ops-layout/dev-ops-layout.component';
+import { ProfessionalLayoutComponent } from './skins/professional/professional-layout/professional-layout.component';
 
 @Component({
 	selector: 'gw-frontend-root',
 	standalone: true,
 	imports: [
 		CommonModule,
-		RouterOutlet,
 		// Library
 		ToasterComponent,
 		// Application Modules (UI Skins)
-		ArcModule,
-		DashboardModule,
-		DefaultModule,
-		BlueArrowModule,
-		DevOpsModule,
-		ProfessionalModule
+		ArcLayoutComponent,
+		DashboardLayoutComponent,
+		DefaultLayoutComponent,
+		BlueArrowLayoutComponent,
+		DevOpsLayoutComponent,
+		ProfessionalLayoutComponent
 	],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'

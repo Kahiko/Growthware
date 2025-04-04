@@ -6,6 +6,201 @@
 
 ### Improvements
 - Added removeProperty to the Oracle Database Manager to remove a property
+## Net_Core Version 5.2.0.0 (2025-02-10)
+- Upgraded to .Net Core 9.0
+### Deprecated Classes
+- AbstractDatabaseFunctions
+- AbstractBaseModel
+
+### New Features
+- Added Feedback support
+- Converted the Arc "skin" to standalone
+- Converted the Blue Arrow "skin" to standalone
+- Converted the Dashboard "skin" to standalone
+- Lazy loading has been implemented properly and moved back to the gw-front-end project
+    Added a readme.md to the gw-front-end/src/app/routes folder
+- Forgot password's cancel now closes the modal and opens a new one for login
+- Moved version number to GrowthWare.Framework.csproj
+    - Update both launch.json and GrowthWare.Framework.csproj because launch.json still works for the DatabaseManager.
+- Moved Table/MGroupRolePermissionSecurity.cs to Base/AGroupRolePermissionSecurity.cs
+- Renamed UploadResponse.cs to DTO_UploadResponse.cs
+- Moved MLogging.cs to Table/MLogging.cs
+- Added the GWCommon class to the Growthware.Framework.csproj to help with common functions
+- Moved the "Chunk Size" from the typescript to the configuration file and it is now retrieved from the API
+- Updated the file manager service:
+    - Now uses the chunk size from the configuration file
+    - Now retries on unexpected errors for large files
+    - Now notifies if coded data is incorrect to help with debugging and development
+    - Optimized mergeFiles in the API
+- Added Select/Unselect All, Delete Selected, Sorting and Filtering to the file-list.component and the table-file-list.component
+- Added the following improvements over AbstractDatabaseFunctions:
+	DataRowHelper to hold the Get functions that were originally in the AbstractDatabaseFunctions class
+	IDatabaseTable and IAddedUpdated interfaces as a replacement for IDatabaseFunctions and IBaseModel respectfully
+	ADatabaseTable as a replacement for AbstractDatabaseFunctions
+	AAddedUpdated as a replacement for AbstractBaseModel
+	MTestDatabaseTable to aid in testing ADatabaseTable and AAddedUpdated abstract classes
+- Added ADatabaseTable and IDatabaseTable as a replacement for AbstractDatabaseFunctions and IDatabaseFunctions and adding the following changes:
+    - Added the following methods:
+        public static string GenerateDeleteUsingParameter
+        public string GenerateDeleteUsingValues
+        public string GenerateDeleteUsingValues
+
+        public static string GenerateInsertUsingParameters
+        public string GenerateInsertUsingValues
+
+        public static string GenerateUpdateUsingParameters
+        public string GenerateUpdateUsingValues
+    - Added addtributes to the properties giving clairty to them
+    - Converted:
+        - MSecurityEntity                       to AAddedUpdated
+        - MRegistrationInformation              to AAddedUpdated
+        - MAccountProfile                       to AAddedUpdated
+        - MRefreshToken                         to ADatabaseTable
+        - MCalendarEvent                        to AAddedUpdated
+        - MCalendar                             to AAddedUpdated
+        - MDBInformation                        to AAddedUpdated
+        - MDirectoryProfile                     to AAddedUpdated
+        - MFeedback                             to ADatabaseTable (The Feedback is an "in-line" history table, Stored Procedures ONLY)
+        - AbstractGroupRolePermissionSecurity   to AAddedUpdated
+        - MFunctionTypeProfile                  to AAddedUpdated
+        - MGroupProfile                         to AAddedUpdated
+        - MGroupRoles                           to AAddedUpdated (Inserts fail no primary key defined)
+        - MLoggingProfile                       to ADatabaseTable
+        - MMessage                              to AAddedUpdated
+        - MNameValuePair                        to AAddedUpdated
+        - MRole                                 to AAddedUpdated
+        - MState                                to AAddedUpdated
+        - MNameValuePairDetails                 to AAddedUpdated
+            - MLinkBehaviors    - Renamed SetupClass to setDefaults
+            - MNavigationType   - Renamed SetupClass to setDefaults
+            - MPermissions      - Renamed SetupClass to setDefaults
+            - MWorkFlows        - Renamed SetupClass to setDefaults
+- Added component for testing the Modal feature
+- Added the Benchmark project and benchmark tests for in DAccounts for GetProfile and GetProfileAsync
+
+### Improvements
+- Optimized the CacheHelper it now use a per-file change token (isolated per cache entry)
+- Moved files from assets folder to the public folder to better conform to Augular 18
+- Enhanced logout functionality in LogoutComponent
+    - Added LogoutComponent to handle user logout.
+    - Integrated AccountService to call the logout method on initialization.
+    - Updated the component's structure with necessary imports and lifecycle hooks
+- Picklist: Converted from tables to div cleaned up stylesheet
+- List: Converted from tables to div cleaned up stylesheet
+- #### Modal:
+    - The modal window is now centered vertically
+    - Improved event listener management and resize functionality in the modal window
+    - Added resizing to the modal window for the bottom side, right side, and the bottom-right corner
+    - Added support for initial data for template modals
+    - Enhance JSDoc documentation
+- Rebuilt Web.Angular project from scratch using Angular 18.2.0
+    - Fixes serveral hidden errors
+    - Ensures that the project is compatible with Angular 18.2.0
+    - Prepares the project for upgrade to Angular 19.x
+- Replaced the Swagger UI logo
+- Moved the swagger-ui folder from the assets folder to the public folder
+- Addressed all ESLint issues
+- Replaced logConsole method with LoggingService.console in the modal.service
+- ObjectFactor.Create can now create an object using a constructor with or with out parameters.
+- DAccounts Added a constructor that accepts connectionString and securityEntitySeqID so we don't have to set the properties in BAccounts.
+    - BAccounts changed the constructor to pass the connectionString and securityEntitySeqID to the DAccounts constructor
+    - BAccounts now accounts for CentralManagement
+- AbstractDBInteraction Added Async methods to the base class
+- DClientChoices Added a constructor that accepts connectionString so we don't have to set the properties in BClientChoices.
+    - BClientChoices changed the constructor to pass the connectionString to the DClientChoices constructor
+    - BClientChoices now accounts for CentralManagement
+- DCommunityCalendar Added a constructor that accepts connectionString so we don't have to set the properties in BCommunityCalendar.
+    - BCommunityCalendar changed the constructor to pass the connectionString and the securityEntitySeqID to the DCommunityCalendar constructor
+    - BCommunityCalendar now accounts for CentralManagement
+- DDBInformation Added a constructor that accepts connectionString so we don't have to set the properties in BDBInformation.
+    - BDBInformation changed the constructor to pass the connectionString to the DDBInformation constructor
+    - BDBInformation now accounts for CentralManagement
+- DDirectories Added a constructor that accepts connectionString so we don't have to set the properties in BDirectories.
+    - BDirectories changed the constructor to pass the connectionString and the securityEntitySeqID to the DDirectories constructor
+    - BDirectories now accounts for CentralManagement
+- DFeedbacks Added a constructor that accepts connectionString so we don't have to set the properties in BFeedbacks.
+    - BFeedbacks changed the constructor to pass the connectionString to the DFeedbacks constructor
+    - BFeedbacks now accounts for CentralManagement
+- DFunctions Added a constructor that accepts connectionString so we don't have to set the properties in BFunctions.
+    - BFunctions changed the constructor to pass the connectionString and the securityEntitySeqID to the DFunctions constructor
+    - BFunctions now accounts for CentralManagement
+- DGroups Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in DGroups.
+    - DGroups changed the constructor to pass the connectionString and the securityEntitySeqID to the DGroups constructor
+    - DGroups now accounts for CentralManagement
+- DLogging Added a constructor that accepts connectionString so we don't have to set the properties in DLogging.
+    - BLogger changed the constructor to pass the connectionString to the DLogging constructor
+    - BLogger now accounts for CentralManagement
+- DMessages Added a constructor that accepts connectionString so we don't have to set the properties in DMessages.
+    - BMessages changed the constructor to pass the connectionString to the DMessages constructor
+    - BMessages now accounts for CentralManagement
+- DNameValuePairs Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BNameValuePairs.
+    - BNameValuePairs changed the constructor to pass the connectionString and the securityEntitySeqID to the DNameValuePairs constructor
+    - BNameValuePairs now accounts for CentralManagement
+- DRoles Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BRoles.
+    - BRoles changed the constructor to pass the connectionString and the securityEntitySeqID to the DRoles constructor
+    - BRoles now accounts for CentralManagement
+- DSearch Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BSearch.
+    - BSearch changed the constructor to pass the connectionString and the securityEntitySeqID to the DSearch constructor
+    - BSearch now accounts for CentralManagement
+- DSecurityEntities Added a constructor that accepts connectionString so we don't have to set the properties in BSecurityEntities.
+    - BSecurityEntities changed the constructor to pass the connectionString to the DSecurityEntities constructor
+    - BSecurityEntities now accounts for CentralManagement
+- DState Added a constructor that accepts connectionString and the securityEntitySeqID so we don't have to set the properties in BStates.
+    - BStates changed the constructor to pass the connectionString and the securityEntitySeqID to the DState constructor
+    - BStates now accounts for CentralManagement
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
+- Manage Name/Value Pairs is not updating the search results after saving
+- Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
+- Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
+- BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
+
+### Bug Fixes
+- Fixed NG0955 error in horizontal.component.html track by was by "action" truns out there can be a duplicate in the collection use case is where the "Favoriate Link" and the "Feedback Link" are the same.  I added the id to INavLink interface and now use that in the track by.
+- Removed the ngModule from the gw-frontend/features/home
+- Updated the /* Form */ section was missing formSectionContents for the Professional "Skin"
+- Fixed not being able save the "IsSysAdmin" property in AccountDetailsComponent
+- Fixed DAccounts not saving ResetTokenExpires and MiddleName correctly
+- Fixed saving the directory profile where the ImpersonatePassword was not being handeled correctly.  If "Impersonate" is false then both the Password and ImpersonatePassword be saved as string.empty.  The password is no longer displayed in the UI as was desinged (leaving it blank with keep the same password)
+- Fixed bug where you couldn't save a group without roles
+- Cleaned up AbstractGroupController.SaveGroup(UIGroupProfile groupProfile)
+- Fixed bug where cache was not being updated after saving a Security Entity
+- Fixed MSecurityInfo it never checked the groups only the dervied roles
+- Fixed error in block size when decrypting using both Des and TrippleDes
+- Fixed Avoid inexact read with 'System.IO.FileStream.Read(byte[], int, int)'
+- Fixed Upload was not setting startingByte and endingByte correctly in FileManagerService.uploadFile for the first call to multiPartFileUpload
+- Fixed CacheHelper where the item was not being removed from the MemoryCache collection in the changeCallback method
+- Fixed sorting in the TableFileListComponent, it was not sorting the size correctly
+- Fixed multiple modal windows closing when using the ESC key
+- Fixed Docker by hosting the both the Angular Material Icons and Fonts
+- Fixed error when renaming a directory then clicking on subdirectories
+
+## Net_Core Version 5.1.1.x (YYYY-MM-DD)
+
+### New Features
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
+- When adding a Name/Value Pair the search results are not being updated
+
+### Bug Fixes
+- Fixed lable type-o in the Event Details Component from "Angular forms" to "Event Date"
+- Fixed Editing your account information in the Account Details Component
+- Fixed Saving an account
+    UI elements will now displaying correctly in the Account Details Component
+    When the "action" is "accounts/edit-my-account"
+        The "Status" field and "System Administrator" row is hidden
+    The "System Administrator" and "Failed Logon Attempts" row will not display if the roles are not displayed
+    "System Administrator" field is disabled if the client is not a system administrator
+    - In the API call (SaveAccount)
+        Will now save if the requesting account is the same as the account being saved
+        FailedAttempts and Status can not be changed by the "same" account
+- Fixed app.component.spec.ts to work correctly with signals
+- Fixed ERROR: 'ERROR', TypeError: this._SecurityEntitySvc.getSecurityEntity(...).then is not a function in app.component.spec.ts
+- Fixed File manager does not populate the file list upon initial load
 
 ## Net_Core Version 5.1.0.x (2024-10-24)
 
