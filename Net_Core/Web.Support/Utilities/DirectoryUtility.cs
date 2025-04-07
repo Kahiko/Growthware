@@ -32,7 +32,7 @@ public static class DirectoryUtility
         Collection<MDirectoryProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
         if(mRetVal == null)
         {
-            BDirectories mBDirectories = getBusinessLogic();
+            BDirectories mBDirectories = BusinessLogic;
             mRetVal = mBDirectories.Directories();
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
@@ -43,13 +43,16 @@ public static class DirectoryUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BDirectories getBusinessLogic()
+    private static BDirectories BusinessLogic
     {
-        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        get 
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+            {
+                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            }
+            return m_BusinessLogic;
         }
-        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -80,7 +83,7 @@ public static class DirectoryUtility
 
     public static void Save(MDirectoryProfile profile)
     {
-        BDirectories mBDirectories = getBusinessLogic();
+        BDirectories mBDirectories = BusinessLogic;
         mBDirectories.Save(profile);
         String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheHelper.RemoveFromCache(mCacheName);
