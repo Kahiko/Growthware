@@ -23,7 +23,7 @@ public class AccountUtilityTests
     private Mock<IHttpContextAccessor> m_HttpContextAccessorMock;
     private Mock<HttpContext> m_HttpContextMock;
     private string m_IpAddress = "127.0.0.1";
-    private string m_Origin = "https://127.0.0.1";
+    // private string m_Origin = "https://127.0.0.1";
     private string m_Password = "none";
     private MockSession m_SessionMock;
     private MAccountProfile m_Developer_Profile = new();
