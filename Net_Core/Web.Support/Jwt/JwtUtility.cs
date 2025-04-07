@@ -13,8 +13,6 @@ using GrowthWare.Web.Support.Utilities;
 namespace GrowthWare.Web.Support.Jwt;
 public class JwtUtility : IJwtUtility
 {
-    private static BAccounts m_BusinessLogic = null;
-
     public JwtUtility()
     {
         // nothing atm
