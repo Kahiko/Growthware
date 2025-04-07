@@ -16,7 +16,7 @@ public class DAccounts : AbstractDBInteraction, IDBInteraction
 
     #region Member Fields
     private string m_ConnectionString = ConfigSettings.ConnectionString;
-    private MAccountProfile m_Profile = null;
+    private MAccountProfile m_Profile;
     private int m_SecurityEntitySeqID = 1;
     #endregion
 
