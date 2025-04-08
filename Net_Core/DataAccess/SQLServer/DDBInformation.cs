@@ -3,6 +3,7 @@ using GrowthWare.DataAccess.SQLServer.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -24,16 +25,13 @@ public class DDBInformation : AbstractDBInteraction, IDBInformation
     }
 #endregion
 
-    public DataRow GetProfileRow
+    public async Task<DataRow> GetProfileRow()
     {
-        get
-        {
-            string mStoredProcedure = "ZGWSystem.Get_Database_Information";
-            return base.GetDataRow(mStoredProcedure);
-        }
+        string mStoredProcedure = "ZGWSystem.Get_Database_Information";
+        return await base.GetDataRowAsync(mStoredProcedure);
     }
 
-    public bool UpdateProfile()
+    public async Task<bool> UpdateProfile()
     {
         string mStoredProcedure = "ZGWSystem.Set_DataBase_Information";
         SqlParameter[] mParameters = { 
@@ -45,7 +43,7 @@ public class DDBInformation : AbstractDBInteraction, IDBInformation
         };
         try
         {
-                base.ExecuteNonQuery(mStoredProcedure, mParameters);
+                await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
                 return true;
         }
         catch (System.Exception)

@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -24,12 +25,12 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Gets the profile.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow GetProfileRow { get; }
+        Task<DataRow> GetProfileRow();
 
         /// <summary>
         /// Updates the profile.
         /// </summary>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        bool UpdateProfile();
+        Task<bool> UpdateProfile();
     }
 }

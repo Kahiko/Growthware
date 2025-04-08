@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Framework.Enumerations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -63,9 +64,9 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpGet("GetDBInformation")]
-    public MDBInformation GetDBInformation()
+    public async Task<MDBInformation> GetDBInformation()
     {
-        MDBInformation mRetVal = DBInformationUtility.DBInformation();
+        MDBInformation mRetVal = await DBInformationUtility.DBInformation();
         return mRetVal;
     }
 
@@ -139,12 +140,12 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpPost("UpdateProfile")]
-    public ActionResult<bool> UpdateProfile(int enableInheritance)
+    public async Task<ActionResult<bool>> UpdateProfile(int enableInheritance)
     {
         bool mRetVal = false;
-        MDBInformation mProfile = DBInformationUtility.DBInformation();
+        MDBInformation mProfile = await DBInformationUtility.DBInformation();
         mProfile.EnableInheritance = enableInheritance;
-        mRetVal = DBInformationUtility.UpdateProfile(mProfile);
+        mRetVal = await DBInformationUtility.UpdateProfile(mProfile);
         return Ok(mRetVal);
     }
 }

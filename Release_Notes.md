@@ -12,6 +12,7 @@
     - DSearch (ISearch, BSearch, SearchUtility, AbstractSearchController)
     - DFeedbacks (IFeedbacks, BFeedbacks, FeedbackUtility, AbstractFeedbackController)
     - DCommunityCalendar (ICommunityCalendar, BCommunityCalendar, CommunityCalendarUtility, AbstractCommunityCalendarController)
+    - DDBInformation (IDBInformation, BDBInformation, DBInformationUtility, AbstractDBInformationController)
 
 
 ### Known Bugs
