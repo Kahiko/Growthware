@@ -64,7 +64,7 @@ public abstract class AbstractFeedbackController : ControllerBase
 
     [Authorize("feedbacks")]
     [HttpGet("GetFeedbackForEdit")]
-    public UIFeedback GetFeedbackForEdit(int feedbackId)
+    public async Task<UIFeedback> GetFeedbackForEdit(int feedbackId)
     {
         UIFeedback mRetVal = new();
         // Remove the EditId from the session
@@ -72,13 +72,13 @@ public abstract class AbstractFeedbackController : ControllerBase
         // Set the EditId in the session
         HttpContext.Session.SetInt32("EditId", mRetVal.FeedbackId);
         // Get the feedback from the data store
-        mRetVal = FeedbackUtility.GetFeedback(feedbackId);
+        mRetVal = await FeedbackUtility.GetFeedback(feedbackId);
         return mRetVal;
     }
 
     [Authorize("feedbacks")]
     [HttpPost("SaveFeedback")]
-    public ActionResult<bool> SaveFeedback(UIFeedback feedback)
+    public async Task<ActionResult<bool>> SaveFeedback(UIFeedback feedback)
     {
         bool mRetVal = false;
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
@@ -134,7 +134,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 }
                 try
                 {
-                    UIFeedback mSavedFeedback = FeedbackUtility.SaveFeedback(mFeedbackToSave);
+                    UIFeedback mSavedFeedback = await FeedbackUtility.SaveFeedback(mFeedbackToSave);
                     if (mSavedFeedback != null)
                     {
                         mRetVal = true;

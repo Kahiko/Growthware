@@ -8,8 +8,9 @@
 - Performance Improvement - Added a BusinessLogic property to the BClientChoices to limit how many times the a BClientChoices is created
 - DirectoryUtility: Changed getBusinessLogic from a method to a property and renamed it to BusinessLogic
 - Converted the following data access classes to provide async methods:
-    DState (IState, BState, StateUtility, AbstractStateController)
-    DSearch (ISearch, BSearch, SearchUtility, AbstractSearchController)
+    - DState (IState, BState, StateUtility, AbstractStateController)
+    - DSearch (ISearch, BSearch, SearchUtility, AbstractSearchController)
+    - DFeedbacks (IFeedbacks, BFeedbacks, FeedbackUtility, AbstractFeedbackController)
 
 
 ### Known Bugs
