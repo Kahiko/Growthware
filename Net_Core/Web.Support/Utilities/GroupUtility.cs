@@ -16,35 +16,94 @@ public static class GroupUtility
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
-    /// Saves the groups and roles for the given MGroupProfile and MGroupRoles to the database.
+    /// Deletes the group.
     /// </summary>
-    /// <param name="profile">The UIGroupProfile to be saved.</param>
-    /// <param name="groupRoles">The MGroupRoles to be saved.</param>
-    /// <returns>The saved UIGroupProfile.</returns>
-    public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
+    /// <param name="profile"></param>
+    /// <exception cref="ArgumentNullException"></exception> <summary>
+    /// 
+    /// </summary>
+    /// <param name="profile"></param>
+    public static void Delete(MGroupProfile profile)
     {
-        BGroups mBGroups = getBusinessLogic();
-        // Save the profile
-        int mGroupSeqId = mBGroups.Save(profile);
-        // set the groupRoles id's
-        // groupRoles.Id = mGroupSeqId;
-        groupRoles.GroupSeqId = mGroupSeqId;
-        // Save the group roles
-        mBGroups.UpdateGroupRoles(groupRoles);
-        // get the profile from the DB
-        UIGroupProfile mRetVal = GetUIGroupProfile(mGroupSeqId, groupRoles.SecurityEntityID);
+        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in VB) or empty!");
+        if(profile.Id != -1) 
+        {
+            bool success = false;
+            BGroups mBGroups = getBusinessLogic();
+            success = mBGroups.DeleteGroup(profile);
+        }
+    }
+
+    /// <summary>
+    /// Retrieves all groups by the specified security entity.
+    /// </summary>
+    /// <param name="securityEntityId">The ID of the security entity.</param>
+    /// <returns>A DataTable containing the groups.</returns>
+    private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
+    {
+        String mCacheName = securityEntityId.ToString() + "_Groups";
+        DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
+        if(mRetVal == null)
+        {
+            BGroups mBGroups = getBusinessLogic();
+            mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
+            m_CacheHelper.AddToCache(mCacheName, mRetVal);
+        }
         return mRetVal;
     }
 
     /// <summary>
-    /// Updates the group roles for a given group.
+    /// Returns the business logic object used to access the database.
     /// </summary>
-    /// <param name="groupRoles">The group roles to update.</param>
-    /// <returns>No return value.</returns>
-    public static void UpdateGroupRoles(MGroupRoles groupRoles)
+    /// <returns></returns>
+    private static BGroups getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+        }
+        return m_BusinessLogic;
+    }
+
+    /// <summary>
+    /// Retrieves the group profile for a given group sequence ID.
+    /// </summary>
+    /// <param name="groupSeqId">The ID of the group.</param>
+    /// <returns>The group profile for the given group sequence ID.</returns>
+    public static MGroupProfile GetGroupProfile(int groupSeqId) 
     {
         BGroups mBGroups = getBusinessLogic();
-        mBGroups.UpdateGroupRoles(groupRoles);
+        MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Retrieves a list of groups as an ArrayList for a given security entity ID.
+    /// </summary>
+    /// <param name="securityEntityId">The ID of the security entity.</param>
+    /// <returns>An ArrayList of group names.</returns>
+    public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)
+    {
+        DataTable mGroupsTable = getAllGroupsBySecurityEntity(securityEntityId);
+        ArrayList mRetVal = new ArrayList();
+        foreach (DataRow item in mGroupsTable.Rows)
+        {
+            mRetVal.Add((string)item["NAME"]);
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Retrieves the selected roles from the given MGroupRoles object.
+    /// </summary>
+    /// <param name="groupRoles">The MGroupRoles object from which to retrieve the selected roles.</param>
+    /// <returns>An array of strings representing the selected roles.</returns>
+    private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
+    {
+        string[] mRetVal = new string[]{};
+        BGroups mBGroups = getBusinessLogic();
+        mRetVal = mBGroups.GetSelectedRoles(groupRoles);
+        return mRetVal;
     }
 
     /// <summary>
@@ -95,93 +154,34 @@ public static class GroupUtility
     }
 
     /// <summary>
-    /// Deletes the group.
+    /// Saves the groups and roles for the given MGroupProfile and MGroupRoles to the database.
     /// </summary>
-    /// <param name="profile"></param>
-    /// <exception cref="ArgumentNullException"></exception> <summary>
-    /// 
-    /// </summary>
-    /// <param name="profile"></param>
-    public static void Delete(MGroupProfile profile)
-    {
-        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in VB) or empty!");
-        if(profile.Id != -1) 
-        {
-            bool success = false;
-            BGroups mBGroups = getBusinessLogic();
-            success = mBGroups.DeleteGroup(profile);
-        }
-    }
-
-    /// <summary>
-    /// Retrieves the group profile for a given group sequence ID.
-    /// </summary>
-    /// <param name="groupSeqId">The ID of the group.</param>
-    /// <returns>The group profile for the given group sequence ID.</returns>
-    public static MGroupProfile GetGroupProfile(int groupSeqId) 
+    /// <param name="profile">The UIGroupProfile to be saved.</param>
+    /// <param name="groupRoles">The MGroupRoles to be saved.</param>
+    /// <returns>The saved UIGroupProfile.</returns>
+    public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
         BGroups mBGroups = getBusinessLogic();
-        MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
+        // Save the profile
+        int mGroupSeqId = mBGroups.Save(profile);
+        // set the groupRoles id's
+        // groupRoles.Id = mGroupSeqId;
+        groupRoles.GroupSeqId = mGroupSeqId;
+        // Save the group roles
+        mBGroups.UpdateGroupRoles(groupRoles);
+        // get the profile from the DB
+        UIGroupProfile mRetVal = GetUIGroupProfile(mGroupSeqId, groupRoles.SecurityEntityID);
         return mRetVal;
     }
 
     /// <summary>
-    /// Retrieves the selected roles from the given MGroupRoles object.
+    /// Updates the group roles for a given group.
     /// </summary>
-    /// <param name="groupRoles">The MGroupRoles object from which to retrieve the selected roles.</param>
-    /// <returns>An array of strings representing the selected roles.</returns>
-    private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
+    /// <param name="groupRoles">The group roles to update.</param>
+    /// <returns>No return value.</returns>
+    public static void UpdateGroupRoles(MGroupRoles groupRoles)
     {
-        string[] mRetVal = new string[]{};
         BGroups mBGroups = getBusinessLogic();
-        mRetVal = mBGroups.GetSelectedRoles(groupRoles);
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Retrieves a list of groups as an ArrayList for a given security entity ID.
-    /// </summary>
-    /// <param name="securityEntityId">The ID of the security entity.</param>
-    /// <returns>An ArrayList of group names.</returns>
-    public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)
-    {
-        DataTable mGroupsTable = getAllGroupsBySecurityEntity(securityEntityId);
-        ArrayList mRetVal = new ArrayList();
-        foreach (DataRow item in mGroupsTable.Rows)
-        {
-            mRetVal.Add((string)item["NAME"]);
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Retrieves all groups by the specified security entity.
-    /// </summary>
-    /// <param name="securityEntityId">The ID of the security entity.</param>
-    /// <returns>A DataTable containing the groups.</returns>
-    private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
-    {
-        String mCacheName = securityEntityId.ToString() + "_Groups";
-        DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
-        if(mRetVal == null)
-        {
-            BGroups mBGroups = getBusinessLogic();
-            mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
-            m_CacheHelper.AddToCache(mCacheName, mRetVal);
-        }
-        return mRetVal;
-    }
-    
-    /// <summary>
-    /// Returns the business logic object used to access the database.
-    /// </summary>
-    /// <returns></returns>
-    private static BGroups getBusinessLogic()
-    {
-        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
-        {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
-        }
-        return m_BusinessLogic;
+        mBGroups.UpdateGroupRoles(groupRoles);
     }
 }
