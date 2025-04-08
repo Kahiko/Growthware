@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -19,14 +20,14 @@ public static class LoggingUtility
         return m_BusinessLogic;
     }
 
-    public static MLoggingProfile GetProfile(int logSeqId)
+    public static async Task<MLoggingProfile> GetProfile(int logSeqId)
     {
         BLogger mBLogger = getBusinessLogic();
-        return mBLogger.GetLoggingProfile(logSeqId);
+        return await mBLogger.GetLoggingProfile(logSeqId);
     }
     public static void Save(MLoggingProfile profile)
     {
         BLogger mBLogger = getBusinessLogic();
-        mBLogger.Save(profile);
+        _ = mBLogger.Save(profile);
     }
 }

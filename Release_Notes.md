@@ -13,6 +13,7 @@
     - DFeedbacks (IFeedbacks, BFeedbacks, FeedbackUtility, AbstractFeedbackController)
     - DCommunityCalendar (ICommunityCalendar, BCommunityCalendar, CommunityCalendarUtility, AbstractCommunityCalendarController)
     - DDBInformation (IDBInformation, BDBInformation, DBInformationUtility, AbstractDBInformationController)
+    - DLogging (ILogging, BLogger, LoggingUtility, AbstractLoggingController)
 
 
 ### Known Bugs

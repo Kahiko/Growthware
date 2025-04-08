@@ -2,6 +2,7 @@
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -9,7 +10,7 @@ public class BLogger : AbstractBusinessLogic
 {
 
 #region Member Fields
-    private ILogging m_Logging;
+    private ILogging m_DLogging;
 #endregion
 
 #region Constructors
@@ -17,10 +18,10 @@ public class BLogger : AbstractBusinessLogic
     {
         if (dataAccessLayerAssemblyName == null || string.IsNullOrWhiteSpace(dataAccessLayerAssemblyName)) throw new ArgumentNullException(nameof(dataAccessLayerAssemblyName), "dataAccessLayerAssemblyName cannot be a null reference (Nothing in Visual Basic)!");
         if (dataAccessLayerNamespace == null || string.IsNullOrWhiteSpace(dataAccessLayerNamespace)) throw new ArgumentNullException(nameof(dataAccessLayerNamespace), "dataAccessLayerNamespace cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_Logging == null || ConfigSettings.CentralManagement)
+        if(m_DLogging == null || ConfigSettings.CentralManagement)
         {
-            this.m_Logging = (ILogging)ObjectFactory.Create(dataAccessLayerAssemblyName, dataAccessLayerNamespace, "DLogging", connectionString);
-            if (this.m_Logging == null) 
+            this.m_DLogging = (ILogging)ObjectFactory.Create(dataAccessLayerAssemblyName, dataAccessLayerNamespace, "DLogging", connectionString);
+            if (this.m_DLogging == null) 
             {
                 throw new InvalidOperationException("Failed to create an instance of DLogging.");
             }
@@ -33,11 +34,11 @@ public class BLogger : AbstractBusinessLogic
     /// </summary>
     /// <param name="logSeqId">The log sequence ID.</param>
     /// <returns>The logging profile if the database is online, otherwise null.</returns>
-    public MLoggingProfile GetLoggingProfile(int logSeqId)
+    public async Task<MLoggingProfile> GetLoggingProfile(int logSeqId)
     {
         if (DatabaseIsOnline())
         {
-            return this.m_Logging.GetLog(logSeqId);
+            return await this.m_DLogging.GetLog(logSeqId);
         }
         return null;
     }
@@ -47,12 +48,12 @@ public class BLogger : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void Save(MLoggingProfile profile)
+    public async Task Save(MLoggingProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (DatabaseIsOnline())
         {
-            m_Logging.Save(profile);
+            await m_DLogging.Save(profile);
         }
     }
 }
