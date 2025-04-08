@@ -23,7 +23,7 @@ public static class FeedbackUtility
     /// <summary>
     /// Retrieves the business logic instance.
     /// </summary>
-    private static BFeedbacks BusinessLogic()
+    private static BFeedbacks getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
@@ -44,7 +44,7 @@ public static class FeedbackUtility
     {
         try
         {
-            UIFeedback mRetVal = await BusinessLogic().GetFeedback(feedbackId);
+            UIFeedback mRetVal = await getBusinessLogic().GetFeedback(feedbackId);
             if (mRetVal == null)
             {
                 throw new NullReferenceException($"The feedback with the ID {feedbackId} was not found.");
@@ -76,7 +76,7 @@ public static class FeedbackUtility
 
         try
         {
-            UIFeedback mRetVal = await BusinessLogic().SaveFeedback(feedback);
+            UIFeedback mRetVal = await getBusinessLogic().SaveFeedback(feedback);
             if (mRetVal == null)
             {
                 throw new NullReferenceException("The saved feedback was null.");
