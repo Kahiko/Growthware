@@ -7,6 +7,8 @@
 - Removed centralManagement from the BClientChoices constructor ... it's not needed
 - Performance Improvement - Added a BusinessLogic property to the BClientChoices to limit how many times the a BClientChoices is created
 - DirectoryUtility: Changed getBusinessLogic from a method to a property and renamed it to BusinessLogic
+- Converted the following data access classes to provide async methods:
+    DState (IState, BState, StateUtility, AbstractStateController)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

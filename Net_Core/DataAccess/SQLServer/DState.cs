@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -51,23 +52,21 @@ public class DState : AbstractDBInteraction, IState
         return mParameters;
     }
 
-    DataTable IState.GetStates
+    async Task<DataTable> IState.GetStates()
     {
-        get
-        {
-            this.checkValid();
-            String mStoredProcedure  = "ZGWOptional.Get_State";
-            SqlParameter[] mParameters = {
-                new SqlParameter("@P_State", m_Profile.State)
-            };
-            return base.GetDataTable(mStoredProcedure, mParameters);
-        }
+        this.checkValid();
+        String mStoredProcedure  = "ZGWOptional.Get_State";
+        SqlParameter[] mParameters = {
+            new SqlParameter("@P_State", m_Profile.State)
+        };
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    void IState.Save()
+    async Task IState.Save()
     {
+        base.IsValid();
         SqlParameter[] mParameters = getInsertUpdateParameters();
         String mStoreProc = "ZGWOptional.Set_State";
-        base.ExecuteNonQuery( mStoreProc, mParameters);            
+        await base.ExecuteNonQueryAsync( mStoreProc, mParameters);            
     }
 }
