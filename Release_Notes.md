@@ -17,6 +17,7 @@
     - DMessages (IMessages, BMessages, MessagesUtility, AbstractMessagesController)
     - DNameValuePairs (INameValuePairs, BNameValuePairs, NameValuePairsUtility, AbstractNameValuePairsController)
     - DDirectories (IDirectories, BDirectories, DirectoriesUtility, AbstractDirectoriesController)
+    - DGroups (IGroups, BGroups, GroupsUtility, AbstractGroupsController)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
