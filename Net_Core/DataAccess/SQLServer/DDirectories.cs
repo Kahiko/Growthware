@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -21,17 +22,16 @@ public class DDirectories : AbstractDBInteraction, IDirectories
     }
 #endregion
 
-    DataTable IDirectories.Directories()
+    async Task<DataTable> IDirectories.Directories()
     {
         String mStoredProcedure = "ZGWOptional.Get_Directory";
-        SqlParameter[] mParameters =
-        {
-            new SqlParameter("@P_FunctionSeqId", -1)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        SqlParameter[] mParameters = [
+            new ("@P_FunctionSeqId", -1)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    void IDirectories.Save(MDirectoryProfile profile)
+    async Task IDirectories.Save(MDirectoryProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         String mStoredProcedure = "ZGWOptional.Set_Directory";
@@ -42,17 +42,16 @@ public class DDirectories : AbstractDBInteraction, IDirectories
             mImpersonateAccount = string.Empty;
             mImpersonatePassword = string.Empty;
         }
-        SqlParameter[] mParameters =
-        {
-            new SqlParameter("@P_FunctionSeqId", profile.Id),
-            new SqlParameter("@P_Directory", profile.Directory),
-            new SqlParameter("@P_Impersonate", profile.Impersonate),
-            new SqlParameter("@P_Impersonating_Account", mImpersonateAccount),
-            new SqlParameter("@P_Impersonating_Password", mImpersonatePassword),
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
+        SqlParameter[] mParameters = [
+            new ("@P_FunctionSeqId", profile.Id),
+            new ("@P_Directory", profile.Directory),
+            new ("@P_Impersonate", profile.Impersonate),
+            new ("@P_Impersonating_Account", mImpersonateAccount),
+            new ("@P_Impersonating_Password", mImpersonatePassword),
+            new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
             GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)			
-        };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
     public int SecurityEntitySeqId { get; set; }

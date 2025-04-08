@@ -73,14 +73,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="newPath">The new path.</param>
     /// <returns>An ActionResult indicating the success or failure of the operation.</returns>
     [HttpPost("CreateDirectory")]
-    public ActionResult CreateDirectory(string action, string selectedPath, string newPath)
+    public async Task<ActionResult> CreateDirectory(string action, string selectedPath, string newPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayAdd)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mCurrentPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
             string mNewDirectoryName = Path.Combine(mCurrentPath, newPath);
             DirectoryInfo mDirectoryInfo = new DirectoryInfo(mNewDirectoryName);
@@ -100,14 +100,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="selectedPath">The selected path.</param>
     /// <returns>An ActionResult<bool> indicating the success of the operation.</returns>
     [HttpDelete("DeleteDirectory")]
-    public ActionResult<bool> DeleteDirectory(string action, string selectedPath)
+    public async Task<ActionResult<bool>> DeleteDirectory(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mFullPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
             if (mFullPath != mDirectoryProfile.Directory)
             {
@@ -128,14 +128,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="fileName"></param>
     /// <returns></returns>
     [HttpDelete("DeleteFile")]
-    public ActionResult<bool> DeleteFile(string action, string selectedPath, string fileName)
+    public async Task<ActionResult<bool>> DeleteFile(string action, string selectedPath, string fileName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mFileName = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, selectedPath), fileName);
             if (System.IO.File.Exists(mFileName))
             {
@@ -179,7 +179,7 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="fileNames">The file names to delete.</param>
     /// <returns>An ActionResult containing a bool indicating the success of the operation.</returns>
     [HttpDelete("DeleteFiles")]
-    public ActionResult<bool> DeleteFiles()
+    public async Task<ActionResult<bool>> DeleteFiles()
     {
         IFormCollection mRequestForm = Request.Form;
         string action = mRequestForm["action"];
@@ -194,7 +194,7 @@ public abstract class AbstractFileController : ControllerBase
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             bool mDeletedAll = true;
             foreach (string mFileName in fileNames)
             {
@@ -261,14 +261,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="selectedPath">The path beyond the actions directory</param>
     /// <returns>a json string representation of the MDirectoryTree object</returns>
     [HttpGet("GetDirectories")]
-    public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
+    public async Task<ActionResult<MDirectoryTree>> GetDirectories(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             DirectoryInfo mDirectoryInfo = new DirectoryInfo(mDirectoryProfile.Directory);
             try
             {
@@ -299,7 +299,7 @@ public abstract class AbstractFileController : ControllerBase
     /// <returns>An IActionResult representing the retrieved file.</returns>
     [AllowAnonymous]
     [HttpGet("GetFile")]
-    public IActionResult GetFile(string action, string selectedPath, string fileName)
+    public async Task<IActionResult> GetFile(string action, string selectedPath, string fileName)
     {
         if (action == null) throw new ArgumentNullException(nameof(action), "action cannot be a null reference (Nothing in Visual Basic)!");
         if (selectedPath == null) throw new ArgumentNullException(nameof(selectedPath), "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
@@ -311,7 +311,7 @@ public abstract class AbstractFileController : ControllerBase
         if (mSecurityInfo.MayView)
         {
             // get the directory information from the directory profile
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
                 string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
@@ -343,14 +343,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="selectedPath">The selected path.</param>
     /// <returns>An ActionResult containing a list of FileInfoLight objects.</returns>
     [HttpGet("GetFiles")]
-    public ActionResult<List<FileInfoLight>> GetFiles(string action, string selectedPath)
+    public async Task<ActionResult<List<FileInfoLight>>> GetFiles(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
             DirectoryInfo mDirectoryInto = new DirectoryInfo(mPath);
             List<FileInfoLight> mRetVal = new List<FileInfoLight>();
@@ -548,14 +548,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="newName">The new name.</param>
     /// <returns>An ActionResult.</returns>
     [HttpPost("RenameDirectory")]
-    public ActionResult RenameDirectory(string action, string selectedPath, string newName)
+    public async Task<ActionResult> RenameDirectory(string action, string selectedPath, string newName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
                 string[] mSelectedPathParts = selectedPath.Split(@"\");
@@ -589,14 +589,14 @@ public abstract class AbstractFileController : ControllerBase
     /// <param name="newName">The new name.</param>
     /// <returns>An ActionResult.</returns>
     [HttpPost("RenameFile")]
-    public ActionResult RenameFile(string action, string selectedPath, string oldName, string newName)
+    public async Task<ActionResult> RenameFile(string action, string selectedPath, string oldName, string newName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
                 string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
@@ -704,7 +704,7 @@ public abstract class AbstractFileController : ControllerBase
                     formFile = Request.Form.Files[0];
                 }
 
-                MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+                MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
                 if (mDirectoryProfile != null)
                 {
                     string mBaseDirectory = mDirectoryProfile.Directory;
