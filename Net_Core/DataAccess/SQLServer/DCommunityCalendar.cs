@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -28,14 +29,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
     }
 #endregion
 
-    bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
-    {
-        this.checkValid();
-
-        return true;
-    }
-
-    bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
+    async Task<bool> ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
@@ -45,7 +39,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         };
         try
         {
-            base.ExecuteNonQuery(mStoredProcedure, mParameters);
+            await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -54,13 +48,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         return true;
     }
 
-    bool ICommunityCalendar.GetCalendar(int calendarSeqId)
-    {
-        this.checkValid();
-        return true;
-    }
-
-    DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+    async Task<DataRow> ICommunityCalendar.GetEvent(int calendarEventSeqId)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
@@ -70,7 +58,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         };
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -78,7 +66,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         }
     }
 
-    DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
+    async Task<DataTable> ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Events]";
@@ -90,7 +78,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         };
         try
         {
-            return base.GetDataTable(mStoredProcedure, mParameters);
+            return await base.GetDataTableAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -98,7 +86,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         }
     }
 
-    DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
+    async Task<DataRow> ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
@@ -118,7 +106,7 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
             };
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {

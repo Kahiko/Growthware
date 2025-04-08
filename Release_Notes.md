@@ -11,6 +11,7 @@
     - DState (IState, BState, StateUtility, AbstractStateController)
     - DSearch (ISearch, BSearch, SearchUtility, AbstractSearchController)
     - DFeedbacks (IFeedbacks, BFeedbacks, FeedbackUtility, AbstractFeedbackController)
+    - DCommunityCalendar (ICommunityCalendar, BCommunityCalendar, CommunityCalendarUtility, AbstractCommunityCalendarController)
 
 
 ### Known Bugs
