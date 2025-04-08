@@ -8,7 +8,6 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Linq;
-using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
