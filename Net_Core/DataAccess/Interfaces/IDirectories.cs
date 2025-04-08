@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.Interfaces
     /// </summary>
     public interface IDirectories : IDBInteraction
     {
-        		/// <summary>
+        /// <summary>
 		/// Gets the directories.
 		/// </summary>
 		/// <returns>DataTable.</returns>
