@@ -9,6 +9,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -113,7 +114,7 @@ public abstract class AbstractMessageController : ControllerBase
 
     [Authorize("Search_Messages")]
     [HttpPost("SearchMessages")]
-    public String SearchMessages(UISearchCriteria searchCriteria)
+    public async Task<String> SearchMessages(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[MessageSeqId], [Name], [Title], [Description], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -131,7 +132,7 @@ public abstract class AbstractMessageController : ControllerBase
                 TableOrView = "[ZGWCoreWeb].[vwSearchMessages]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

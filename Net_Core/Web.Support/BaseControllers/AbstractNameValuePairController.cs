@@ -9,6 +9,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -143,7 +144,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
 
     [Authorize("search_name_value_pairs")]
     [HttpPost("SearchNameValuePairs")]
-    public String SearchNameValuePairs(UISearchCriteria searchCriteria)
+    public async Task<String> SearchNameValuePairs(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[nvpSeqId] = [NVPSeqId], [schemaName] = [Schema_Name], [staticName] = [Static_Name], [display], [description], [StatusSeqId]";
@@ -162,7 +163,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

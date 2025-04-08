@@ -9,6 +9,8 @@
 - DirectoryUtility: Changed getBusinessLogic from a method to a property and renamed it to BusinessLogic
 - Converted the following data access classes to provide async methods:
     DState (IState, BState, StateUtility, AbstractStateController)
+    DSearch (ISearch, BSearch, SearchUtility, AbstractSearchController)
+
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure

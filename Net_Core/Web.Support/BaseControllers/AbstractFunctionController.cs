@@ -8,6 +8,7 @@ using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -288,7 +289,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [Authorize("Functions")]
     [HttpPost("SearchFunctions")]
-    public String SearchFunctions(UISearchCriteria searchCriteria)
+    public async Task<String> SearchFunctions(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -306,7 +307,7 @@ public abstract class AbstractFunctionController : ControllerBase
                 TableOrView = "[ZGWSystem].[vwSearchFunctions]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

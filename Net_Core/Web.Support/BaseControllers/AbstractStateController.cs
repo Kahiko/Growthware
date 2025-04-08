@@ -67,7 +67,7 @@ public abstract class AbstractStateController : ControllerBase
 
     [Authorize("Search_States")]
     [HttpPost("Search_States")]
-    public String Search_States(UISearchCriteria searchCriteria)
+    public async Task<String> Search_States(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[State], [Description], [Status], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -85,7 +85,7 @@ public abstract class AbstractStateController : ControllerBase
                 TableOrView = "[ZGWOptional].[vwSearchStates]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

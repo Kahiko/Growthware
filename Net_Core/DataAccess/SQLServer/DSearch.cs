@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -32,7 +33,7 @@ public class DSearch : AbstractDBInteraction, ISearch
         set { m_SecurityEntityID = value; }
     }
 
-    DataTable ISearch.GetSearchResults(MSearchCriteria searchCriteria)
+    async Task<DataTable> ISearch.GetSearchResults(MSearchCriteria searchCriteria)
     {
         if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
         string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
@@ -49,7 +50,7 @@ public class DSearch : AbstractDBInteraction, ISearch
             new SqlParameter("@P_TableOrView", searchCriteria.TableOrView),
             new SqlParameter("@P_WhereClause", mWhereClause)
             };
-        mRetVal = base.GetDataTable(mStoredProcedure, mParameters);
+        mRetVal = await base.GetDataTableAsync(mStoredProcedure, mParameters);
         return mRetVal;
     }
 }

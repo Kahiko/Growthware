@@ -1,6 +1,7 @@
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces;
  public interface ISearch : IDBInteraction {
@@ -15,5 +16,5 @@ namespace GrowthWare.DataAccess.Interfaces;
     /// </summary>
     /// <param name="searchCriteria"></param>
     /// <returns></returns>
-    DataTable GetSearchResults(MSearchCriteria searchCriteria);
+    Task<DataTable> GetSearchResults(MSearchCriteria searchCriteria);
  }

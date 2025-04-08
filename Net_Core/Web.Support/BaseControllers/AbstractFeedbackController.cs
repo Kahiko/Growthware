@@ -8,6 +8,7 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -157,7 +158,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// <returns></returns>
     [Authorize("feedbacks")]
     [HttpPost("SearchFeedbacks")]
-    public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
+    public async Task<ActionResult<String>> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FeedbackId], [Assignee], [SubmittedBy], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
@@ -176,7 +177,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return Ok(mRetVal);
     }

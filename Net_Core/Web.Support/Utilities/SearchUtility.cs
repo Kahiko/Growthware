@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class SearchUtility
@@ -66,12 +67,12 @@ public static class SearchUtility
         return new Tuple<string, string>(mOrderByClause, mWhereClause);
     }
 
-    public static string GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1")
+    public static async Task<string> GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1")
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
-        mDataTable = getBusinessLogic().GetSearchResults(searchCriteria);
+        mDataTable = await getBusinessLogic().GetSearchResults(searchCriteria);
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }
