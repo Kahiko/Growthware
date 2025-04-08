@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -55,31 +56,31 @@ public class DMessages : AbstractDBInteraction, IMessages
 
     int IMessages.SecurityEntitySeqId { get; set; }
 
-    DataTable IMessages.Messages()
+    async Task<DataTable> IMessages.Messages()
     {
         String storeProc = "ZGWCoreWeb.Get_Messages";
         SqlParameter[] mParamaters = {
                 new SqlParameter("@P_MessageSeqId", -1),
                 new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
             };
-        return GetDataTable(storeProc, mParamaters);
+        return await GetDataTableAsync(storeProc, mParamaters);
     }
 
-    DataRow IMessages.Message(int messageSeqId)
+    async Task<DataRow> IMessages.Message(int messageSeqId)
     {
         String storeProc = "ZGWCoreWeb.Get_Messages";
         SqlParameter[] mParamaters = {
                 new SqlParameter("@P_MessageSeqId", messageSeqId),
                 new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
             };
-        return GetDataRow(storeProc, mParamaters);
+        return await GetDataRowAsync(storeProc, mParamaters);
     }
 
-    int IMessages.Save()
+    async Task<int> IMessages.Save()
     {
         String storeProc = "ZGWCoreWeb.Set_Message";
         SqlParameter[] mParameters = getInsertUpdateParameters();
-        ExecuteNonQuery(storeProc, mParameters);
+        await base.ExecuteNonQueryAsync(storeProc, mParameters);
         return int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
     }
 }

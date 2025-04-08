@@ -11,6 +11,7 @@ using System.Reflection;
 using GrowthWare.Framework;
 using System.Data.SqlClient;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Test.Web.Support.Utilities;
 
@@ -106,7 +107,7 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void ChangePassword_ValidChange_ReturnsSuccessMessage()
+    public async Task ChangePassword_ValidChange_ReturnsSuccessMessage()
     {
         // Arrange
         var changePassword = new UIChangePassword
@@ -132,7 +133,7 @@ public class AccountUtilityTests
         else 
         {
             // Change the password and in doing so the get a new Profile in "Item2" with an updated .PasswordLastSet property
-            result = AccountUtility.ChangePassword(changePassword, m_IpAddress);
+            result = await AccountUtility.ChangePassword(changePassword, m_IpAddress);
         }
         
         // Assert

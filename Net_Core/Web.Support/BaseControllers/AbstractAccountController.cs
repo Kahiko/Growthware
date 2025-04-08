@@ -49,7 +49,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <exception cref="ArgumentNullException"></exception>
     [Authorize("/accounts/change-password")]
     [HttpPost("ChangePassword")]
-    public ActionResult<Tuple<string, AuthenticationResponse>> ChangePassword(string oldPassword, string newPassword)
+    public async Task<ActionResult<Tuple<string, AuthenticationResponse>>> ChangePassword(string oldPassword, string newPassword)
     {
         UIChangePassword mChangePassword = new()
         {
@@ -58,7 +58,7 @@ public abstract class AbstractAccountController : ControllerBase
         };
         if (mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
         if (mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
-        Tuple<string, MAccountProfile> mChangePasswordResult = AccountUtility.ChangePassword(mChangePassword, ipAddress());
+        Tuple<string, MAccountProfile> mChangePasswordResult = await AccountUtility.ChangePassword(mChangePassword, ipAddress());
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mChangePasswordResult.Item2);
         setTokenCookie(mAuthenticationResponse.RefreshToken);
         Tuple<string, AuthenticationResponse> mRetVal = Tuple.Create(mChangePasswordResult.Item1, mAuthenticationResponse);
@@ -163,7 +163,7 @@ public abstract class AbstractAccountController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("ForgotPassword")]
-    public ActionResult<string> ForgotPassword(string account)
+    public async Task<ActionResult<string>> ForgotPassword(string account)
     {
         if (String.IsNullOrWhiteSpace(account)) 
         {
@@ -175,7 +175,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = AccountUtility.ForgotPassword(account, Request.Headers["origin"]);
         if (mAccountProfile != null)
         {
-            MMessage mMessage = MessageUtility.GetProfile("RequestNewPassword");
+            MMessage mMessage = await MessageUtility.GetProfile("RequestNewPassword");
             MRequestNewPassword mRequestNewPassword = new(mMessage)
             {
                 AccountName = Uri.EscapeDataString(mAccountProfile.Account),
@@ -189,7 +189,7 @@ public abstract class AbstractAccountController : ControllerBase
             // send email
             MessageUtility.SendMail(mRequestNewPassword, mAccountProfile);
             // Get return value
-            mMessage = MessageUtility.GetProfile("Request Password Reset UI");
+            mMessage = await MessageUtility.GetProfile("Request Password Reset UI");
             return Ok(mMessage.Body.Replace("<b>", "").Replace("</b>", ""));
         }
         return StatusCode(StatusCodes.Status204NoContent, "Could not request password change");
@@ -466,7 +466,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <exception cref="ArgumentNullException">Thrown when the accountProfile parameter is null or empty.</exception>
     [AllowAnonymous]
     [HttpPost("Register")]
-    public IActionResult Register(MAccountProfile accountProfile)
+    public async Task<IActionResult> Register(MAccountProfile accountProfile)
     {
         if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
@@ -477,7 +477,7 @@ public abstract class AbstractAccountController : ControllerBase
         bool mMailSent = false;
         if(mSavedAccountProfile != null)
         {
-            MMessage mMessage = MessageUtility.GetProfile("RegistrationSuccess");
+            MMessage mMessage = await MessageUtility.GetProfile("RegistrationSuccess");
             MRegistrationSuccess mRegistrationSuccess = new(mMessage)
             {
                 Email = mSavedAccountProfile.Email,

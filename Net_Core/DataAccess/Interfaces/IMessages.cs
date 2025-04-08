@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces;
 /// <summary>
@@ -26,16 +27,16 @@ public interface IMessages : IDBInteraction
     /// Gets all messages.
     /// </summary>
     /// <returns>DataTable.</returns>
-    DataTable Messages();
+    Task<DataTable> Messages();
 
     /// <summary>
     /// Gets the message.
     /// </summary>
     /// <returns>DataRow.</returns>
-    DataRow Message(int messageSeqId);
+    Task<DataRow> Message(int messageSeqId);
 
     /// <summary>
     /// Saves this instance.
     /// </summary>
-    int Save();
+    Task<int> Save();
 }

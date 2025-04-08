@@ -41,7 +41,7 @@ public abstract class AbstractMessageController : ControllerBase
 
     [Authorize("Search_Messages")]
     [HttpGet("GetProfile")]
-    public ActionResult<UIMessageProfile> GetProfile(int id)
+    public async Task<ActionResult<UIMessageProfile>> GetProfile(int id)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
@@ -51,7 +51,7 @@ public abstract class AbstractMessageController : ControllerBase
         {
             HttpContext.Session.SetString("EditId", id.ToString());
             MMessage mProfileFromDb = new MMessage();
-            mProfileFromDb = MessageUtility.GetProfile(id);
+            mProfileFromDb = await MessageUtility.GetProfile(id);
             UIMessageProfile mRetVal = new UIMessageProfile();
             if (mProfileFromDb != null)
             {
@@ -86,7 +86,7 @@ public abstract class AbstractMessageController : ControllerBase
 
     [Authorize("Search_Messages")]
     [HttpPost("Save")]
-    public ActionResult<UIMessageProfile> Save(UIMessageProfile messageProfile)
+    public async Task<ActionResult<UIMessageProfile>> Save(UIMessageProfile messageProfile)
     {
         if (HttpContext.Session.GetString("EditId") != null && HttpContext.Session.GetInt32("EditId") == messageProfile.Id)
         {
@@ -97,14 +97,14 @@ public abstract class AbstractMessageController : ControllerBase
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))
             {
                 MMessage mProfileToSave = new MMessage();
-                MMessage mProfileFromDb = MessageUtility.GetProfile(messageProfile.Id);
+                MMessage mProfileFromDb = await MessageUtility.GetProfile(messageProfile.Id);
                 if (mProfileFromDb != null)
                 {
                     mProfileToSave = new MMessage(mProfileFromDb);
                 }
                 updateProfileWithUIValues(ref mProfileToSave, messageProfile);
                 updateAddUpdated(ref mProfileToSave, mRequestingProfile.Id);
-                mProfileToSave.Id = MessageUtility.Save(mProfileToSave);
+                mProfileToSave.Id = await MessageUtility.Save(mProfileToSave);
                 return Ok(messageProfile);
             }
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

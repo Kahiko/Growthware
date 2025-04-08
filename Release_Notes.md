@@ -14,6 +14,7 @@
     - DCommunityCalendar (ICommunityCalendar, BCommunityCalendar, CommunityCalendarUtility, AbstractCommunityCalendarController)
     - DDBInformation (IDBInformation, BDBInformation, DBInformationUtility, AbstractDBInformationController)
     - DLogging (ILogging, BLogger, LoggingUtility, AbstractLoggingController)
+    - DMessages (IMessages, BMessages, MessagesUtility, AbstractMessagesController)
 
 
 ### Known Bugs

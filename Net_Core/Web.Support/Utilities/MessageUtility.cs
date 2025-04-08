@@ -13,6 +13,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Interfaces;
 using GrowthWare.Web.Support.Helpers;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -81,9 +82,10 @@ public static class MessageUtility
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>MMessage.</returns>
-    public static MMessage GetProfile(string name)
+    public static async Task<MMessage> GetProfile(string name)
     {
-        var mResult = from mProfile in Messages()
+        Collection<MMessage> mMessages = await Messages();
+        var mResult = from mProfile in mMessages
                       where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                       select mProfile;
         MMessage mRetVal = new MMessage();
@@ -134,9 +136,10 @@ public static class MessageUtility
     /// </summary>
     /// <param name="messageSeqId">The Message Sequence ID.</param>
     /// <returns>MMessage.</returns>
-    public static MMessage GetProfile(int messageSeqId)
+    public static async Task<MMessage> GetProfile(int messageSeqId)
     {
-        var mResult = from mProfile in Messages()
+        Collection<MMessage> mMessages = await Messages();
+        var mResult = from mProfile in mMessages
                       where mProfile.Id == messageSeqId
                       select mProfile;
         MMessage mRetVal = null;
@@ -157,7 +160,7 @@ public static class MessageUtility
     /// Gets the messages.
     /// </summary>
     /// <returns>Collection{MMessage}.</returns>
-    public static Collection<MMessage> Messages()
+    public static async Task<Collection<MMessage>> Messages()
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
@@ -166,7 +169,7 @@ public static class MessageUtility
         if (mMessageCollection == null)
         {
             BMessages mBMessages = getBusinessLogic();
-            mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
+            mMessageCollection = await mBMessages.GetMessages(mSecurityEntityProfile.Id);
             CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;
@@ -195,11 +198,11 @@ public static class MessageUtility
     /// Saves the specified profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public static int Save(MMessage profile)
+    public static async Task<int> Save(MMessage profile)
     {
         BMessages mBMessages = getBusinessLogic();
         int mRetVal = -1;
-        mRetVal = mBMessages.Save(profile);
+        mRetVal = await mBMessages.Save(profile);
         RemoveCachedMessagesCollection();
         return mRetVal;
     }

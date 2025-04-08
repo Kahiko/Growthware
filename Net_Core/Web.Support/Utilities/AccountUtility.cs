@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
@@ -162,7 +163,7 @@ public static class AccountUtility
     /// </summary>
     /// <param name="changePassword">UIChangePassword</param>
     /// <returns></returns>
-    public static Tuple<string, MAccountProfile> ChangePassword(UIChangePassword changePassword, string ipAddress)
+    public static async Task<Tuple<string, MAccountProfile>> ChangePassword(UIChangePassword changePassword, string ipAddress)
     {
         MMessage mMessageProfile = new MMessage();
         MAccountProfile mAccountProfile = CurrentProfile;
@@ -180,16 +181,16 @@ public static class AccountUtility
             try
             {
                 Save(mAccountProfile, true, false, false);
-                mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
+                mMessageProfile = await MessageUtility.GetProfile("SuccessChangePassword");
             }
             catch (System.Exception)
             {
-                mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+                mMessageProfile = await MessageUtility.GetProfile("UnSuccessChangePassword");
             }
         } 
         else 
         {
-            mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
+            mMessageProfile = await MessageUtility.GetProfile("PasswordNotMatched");
         }
         return new Tuple<string, MAccountProfile>(mMessageProfile.Body, mAccountProfile);
     }

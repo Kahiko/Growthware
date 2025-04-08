@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -95,7 +96,7 @@ public class BMessages : AbstractBusinessLogic
     /// </summary>
     /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>Collection{MMessage}.</returns>
-    public Collection<MMessage> GetMessages(int securityEntitySeqId)
+    public async Task<Collection<MMessage>> GetMessages(int securityEntitySeqId)
     {
         Collection<MMessage> mRetList = new Collection<MMessage>();
         DataTable mDataTable = null;
@@ -104,7 +105,7 @@ public class BMessages : AbstractBusinessLogic
             try
             {
                 m_DMessages.Profile.SecurityEntitySeqId = securityEntitySeqId;
-                mDataTable = m_DMessages.Messages();
+                mDataTable = await m_DMessages.Messages();
                 // the DB code is set to create entries for
                 // the given security entity however the insert into the table
                 // may not have commited before this code has finished executing
@@ -113,7 +114,7 @@ public class BMessages : AbstractBusinessLogic
                 // code.
                 // Basic assumption ... that has to be at least one message
                 // because at DB design time messages were created!!!
-                if (mDataTable == null || mDataTable.Rows.Count == 0) mDataTable = m_DMessages.Messages();
+                if (mDataTable == null || mDataTable.Rows.Count == 0) mDataTable = await m_DMessages.Messages();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     mRetList.Add(new MMessage(item));
@@ -140,10 +141,10 @@ public class BMessages : AbstractBusinessLogic
     /// <param name="messageSeqId">int of the desired message profile object</param>
     /// <returns>DataRow</returns>
     /// <remarks></remarks>
-    public DataRow GetMessage(int messageSeqId)
+    public async Task<DataRow> GetMessage(int messageSeqId)
     {
         DataRow mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DMessages.Message(messageSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DMessages.Message(messageSeqId);
         return mRetVal;
     }
 
@@ -152,14 +153,14 @@ public class BMessages : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The message profile.</param>
     /// <returns>System.Int32.</returns>
-    public int Save(MMessage profile)
+    public async Task<int> Save(MMessage profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         int mRetVal = -1;
         if (DatabaseIsOnline())
         {
             m_DMessages.Profile = profile;
-            mRetVal = m_DMessages.Save();
+            mRetVal = await m_DMessages.Save();
         }
         return mRetVal;
     }
