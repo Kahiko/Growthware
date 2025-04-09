@@ -182,10 +182,10 @@ public static class SecurityEntityUtility
     /// <param name="securityEntityId">The security entity id.</param>
     /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
     /// <returns>DataView.</returns>
-    public static DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
+    public static async Task<DataTable> GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
         BSecurityEntities mBusinessLogic = getBusinessLogic();
-        return mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+        return await mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
     public static async Task<int> SaveProfile(MSecurityEntity profile)

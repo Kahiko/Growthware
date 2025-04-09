@@ -27,23 +27,13 @@ namespace GrowthWare.DataAccess.Interfaces
         DataTable GetSecurityEntities();
 
         /// <summary>
-        /// Retrieves security entities for a given account.
-        /// </summary>
-        /// <param name="account">String</param>
-        /// <param name="SecurityEntityID">int or Integer</param>
-        /// <param name="isSecurityEntityAdministrator">Boolean or bool</param>
-        /// <returns>Datatable</returns>
-        /// <remarks></remarks>
-        DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
-
-        /// <summary>
         /// Gets the valid security entities.
         /// </summary>
         /// <param name="account">The account.</param>
-        /// <param name="SecurityEntityID">The security entity id.</param>
+        /// <param name="securityEntityID">The security entity id.</param>
         /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
         /// <returns>DataTable.</returns>
-        DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin);
+        Task<DataTable> GetValidSecurityEntities(string account, int securityEntityID, bool isSystemAdmin);
 
         /// <summary>
         /// Saves security entity information to the datastore.

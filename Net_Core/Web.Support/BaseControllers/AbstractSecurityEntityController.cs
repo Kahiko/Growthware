@@ -104,7 +104,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetValidSecurityEntities")]
-    public ActionResult<List<UIValidSecurityEntity>> GetValidSecurityEntities()
+    public async Task<ActionResult<List<UIValidSecurityEntity>>> GetValidSecurityEntities()
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         if (mRequestingProfile.Account.ToLower() == "anonymous" && mRequestingProfile.Status != (int)SystemStatus.Active)
@@ -114,7 +114,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         List<UIValidSecurityEntity> mRetVal = new List<UIValidSecurityEntity>();
 
-        DataTable mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
+        DataTable mDataView = await SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
         foreach (DataRow mDataRowView in mDataView.Rows)
         {
             UIValidSecurityEntity mItem = new UIValidSecurityEntity(mDataRowView);

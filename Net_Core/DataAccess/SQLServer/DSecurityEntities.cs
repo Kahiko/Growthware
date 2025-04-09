@@ -52,34 +52,18 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return base.GetDataTable(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)
-    {
-        if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!"); };
-        if (SecurityEntityID == -1) { throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
-        string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
-        SqlParameter[] mParameters =
-        {
-        new SqlParameter("@P_ACCT", account),
-        new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-        new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
-        GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
-    }
-
-    DataTable ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
+    async Task<DataTable> ISecurityEntities.GetValidSecurityEntities(string account, int securityEntityID, bool isSystemAdmin)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!");
-        if (SecurityEntityID == -1) throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID must be greater than -1");
+        if (securityEntityID == -1) throw new ArgumentNullException(nameof(securityEntityID), "securityEntityID must be greater than -1");
 
         string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
-        SqlParameter[] myParameters =
-        {
+        SqlParameter[] myParameters = [
             new SqlParameter("@P_Account", account),
             new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin),
-            new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID)
-        };
-        return base.GetDataTable(mStoreProcedure, myParameters);
+            new SqlParameter("@P_SecurityEntitySeqId", securityEntityID)
+        ];
+        return await base.GetDataTableAsync(mStoreProcedure, myParameters);
     }
 
     async Task<int> ISecurityEntities.Save(MSecurityEntity profile)
