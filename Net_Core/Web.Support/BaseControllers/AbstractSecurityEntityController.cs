@@ -163,9 +163,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 mRegistrationToSave.UpdatedBy = mRequestingProfile.Id;
                 mRegistrationToSave.UpdatedDate = DateTime.Now;
             }
-            mRegistrationToSave.Id = SecurityEntityUtility.SaveProfile(mProfileToSave);
+            mRegistrationToSave.Id = await SecurityEntityUtility.SaveProfile(mProfileToSave);
             if(mRegistrationToSave.AddAccount > 0){
-                SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
+                await SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
             }
             else
             {
@@ -173,7 +173,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 {
                     return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                 }
-                SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
+                await SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
             }
         } 
         else 

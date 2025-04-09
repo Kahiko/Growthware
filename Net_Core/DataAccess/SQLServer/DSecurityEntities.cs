@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -21,24 +22,24 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     }
 #endregion
 
-    void ISecurityEntities.DeleteRegistrationInformation(int securityEntitySeqId)
+    async Task ISecurityEntities.DeleteRegistrationInformation(int securityEntitySeqId)
     {
         string mStoredProcedure = "ZGWSecurity.Delete_Registration_Information";
         SqlParameter[] mParameters =
         {
             new SqlParameter("@P_SecurityEntitySeqId", securityEntitySeqId)
         };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetRegistrationInformation()
+    async Task<DataTable> ISecurityEntities.GetRegistrationInformation()
     {
         string mStoredProcedure = "ZGWSecurity.Get_Registration_Information";
         SqlParameter[] mParameters =
         {
             new SqlParameter("@P_SecurityEntitySeqId", -1)
         };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     DataTable ISecurityEntities.GetSecurityEntities()
@@ -81,14 +82,13 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return base.GetDataTable(mStoreProcedure, myParameters);
     }
 
-    int ISecurityEntities.Save(MSecurityEntity profile)
+    async Task<int> ISecurityEntities.Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be nothing");
         SqlParameter mPrimaryKey = GetSqlParameter("@P_PRIMARY_KEY", null, ParameterDirection.Output);
         mPrimaryKey.Size = 10;
         string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";
-        SqlParameter[] mParameters =
-            {
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", profile.Id),
             new SqlParameter("@P_NAME", profile.Name),
             new SqlParameter("@P_DESCRIPTION", profile.Description ?? ""),
@@ -104,17 +104,16 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
             new SqlParameter("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
             new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
             mPrimaryKey
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         profile.Id = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture);
         return profile.Id;
     }
 
-    DataRow ISecurityEntities.SaveRegistrationInformation(MRegistrationInformation profile)
+    async Task<DataRow> ISecurityEntities.SaveRegistrationInformation(MRegistrationInformation profile)
     {
         string mStoredProcedure = "ZGWSecurity.Set_Registration_Information";
-        SqlParameter[] mParameters =
-            {
+        SqlParameter[] mParameters = [
             new ("@P_SecurityEntitySeqId", profile.Id),
             new ("@P_SecurityEntitySeqId_Owner", profile.SecurityEntitySeqIdOwner),
             new ("@P_AccountChoices", profile.AccountChoices),
@@ -122,10 +121,10 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
             new ("@P_Groups", profile.Groups),
             new ("@P_Roles", profile.Roles),
             new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id))
-            };
+        ];
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {

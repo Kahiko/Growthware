@@ -472,7 +472,7 @@ public abstract class AbstractAccountController : ControllerBase
         if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
-        MAccountProfile mSavedAccountProfile = AccountUtility.Register(accountProfile, Request.Headers.Origin);
+        MAccountProfile mSavedAccountProfile = await AccountUtility.Register(accountProfile, Request.Headers.Origin);
         string mRetunMsg = "Registration successful, please check your email for verification instructions";
         bool mMailSent = false;
         if(mSavedAccountProfile != null)

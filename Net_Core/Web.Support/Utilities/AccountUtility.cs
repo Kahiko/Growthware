@@ -498,7 +498,7 @@ public static class AccountUtility
         return BusinessLogic.ResetTokenExists(resetToken);
     }
     
-    public static MAccountProfile Register(MAccountProfile accountProfile, string origin)
+    public static async Task<MAccountProfile> Register(MAccountProfile accountProfile, string origin)
     {
         // Get the security entity via the URL or use the default
         MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile;
@@ -507,7 +507,7 @@ public static class AccountUtility
             mTargetSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
         }
         // Need to get the roles so need to get the Registration_Information
-        MRegistrationInformation mRegistrationInformation = SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
+        MRegistrationInformation mRegistrationInformation = await SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
         if(mRegistrationInformation == null) 
         {
             m_Logger.Fatal("Unable to get registration information");

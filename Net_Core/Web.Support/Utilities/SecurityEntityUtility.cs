@@ -8,6 +8,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Helpers;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -67,9 +68,10 @@ public static class SecurityEntityUtility
         };
     }
 
-    public static void DeleteRegistrationInformation(int securityEntitySeqId)
+    public static async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
+        BSecurityEntities mBusinessLogic = getBusinessLogic();
+        await mBusinessLogic.DeleteRegistrationInformation(securityEntitySeqId);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
     }
 
@@ -158,10 +160,11 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="securityEntityId"></param>
     /// <returns>MRegistrationInformation or null</returns>
-    public static MRegistrationInformation GetRegistrationInformation(int securityEntityId)
+    public static async Task<MRegistrationInformation> GetRegistrationInformation(int securityEntityId)
     {
         MRegistrationInformation mRetVal = null;
-        var mResult = RegistrationInformation()
+        Collection<MRegistrationInformation> mRegistrationInformations = await RegistrationInformation();
+        var mResult = mRegistrationInformations
             .Where(mProfile => mProfile.Id == securityEntityId)
             .OrderBy(mProfile => mProfile.Id)
             .Select(mProfile => mProfile);
@@ -181,23 +184,25 @@ public static class SecurityEntityUtility
     /// <returns>DataView.</returns>
     public static DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
-        return getBusinessLogic().GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+        BSecurityEntities mBusinessLogic = getBusinessLogic();
+        return mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
-    public static int SaveProfile(MSecurityEntity profile)
+    public static async Task<int> SaveProfile(MSecurityEntity profile)
     {
         string mEcryptedValue = string.Empty;
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
-
-        int mRetVal = getBusinessLogic().Save(profile);
+        BSecurityEntities mBusinessLogic = getBusinessLogic();
+        int mRetVal = await mBusinessLogic.Save(profile);
         m_CacheHelper.RemoveFromCache(s_CacheName);
         return mRetVal;
     }
 
-    public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    public static async Task<MRegistrationInformation> SaveRegistrationInformation(MRegistrationInformation profile)
     {
-        MRegistrationInformation mRetVal = getBusinessLogic().SaveRegistrationInformation(profile);
+        BSecurityEntities mBusinessLogic = getBusinessLogic();
+        MRegistrationInformation mRetVal = await mBusinessLogic.SaveRegistrationInformation(profile);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
         return mRetVal;
     }
@@ -208,13 +213,14 @@ public static class SecurityEntityUtility
         m_HttpContextAccessor = httpContextAccessor;
     }
 
-    public static Collection<MRegistrationInformation> RegistrationInformation()
+    public static async Task<Collection<MRegistrationInformation>> RegistrationInformation()
     {
         Collection<MRegistrationInformation> mRegistrationInformations = m_CacheHelper.GetFromCache<Collection<MRegistrationInformation>>(s_CacheRegistrationsName);
         if (mRegistrationInformations == null)
         {
             mRegistrationInformations = new Collection<MRegistrationInformation>();
-            foreach (MRegistrationInformation mRegistrationInformation in getBusinessLogic(true).GetRegistrationInformation())
+            BSecurityEntities mBusinessLogic = getBusinessLogic(true);
+            foreach (MRegistrationInformation mRegistrationInformation in await mBusinessLogic.GetRegistrationInformation())
             {
                 mRegistrationInformations.Add(mRegistrationInformation);
             }
@@ -229,7 +235,8 @@ public static class SecurityEntityUtility
         if (mSecurityEntities == null)
         {
             mSecurityEntities = new Collection<MSecurityEntity>();
-            foreach (MSecurityEntity mSecurityEntity in getBusinessLogic(true).SecurityEntities())
+            BSecurityEntities mBusinessLogic = getBusinessLogic(true);
+            foreach (MSecurityEntity mSecurityEntity in mBusinessLogic.SecurityEntities())
             {
                 // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
                 string mDecryptedPassword;
