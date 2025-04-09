@@ -92,7 +92,7 @@ public abstract class AbstractMessageController : ControllerBase
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetCurrentProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))
             {
@@ -144,12 +144,13 @@ public abstract class AbstractMessageController : ControllerBase
     /// <param name="messageProfile">UIMessageProfile</param>
     private void updateProfileWithUIValues(ref MMessage mProfileToSave, UIMessageProfile messageProfile)
     {
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
         mProfileToSave.Body = WebUtility.UrlDecode(messageProfile.Body);
         mProfileToSave.Description = messageProfile.Description;
         mProfileToSave.FormatAsHtml = messageProfile.FormatAsHtml;
         mProfileToSave.Id = messageProfile.Id;
         mProfileToSave.Name = messageProfile.Name;
-        mProfileToSave.SecurityEntitySeqId = SecurityEntityUtility.CurrentProfile.Id;
+        mProfileToSave.SecurityEntitySeqId = mSecurityEntityCurrentProfile.Id;
         mProfileToSave.Title = messageProfile.Title;
     }
 

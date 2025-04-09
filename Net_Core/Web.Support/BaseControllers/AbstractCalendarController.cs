@@ -36,7 +36,8 @@ public abstract class AbstractCalendarController : ControllerBase
                 MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                 if (mSecurityInfo.MayView)
                 {
-                    return Ok(CalendarUtility.DeleteEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId));
+                    MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                    return Ok(CalendarUtility.DeleteEvent(mSecurityEntityCurrentProfile, calendarEventSeqId));
                 }
             }
         }
@@ -65,7 +66,8 @@ public abstract class AbstractCalendarController : ControllerBase
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
-                MCalendarEvent mRetVal = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, id);
+                MSecurityEntity mCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                MCalendarEvent mRetVal = await CalendarUtility.GetEvent(mCurrentProfile, id);
                 HttpContext.Session.SetInt32("EditId", id);
                 return Ok(mRetVal);
             }
@@ -99,7 +101,8 @@ public abstract class AbstractCalendarController : ControllerBase
             {
                 DateTime mStartDate = DateTime.Parse(startDate);
                 DateTime mEndtDate = DateTime.Parse(endDate);
-                List<MCalendarEvent> mRetVal = await CalendarUtility.GetEvents(SecurityEntityUtility.CurrentProfile, mFunctionProfile.Id, mStartDate, mEndtDate);
+                MSecurityEntity mCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                List<MCalendarEvent> mRetVal = await CalendarUtility.GetEvents(mCurrentProfile, mFunctionProfile.Id, mStartDate, mEndtDate);
                 return Ok(mRetVal);
             }
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -136,7 +139,8 @@ public abstract class AbstractCalendarController : ControllerBase
         if (await getEventSecurity(mParameters.calendarEvent.Id, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
             MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(mParameters.action);
-            MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile, mFunctionProfile.Id, mParameters.calendarEvent);
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(mSecurityEntityCurrentProfile, mFunctionProfile.Id, mParameters.calendarEvent);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -152,7 +156,7 @@ public abstract class AbstractCalendarController : ControllerBase
     private async Task<bool> getEventSecurity(int calendarEventSeqId, string action = null)
     {
         bool mRetVal = false;
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetCurrentProfile();
         if (mSecurityEntity != null)
         {
             MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(mSecurityEntity, calendarEventSeqId);

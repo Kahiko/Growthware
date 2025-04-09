@@ -30,7 +30,8 @@ public static class DBInformationUtility
     {
         if (m_BDBInformation == null || ConfigSettings.CentralManagement == true)
         {
-            m_BDBInformation = new(SecurityEntityUtility.CurrentProfile);
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            m_BDBInformation = new(mSecurityEntityCurrentProfile);
         }
         return m_BDBInformation;
     }

@@ -40,7 +40,8 @@ public static class CalendarUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            m_BusinessLogic = new(mSecurityEntityCurrentProfile);
         }
         return m_BusinessLogic;
     }

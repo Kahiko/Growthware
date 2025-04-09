@@ -23,7 +23,8 @@ public static class StateUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            MSecurityEntity mCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            m_BusinessLogic = new(mCurrentProfile);
         }
         return m_BusinessLogic;
     }

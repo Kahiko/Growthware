@@ -167,7 +167,7 @@ public static class AccountUtility
     {
         MMessage mMessageProfile = new MMessage();
         MAccountProfile mAccountProfile = CurrentProfile;
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetCurrentProfile();
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
         bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
         bool mCheckOldPassword = mAccountProfile.Status != (int)SystemStatus.ChangePassword;
@@ -353,7 +353,8 @@ public static class AccountUtility
 
     private static MAccountProfile getProfileByVerificationToken(string token)
     {
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile);
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+        BAccounts mBAccount = new(mSecurityEntityCurrentProfile);
         MAccountProfile mRetVal = null;
         try
         {
@@ -376,7 +377,8 @@ public static class AccountUtility
         {
             if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
             {
-                m_BAccounts = new(SecurityEntityUtility.CurrentProfile);
+                MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                m_BAccounts = new(mSecurityEntityCurrentProfile);
             }
             return m_BAccounts;
         }
@@ -501,7 +503,7 @@ public static class AccountUtility
     public static async Task<MAccountProfile> Register(MAccountProfile accountProfile, string origin)
     {
         // Get the security entity via the URL or use the default
-        MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.GetCurrentProfile();
         if(ConfigSettings.SecurityEntityFromUrl)
         {
             mTargetSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
@@ -672,7 +674,8 @@ public static class AccountUtility
 
     public static void ResetPassword(MAccountProfile forAccount, string password)
     {
-        CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, SecurityEntityUtility.CurrentProfile.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+        CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, mSecurityEntityCurrentProfile.EncryptionType, ConfigSettings.EncryptionSaltExpression);
         // TODO: find a better way then changing properties on the passed in parameter!
         forAccount.FailedAttempts = 0;
         forAccount.LastLogOn = System.DateTime.Now;
@@ -704,7 +707,7 @@ public static class AccountUtility
         {
             return accountProfile;
         }
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetCurrentProfile();
         BAccounts mBAccount = BusinessLogic;
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);

@@ -28,7 +28,7 @@ public static class DirectoryUtility
     /// <returns>Collection{MDirectoryProfile}.</returns>
     public static async Task<Collection<MDirectoryProfile>> Directories()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         Collection<MDirectoryProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
         if(mRetVal == null)
@@ -50,7 +50,8 @@ public static class DirectoryUtility
         {
             if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
             {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+                MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                m_BusinessLogic = new(mSecurityEntityCurrentProfile);
             }
             return m_BusinessLogic;
         }
@@ -87,7 +88,8 @@ public static class DirectoryUtility
     {
         BDirectories mBDirectories = BusinessLogic;
         await mBDirectories.Save(profile);
-        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+        String mCacheName = mSecurityEntityCurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 }

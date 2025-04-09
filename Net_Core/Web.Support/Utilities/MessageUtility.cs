@@ -72,7 +72,8 @@ public static class MessageUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            m_BusinessLogic = new(mSecurityEntityCurrentProfile);
         }
         return m_BusinessLogic;
     }
@@ -162,7 +163,7 @@ public static class MessageUtility
     /// <returns>Collection{MMessage}.</returns>
     public static async Task<Collection<MMessage>> Messages()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
         string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
         Collection<MMessage> mMessageCollection = null;
         // mMessageCollection = (Collection<MMessage>)HttpContext.Current.Cache[mCacheName];

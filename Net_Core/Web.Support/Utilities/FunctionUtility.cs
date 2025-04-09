@@ -39,7 +39,8 @@ public static class FunctionUtility
     {
         BFunctions mBFunctions = getBusinessLogic();
         await mBFunctions.Delete(functionSeqId);
-        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+        String mCacheName = mSecurityEntityCurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
@@ -50,7 +51,7 @@ public static class FunctionUtility
     [CLSCompliant(false)]
     public static async Task<Collection<MFunctionProfile>> Functions()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
@@ -85,7 +86,8 @@ public static class FunctionUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            m_BusinessLogic = new(mSecurityEntityCurrentProfile);
         }
         return m_BusinessLogic;
     }
@@ -199,7 +201,8 @@ public static class FunctionUtility
     {
         BFunctions mBFunctions = getBusinessLogic();
         int mRetVal = await mBFunctions.Save(profile, saveGroups, saveRoles);
-        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
+        MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+        String mCacheName = mSecurityEntityCurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveAll();
         // Remove in memory information for the account saving in order to update their menu's
         AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);

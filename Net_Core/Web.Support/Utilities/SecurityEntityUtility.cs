@@ -22,37 +22,34 @@ public static class SecurityEntityUtility
     private static String s_CacheName = "Cached_SecurityEntities";
     private static string s_CacheRegistrationsName = "Cached_RegistrationInformations";
 
-    public static MSecurityEntity CurrentProfile
+    public static MSecurityEntity GetCurrentProfile()
     {
-        get
+        MSecurityEntity mRetProfile = null;
+        if(!ConfigSettings.SecurityEntityFromUrl)
         {
-            MSecurityEntity mRetProfile = null;
-            if(!ConfigSettings.SecurityEntityFromUrl)
+            if (m_HttpContextAccessor != null)
             {
-                if (m_HttpContextAccessor != null)
+                MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
+                if (mClientChoicesState != null)
                 {
-                    MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
-                    if (mClientChoicesState != null)
-                    {
-                        int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
-                        mRetProfile = GetProfile(mSecurityEntity);
-                    }
+                    int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
+                    mRetProfile = GetProfile(mSecurityEntity);
                 }
             }
-            else
-            {
-                if (m_HttpContextAccessor != null)
-                {
-                    string mUrl = m_HttpContextAccessor.HttpContext.Request.Scheme + "://" + m_HttpContextAccessor.HttpContext.Request.Host.Host;
-                    mRetProfile = GetProfileByUrl(mUrl);
-                    // TODO: Unsure if I should attempt to get the selected profile from ClientChoices
-                    // for now we'll get the default one I am not and just lettting the
-                    // the default profile to be returned
-                }
-            }
-            mRetProfile ??= DefaultProfile();
-            return mRetProfile;
         }
+        else
+        {
+            if (m_HttpContextAccessor != null)
+            {
+                string mUrl = m_HttpContextAccessor.HttpContext.Request.Scheme + "://" + m_HttpContextAccessor.HttpContext.Request.Host.Host;
+                mRetProfile = GetProfileByUrl(mUrl);
+                // TODO: Unsure if I should attempt to get the selected profile from ClientChoices
+                // for now we'll get the default one I am not and just lettting the
+                // the default profile to be returned
+            }
+        }
+        mRetProfile ??= DefaultProfile();
+        return mRetProfile;
     }
 
     public static MSecurityEntity DefaultProfile()
@@ -85,7 +82,8 @@ public static class SecurityEntityUtility
         {
             if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
             {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+                MSecurityEntity mCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                m_BusinessLogic = new(mCurrentProfile);
             }
             return m_BusinessLogic;
         }
@@ -231,21 +229,22 @@ public static class SecurityEntityUtility
 
     public static Collection<MSecurityEntity> Profiles()
     {
-        Collection<MSecurityEntity> mSecurityEntities = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
-        if (mSecurityEntities == null)
+        Collection<MSecurityEntity> mRetVal = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
+        if (mRetVal == null)
         {
-            mSecurityEntities = new Collection<MSecurityEntity>();
+            mRetVal = new Collection<MSecurityEntity>();
             BSecurityEntities mBusinessLogic = getBusinessLogic(true);
-            foreach (MSecurityEntity mSecurityEntity in mBusinessLogic.SecurityEntities())
+            Collection<MSecurityEntity> mSecurityEntities = mBusinessLogic.SecurityEntities();
+            foreach (MSecurityEntity mSecurityEntity in mSecurityEntities)
             {
                 // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
                 string mDecryptedPassword;
                 CryptoUtility.TryDecrypt(mSecurityEntity.ConnectionString, out mDecryptedPassword, ConfigSettings.EncryptionType);
                 mSecurityEntity.ConnectionString = mDecryptedPassword;
-                mSecurityEntities.Add(mSecurityEntity);
+                mRetVal.Add(mSecurityEntity);
             }
-            m_CacheHelper.AddToCache(s_CacheName, mSecurityEntities);
+            m_CacheHelper.AddToCache(s_CacheName, mRetVal);
         }
-        return mSecurityEntities;
+        return mRetVal;
     }
 }

@@ -136,8 +136,9 @@ public static class ClientChoicesUtility
             }
             if(ConfigSettings.SecurityEntityFromUrl)
             {
-                mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile.Id.ToString();
-                mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
+                MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+                mRetVal[MClientChoices.SecurityEntityId] = mSecurityEntityCurrentProfile.Id.ToString();
+                mRetVal[MClientChoices.SecurityEntityName] = mSecurityEntityCurrentProfile.Name;
             }            
             return mRetVal;
         }
@@ -156,8 +157,9 @@ public static class ClientChoicesUtility
         MClientChoicesState mRetVal = getFromCacheOrSession(forAccount);
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile.Id.ToString();
-            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
+            MSecurityEntity mSecurityEntityCurrentProfile = SecurityEntityUtility.GetCurrentProfile();
+            mRetVal[MClientChoices.SecurityEntityId] = mSecurityEntityCurrentProfile.Id.ToString();
+            mRetVal[MClientChoices.SecurityEntityName] = mSecurityEntityCurrentProfile.Name;
         }
         return mRetVal;
     }
