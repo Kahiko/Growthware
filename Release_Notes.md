@@ -23,7 +23,7 @@
     * DSecurityEntities (ISecurityEntities, BSecurityEntities, SecurityEntitiesUtility, AbstractSecurityEntitiesController) Excluding:
         - DataTable GetValidSecurityEntities()
         - DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator)
-        - DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin
+        - DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
