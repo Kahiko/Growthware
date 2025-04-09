@@ -113,7 +113,7 @@ public class BFunctions : AbstractBusinessLogic
     /// <param name="securityEntitySeqId">Integer</param>
     /// <returns>Collection(of MFunctionProfile)</returns>
     /// <remarks></remarks>
-    public Collection<MFunctionProfile> GetFunctions(int securityEntitySeqId)
+    public async Task<Collection<MFunctionProfile>> GetFunctions(int securityEntitySeqId)
     {
         Collection<MFunctionProfile> mRetVal = new Collection<MFunctionProfile>();
         DataSet mDSFunctions = null;
@@ -123,7 +123,7 @@ public class BFunctions : AbstractBusinessLogic
             {
                 m_DFunctions.Profile = new MFunctionProfile();
                 m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
-                mDSFunctions = m_DFunctions.GetFunctions();
+                mDSFunctions = await m_DFunctions.GetFunctions();
                 bool mHasAssignedRoles = false;
                 bool mHasGroups = false;
                 if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssignedRoles = true;

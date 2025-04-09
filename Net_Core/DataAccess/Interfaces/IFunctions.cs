@@ -38,7 +38,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <returns>DataSet</returns>
         /// <remarks>Does not caculate security for accounts.</remarks>
-        DataSet GetFunctions();
+        Task<DataSet> GetFunctions();
 
         Task<DataTable> FunctionTypes();
 

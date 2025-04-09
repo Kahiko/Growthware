@@ -71,7 +71,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <param name="accountSeqId"></param>
     /// <returns>ActionResult<bool></returns>
     // [HttpDelete("DeleteAccount")]
-    private ActionResult<bool> DeleteAccount(int accountSeqId)
+    private async Task<ActionResult<bool>> DeleteAccount(int accountSeqId)
     {
         // This is here only for example it is this developers view that deleting accounts
         // is extremely risky and should be left to say a backend developer (DBA if you like)
@@ -80,7 +80,7 @@ public abstract class AbstractAccountController : ControllerBase
 
         if (accountSeqId < 1) throw new ArgumentNullException(nameof(accountSeqId), " must be a positive number!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
@@ -102,11 +102,11 @@ public abstract class AbstractAccountController : ControllerBase
     /// <param name="account"></param>
     /// <returns></returns>
     [HttpGet("EditAccount")]
-    public ActionResult<MAccountProfile> EditAccount(string account)
+    public async Task<ActionResult<MAccountProfile>> EditAccount(string account)
     {
         HttpContext.Session.Remove("EditId");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new (mFunctionProfile, mRequestingProfile);
         MAccountProfile mAccountProfile = new(mRequestingProfile.Id);
         if (account != "new") // Populate from the DB
@@ -128,10 +128,10 @@ public abstract class AbstractAccountController : ControllerBase
     /// <param name="account"></param>
     /// <returns></returns>
     [HttpGet("EditProfile")]
-    public ActionResult<MAccountProfile> EditProfile(string account)
+    public async Task<ActionResult<MAccountProfile>> EditProfile(string account)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
         {
@@ -531,7 +531,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpPost("RevokeToken")]
-    public IActionResult RevokeToken(string token)
+    public async Task<IActionResult> RevokeToken(string token)
     {
         // TODO: For future use, not currently being used!
 
@@ -543,7 +543,7 @@ public abstract class AbstractAccountController : ControllerBase
 
         // users can revoke their own tokens and admins can revoke any tokens
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("RevokeToken");
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile("RevokeToken");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (!AccountUtility.CurrentProfile.OwnsToken(token) && !mSecurityInfo.MayView)
             return Unauthorized(new { message = "Unauthorized" });
@@ -559,7 +559,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("SaveAccount")]
-    public ActionResult<bool> SaveAccount(MAccountProfile accountProfile)
+    public async Task<ActionResult<bool>> SaveAccount(MAccountProfile accountProfile)
     {
         // requesting profile same as 
         bool mRetVal = false;
@@ -568,10 +568,10 @@ public abstract class AbstractAccountController : ControllerBase
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
-        MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {

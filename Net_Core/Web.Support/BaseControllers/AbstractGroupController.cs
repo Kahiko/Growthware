@@ -20,7 +20,7 @@ public abstract class AbstractGroupController : ControllerBase
     public async Task<ActionResult<bool>> DeleteGroup(int groupSeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
@@ -44,7 +44,7 @@ public abstract class AbstractGroupController : ControllerBase
     public async Task<ActionResult<UIGroupProfile>> GetGroupForEdit(int groupSeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
@@ -71,7 +71,7 @@ public abstract class AbstractGroupController : ControllerBase
         if (HttpContext.Session.GetString("EditId") != null)
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             int mSecurityEntityId = SecurityEntityUtility.CurrentProfile.Id;
 

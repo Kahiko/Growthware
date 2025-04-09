@@ -76,7 +76,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult> CreateDirectory(string action, string selectedPath, string newPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayAdd)
         {
@@ -103,7 +103,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult<bool>> DeleteDirectory(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
@@ -131,7 +131,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult<bool>> DeleteFile(string action, string selectedPath, string fileName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
@@ -190,7 +190,7 @@ public abstract class AbstractFileController : ControllerBase
             return BadRequest("File names list is empty.");
         }
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
@@ -264,7 +264,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult<MDirectoryTree>> GetDirectories(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
@@ -306,7 +306,7 @@ public abstract class AbstractFileController : ControllerBase
         if (fileName == null) throw new ArgumentNullException(nameof(fileName), "fileName cannot be a null reference (Nothing in Visual Basic)!");
 
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
@@ -346,7 +346,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult<List<FileInfoLight>>> GetFiles(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
@@ -551,7 +551,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult> RenameDirectory(string action, string selectedPath, string newName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
@@ -592,7 +592,7 @@ public abstract class AbstractFileController : ControllerBase
     public async Task<ActionResult> RenameFile(string action, string selectedPath, string oldName, string newName)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
@@ -650,7 +650,7 @@ public abstract class AbstractFileController : ControllerBase
                 return Ok(mRetVal);
             }
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (mSecurityInfo.MayAdd)
             {

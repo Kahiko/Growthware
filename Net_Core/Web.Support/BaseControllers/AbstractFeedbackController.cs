@@ -24,7 +24,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     [HttpGet("GetFeedbackAccounts")]
     public async Task<ActionResult<Tuple<string[], string[]>>> GetFeedbackAccounts()
     {
-        MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
+        MSecurityInfo mSecurityInfo = new(await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
         if (mSecurityInfo.MayEdit)
         {
             int mSecurityId = SecurityEntityUtility.CurrentProfile.Id;
@@ -84,7 +84,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     {
         bool mRetVal = false;
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
@@ -96,7 +96,8 @@ public abstract class AbstractFeedbackController : ControllerBase
                 // Get the Ids for the Assignee, VerifiedBy and FunctionSeq
                 int mAnonymousId = AccountUtility.GetAccount("Anonymous").Id;
                 int mAssigneeId = AccountUtility.GetAccount(feedback.Assignee).Id;
-                int mFunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                MFunctionProfile mFeedbackFunction = await FunctionUtility.GetProfile(feedback.Action);
+                int mFunctionSeqId = mFeedbackFunction.Id;
                 int mVerifiedById = -1;
                 if (!string.IsNullOrEmpty(feedback.VerifiedBy))
                 {
@@ -128,7 +129,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 if(feedback.FeedbackId == -1)
                 {
                     // The default values for a new feedback
-                    mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                    mFeedbackToSave.FunctionSeqId =mFunctionSeqId;
                     mFeedbackToSave.DateOpened = DateTime.Now;
                     mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultSystemDateTime;
                     mFeedbackToSave.SubmittedById = mRequestingProfile.Id;

@@ -96,12 +96,12 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpGet("GetSecurityInfo")]
-    public ActionResult<MSecurityInfo> GetSecurityInfo(string action)
+    public async Task<ActionResult<MSecurityInfo>> GetSecurityInfo(string action)
     {
         MSecurityInfo mSecurityInfo = new MSecurityInfo();
         if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException(nameof(action), " can not be null or blank!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
             mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);

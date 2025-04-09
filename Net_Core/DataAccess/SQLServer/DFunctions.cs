@@ -29,7 +29,7 @@ public class DFunctions : AbstractDBInteraction, IFunction
 
 #region Public Properties
 
-    DataSet IFunction.GetFunctions()
+    async Task<DataSet> IFunction.GetFunctions()
     {
         DataSet mDSFunctions = null;
         checkValid();
@@ -39,7 +39,7 @@ public class DFunctions : AbstractDBInteraction, IFunction
         try
         {
             string mStoredProcedure = "ZGWSecurity.Get_Function";
-            DataTable mFunctions = base.GetDataTable(mStoredProcedure, mParameters);
+            DataTable mFunctions = await base.GetDataTableAsync(mStoredProcedure, mParameters);
             mDSFunctions = this.getSecurity();
             mDSFunctions.Tables[0].TableName = "DerivedRoles";
             mDSFunctions.Tables[1].TableName = "AssignedRoles";

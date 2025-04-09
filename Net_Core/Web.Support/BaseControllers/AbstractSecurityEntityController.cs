@@ -31,10 +31,10 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetProfile")]
-    public ActionResult<MSecurityEntity> GetProfile(int securityEntitySeqId)
+    public async Task<ActionResult<MSecurityEntity>> GetProfile(int securityEntitySeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
         MSecurityEntity mOriginal = new MSecurityEntity();
         if (securityEntitySeqId > -1)
         {
@@ -66,9 +66,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     }
     
     [HttpGet("GetRegistrationInformation")]
-    public ActionResult<MRegistrationInformation> GetRegistrationInformation(int securityEntitySeqId)
+    public async Task<ActionResult<MRegistrationInformation>> GetRegistrationInformation(int securityEntitySeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
         if (mSecurityInfo.MayView)
         {
             return Ok(SecurityEntityUtility.GetRegistrationInformation(securityEntitySeqId));
@@ -77,19 +77,19 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     }
 
 
-    private MSecurityInfo getSecurityInfo(string action)
+    private async Task<MSecurityInfo> getSecurityInfo(string action)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
     }
 
     [AllowAnonymous]
     [HttpGet("GetValidParents")]
-    public ActionResult<List<UIKeyValuePair>> GetValidParents(int securityEntitySeqId)
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetValidParents(int securityEntitySeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
         if (mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = new List<UIKeyValuePair>();
@@ -125,9 +125,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [Authorize("securityEntity")]
     [HttpPost("SaveProfile")]
-    public ActionResult<bool> SaveProfile(DTO_SecurityEntity_RegistrationInfo securityEntityWithRegistrationInformation)
+    public async Task<ActionResult<bool>> SaveProfile(DTO_SecurityEntity_RegistrationInfo securityEntityWithRegistrationInformation)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
         MSecurityEntity mParamSecurityEntity = securityEntityWithRegistrationInformation.SecurityEntity;
         MRegistrationInformation mParamRegistrationInformation = securityEntityWithRegistrationInformation.RegistrationInformation;
         MSecurityEntity mProfileToSave = this.clone(mParamSecurityEntity);

@@ -39,7 +39,7 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpDelete("DeleteFunction")]
     public async Task<ActionResult<bool>> Delete(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         if(mSecurityInfo.MayDelete)
         {
@@ -57,12 +57,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetAvalibleParents")]
-    public ActionResult GetAvalibleParents()
+    public async Task<ActionResult> GetAvalibleParents()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
-            return Ok(FunctionUtility.GetAvalibleParents());
+            return Ok(await FunctionUtility.GetAvalibleParents());
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -71,19 +71,19 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpGet("GetFunction")]
     public async Task<ActionResult<UIFunctionProfile>> GetFunctionForEdit(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo != null && mSecurityInfo.MayView)
         {
             MFunctionProfile mFunctionProfile = new MFunctionProfile();
-            mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+            mFunctionProfile = await FunctionUtility.GetProfile(functionSeqId);
             if(mFunctionProfile == null)
             {
                 mFunctionProfile = new MFunctionProfile();
             }
             HttpContext.Session.SetInt32("EditId", mFunctionProfile.Id);
             UIFunctionProfile mRetVal = new UIFunctionProfile(mFunctionProfile);
-            MSecurityInfo mView_Function_Group_Tab = this.getSecurityInfo("View_Function_Group_Tab");
-            MSecurityInfo mView_Function_Role_Tab = this.getSecurityInfo("View_Function_Role_Tab");
+            MSecurityInfo mView_Function_Group_Tab = await this.getSecurityInfo("View_Function_Group_Tab");
+            MSecurityInfo mView_Function_Role_Tab = await this.getSecurityInfo("View_Function_Role_Tab");
             mRetVal.CanSaveGroups = mView_Function_Group_Tab.MayView;
             mRetVal.CanSaveRoles = mView_Function_Role_Tab.MayView;
             mRetVal.DirectoryData = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
@@ -98,7 +98,7 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpGet("GetFunctionTypes")]
     public async Task<ActionResult<List<UIKeyValuePair>>> GetFunctionTypes()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = await FunctionUtility.GetFunctionTypes();
@@ -111,7 +111,7 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpGet("GetLinkBehaviors")]
     public async Task<ActionResult<List<UIKeyValuePair>>> GetLinkBehaviors()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = await NameValuePairUtility.GetLinkBehaviors();
@@ -124,7 +124,7 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpGet("GetNavigationTypes")]
     public async Task<ActionResult<List<UIKeyValuePair>>> GetNavigationTypes()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = await NameValuePairUtility.GetNavigationTypes();
@@ -135,9 +135,9 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunctionOrder")]
-    public ActionResult<List<UIFunctionMenuOrder>> GetFunctionOrder(int functionSeqId)
+    public async Task<ActionResult<List<UIFunctionMenuOrder>>> GetFunctionOrder(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
             return Ok(FunctionUtility.GetFunctionOrder(functionSeqId));
@@ -145,10 +145,10 @@ public abstract class AbstractFunctionController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
-    private MSecurityInfo getSecurityInfo(string action)
+    private async Task<MSecurityInfo> getSecurityInfo(string action)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
     }
@@ -157,16 +157,16 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpPost("Save")]
     public async Task<ActionResult<bool>> Save(UIFunctionProfile functionProfile)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
-        MSecurityInfo mViewRoleTabSecurityInfo = this.getSecurityInfo("View_Function_Role_Tab");
-        MSecurityInfo mViewGroupTabSecurityInfo = this.getSecurityInfo("View_Function_Group_Tab");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mViewRoleTabSecurityInfo = await this.getSecurityInfo("View_Function_Role_Tab");
+        MSecurityInfo mViewGroupTabSecurityInfo = await this.getSecurityInfo("View_Function_Group_Tab");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         var mEditId =  HttpContext.Session.GetInt32("EditId");
         string mReturnMsg = string.Empty; // to be used for other security checks so we can pass it back to the client
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MFunctionProfile mExistingProfile = FunctionUtility.GetProfile(functionProfile.Id);
+            MFunctionProfile mExistingProfile = await FunctionUtility.GetProfile(functionProfile.Id);
             if(mExistingProfile == null)
             {
                 mExistingProfile = new MFunctionProfile();
@@ -200,8 +200,10 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                 }
             }
-            bool mSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
-            bool mSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
+            MSecurityInfo mView_Function_Group_Tab = await this.getSecurityInfo("View_Function_Group_Tab");
+            MSecurityInfo mView_Function_Role_Tab = await this.getSecurityInfo("View_Function_Role_Tab");
+            bool mSaveGroups = mView_Function_Group_Tab.MayView;
+            bool mSaveRoles = mView_Function_Role_Tab.MayView;
 
             string ViewRoles = String.Join(",", mProfileToSave.AssignedViewRoles);
             string AddRoles = String.Join(",", mProfileToSave.AssignedAddRoles);
