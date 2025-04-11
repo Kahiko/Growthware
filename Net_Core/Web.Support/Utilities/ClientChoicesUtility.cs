@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Text.Json;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -106,16 +107,13 @@ public static class ClientChoicesUtility
         }
     }
 
-    private static BClientChoices BusinessLogic
+    private static BClientChoices getBusinessLogic()
     {
-        get
+        if (m_BClientChoices == null)
         {
-            if (m_BClientChoices == null)
-            {
-                m_BClientChoices = new(SecurityEntityUtility.DefaultProfile());
-            }
-            return m_BClientChoices;
+            m_BClientChoices = new(SecurityEntityUtility.DefaultProfile());
         }
+        return m_BClientChoices;
     }
 
     public static void ClearSession()
@@ -171,7 +169,8 @@ public static class ClientChoicesUtility
     /// <returns></returns>
     private static DataRow getFromDB(string forAccount)
     {
-        return BusinessLogic.GetDataRow(forAccount);
+        BClientChoices mBusinessLogic = getBusinessLogic();
+        return mBusinessLogic.GetDataRow(forAccount);
     }
 
     /// <summary>
@@ -180,10 +179,11 @@ public static class ClientChoicesUtility
     /// <param name="clientChoicesState">MClientChoicesState</param>
     /// <param name="updateContext">bool</param>
     /// <remarks>Calls getClientChoicesState to ensure the Session/Cache matches for the given account.</remarks>
-    public static void Save(MClientChoicesState clientChoicesState)
+    public static async Task Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
-        BusinessLogic.Save(clientChoicesState);
+        BClientChoices mBusinessLogic = getBusinessLogic();
+        await mBusinessLogic.Save(clientChoicesState);
         getClientChoicesState(clientChoicesState.Account);
     }
 

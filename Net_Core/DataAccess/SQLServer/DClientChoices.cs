@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -38,7 +39,7 @@ public class DClientChoices : AbstractDBInteraction, IClientChoices
         return base.GetDataRow(mStoredProcedure, myParameters);
     }
 
-    void IClientChoices.Save(Hashtable clientChoicesStateHashtable)
+    async Task IClientChoices.Save(Hashtable clientChoicesStateHashtable)
     {
         if (clientChoicesStateHashtable == null || clientChoicesStateHashtable.Count == 0) { throw new ArgumentNullException(nameof(clientChoicesStateHashtable), "Must set the clientChoicesStateHashTable property"); };
         string mStoredProcedure = "ZGWCoreWeb.Set_Account_Choices";
@@ -53,7 +54,7 @@ public class DClientChoices : AbstractDBInteraction, IClientChoices
             commandParameters.SetValue(myParameter, x);
             x = x + 1;
         }
-        base.ExecuteNonQuery(mStoredProcedure, commandParameters);
+        await base.ExecuteNonQueryAsync(mStoredProcedure, commandParameters);
     }
 #endregion
 

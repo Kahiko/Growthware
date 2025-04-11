@@ -22,6 +22,8 @@
     - DFunctions (IFunctions, BFunctions, FunctionsUtility, AbstractFunctionsController)
     * DSecurityEntities (ISecurityEntities, BSecurityEntities, SecurityEntitiesUtility, AbstractSecurityEntitiesController) Excluding:
         - DataTable GetSecurityEntities()
+    * DClientChoices (IClientChoices, BClientChoices, ClientChoicesUtility, AbstractAccountController) Excluding:
+        - DataRow GetChoices(string account)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be causing a logout to occure
