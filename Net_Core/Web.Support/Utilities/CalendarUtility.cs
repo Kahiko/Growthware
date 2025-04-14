@@ -45,10 +45,10 @@ public static class CalendarUtility
         return m_BusinessLogic;
     }
 
-    public static MCalendarEvent GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
+    public static async Task<MCalendarEvent> GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
     {
         BCommunityCalendar mCommunityCalendar = getBusinessLogic();
-        return mCommunityCalendar.GetEvent(calendarEventSeqId);
+        return await mCommunityCalendar.GetEvent(calendarEventSeqId);
     }
 
     public static async Task<MCalendarEvent> SaveCalendarEvent(MSecurityEntity securityEntityProfile, int functionSeqId, MCalendarEvent calendarEvent)

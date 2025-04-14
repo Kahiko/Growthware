@@ -15,7 +15,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		
         Task<DataTable> GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
         
-        DataRow GetEvent(int calendarEventSeqId);
+        Task<DataRow> GetEvent(int calendarEventSeqId);
         
 		Task<DataRow> SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent);
     }

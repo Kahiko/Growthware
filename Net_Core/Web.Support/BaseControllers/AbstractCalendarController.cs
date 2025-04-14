@@ -27,7 +27,7 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpGet("DeleteEvent")]
     public async Task<ActionResult<bool>> DeleteEvent(int calendarEventSeqId, string action)
     {
-        MCalendarEvent mCalendarEvent = CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
         if (getEventSecurity(mCalendarEvent))
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
@@ -52,7 +52,7 @@ public abstract class AbstractCalendarController : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("GetEvent")]
-    public ActionResult<MCalendarEvent> GetEvent(string action, int id)
+    public async Task<ActionResult<MCalendarEvent>> GetEvent(string action, int id)
     {
         /** 
           * This method is not strickly necessary for the frontend.  The main
@@ -66,7 +66,7 @@ public abstract class AbstractCalendarController : ControllerBase
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
-                MCalendarEvent mRetVal = CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, id);
+                MCalendarEvent mRetVal = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, id);
                 HttpContext.Session.SetInt32("EditId", id);
                 return Ok(mRetVal);
             }
@@ -134,7 +134,7 @@ public abstract class AbstractCalendarController : ControllerBase
             mParameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
             mParameters.calendarEvent.UpdatedDate = DateTime.Now;
         }
-        MCalendarEvent mCalendarEvent = CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, mParameters.calendarEvent.Id);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, mParameters.calendarEvent.Id);
         if (getEventSecurity(mCalendarEvent, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mParameters.action);
@@ -146,9 +146,9 @@ public abstract class AbstractCalendarController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetEventSecurity")]
-    public ActionResult<Boolean> GetEventSecurity(int calendarEventSeqId)
+    public async Task<ActionResult<Boolean>> GetEventSecurity(int calendarEventSeqId)
     {
-        MCalendarEvent mCalendarEvent = CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
         return Ok(getEventSecurity(mCalendarEvent));
     }
 

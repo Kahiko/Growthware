@@ -47,17 +47,16 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         return true;
     }
 
-    DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+    async Task<DataRow> ICommunityCalendar.GetEvent(int calendarEventSeqId)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new ("@P_CalendarEventSeqId", calendarEventSeqId),
-        };
+        ];
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {

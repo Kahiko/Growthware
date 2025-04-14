@@ -92,12 +92,13 @@ public class BCommunityCalendar : AbstractBusinessLogic
     }
 #endregion
 
-    public MCalendarEvent GetEvent(int calendarEventSeqId) 
+    public async Task<MCalendarEvent> GetEvent(int calendarEventSeqId) 
     {
         try
         {
             m_DCommunityCalendar.CalendarSeqId = 1;
-            return new(m_DCommunityCalendar.GetEvent(calendarEventSeqId));
+            DataRow mDataRow = await m_DCommunityCalendar.GetEvent(calendarEventSeqId);
+            return new(mDataRow);
         }
         catch (System.Exception)
         {            
