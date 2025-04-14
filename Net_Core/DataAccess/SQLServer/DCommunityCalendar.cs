@@ -28,13 +28,6 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
     }
 #endregion
 
-    bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
-    {
-        this.checkValid();
-
-        return true;
-    }
-
     bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
     {
         this.checkValid();
@@ -51,12 +44,6 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         {
             throw;
         }
-        return true;
-    }
-
-    bool ICommunityCalendar.GetCalendar(int calendarSeqId)
-    {
-        this.checkValid();
         return true;
     }
 
