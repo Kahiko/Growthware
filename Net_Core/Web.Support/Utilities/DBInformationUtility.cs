@@ -19,8 +19,8 @@ public static class DBInformationUtility
     /// <returns>MDBInformation</returns>
     public static async Task<MDBInformation> DBInformation()
     {
-        BDBInformation mBusinessLogic = getBusinessLogic();
-        return await mBusinessLogic.GetProfile();
+        BDBInformation mBDBInformation = getBusinessLogic();
+        return await mBDBInformation.GetProfile();
     }
 
     /// <summary>
@@ -44,8 +44,8 @@ public static class DBInformationUtility
     public static async Task<bool> UpdateProfile(MDBInformation profile)
     {
         bool mRetVal = false;
-        BDBInformation mBusinessLogic = getBusinessLogic();
-        mRetVal = await mBusinessLogic.UpdateProfile(profile);
+        BDBInformation mBDBInformation = getBusinessLogic();
+        mRetVal = await mBDBInformation.UpdateProfile(profile);
         return mRetVal;
     }
 }

@@ -37,7 +37,7 @@ public class BFeedbacks : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// BFeedbacks mBusinessLogic = BFeedbacks = New BFeedbacks(MSecurityEntity);
+    /// BFeedbacks mBFeedbacks = BFeedbacks = New BFeedbacks(MSecurityEntity);
     /// ]]>
     /// </code>
     /// <code language="VB.NET">
@@ -49,7 +49,7 @@ public class BFeedbacks : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// Dim mBusinessLogic As BFeedbacks = New BFeedbacks(MSecurityEntity)
+    /// Dim mBFeedbacks As BFeedbacks = New BFeedbacks(MSecurityEntity)
     /// ]]>
     /// </code>
     /// </example>
