@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -77,12 +78,9 @@ public class BDBInformation : AbstractBusinessLogic
     /// </summary>
     /// <returns>MDBInformation</returns>
     /// <remarks></remarks>
-    public MDBInformation GetProfile
+    public async Task<MDBInformation> GetProfile()
     {
-        get
-        {
-            return new MDBInformation(this.m_DDBInformation.GetProfileRow);
-        }
+        return new MDBInformation(await this.m_DDBInformation.GetProfileRow());
     }
 
     /// <summary>
@@ -91,14 +89,14 @@ public class BDBInformation : AbstractBusinessLogic
     /// <param name="profile">MDBInformation</param>
     /// <returns>Boolean</returns>
     /// <remarks></remarks>
-    public bool UpdateProfile(MDBInformation profile)
+    public async Task<bool> UpdateProfile(MDBInformation profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be null (Nothing in Visual Basic)");
         bool mRetVal = false;
         this.m_DDBInformation.Profile = profile;
         if (DatabaseIsOnline()) 
         {
-            mRetVal = this.m_DDBInformation.UpdateProfile();
+            mRetVal = await this.m_DDBInformation.UpdateProfile();
         }
         return mRetVal;
     }

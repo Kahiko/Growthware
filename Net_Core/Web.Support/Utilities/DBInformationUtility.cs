@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -16,10 +17,10 @@ public static class DBInformationUtility
     /// New instance of the class
     /// </summary>
     /// <returns>MDBInformation</returns>
-    public static MDBInformation DBInformation()
+    public static async Task<MDBInformation> DBInformation()
     {
-        BDBInformation mBll = getBusinessLogic();
-        return mBll.GetProfile;
+        BDBInformation mBusinessLogic = getBusinessLogic();
+        return await mBusinessLogic.GetProfile();
     }
 
     /// <summary>
@@ -40,11 +41,11 @@ public static class DBInformationUtility
     /// </summary>
     /// <param name="profile">MDBInformation</param>
     /// <returns>bool or exception</returns>
-    public static bool UpdateProfile(MDBInformation profile)
+    public static async Task<bool> UpdateProfile(MDBInformation profile)
     {
         bool mRetVal = false;
-        BDBInformation mBll = getBusinessLogic();
-        mRetVal = mBll.UpdateProfile(profile);
+        BDBInformation mBusinessLogic = getBusinessLogic();
+        mRetVal = await mBusinessLogic.UpdateProfile(profile);
         return mRetVal;
     }
 }
