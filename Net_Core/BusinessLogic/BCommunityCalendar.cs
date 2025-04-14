@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Threading.Tasks;
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -104,12 +105,12 @@ public class BCommunityCalendar : AbstractBusinessLogic
         }
     }
 
-    public DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
+    public async Task<DataTable> GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
     {
         try
         {
             m_DCommunityCalendar.CalendarSeqId = 0; // not used in this method
-            return m_DCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
+            return await m_DCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
         }
         catch (System.Exception ex)
         {
@@ -117,19 +118,19 @@ public class BCommunityCalendar : AbstractBusinessLogic
         }
     }
 
-    public MCalendarEvent SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
+    public async Task<MCalendarEvent> SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
     {
         m_DCommunityCalendar.CalendarSeqId = 1; // not used in this method
-        MCalendarEvent mRetVal = new(m_DCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent));
+        MCalendarEvent mRetVal = new(await m_DCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent));
         return mRetVal;
     }
 
-    public bool DeleteEvent(int calendarEventSeqId)
+    public async Task<bool> DeleteEvent(int calendarEventSeqId)
     {
         m_DCommunityCalendar.CalendarSeqId = 0; // not used in this method
         try
         {
-            return m_DCommunityCalendar.DeleteEvent(calendarEventSeqId);
+            return await m_DCommunityCalendar.DeleteEvent(calendarEventSeqId);
         }
         catch (System.Exception ex)
         {
