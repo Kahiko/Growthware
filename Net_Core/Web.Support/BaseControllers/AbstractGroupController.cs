@@ -9,6 +9,7 @@ using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -18,7 +19,7 @@ public abstract class AbstractGroupController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("DeleteGroup")]
-    public ActionResult<bool> DeleteGroup(int groupSeqId)
+    public async Task<ActionResult<bool>> DeleteGroup(int groupSeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
@@ -30,8 +31,8 @@ public abstract class AbstractGroupController : ControllerBase
             {
                 if (int.Parse(HttpContext.Session.GetString("EditId")) == groupSeqId)
                 {
-                    MGroupProfile mProfile = GroupUtility.GetGroupProfile(groupSeqId);
-                    GroupUtility.Delete(mProfile);
+                    MGroupProfile mProfile = await GroupUtility.GetGroupProfile(groupSeqId);
+                    await GroupUtility.Delete(mProfile);
                     return Ok(true);
                 }
             }
@@ -42,7 +43,7 @@ public abstract class AbstractGroupController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetGroupForEdit")]
-    public ActionResult<UIGroupProfile> GetGroupForEdit(int groupSeqId)
+    public async Task<ActionResult<UIGroupProfile>> GetGroupForEdit(int groupSeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
@@ -51,23 +52,23 @@ public abstract class AbstractGroupController : ControllerBase
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
             HttpContext.Session.SetString("EditId", groupSeqId.ToString());
-            UIGroupProfile mRetVal = GroupUtility.GetUIGroupProfile(groupSeqId, mSecurityEntity.Id);
+            UIGroupProfile mRetVal = await GroupUtility.GetUIGroupProfile(groupSeqId, mSecurityEntity.Id);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
     [HttpGet("GetGroups")]
-    public ActionResult<ArrayList> GetGroups()
+    public async Task<ActionResult<ArrayList>> GetGroups()
     {
         ArrayList mRetVal;
-        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile.Id);
+        mRetVal = await GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile.Id);
         return Ok(mRetVal);
     }
 
     [AllowAnonymous]
     [HttpPost("SaveGroup")]
-    public ActionResult<UIGroupProfile> SaveGroup(UIGroupProfile groupProfile)
+    public async Task<ActionResult<UIGroupProfile>> SaveGroup(UIGroupProfile groupProfile)
     {
         if (HttpContext.Session.GetString("EditId") != null)
         {
@@ -120,7 +121,7 @@ public abstract class AbstractGroupController : ControllerBase
                 }
             }
             // Save the profiles
-            UIGroupProfile mRetVal = GroupUtility.Save(mProfileToSave, mGroupRoles);
+            UIGroupProfile mRetVal = await GroupUtility.Save(mProfileToSave, mGroupRoles);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status304NotModified, "Unable to save");

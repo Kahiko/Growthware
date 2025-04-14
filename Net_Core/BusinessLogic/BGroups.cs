@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -94,24 +95,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="SecurityEntityID">The security entity ID.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetGroupsBySecurityEntity(int SecurityEntityID)
+    public async Task<DataTable> GetGroupsBySecurityEntity(int SecurityEntityID)
     {
         MGroupProfile myProfile = new MGroupProfile();
         myProfile.SecurityEntityID = SecurityEntityID;
         m_DGroups.Profile = myProfile;
-        return m_DGroups.GroupsBySecurityEntity();
-    }
-
-    /// <summary>
-    /// Adds the group.
-    /// </summary>
-    /// <param name="profile">The profile.</param>
-    /// <returns>System.Int32.</returns>
-    public void AddGroup(MGroupProfile profile)
-    {
-        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        m_DGroups.Profile = profile;
-        if (DatabaseIsOnline()) m_DGroups.AddGroup();
+        return await m_DGroups.GroupsBySecurityEntity();
     }
 
     /// <summary>
@@ -119,12 +108,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="groupId">The group ID.</param>
     /// <returns>MGroupProfile.</returns>
-    public MGroupProfile GetProfile(int groupId)
+    public async Task<MGroupProfile> GetProfile(int groupId)
     {
         MGroupProfile retProfile = new MGroupProfile();
         retProfile.Id = groupId;
         m_DGroups.Profile = retProfile;
-        retProfile = new MGroupProfile(m_DGroups.ProfileData());
+        retProfile = new MGroupProfile(await m_DGroups.ProfileData());
         return retProfile;
     }
 
@@ -133,12 +122,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public bool DeleteGroup(MGroupProfile profile)
+    public async Task<bool> DeleteGroup(MGroupProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         bool retVal = false;
         m_DGroups.Profile = profile;
-        if (DatabaseIsOnline()) retVal = m_DGroups.DeleteGroup();
+        if (DatabaseIsOnline()) retVal = await m_DGroups.DeleteGroup();
         return retVal;
     }
 
@@ -147,14 +136,14 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public int Save(MGroupProfile profile)
+    public async Task<int> Save(MGroupProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         int mRetVal = 0;
         m_DGroups.Profile = profile;
         if (DatabaseIsOnline())
         {
-            mRetVal = m_DGroups.Save();
+            mRetVal = await m_DGroups.Save();
         }
         return mRetVal;
     }
@@ -164,7 +153,7 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns>System.String[][].</returns>
-    public string[] GetSelectedRoles(MGroupRoles profile)
+    public async Task<string[]> GetSelectedRoles(MGroupRoles profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         ArrayList mRolesArray = new ArrayList();
@@ -174,7 +163,7 @@ public class BGroups : AbstractBusinessLogic
         {
             try
             {
-                myDataTable = m_DGroups.GroupRoles();
+                myDataTable = await m_DGroups.GroupRoles();
                 foreach (DataRow item in myDataTable.Rows)
                 {
                     mRolesArray.Add(item["Role"].ToString());
@@ -193,12 +182,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public bool UpdateGroupRoles(MGroupRoles profile)
+    public async Task<bool> UpdateGroupRoles(MGroupRoles profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         bool mRetVal = false;
         m_DGroups.GroupRolesProfile = profile;
-        if (DatabaseIsOnline()) mRetVal = m_DGroups.UpdateGroupRoles();
+        if (DatabaseIsOnline()) mRetVal = await m_DGroups.UpdateGroupRoles();
         return mRetVal;
     }
 }
