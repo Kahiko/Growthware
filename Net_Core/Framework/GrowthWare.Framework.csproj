@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionMajor>5</VersionMajor>
-    <VersionMinor>2</VersionMinor>
+    <VersionMajor>6</VersionMajor>
+    <VersionMinor>0</VersionMinor>
     <VersionPatch>0</VersionPatch>
     <VersionBuild>$([System.DateTime]::UtcNow.ToString(mmff))</VersionBuild>
   </PropertyGroup>

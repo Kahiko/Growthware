@@ -16,7 +16,7 @@
             "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net9.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
-                "5.2.0.0"
+                "6.0.0.0"
             ],
             "cwd": "${workspaceFolder}/DatabaseManager",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -34,7 +34,7 @@
             "sourceMaps": true,
             // "trace": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${webRoot}/*"
+                "webpack:///./*": "${webRoot}/*"
             },
             "preLaunchTask": "Task: Start NodeJS",
             "postDebugTask": "Task: Stop NodeJS"
@@ -49,7 +49,7 @@
             "webRoot": "${workspaceFolder}/Web.Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${webRoot}/*"
+                "webpack:///./*": "${webRoot}/*"
             },
             "preLaunchTask": "Task: Start NodeJS",
             "postDebugTask": "Task: Stop NodeJS"
@@ -76,11 +76,17 @@
     "compounds": [
         {
             "name": "1.) API + Chrome",
-            "configurations": ["Web.Api", "PWA Chrome"]
+            "configurations": [
+                "Web.Api",
+                "PWA Chrome"
+            ]
         },
         {
             "name": "2.) API + Edge",
-            "configurations": ["Web.Api", "PWA Edge"]
-        }       
+            "configurations": [
+                "Web.Api",
+                "PWA Edge"
+            ]
+        }
     ]
 }
