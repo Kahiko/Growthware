@@ -2,6 +2,7 @@
 ## Net_Core Version 6.0.0.0 (2025-XX-XX)
 
 ### New Features
+- Added Search/Display for the [ZGWSystem].[Logging] table
 
 ### Improvements
 - Converted database calls to async/await

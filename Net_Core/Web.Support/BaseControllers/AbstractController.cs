@@ -139,6 +139,37 @@ public abstract class AbstractController : ControllerBase
         return true;
     }
 
+    /// <summary>
+    /// Performs a search for the [ZGWSystem].[Logging] based on the provided search criteria.
+    /// </summary>
+    /// <param name="searchCriteria">The criteria used to filter the search</param>
+    /// <returns></returns>
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpPost("SearchDBLogs")]
+    public String SearchDBLogs(UISearchCriteria searchCriteria)
+    {
+        String mRetVal = string.Empty;
+        string mColumns = "[Account], [Component], [ClassName], [Level], [LogDate], [LogSeqId], [MethodName], [Msg]";
+        if (searchCriteria.sortColumns.Length > 0)
+        {
+            Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
+            string mOrderByClause = mOrderByAndWhere.Item1;
+            string mWhereClause = mOrderByAndWhere.Item2;
+            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            {
+                Columns = mColumns,
+                OrderByClause = mOrderByClause,
+                PageSize = searchCriteria.pageSize,
+                SelectedPage = searchCriteria.selectedPage,
+                TableOrView = "[ZGWSystem].[Logging]",
+                WhereClause = mWhereClause
+            };
+
+            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+        }
+        return mRetVal;
+    }
+
     [HttpPost("UpdateProfile")]
     public async Task<ActionResult<bool>> UpdateProfile(int enableInheritance)
     {

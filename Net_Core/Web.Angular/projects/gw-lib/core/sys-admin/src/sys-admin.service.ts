@@ -1,25 +1,41 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { INaturalSortResults } from '@growthware/common/interfaces';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
 import { LineCount } from './line-count.model';
+import { SelectedRow } from './selected-row.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class SysAdminService {
+export class SysAdminService extends BaseService {
 	private _ApiName: string = 'GrowthwareFile/';
 	private _Api_GetTestNaturalSort: string = '';
 	private _ApiLineCount: string = '';
+	private _Reason: string = '';
+
+	modalReason: string = '';
+	selectedRow: SelectedRow = new SelectedRow();
+
+	public get reason(): string {
+		return this._Reason;
+	}
+	public set reason(value: string) {
+		this._Reason = value;
+	}
+
+	readonly addEditModalId: string = 'addEditAccountModal';
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService,    
-	) { 
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService,
+	) {
+		super();
 		this._ApiLineCount = this._GWCommon.baseURL + this._ApiName + 'GetLineCount';
 		this._Api_GetTestNaturalSort = this._ApiName + 'GetTestNaturalSort';
 	}
