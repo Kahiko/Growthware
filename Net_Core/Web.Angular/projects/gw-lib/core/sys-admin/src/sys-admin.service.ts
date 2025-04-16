@@ -28,7 +28,7 @@ export class SysAdminService extends BaseService {
 		this._Reason = value;
 	}
 
-	readonly addEditModalId: string = 'addEditAccountModal';
+	readonly addEditModalId: string = 'addEditDBLogModal';
 
 	constructor(
 		private _GWCommon: GWCommon,
