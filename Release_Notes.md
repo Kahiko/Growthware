@@ -19,6 +19,8 @@
 
 ### Bug Fixes
 
+- Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
+- feature(AccountUtilityTests) fixed the warning "Cannot convert null literal to non-nullable reference type." in AccountUtilityTests.cs by commenting out unused filed m_Origin.
 
 ## Net_Core Version 5.2.0.0 (2025-02-10)
 - Upgraded to .Net Core 9.0
