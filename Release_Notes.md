@@ -21,7 +21,6 @@
 - When opening a modal for the second time a dropdown box will open under the .modal-background selector (z-index: 1000)
 
 ### Bug Fixes
-
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
 - feature(AccountUtilityTests) fixed the warning "Cannot convert null literal to non-nullable reference type." in AccountUtilityTests.cs by commenting out unused filed m_Origin.
 
