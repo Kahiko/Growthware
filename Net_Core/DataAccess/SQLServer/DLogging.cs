@@ -1,9 +1,13 @@
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.DataAccess.SQLServer.Base;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace GrowthWare.DataAccess.SQLServer;
 public class DLogging : AbstractDBInteraction, ILogging
@@ -14,7 +18,21 @@ public class DLogging : AbstractDBInteraction, ILogging
     { 
         this.ConnectionString = connectionString;
     }
-#endregion
+
+    public async IAsyncEnumerable<IDataRecord> GetLogs([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        using SqlConnection mSqlConnection = new SqlConnection(this.ConnectionString);
+        await mSqlConnection.OpenAsync(cancellationToken);
+        string mCommandText = $"SELECT {DBLogColumns.GetCommaSeparatedString()} FROM [ZGWSystem].[Logging] ORDER BY [LogDate] DESC;";
+        using SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection);
+        using SqlDataReader mReader = await mSqlCommand.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellationToken);
+
+        while (await mReader.ReadAsync(cancellationToken))
+        {
+            yield return mReader;
+        }
+    }
+    #endregion
 
     MLoggingProfile ILogging.GetLog(int logSeqId)
     {

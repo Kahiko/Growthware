@@ -2,6 +2,10 @@
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -28,6 +32,22 @@ public class BLogger : AbstractBusinessLogic
     }
 #endregion
 
+    /// <summary>
+    /// Asynchronously retrieves log records for export.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>IAsyncEnumerable<IDataRecord></returns>
+    public async IAsyncEnumerable<IDataRecord> GetDBLogRecordsForExportAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        if (DatabaseIsOnline())
+        {
+            await foreach (var record in m_Logging.GetLogs(cancellationToken))
+            {
+                yield return record;
+            }
+        }
+    }
+    
     /// <summary>
     /// Retrieves the logging profile for a given log sequence ID.
     /// </summary>

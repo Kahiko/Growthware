@@ -272,5 +272,33 @@
     "showHelp": true,
     "showSearch": false,
     "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": false },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "" , "outputType": "icon"   , "isPrimaryKey": true , "label": "Edit"        , "name": "LogSeqId"  , "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": false,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Date"        , "name": "LogDate"   , "searchSelected": false,  "sortSelected": true  , "direction": "desc" , "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Level"       , "name": "Level"     , "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Account"     , "name": "Account"   , "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Component"   , "name": "Component" , "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Class Name"  , "name": "ClassName" , "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width":  90 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Method Name" , "name": "MethodName", "searchSelected": false,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width":  90 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:15", "isPrimaryKey": false, "label": "Message"     , "name": "Msg"       , "searchSelected": true ,  "sortSelected": false , "direction": "asc"  , "showData": true ,	"type": "string", "visible": true , "width":  80 }
+    ],
+    "captionText": "Search DB Logs",
+    "maxHeadHeight": 18,
+    "maxTableRowHeight": 24,
+    "name": "DBLogs",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
   }
 ]

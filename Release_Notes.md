@@ -5,6 +5,9 @@
 - AbstractBaseModel
 
 ### New Features
+- Added Search DB Logs
+    - Can download all of the systems logs including the datbase table
+    - Can view the details of a given DB log entry
 
 ### Improvements
 

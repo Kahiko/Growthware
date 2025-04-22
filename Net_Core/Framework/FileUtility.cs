@@ -80,6 +80,58 @@ public static class FileUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Returns true if the file is in use.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns>bool</returns>
+    public static bool IsFileInUse(FileInfo file)
+    {
+        bool mRetVal = false;
+        try
+        {
+            using var stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+        }
+        catch (IOException)
+        {
+            mRetVal = true;
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Deletes old files
+    /// </summary>
+    /// <param name="theDirectory"></param>
+    /// <param name="daysToKeep"></param>
+    public static void DeleteOlderFiles(string filePath, int daysToKeep)
+    {
+        int mCounter = 0;
+        int mPosSep = 0;
+        string[] mAFiles = null;
+        string mFile = null;
+        if (daysToKeep > 0)
+        {
+            daysToKeep = daysToKeep * -1;
+            System.DateTime mRetentionDate = System.DateTime.Now.AddDays(daysToKeep);
+            if (System.IO.Directory.Exists(filePath))
+            {
+                mAFiles = System.IO.Directory.GetFiles(filePath);
+                for (mCounter = 0; mCounter <= mAFiles.GetUpperBound(0); mCounter++)
+                {
+                    // Get the position of the trailing separator.
+                    mPosSep = mAFiles[mCounter].LastIndexOf(Path.DirectorySeparatorChar.ToString(), StringComparison.OrdinalIgnoreCase);
+                    mFile = mAFiles[mCounter].Substring((mPosSep + 1), mAFiles[mCounter].Length - (mPosSep + 1));
+                    mFile = filePath + mFile;
+                    if (File.GetCreationTime(mFile) < mRetentionDate)
+                    {
+                        File.Delete(mFile);
+                    }
+                }
+            }
+        }
+    }
+
     public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
     {
         if (theDirectory == null) throw new ArgumentNullException(nameof(theDirectory), "theDirectory cannot be a null reference (Nothing in Visual Basic)!");

@@ -23,6 +23,8 @@ public class Logger : IDisposable
 
     private static Mutex s_Mutex = new Mutex();
 
+    public string LogFilePath {get { return this.m_LogFilePath; } }
+
     private NLog.Logger m_Logger = NLog.LogManager.GetCurrentClassLogger();
 
     private string m_LogFileName = string.Empty;

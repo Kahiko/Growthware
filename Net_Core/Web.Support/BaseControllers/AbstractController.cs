@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Framework.Enumerations;
 using System.Linq;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -23,6 +25,64 @@ public abstract class AbstractController : ControllerBase
     private string m_LogPriority = string.Empty;
     private string m_SecurityEntityTranslation = string.Empty;
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
+    private string m_TempDownloadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpGet("CreateSystemLogs")]
+    public async Task<ActionResult<string>> CreateSystemLogs()
+    {
+        try
+        {
+            // Generate unique ID for the zip file
+            var mFileId = Guid.NewGuid().ToString();
+
+            // Ensure temp directory exists
+            if (!Directory.Exists(m_TempDownloadDirectory))
+            {
+                Directory.CreateDirectory(m_TempDownloadDirectory);
+            }
+            FileUtility.DeleteOlderFiles(m_TempDownloadDirectory, 1);
+
+            var mZipFilePath = Path.Combine(m_TempDownloadDirectory, $"{mFileId}.zip");
+
+            // Create the zip file with database logs and example text file
+            await LoggingUtility.CreateSystemLogsZipAsync(mZipFilePath);
+
+            // Return the file ID so the client can download it
+            return Ok(mFileId);
+        }
+        catch (Exception ex)
+        {
+            Exception mException = new("Error creating log zip file", ex);
+            m_Logger.Error(mException);
+            return StatusCode(500, "Error creating log zip file");
+        }
+    }
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpDelete("CleanupSystemLogs")]
+    public ActionResult CleanupSystemLogs(string fileId)
+    {
+        var mFilePath = Path.Combine(m_TempDownloadDirectory, $"{fileId}.zip");
+        if (!System.IO.File.Exists(mFilePath))
+        {
+            return NotFound();
+        }
+        System.IO.File.Delete(mFilePath);
+        return Ok();
+    }
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpGet("DownloadSystemLogs")]
+    public ActionResult DownloadSystemLogs(string fileId)
+    {
+        var mFilePath = Path.Combine(m_TempDownloadDirectory, $"{fileId}.zip");
+        if (!System.IO.File.Exists(mFilePath))
+        {
+            return NotFound();
+        }
+        return File(System.IO.File.ReadAllBytes(mFilePath), "application/zip", "SystemLogs.zip");
+    }
 
     [HttpGet("GetAppSettings")]
     public UIAppSettings GetAppSettings()
@@ -136,6 +196,37 @@ public abstract class AbstractController : ControllerBase
             this.m_Logger.Log(profile.Msg, (LogPriority)Enum.Parse(typeof(LogPriority), profile.Level));
         }
         return true;
+    }
+
+    /// <summary>
+    /// Performs a search for the [ZGWSystem].[Logging] based on the provided search criteria.
+    /// </summary>
+    /// <param name="searchCriteria">The criteria used to filter the search</param>
+    /// <returns></returns>
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpPost("SearchDBLogs")]
+    public String SearchDBLogs(UISearchCriteria searchCriteria)
+    {
+        String mRetVal = string.Empty;
+        string mColumns = "[Account], [Component], [ClassName], [Level], [LogDate], [LogSeqId], [MethodName], [Msg]";
+        if (searchCriteria.sortColumns.Length > 0)
+        {
+            Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
+            string mOrderByClause = mOrderByAndWhere.Item1;
+            string mWhereClause = mOrderByAndWhere.Item2;
+            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            {
+                Columns = mColumns,
+                OrderByClause = mOrderByClause,
+                PageSize = searchCriteria.pageSize,
+                SelectedPage = searchCriteria.selectedPage,
+                TableOrView = "[ZGWSystem].[Logging]",
+                WhereClause = mWhereClause
+            };
+
+            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+        }
+        return mRetVal;
     }
 
     [HttpPost("UpdateProfile")]
