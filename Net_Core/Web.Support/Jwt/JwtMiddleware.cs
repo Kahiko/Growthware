@@ -1,15 +1,16 @@
+using GrowthWare.Framework;
+using GrowthWare.Web.Support.Utilities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using GrowthWare.Framework.Models;
-using GrowthWare.Web.Support.Utilities;
 
 namespace GrowthWare.Web.Support.Jwt;
 
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly Logger m_Logger = Logger.Instance();
     
     [CLSCompliant(false)]
     public JwtMiddleware(RequestDelegate next)
@@ -30,6 +31,14 @@ public class JwtMiddleware
                 httpContext.Items["AccountProfile"] = AccountUtility.GetAccount(mAccount);
             }
         }
-        await _next(httpContext);
+        try
+        {
+            await _next(httpContext);            
+        }
+        catch (System.Exception ex)
+        {
+            m_Logger.Error(ex);
+            throw;
+        }
     }
 }
