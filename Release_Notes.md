@@ -26,6 +26,7 @@
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
 - feature(AccountUtilityTests) fixed the warning "Cannot convert null literal to non-nullable reference type." in AccountUtilityTests.cs by commenting out unused filed m_Origin.
 - Fixed "When opening a modal for the second time a dropdown box will open under the .modal-background selector (z-index: 1000)"
+- Fixed Edit DB Information not notifiing the user that the DB information was updated
 
 ## Net_Core Version 5.2.0.0 (2025-02-10)
 - Upgraded to .Net Core 9.0
