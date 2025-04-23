@@ -10,6 +10,8 @@
     - Can view the details of a given DB log entry
 
 ### Improvements
+- Converted database calls to async/await
+    - DCommunityCalendar
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure

@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -28,24 +29,16 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
     }
 #endregion
 
-    bool ICommunityCalendar.DeleteCalendar(int calendarSeqId)
-    {
-        this.checkValid();
-
-        return true;
-    }
-
-    bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
+    async Task<bool> ICommunityCalendar.DeleteEvent(int calendarEventSeqId)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new ("@P_CalendarEventSeqId", calendarEventSeqId),
-        };
+        ];
         try
         {
-            base.ExecuteNonQuery(mStoredProcedure, mParameters);
+            await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -54,23 +47,16 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         return true;
     }
 
-    bool ICommunityCalendar.GetCalendar(int calendarSeqId)
-    {
-        this.checkValid();
-        return true;
-    }
-
-    DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+    async Task<DataRow> ICommunityCalendar.GetEvent(int calendarEventSeqId)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new ("@P_CalendarEventSeqId", calendarEventSeqId),
-        };
+        ];
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -78,19 +64,18 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         }
     }
 
-    DataTable ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
+    async Task<DataTable> ICommunityCalendar.GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Events]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new ("@P_FunctionSeqId", functionSeqId),
             new ("@P_Start_Date", startDate),
             new ("@P_End_Date", endDate),
-        };
+        ];
         try
         {
-            return base.GetDataTable(mStoredProcedure, mParameters);
+            return await base.GetDataTableAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {
@@ -98,12 +83,11 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
         }
     }
 
-    DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
+    async Task<DataRow> ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
     {
         this.checkValid();
         string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
-        SqlParameter[] mParameters =
-            {
+        SqlParameter[] mParameters = [
             new ("@P_CalendarEventSeqId", calendarEvent.Id),
             new ("@P_FunctionSeqId", functionSeqId),
             new ("@P_Title", calendarEvent.Title),
@@ -115,10 +99,10 @@ public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
             new ("@P_Link", calendarEvent.Link),
             new ("@P_Location", calendarEvent.Location),
             new ("@P_Added_Updated_By", calendarEvent.AddedBy),
-            };
+        ];
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {

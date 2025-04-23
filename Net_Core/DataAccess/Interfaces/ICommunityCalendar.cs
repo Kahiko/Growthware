@@ -2,6 +2,7 @@ using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -10,16 +11,13 @@ namespace GrowthWare.DataAccess.Interfaces
         int CalendarSeqId {get; set;}
         int SecurityEntitySeqId {get; set;}
 
-        bool DeleteCalendar(int calendarSeqId);
 		
-        bool DeleteEvent(int calendarEventSeqId);
-        
-        bool GetCalendar(int calendarSeqId);
+        Task<bool> DeleteEvent(int calendarEventSeqId);
 		
-        DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
+        Task<DataTable> GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
         
-        DataRow GetEvent(int calendarEventSeqId);
+        Task<DataRow> GetEvent(int calendarEventSeqId);
         
-		DataRow SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent);
+		Task<DataRow> SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent);
     }
 }
