@@ -18,11 +18,11 @@
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
 - Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
 - BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
-- When opening a modal for the second time a dropdown box will open under the .modal-background selector (z-index: 1000)
 
 ### Bug Fixes
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
 - feature(AccountUtilityTests) fixed the warning "Cannot convert null literal to non-nullable reference type." in AccountUtilityTests.cs by commenting out unused filed m_Origin.
+- Fixed "When opening a modal for the second time a dropdown box will open under the .modal-background selector (z-index: 1000)"
 
 ## Net_Core Version 5.2.0.0 (2025-02-10)
 - Upgraded to .Net Core 9.0
