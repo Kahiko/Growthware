@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -21,14 +22,13 @@ public class DDirectories : AbstractDBInteraction, IDirectories
     }
 #endregion
 
-    DataTable IDirectories.Directories()
+    async Task<DataTable> IDirectories.Directories()
     {
         String mStoredProcedure = "ZGWOptional.Get_Directory";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_FunctionSeqId", -1)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     void IDirectories.Save(MDirectoryProfile profile)

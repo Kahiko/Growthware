@@ -8,6 +8,7 @@ using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -68,7 +69,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunction")]
-    public ActionResult<UIFunctionProfile> GetFunctionForEdit(int functionSeqId)
+    public async Task<ActionResult<UIFunctionProfile>> GetFunctionForEdit(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo != null && mSecurityInfo.MayView)
@@ -83,7 +84,7 @@ public abstract class AbstractFunctionController : ControllerBase
             UIFunctionProfile mRetVal = new UIFunctionProfile(mFunctionProfile);
             mRetVal.CanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
             mRetVal.CanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
-            mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            mRetVal.DirectoryData = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             mRetVal.DirectoryData.ImpersonatePassword = string.Empty; // We don't want the password to show
             mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
@@ -152,7 +153,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("Save")]
-    public ActionResult<bool> Save(UIFunctionProfile functionProfile)
+    public async Task<ActionResult<bool>> Save(UIFunctionProfile functionProfile)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         MSecurityInfo mViewRoleTabSecurityInfo = this.getSecurityInfo("View_Function_Role_Tab");
@@ -247,7 +248,7 @@ public abstract class AbstractFunctionController : ControllerBase
                 mProfileToSave.Id = mFunctionSeqId;
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
-                    MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
+                    MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
                     if(mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
