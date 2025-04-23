@@ -23,6 +23,7 @@
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
 - Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
 - BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
+- GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
 
 ### Bug Fixes
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
