@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -67,25 +68,25 @@ public class BFeedbacks : AbstractBusinessLogic
     }
 #endregion
 
-    public UIFeedback GetFeedback(int feedbackId)
+    public async Task<UIFeedback> GetFeedback(int feedbackId)
     {
         UIFeedback mRetVal = null;
         if (DatabaseIsOnline())
         {
             m_DataAccess.Profile = new MFeedback();
             m_DataAccess.Profile.FeedbackId = feedbackId;
-            mRetVal = new UIFeedback(m_DataAccess.GetFeedback);
+            mRetVal = new UIFeedback(await m_DataAccess.GetFeedback());
         }
         return mRetVal;
     }
 
-    public UIFeedback SaveFeedback(MFeedback feedback)
+    public async Task<UIFeedback> SaveFeedback(MFeedback feedback)
     {
         UIFeedback mRetVal = null;
         if (DatabaseIsOnline())
         {
             m_DataAccess.Profile = feedback;
-            mRetVal = new UIFeedback(m_DataAccess.SaveFeedback);
+            mRetVal = new UIFeedback(await m_DataAccess.SaveFeedback());
         }
         return mRetVal;
     }

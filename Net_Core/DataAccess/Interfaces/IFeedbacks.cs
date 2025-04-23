@@ -1,4 +1,5 @@
 using System.Data;
+using System.Threading.Tasks;
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 
@@ -19,10 +20,10 @@ public interface IFeedbacks : IDBInteraction
 		/// Retrieves the current feedback using the information provided in the Profile property.
 		/// </summary>
 		/// <returns>DataRow</returns>
-		DataRow GetFeedback { get; }
+		Task<DataRow> GetFeedback();
 
 		/// <summary>
 		/// Saves the current feedback using the information provided in the Profile property.
 		/// </summary>
-		DataRow SaveFeedback { get; }
+		Task<DataRow> SaveFeedback();
 }

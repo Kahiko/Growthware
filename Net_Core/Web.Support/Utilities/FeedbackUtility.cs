@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -42,11 +43,11 @@ public static class FeedbackUtility
     /// <exception cref="ArgumentNullException">The supplied ID is null.</exception>
     /// <exception cref="NullReferenceException">The feedback with the ID was not found.</exception>
     /// <exception cref="Exception">There was an error retrieving the feedback.</exception>
-    public static UIFeedback GetFeedback(int feedbackId)
+    public static async Task<UIFeedback> GetFeedback(int feedbackId)
     {
         try
         {
-            UIFeedback mRetVal = BusinessLogic.GetFeedback(feedbackId);
+            UIFeedback mRetVal = await BusinessLogic.GetFeedback(feedbackId);
             if (mRetVal == null)
             {
                 throw new NullReferenceException($"The feedback with the ID {feedbackId} was not found.");
@@ -69,7 +70,7 @@ public static class FeedbackUtility
     /// <exception cref="ArgumentNullException">The supplied feedback is null.</exception>
     /// <exception cref="NullReferenceException">The saved feedback was null.</exception>
     /// <exception cref="Exception">There was an error saving the feedback.</exception>
-    public static UIFeedback SaveFeedback(MFeedback feedback)
+    public static async Task<UIFeedback> SaveFeedback(MFeedback feedback)
     {
         if (feedback == null)
         {
@@ -78,7 +79,7 @@ public static class FeedbackUtility
 
         try
         {
-            UIFeedback mRetVal = BusinessLogic.SaveFeedback(feedback);
+            UIFeedback mRetVal = await BusinessLogic.SaveFeedback(feedback);
             if (mRetVal == null)
             {
                 throw new NullReferenceException("The saved feedback was null.");
