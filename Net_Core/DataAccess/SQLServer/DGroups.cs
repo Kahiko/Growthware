@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -44,64 +45,54 @@ public class DGroups : AbstractDBInteraction, IGroups
     /// Deletes a group in a given Security Entity
     /// </summary>
     /// <returns>bool</returns>
-    public bool DeleteGroup()
+    public async Task<bool> DeleteGroup()
     {
         SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), 
             new SqlParameter("@P_GroupSeqId", Profile.Id) 
         ];
         String mStoreProc = "ZGWSecurity.Delete_Group";
-        base.ExecuteNonQuery( mStoreProc, mParameters);
+        await base.ExecuteNonQueryAsync( mStoreProc, mParameters);
         return true;
-    }
-
-    /// <summary>
-    /// Adds a group to a Security Entity
-    /// </summary>
-    public void AddGroup()
-    {
-        String mStoreProc = "ZGWSecurity.Set_Group";
-        SqlParameter[] mParameters = getInsertUpdateParameters();
-        base.ExecuteNonQuery( mStoreProc, mParameters);
     }
 
     /// <summary>
     /// Get's all of the groups for a given Security Entity
     /// </summary>
     /// <returns>DataTable</returns>
-    public DataTable GroupsBySecurityEntity()
+    public async Task<DataTable> GroupsBySecurityEntity()
     {
         SqlParameter[] mParameters = [ 
             new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), 
             new SqlParameter("@P_GroupSeqId", -1) 
         ];
         String mStoreProc = "ZGWSecurity.Get_Group";
-        return base.GetDataTable( mStoreProc, mParameters);
+        return await base.GetDataTableAsync( mStoreProc, mParameters);
     }
 
     /// <summary>
     /// Returns a data row necessary to populate MGroup
     /// </summary>
     /// <returns>DataRow</returns>
-    public DataRow ProfileData()
+    public async Task<DataRow> ProfileData()
     {
         SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), 
             new SqlParameter("@P_GroupSeqId", Profile.Id) 
         ];
         String mStoreProc = "ZGWSecurity.Get_Group";
-        return base.GetDataRow( mStoreProc, mParameters);
+        return await base.GetDataRowAsync( mStoreProc, mParameters);
     }
 
     /// <summary>
     /// Updates a group effects all Security Entities
     /// </summary>
     /// <returns>bool</returns>
-    public int Save()
+    public async Task<int> Save()
     {
         SqlParameter[] mParameters = getInsertUpdateParameters();
         String mStoreProc = "ZGWSecurity.Set_Group";
-        base.ExecuteNonQuery( mStoreProc, mParameters);
+        await base.ExecuteNonQueryAsync( mStoreProc, mParameters);
         int mRetVal = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters));
         return mRetVal;
     }
@@ -111,7 +102,7 @@ public class DGroups : AbstractDBInteraction, IGroups
     /// </summary>
     /// <returns>DataTable</returns>
     /// <exception cref="System.ApplicationException"></exception>
-    public DataTable GroupRoles()
+    public async Task<DataTable> GroupRoles()
     {
         if (GroupRolesProfile.GroupSeqId == -1)
         {
@@ -122,7 +113,7 @@ public class DGroups : AbstractDBInteraction, IGroups
             new SqlParameter("@P_SecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), 
             new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId) 
         ];
-        return base.GetDataTable(mymStoreProcedure, mParameters);
+        return await base.GetDataTableAsync(mymStoreProcedure, mParameters);
     }
 
     /// <summary>
@@ -130,7 +121,7 @@ public class DGroups : AbstractDBInteraction, IGroups
     /// </summary>
     /// <returns>bool</returns>
     /// <exception cref="System.ApplicationException"></exception>
-    public bool UpdateGroupRoles()
+    public async Task<bool> UpdateGroupRoles()
     {
         if (GroupRolesProfile.GroupSeqId == -1)
         {
@@ -143,7 +134,7 @@ public class DGroups : AbstractDBInteraction, IGroups
             new SqlParameter("@P_Roles", GroupRolesProfile.Roles??""), 
             new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile, GroupRolesProfile.GroupSeqId)) 
         ];
-        base.ExecuteNonQuery(mymStoreProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mymStoreProcedure, mParameters);
         return true;
     }
 

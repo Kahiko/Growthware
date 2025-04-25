@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -26,41 +27,35 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Returns a DataTable of Group roles
         /// </summary>
         /// <returns>DataTable</returns>
-        DataTable GroupRoles();
+        Task<DataTable> GroupRoles();
 
         /// <summary>
         /// Updates the Groups roles
         /// </summary>
         /// <returns>bool</returns>
-        bool UpdateGroupRoles();
+        Task<bool> UpdateGroupRoles();
 
         /// <summary>
         /// Get's all of the groups for a given Security Entity
         /// </summary>
         /// <returns>DataTable</returns>
-        DataTable GroupsBySecurityEntity();
-
-        /// <summary>
-        /// Adds a group to a Security Entity
-        /// </summary>
-        /// <returns>int</returns>
-        void AddGroup();
+        Task<DataTable> GroupsBySecurityEntity();
 
         /// <summary>
         /// Returns a data row necessary to populate MGroupProfile
         /// </summary>
         /// <returns>DataRow</returns>
-        DataRow ProfileData();
+        Task<DataRow> ProfileData();
 
         /// <summary>
         /// Deletes a group in a given Security Entity
         /// </summary>
         /// <returns>bool</returns>
-        bool DeleteGroup();
+        Task<bool> DeleteGroup();
 
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        int Save();
+        Task<int> Save();
     }
 }

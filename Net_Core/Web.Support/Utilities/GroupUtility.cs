@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -21,18 +22,18 @@ public static class GroupUtility
     /// <param name="profile">The UIGroupProfile to be saved.</param>
     /// <param name="groupRoles">The MGroupRoles to be saved.</param>
     /// <returns>The saved UIGroupProfile.</returns>
-    public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
+    public static async Task<UIGroupProfile> Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
-        BGroups mBGroups = getBusinessLogic();
+        BGroups mBusinessLogic = getBusinessLogic();
         // Save the profile
-        int mGroupSeqId = mBGroups.Save(profile);
+        int mGroupSeqId = await mBusinessLogic.Save(profile);
         // set the groupRoles id's
         // groupRoles.Id = mGroupSeqId;
         groupRoles.GroupSeqId = mGroupSeqId;
         // Save the group roles
-        mBGroups.UpdateGroupRoles(groupRoles);
+        await mBusinessLogic.UpdateGroupRoles(groupRoles);
         // get the profile from the DB
-        UIGroupProfile mRetVal = GetUIGroupProfile(mGroupSeqId, groupRoles.SecurityEntityID);
+        UIGroupProfile mRetVal = await GetUIGroupProfile(mGroupSeqId, groupRoles.SecurityEntityID);
         return mRetVal;
     }
 
@@ -41,11 +42,11 @@ public static class GroupUtility
     /// </summary>
     /// <param name="groupRoles">The group roles to update.</param>
     /// <returns>No return value.</returns>
-    public static void UpdateGroupRoles(MGroupRoles groupRoles)
-    {
-        BGroups mBGroups = getBusinessLogic();
-        mBGroups.UpdateGroupRoles(groupRoles);
-    }
+    // public static async Task UpdateGroupRoles(MGroupRoles groupRoles)
+    // {
+    //     BGroups mBGroups = getBusinessLogic();
+    //     await mBGroups.UpdateGroupRoles(groupRoles);
+    // }
 
     /// <summary>
     /// Retrieves a UIGroupProfile object based on the provided groupSeqId and 
@@ -55,7 +56,7 @@ public static class GroupUtility
     /// <param name="groupSeqId">The ID of the group.</param>
     /// <param name="securityEntityId">The ID of the security entity.</param>
     /// <returns>A UIGroupProfile object representing the group and its roles.</returns>
-    public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
+    public static async Task<UIGroupProfile> GetUIGroupProfile(int groupSeqId, int securityEntityId)
     {
         /*
          * Getting a Group Profile does cause multiple queries to the data store, however, in this instance 
@@ -67,9 +68,9 @@ public static class GroupUtility
         MGroupProfile mGroupProfile = new MGroupProfile();
         if(groupSeqId != -1)
         {
-            BGroups mBGroups = getBusinessLogic();
+            BGroups mBusinessLogic = getBusinessLogic();
             // Get the group profile from the data store
-            mGroupProfile = mBGroups.GetProfile(groupSeqId);
+            mGroupProfile = await mBusinessLogic.GetProfile(groupSeqId);
         }
         // Populate mRetVal with the group profile
         UIGroupProfile mRetVal = new (mGroupProfile);
@@ -78,7 +79,7 @@ public static class GroupUtility
         // Populate mRetVal with the roles associated with the group if a groupSeqId is provided
         if(groupSeqId != -1)
         {
-            mRetVal.RolesInGroup = GroupUtility.GetSelectedRoles(mGroupRoles);    
+            mRetVal.RolesInGroup = await GroupUtility.GetSelectedRoles(mGroupRoles);    
         }
         // Populate mRetVal with the roles not associated with the group
         ArrayList mRolesForSecurityEntity = RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
@@ -102,14 +103,14 @@ public static class GroupUtility
     /// 
     /// </summary>
     /// <param name="profile"></param>
-    public static void Delete(MGroupProfile profile)
+    public static async Task Delete(MGroupProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in VB) or empty!");
         if(profile.Id != -1) 
         {
             bool success = false;
-            BGroups mBGroups = getBusinessLogic();
-            success = mBGroups.DeleteGroup(profile);
+            BGroups mBusinessLogic = getBusinessLogic();
+            success = await mBusinessLogic.DeleteGroup(profile);
         }
     }
 
@@ -118,10 +119,10 @@ public static class GroupUtility
     /// </summary>
     /// <param name="groupSeqId">The ID of the group.</param>
     /// <returns>The group profile for the given group sequence ID.</returns>
-    public static MGroupProfile GetGroupProfile(int groupSeqId) 
+    public static async Task<MGroupProfile> GetGroupProfile(int groupSeqId) 
     {
-        BGroups mBGroups = getBusinessLogic();
-        MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
+        BGroups mBusinessLogic = getBusinessLogic();
+        MGroupProfile mRetVal = await mBusinessLogic.GetProfile(groupSeqId);
         return mRetVal;
     }
 
@@ -130,11 +131,11 @@ public static class GroupUtility
     /// </summary>
     /// <param name="groupRoles">The MGroupRoles object from which to retrieve the selected roles.</param>
     /// <returns>An array of strings representing the selected roles.</returns>
-    private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
+    private static async Task<string[]> GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
-        BGroups mBGroups = getBusinessLogic();
-        mRetVal = mBGroups.GetSelectedRoles(groupRoles);
+        BGroups mBusinessLogic = getBusinessLogic();
+        mRetVal = await mBusinessLogic.GetSelectedRoles(groupRoles);
         return mRetVal;
     }
 
@@ -143,9 +144,9 @@ public static class GroupUtility
     /// </summary>
     /// <param name="securityEntityId">The ID of the security entity.</param>
     /// <returns>An ArrayList of group names.</returns>
-    public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)
+    public static async Task<ArrayList> GetGroupsArrayListBySecurityEntity(int securityEntityId)
     {
-        DataTable mGroupsTable = getAllGroupsBySecurityEntity(securityEntityId);
+        DataTable mGroupsTable = await getAllGroupsBySecurityEntity(securityEntityId);
         ArrayList mRetVal = new ArrayList();
         foreach (DataRow item in mGroupsTable.Rows)
         {
@@ -159,14 +160,14 @@ public static class GroupUtility
     /// </summary>
     /// <param name="securityEntityId">The ID of the security entity.</param>
     /// <returns>A DataTable containing the groups.</returns>
-    private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
+    private static async Task<DataTable> getAllGroupsBySecurityEntity(int securityEntityId)
     {
         String mCacheName = securityEntityId.ToString() + "_Groups";
         DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
         {
-            BGroups mBGroups = getBusinessLogic();
-            mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
+            BGroups mBusinessLogic = getBusinessLogic();
+            mRetVal = await mBusinessLogic.GetGroupsBySecurityEntity(securityEntityId);
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
