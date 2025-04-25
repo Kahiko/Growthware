@@ -120,7 +120,7 @@ public abstract class AbstractMessageController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            mWhereClause += " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
+            string mConstantWhere = "SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
             MSearchCriteria mSearchCriteria = new MSearchCriteria
             {
                 Columns = mColumns,
@@ -130,7 +130,12 @@ public abstract class AbstractMessageController : ControllerBase
                 TableOrView = "[ZGWCoreWeb].[vwSearchMessages]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria, mConstantWhere);
+            if(String.IsNullOrWhiteSpace(mRetVal))
+            {
+                mConstantWhere = "SecurityEntitySeqId = " + SecurityEntityUtility.DefaultProfile().Id.ToString();
+                mRetVal = SearchUtility.GetSearchResults(mSearchCriteria, mConstantWhere);
+            }
         }
         return mRetVal;
     }
