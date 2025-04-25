@@ -70,8 +70,10 @@ public static class SearchUtility
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
+        string mOriginalWhereClause = searchCriteria.WhereClause;
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
         mDataTable = getBusinessLogic().GetSearchResults(searchCriteria);
+        searchCriteria.WhereClause = mOriginalWhereClause;
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }
