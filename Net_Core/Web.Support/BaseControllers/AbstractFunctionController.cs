@@ -289,7 +289,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [Authorize("Functions")]
     [HttpPost("SearchFunctions")]
-    public String SearchFunctions(UISearchCriteria searchCriteria)
+    public async Task<String> SearchFunctions(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -298,7 +298,7 @@ public abstract class AbstractFunctionController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -307,7 +307,7 @@ public abstract class AbstractFunctionController : ControllerBase
                 TableOrView = "[ZGWSystem].[vwSearchFunctions]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

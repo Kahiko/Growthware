@@ -13,6 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -667,7 +668,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns></returns>
     [Authorize("Accounts")]
     [HttpPost("SearchAccounts")]
-    public String SearchAccounts(UISearchCriteria searchCriteria)
+    public async Task<String> SearchAccounts(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[AccountSeqId], [Account], [First_Name], [Last_Name], [Email], [Added_Date], [Last_Login]";
@@ -676,7 +677,7 @@ public abstract class AbstractAccountController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -686,7 +687,7 @@ public abstract class AbstractAccountController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

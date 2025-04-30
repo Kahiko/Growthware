@@ -145,7 +145,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
 
     [Authorize("search_name_value_pairs")]
     [HttpPost("SearchNameValuePairs")]
-    public String SearchNameValuePairs(UISearchCriteria searchCriteria)
+    public async Task<String> SearchNameValuePairs(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[nvpSeqId] = [NVPSeqId], [schemaName] = [Schema_Name], [staticName] = [Static_Name], [display], [description], [StatusSeqId]";
@@ -154,7 +154,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -164,7 +164,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

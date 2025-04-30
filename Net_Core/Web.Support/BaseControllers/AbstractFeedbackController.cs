@@ -160,7 +160,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// <returns></returns>
     [Authorize("feedbacks")]
     [HttpPost("SearchFeedbacks")]
-    public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
+    public async Task<ActionResult<String>> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FeedbackId], [Assignee], [SubmittedBy], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
@@ -169,7 +169,7 @@ public abstract class AbstractFeedbackController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -179,7 +179,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return Ok(mRetVal);
     }

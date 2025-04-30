@@ -107,7 +107,7 @@ public abstract class AbstractRoleController : ControllerBase
 
     [Authorize("Search_Roles")]
     [HttpPost("SearchRoles")]
-    public String SearchRoles(UISearchCriteria searchCriteria)
+    public async Task<String> SearchRoles(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[RoleSeqId], [Name], [Description], [Is_System], [Is_System_Only], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -117,7 +117,7 @@ public abstract class AbstractRoleController : ControllerBase
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
             // mSearchCriteria.WhereClause += " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -126,7 +126,7 @@ public abstract class AbstractRoleController : ControllerBase
                 TableOrView = "[ZGWSecurity].[vwSearchRoles]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

@@ -205,7 +205,7 @@ public abstract class AbstractController : ControllerBase
     /// <returns></returns>
     [Authorize("/sys_admin/searchDBLogs")]
     [HttpPost("SearchDBLogs")]
-    public String SearchDBLogs(UISearchCriteria searchCriteria)
+    public async Task<String> SearchDBLogs(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[Account], [Component], [ClassName], [Level], [LogDate], [LogSeqId], [MethodName], [Msg]";
@@ -214,7 +214,7 @@ public abstract class AbstractController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -224,7 +224,7 @@ public abstract class AbstractController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

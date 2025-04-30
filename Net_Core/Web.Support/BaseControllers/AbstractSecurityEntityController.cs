@@ -11,6 +11,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -184,7 +185,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [Authorize("securityEntity")]
     [HttpPost("Security_Entities")]
-    public String Security_Entities(UISearchCriteria searchCriteria)
+    public async Task<String> Security_Entities(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[SecurityEntitySeqId], [Name], [Description], [Skin]";
@@ -193,7 +194,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -202,7 +203,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 TableOrView = "[ZGWSecurity].[Security_Entities]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }

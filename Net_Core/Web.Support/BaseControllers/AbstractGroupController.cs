@@ -129,7 +129,7 @@ public abstract class AbstractGroupController : ControllerBase
 
     [Authorize("Manage_Groups")]
     [HttpPost("SearchGroups")]
-    public String SearchGroups(UISearchCriteria searchCriteria)
+    public async Task<String> SearchGroups(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[GroupSeqId], [Name], [Description], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -138,7 +138,7 @@ public abstract class AbstractGroupController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -147,7 +147,7 @@ public abstract class AbstractGroupController : ControllerBase
                 TableOrView = "[ZGWSecurity].[vwSearchGroups]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }
