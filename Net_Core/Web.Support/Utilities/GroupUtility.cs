@@ -82,7 +82,7 @@ public static class GroupUtility
             mRetVal.RolesInGroup = await GroupUtility.GetSelectedRoles(mGroupRoles);    
         }
         // Populate mRetVal with the roles not associated with the group
-        ArrayList mRolesForSecurityEntity = RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
+        ArrayList mRolesForSecurityEntity = await RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
         List<string> mRolesNotInGroup = new List<string>();
         foreach (string role in mRolesForSecurityEntity)
         {

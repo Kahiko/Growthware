@@ -22,14 +22,14 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// </summary>
     [AllowAnonymous]
     [HttpGet("GetFeedbackAccounts")]
-    public ActionResult<Tuple<string[], string[]>> GetFeedbackAccounts()
+    public async Task<ActionResult<Tuple<string[], string[]>>> GetFeedbackAccounts()
     {
         MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
         if (mSecurityInfo.MayEdit)
         {
             int mSecurityId = SecurityEntityUtility.CurrentProfile.Id;
             // Get all of the roles for the security entity
-            List<MRole> mRoles = RoleUtility.GetRolesBySecurityEntity(mSecurityId);
+            List<MRole> mRoles = await RoleUtility.GetRolesBySecurityEntity(mSecurityId);
             // Get the Developer and QA roles
             MRole mDeveloper = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("Developer", StringComparison.InvariantCultureIgnoreCase));
             MRole mQA = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("QA", StringComparison.InvariantCultureIgnoreCase));
@@ -39,11 +39,13 @@ public abstract class AbstractFeedbackController : ControllerBase
             if (mDeveloper != null)
             {
                 // Get the AccountsInRole from the UIProfile
-                mAccountsInRole_Developers = RoleUtility.GetUIProfile(mDeveloper.Id, mSecurityId).AccountsInRole;
+                UIRole mDeveloperProfile = await RoleUtility.GetUIProfile(mDeveloper.Id, mSecurityId);
+                mAccountsInRole_Developers = mDeveloperProfile.AccountsInRole;
             }
             if (mQA != null)
             {
-                mAccountsInRole_QA = RoleUtility.GetUIProfile(mQA.Id, mSecurityId).AccountsInRole;
+                UIRole mQAProfile = await RoleUtility.GetUIProfile(mQA.Id, mSecurityId);
+                mAccountsInRole_QA = mQAProfile.AccountsInRole;
             }
             // Add the Anonymous account to the feedback accounts
             List<string> mAccountsList_Developers = new List<string>(mAccountsInRole_Developers);

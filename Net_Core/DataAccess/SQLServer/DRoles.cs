@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -39,51 +40,51 @@ public class DRoles : AbstractDBInteraction, IRoles
         set { m_Profile = value; }
     }
 
-    void IRoles.DeleteRole()
+    async Task IRoles.DeleteRole()
     {
-        SqlParameter[] mParameters = { new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID) };
-        String mStoreProc = "ZGWSecurity.Delete_Role";
-        base.ExecuteNonQuery( mStoreProc,  mParameters);
+        SqlParameter[] mParameters = [ new("@P_Name", m_Profile.Name), new("@P_SecurityEntitySeqId", m_SecurityEntityID) ];
+        String mStoreProc = "[ZGWSecurity].[Delete_Role]";
+        await base.ExecuteNonQueryAsync( mStoreProc,  mParameters);
     }
 
-    int IRoles.Save()
+    async Task<int> IRoles.Save()
     {
         SqlParameter[] mParameters = getInsertUpdateParameters();
-        string myStoreProcedure = "ZGWSecurity.Set_Role";
-        base.ExecuteNonQuery( myStoreProcedure,  mParameters);
+        string myStoreProcedure = "[ZGWSecurity].[Set_Role]";
+        await base.ExecuteNonQueryAsync( myStoreProcedure,  mParameters);
         int mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters));
         return mRetVal;
     }
 
-    DataTable IRoles.RolesBySecurityEntity()
+    async Task<DataTable> IRoles.RolesBySecurityEntity()
     {
-        SqlParameter[] myParameters = { new SqlParameter("@P_RoleSeqId", -1), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID) };
-        String myStoreProc = "ZGWSecurity.Get_Role";
-        return base.GetDataTable( myStoreProc,  myParameters);
+        SqlParameter[] myParameters = [ new("@P_RoleSeqId", -1), new("@P_SecurityEntitySeqId", m_SecurityEntityID) ];
+        String myStoreProc = "[ZGWSecurity].[Get_Role]";
+        return await base.GetDataTableAsync( myStoreProc,  myParameters);
     }
 
-    DataRow IRoles.ProfileData()
+    async Task<DataRow> IRoles.ProfileData()
     {
-        SqlParameter[] myParameters = { new SqlParameter("@P_RoleSeqId", m_Profile.Id), new SqlParameter("@P_SecurityEntitySeqId", -1) };
-        String myStoreProc = "ZGWSecurity.Get_Role";
-        return base.GetDataRow( myStoreProc,  myParameters);
+        SqlParameter[] myParameters = [ new("@P_RoleSeqId", m_Profile.Id), new("@P_SecurityEntitySeqId", -1) ];
+        String myStoreProc = "[ZGWSecurity].[Get_Role]";
+        return await base.GetDataRowAsync( myStoreProc,  myParameters);
     }
 
-    DataTable IRoles.AccountsInRole()
+    async Task<DataTable> IRoles.AccountsInRole()
     {
-        SqlParameter[] myParameters = { new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID), new SqlParameter("@P_RoleSeqId", m_Profile.Id) };
-        string myStoreProcedure = "ZGWSecurity.Get_Accounts_In_Role";
-        return base.GetDataTable( myStoreProcedure,  myParameters);
+        SqlParameter[] myParameters = [ new("@P_SecurityEntitySeqId", m_SecurityEntityID), new("@P_RoleSeqId", m_Profile.Id) ];
+        string myStoreProcedure = "[ZGWSecurity].[Get_Accounts_In_Role]";
+        return await base.GetDataTableAsync( myStoreProcedure,  myParameters);
     }
 
-    DataTable IRoles.AccountsNotInRole()
+    async Task<DataTable> IRoles.AccountsNotInRole()
     {
-        SqlParameter[] myParameters = { new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID), new SqlParameter("@P_RoleSeqId", m_Profile.Id) };
-        string myStoreProcedure = "ZGWSecurity.Get_Accounts_Not_In_Role";
-        return base.GetDataTable( myStoreProcedure,  myParameters);
+        SqlParameter[] myParameters = [ new("@P_SecurityEntitySeqId", m_SecurityEntityID), new("@P_RoleSeqId", m_Profile.Id) ];
+        string myStoreProcedure = "[ZGWSecurity].[Get_Accounts_Not_In_Role]";
+        return await base.GetDataTableAsync( myStoreProcedure,  myParameters);
     }
 
-    bool IRoles.UpdateAllAccountsForRole(int roleSeqID, int SecurityEntityID, string[] accounts, int accountSeqID)
+    async Task<bool> IRoles.UpdateAllAccountsForRole(int roleSeqID, int SecurityEntityID, string[] accounts, int accountSeqID)
     {
         bool mRetVal = false;
         SqlConnection mSqlConnection = null;
@@ -95,30 +96,30 @@ public class DRoles : AbstractDBInteraction, IRoles
             mSqlConnection.Open();
             mSqlTransaction = mSqlConnection.BeginTransaction(IsolationLevel.Serializable);
             // delete all the accounts for this role/SecurityEntity
-            SqlCommand mSqlCommand = new SqlCommand("ZGWSecurity.Delete_Roles_Accounts", mSqlConnection);
+            SqlCommand mSqlCommand = new SqlCommand("[ZGWSecurity].[Delete_Roles_Accounts]", mSqlConnection);
             mSqlCommand.CommandType = CommandType.StoredProcedure;
             mSqlCommand.Transaction = mSqlTransaction;
 
-            SqlParameter mSqlParameter = new SqlParameter("@P_ROLE_SEQ_ID", roleSeqID);
+            SqlParameter mSqlParameter = new("@P_ROLE_SEQ_ID", roleSeqID);
             mSqlCommand.Parameters.Add(mSqlParameter);
-            mSqlParameter = new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID);
+            mSqlParameter = new("@P_SecurityEntitySeqId", SecurityEntityID);
             mSqlCommand.Parameters.Add(mSqlParameter);
-            mSqlCommand.ExecuteNonQuery();
+            await mSqlCommand.ExecuteNonQueryAsync();
 
-            mSqlCommand.CommandText = "ZGWSecurity.Set_Role_Accounts";
+            mSqlCommand.CommandText = "[ZGWSecurity].[Set_Role_Accounts]";
             foreach (string account_loopVariable in accounts)
             {
                 mAccount = account_loopVariable;
                 mSqlCommand.Parameters.Clear();
-                mSqlParameter = new SqlParameter("@P_RoleSeqId", roleSeqID);
+                mSqlParameter = new("@P_RoleSeqId", roleSeqID);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID);
+                mSqlParameter = new("@P_SecurityEntitySeqId", SecurityEntityID);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new SqlParameter("@P_Account", mAccount);
+                mSqlParameter = new("@P_Account", mAccount);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new SqlParameter("@P_Added_Updated_By", accountSeqID);
+                mSqlParameter = new("@P_Added_Updated_By", accountSeqID);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlCommand.ExecuteNonQuery();
+                await mSqlCommand.ExecuteNonQueryAsync();
             }
 
             mSqlTransaction.Commit();
@@ -149,13 +150,13 @@ public class DRoles : AbstractDBInteraction, IRoles
     {
         SqlParameter[] myParameters = 
         { 
-            new SqlParameter("@P_RoleSeqId", m_Profile.Id), 
-            new SqlParameter("@P_Name", m_Profile.Name), 
-            new SqlParameter("@P_Description", m_Profile.Description), 
-            new SqlParameter("@P_Is_System", m_Profile.IsSystem), 
-            new SqlParameter("@P_Is_System_Only", m_Profile.IsSystemOnly), 
-            new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntityID), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
+            new("@P_RoleSeqId", m_Profile.Id), 
+            new("@P_Name", m_Profile.Name), 
+            new("@P_Description", m_Profile.Description), 
+            new("@P_Is_System", m_Profile.IsSystem), 
+            new("@P_Is_System_Only", m_Profile.IsSystemOnly), 
+            new("@P_SecurityEntitySeqId", m_SecurityEntityID), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
             GetSqlParameter("@P_Primary_Key", m_Profile.Id, ParameterDirection.Output) 
         };
         return myParameters;
