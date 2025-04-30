@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 /// <summary>
@@ -89,14 +90,14 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <returns></returns>
     /// <remarks></remarks>
-    public DataTable GetAllNameValuePair()
+    public async Task<DataTable> GetAllNameValuePair()
     {
         DataTable mRetVal = null;
         m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
         // for future use ... the DB is capable of dividing the NVPs by BU
         m_DNameValuePairs.AccountId = -1;
         m_DNameValuePairs.NameValuePairProfile.Id = -1;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetAllNVP();
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.GetAllNVP();
         return mRetVal;
     }
 
@@ -106,14 +107,14 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// <param name="accountId">NVP's for a given account</param>
     /// <returns></returns>
     /// <remarks></remarks>
-    public DataTable GetAllNameValuePair(int accountId)
+    public async Task<DataTable> GetAllNameValuePair(int accountId)
     {
         DataTable mRetVal = null;
         m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
         // for future use ... the DB is capable of dividing the NVPs by BU
         m_DNameValuePairs.AccountId = accountId;
         m_DNameValuePairs.NameValuePairProfile.Id = -1;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetAllNVP();
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.GetAllNVP();
         return mRetVal;
     }
 
@@ -123,13 +124,13 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// <param name="nameValuePairSeqDetailId">The NVP seq detail ID.</param>
     /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
     /// <returns>DataRow.</returns>
-    public MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqId, int nameValuePairSeqDetailId)
+    public async Task<MNameValuePairDetail> GetNameValuePairDetail(int nameValuePairSeqId, int nameValuePairSeqDetailId)
     {
         DataRow mDataRow = null;
         MNameValuePairDetail mRetVal = new MNameValuePairDetail();
         m_DNameValuePairs.DetailProfile.Id = nameValuePairSeqDetailId;
         m_DNameValuePairs.DetailProfile.NameValuePairSeqId = nameValuePairSeqId;
-        if (DatabaseIsOnline()) mDataRow = m_DNameValuePairs.NameValuePairDetail();
+        if (DatabaseIsOnline()) mDataRow = await m_DNameValuePairs.NameValuePairDetail();
         if (mDataRow != null) mRetVal = new MNameValuePairDetail(mDataRow);
         return mRetVal;
     }
@@ -138,10 +139,10 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// Gets all NVP detail.
     /// </summary>
     /// <returns>DataTable.</returns>
-    public DataTable GetAllNameValuePairDetail()
+    public async Task<DataTable> GetAllNameValuePairDetail()
     {
         DataTable mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.AllNameValuePairDetail();
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.AllNameValuePairDetail();
         return mRetVal;
     }
 
@@ -150,10 +151,10 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetAllNameValuePairDetail(int nameValuePairSeqId)
+    public async Task<DataTable> GetAllNameValuePairDetail(int nameValuePairSeqId)
     {
         DataTable mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetAllNVPDetail(nameValuePairSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.GetAllNVPDetail(nameValuePairSeqId);
         return mRetVal;
     }
 
@@ -162,11 +163,11 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
     /// <returns>DataRow.</returns>
-    public DataRow GetNameValuePair(int nameValuePairSeqId)
+    public async Task<DataRow> GetNameValuePair(int nameValuePairSeqId)
     {
         DataRow mRetVal = null;
         m_DNameValuePairs.NameValuePairProfile.Id = nameValuePairSeqId;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.NameValuePair();
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.NameValuePair();
         return mRetVal;
     }
 
@@ -175,11 +176,11 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="nameValuePairSeqId">The name value pair seq ID.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetNameValuePairRoles(int nameValuePairSeqId)
+    public async Task<DataTable> GetNameValuePairRoles(int nameValuePairSeqId)
     {
         DataTable mRetVal = null;
         m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetRoles(nameValuePairSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.GetRoles(nameValuePairSeqId);
         return mRetVal;
     }
 
@@ -188,24 +189,24 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="nameValuePairSeqId">The name value pair seq ID.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetNameValuePairGroups(int nameValuePairSeqId)
-    {
-        DataTable mRetVal = null;
-        m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetGroups(nameValuePairSeqId);
-        return mRetVal;
-    }
+    // public async Task<DataTable> GetNameValuePairGroups(int nameValuePairSeqId)
+    // {
+    //     DataTable mRetVal = null;
+    //     m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
+    //     if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.GetGroups(nameValuePairSeqId);
+    //     return mRetVal;
+    // }
 
     /// <summary>
     /// Saves the specified profile.
     /// </summary>
     /// <param name="nameValuePairProfile">The profile.</param>
     /// <returns>System.Int32.</returns>
-    public MNameValuePair Save(MNameValuePair nameValuePairProfile)
+    public async Task<MNameValuePair> Save(MNameValuePair nameValuePairProfile)
     {
         MNameValuePair mRetVal = null;
         m_DNameValuePairs.NameValuePairProfile = nameValuePairProfile;
-        if (DatabaseIsOnline()) mRetVal = new MNameValuePair(m_DNameValuePairs.Save());
+        if (DatabaseIsOnline()) mRetVal = new MNameValuePair(await m_DNameValuePairs.Save());
         return mRetVal;
     }
 
@@ -214,13 +215,13 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="nameValuePairDetailProfile">The profile.</param>
     /// <returns>System.Int32.</returns>
-    public MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetailProfile)
+    public async Task<MNameValuePairDetail> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetailProfile)
     {
         m_DNameValuePairs.DetailProfile = nameValuePairDetailProfile;
         MNameValuePairDetail mRetVal = null;
         if (DatabaseIsOnline())
         {
-            DataRow mDataRow = m_DNameValuePairs.SaveNVPDetail(nameValuePairDetailProfile);
+            DataRow mDataRow = await m_DNameValuePairs.SaveNVPDetail(nameValuePairDetailProfile);
             if (mDataRow != null) mRetVal = new MNameValuePairDetail(mDataRow);
         }
         return mRetVal;

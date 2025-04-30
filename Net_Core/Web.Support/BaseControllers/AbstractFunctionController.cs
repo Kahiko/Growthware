@@ -107,12 +107,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetLinkBehaviors")]
-    public ActionResult<List<UIKeyValuePair>> GetLinkBehaviors()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetLinkBehaviors()
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.LinkBehaviors;
+            List<UIKeyValuePair> mRetVal = await NameValuePairUtility.LinkBehaviors();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -120,12 +120,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetNavigationTypes")]
-    public ActionResult<List<UIKeyValuePair>> GetNavigationTypes()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetNavigationTypes()
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.NavigationTypes;
+            List<UIKeyValuePair> mRetVal = await NameValuePairUtility.NavigationTypes();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

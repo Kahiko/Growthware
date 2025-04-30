@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -47,7 +48,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Gets the NVP detail.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow NameValuePairDetail();
+        Task<DataRow> NameValuePairDetail();
 
         /// <summary>
         /// Gets the NVP details.
@@ -55,40 +56,40 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="nameValuePairSeqDetailId">The NVP seq det ID.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataRow.</returns>
-        DataRow NameValuePairDetails(int nameValuePairSeqDetailId, int nameValuePairSeqId);
+        Task<DataRow> NameValuePairDetails(int nameValuePairSeqDetailId, int nameValuePairSeqId);
 
         /// <summary>
         /// Gets all NVP detail.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable AllNameValuePairDetail();
+        Task<DataTable> AllNameValuePairDetail();
 
         /// <summary>
         /// Gets all NVP detail.
         /// </summary>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataTable.</returns>
-        DataTable GetAllNVPDetail(int nameValuePairSeqId);
+        Task<DataTable> GetAllNVPDetail(int nameValuePairSeqId);
 
         /// <summary>
         /// Gets the groups.
         /// </summary>
         /// <param name="nameValuePairSeqId">The name value pair seq ID.</param>
         /// <returns>DataTable.</returns>
-        DataTable GetGroups(int nameValuePairSeqId);
+        Task<DataTable> GetGroups(int nameValuePairSeqId);
 
         /// <summary>
         /// Gets the roles.
         /// </summary>
         /// <param name="nameValuePairSeqId">The name value pair seq ID.</param>
         /// <returns>DataTable.</returns>
-        DataTable GetRoles(int nameValuePairSeqId);
+        Task<DataTable> GetRoles(int nameValuePairSeqId);
 
         /// <summary>
         /// Saves the NVP detail.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        DataRow SaveNVPDetail(MNameValuePairDetail profile);
+        Task<DataRow> SaveNVPDetail(MNameValuePairDetail profile);
 
         /// <summary>
         /// Updates the groups.
@@ -97,7 +98,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedGroups">The comma separated groups.</param>
         /// <param name="nameValuePairProfile">MNameValuePair</param>
-        void UpdateGroups(int NVP_ID, int SecurityEntityID, string commaSeparatedGroups, MNameValuePair nameValuePairProfile);
+        Task UpdateGroups(int NVP_ID, int SecurityEntityID, string commaSeparatedGroups, MNameValuePair nameValuePairProfile);
 
         /// <summary>
         /// Updates the roles.
@@ -106,25 +107,24 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedRoles">The comma separated roles.</param>
         /// <param name="nameValuePairProfile">MNameValuePair</param>
-        void UpdateRoles(int nameValuePairId, int SecurityEntityID, string commaSeparatedRoles, MNameValuePair nameValuePairProfile);
+        Task UpdateRoles(int nameValuePairId, int SecurityEntityID, string commaSeparatedRoles, MNameValuePair nameValuePairProfile);
 
         /// <summary>
         /// Gets all NVP.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetAllNVP();
+        Task<DataTable> GetAllNVP();
 
         /// <summary>
         /// Gets the NVP.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow NameValuePair();
+        Task<DataRow> NameValuePair();
 
         /// <summary>
         /// Saves this instance.
         /// </summary>
         /// <returns>System.DataRow</returns>
-        DataRow Save();
-
+        Task<DataRow> Save();
     }
 }
