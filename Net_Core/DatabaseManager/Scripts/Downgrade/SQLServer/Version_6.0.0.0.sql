@@ -21,11 +21,6 @@ IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_Action)
 --END IF
 
 /****** Start: [ZGWCoreWeb].[Get_Messages] ******/
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'ZGWCoreWeb.Get_Messages') AND type IN ( N'P' ,N'PC'))
-	BEGIN
-		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Get_Messages] AS'
-	END
---End If
 GO
 /*
 Usage:
@@ -46,7 +41,7 @@ Usage:
 --	given the MessageSeqId.  If MessageSeqId = -1
 --	all messages are returned.
 -- =============================================
-ALTER PROCEDURE [ZGWCoreWeb].[Get_Messages]
+CREATE OR ALTER PROCEDURE [ZGWCoreWeb].[Get_Messages]
 	@P_MessageSeqId INT,
 	@P_SecurityEntitySeqId INT,
 	@P_Debug INT = 0
