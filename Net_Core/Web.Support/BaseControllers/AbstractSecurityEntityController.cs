@@ -111,7 +111,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         List<UIValidSecurityEntity> mRetVal = new List<UIValidSecurityEntity>();
 
         DataTable mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
@@ -136,7 +136,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if (mProfileToSave.Id == -1)
             {
                 if (!mSecurityInfo.MayAdd)

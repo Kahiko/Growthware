@@ -92,7 +92,7 @@ public abstract class AbstractMessageController : ControllerBase
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))
             {
@@ -123,7 +123,7 @@ public abstract class AbstractMessageController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            string mConstantWhereClause = $"SecurityEntitySeqId = {SecurityEntityUtility.CurrentProfile.Id.ToString()}";
+            string mConstantWhereClause = $"SecurityEntitySeqId = {SecurityEntityUtility.CurrentProfile().Id.ToString()}";
             MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
@@ -157,7 +157,7 @@ public abstract class AbstractMessageController : ControllerBase
         mProfileToSave.FormatAsHtml = messageProfile.FormatAsHtml;
         mProfileToSave.Id = messageProfile.Id;
         mProfileToSave.Name = messageProfile.Name;
-        mProfileToSave.SecurityEntitySeqId = SecurityEntityUtility.CurrentProfile.Id;
+        mProfileToSave.SecurityEntitySeqId = SecurityEntityUtility.CurrentProfile().Id;
         mProfileToSave.Title = messageProfile.Title;
     }
 

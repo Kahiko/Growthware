@@ -27,7 +27,7 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpGet("DeleteEvent")]
     public async Task<ActionResult<bool>> DeleteEvent(int calendarEventSeqId, string action)
     {
-        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId);
         if (getEventSecurity(mCalendarEvent))
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
@@ -37,7 +37,7 @@ public abstract class AbstractCalendarController : ControllerBase
                 MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                 if (mSecurityInfo.MayView)
                 {
-                    return Ok(await CalendarUtility.DeleteEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId));
+                    return Ok(await CalendarUtility.DeleteEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId));
                 }
             }
         }
@@ -66,7 +66,7 @@ public abstract class AbstractCalendarController : ControllerBase
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
-                MCalendarEvent mRetVal = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, id);
+                MCalendarEvent mRetVal = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), id);
                 HttpContext.Session.SetInt32("EditId", id);
                 return Ok(mRetVal);
             }
@@ -100,7 +100,7 @@ public abstract class AbstractCalendarController : ControllerBase
             {
                 DateTime mStartDate = DateTime.Parse(startDate);
                 DateTime mEndtDate = DateTime.Parse(endDate);
-                List<MCalendarEvent> mRetVal = await CalendarUtility.GetEvents(SecurityEntityUtility.CurrentProfile, mFunctionProfile.Id, mStartDate, mEndtDate);
+                List<MCalendarEvent> mRetVal = await CalendarUtility.GetEvents(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mStartDate, mEndtDate);
                 return Ok(mRetVal);
             }
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -134,11 +134,11 @@ public abstract class AbstractCalendarController : ControllerBase
             mParameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
             mParameters.calendarEvent.UpdatedDate = DateTime.Now;
         }
-        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, mParameters.calendarEvent.Id);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), mParameters.calendarEvent.Id);
         if (getEventSecurity(mCalendarEvent, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mParameters.action);
-            MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile, mFunctionProfile.Id, mParameters.calendarEvent);
+            MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mParameters.calendarEvent);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -148,14 +148,14 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpGet("GetEventSecurity")]
     public async Task<ActionResult<Boolean>> GetEventSecurity(int calendarEventSeqId)
     {
-        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile, calendarEventSeqId);
+        MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId);
         return Ok(getEventSecurity(mCalendarEvent));
     }
 
     private bool getEventSecurity(MCalendarEvent calendarEvent, string action = null)
     {
         bool mRetVal = false;
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         if (mSecurityEntity != null)
         {
             if (action == null)

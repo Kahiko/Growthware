@@ -71,7 +71,7 @@ public static class MessageUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -162,7 +162,7 @@ public static class MessageUtility
     /// </remarks>
     public static Collection<MMessage> Messages()
     {
-        int mSecurityEntityId = SecurityEntityUtility.CurrentProfile.Id;
+        int mSecurityEntityId = SecurityEntityUtility.CurrentProfile().Id;
         string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityId);
         Collection<MMessage> mMessageCollection = null;
         if (mMessageCollection == null)

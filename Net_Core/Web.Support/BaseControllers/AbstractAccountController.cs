@@ -416,7 +416,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
-        CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile.EncryptionType);
+        CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
         return Authenticate(mAccountProfile.Account, mPassword);
     }
 

@@ -19,7 +19,7 @@ public static class SearchUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }

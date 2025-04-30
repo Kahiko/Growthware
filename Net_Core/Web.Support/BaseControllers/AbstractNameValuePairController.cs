@@ -67,7 +67,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         List<MNameValuePair> mRetVal = this.m_CacheHelper.GetFromCache<List<MNameValuePair>>(this.s_ParrentCacheName);
         if (mRetVal == null)
         {
-            // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
+            // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile());
             mRetVal = await NameValuePairUtility.GetNameValuePairs();
             this.m_CacheHelper.AddToCache(this.s_ParrentCacheName, mRetVal);
         }
@@ -82,7 +82,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             MNameValuePairDetail mNameValuePairDetail = nameValuePairDetail;
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if (mNameValuePairDetail.Id != -1)
             {
                 MNameValuePairDetail mOriginal = await NameValuePairUtility.GetNameValuePairDetail(nameValuePairDetail.NameValuePairSeqId, nameValuePairDetail.Id);
@@ -120,7 +120,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             MNameValuePair mNameValuePair = nameValuePair;
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if (mNameValuePair.Id == -1)
             {
                 mNameValuePair.AddedDate = DateTime.Now;

@@ -27,7 +27,7 @@ public abstract class AbstractFeedbackController : ControllerBase
         MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
         if (mSecurityInfo.MayEdit)
         {
-            int mSecurityId = SecurityEntityUtility.CurrentProfile.Id;
+            int mSecurityId = SecurityEntityUtility.CurrentProfile().Id;
             // Get all of the roles for the security entity
             List<MRole> mRoles = await RoleUtility.GetRolesBySecurityEntity(mSecurityId);
             // Get the Developer and QA roles

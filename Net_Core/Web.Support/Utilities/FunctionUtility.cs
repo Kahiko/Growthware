@@ -38,7 +38,7 @@ public static class FunctionUtility
     {
         BFunctions mBFunctions = getBusinessLogic();
         mBFunctions.Delete(functionSeqId);
-        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
@@ -49,7 +49,7 @@ public static class FunctionUtility
     [CLSCompliant(false)]
     public static Collection<MFunctionProfile> Functions()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
@@ -83,7 +83,7 @@ public static class FunctionUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -195,7 +195,7 @@ public static class FunctionUtility
     {
         BFunctions mBFunctions = getBusinessLogic();
         int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
-        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
+        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveAll();
         // Remove in memory information for the account saving in order to update their menu's
         AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);
