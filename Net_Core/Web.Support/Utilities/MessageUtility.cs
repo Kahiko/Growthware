@@ -21,7 +21,7 @@ public static class MessageUtility
     private static BMessages m_BusinessLogic = null;
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
-    private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
+    private static string s_MessagesUnitCachedCollectionName = "_MessagesCollection";
 
     private static Logger m_Logger = Logger.Instance();
 
@@ -154,19 +154,21 @@ public static class MessageUtility
     }
 
     /// <summary>
-    /// Gets the messages.
+    /// Gets the messages for the current security entity from cache.
     /// </summary>
     /// <returns>Collection{MMessage}.</returns>
+    /// <remarks>
+    /// If the messages are not in the cache, they are retrieved from the database and added to the cache.
+    /// </remarks>
     public static Collection<MMessage> Messages()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
-        string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
+        int mSecurityEntityId = SecurityEntityUtility.CurrentProfile.Id;
+        string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityId);
         Collection<MMessage> mMessageCollection = null;
-        // mMessageCollection = (Collection<MMessage>)HttpContext.Current.Cache[mCacheName];
         if (mMessageCollection == null)
         {
             BMessages mBMessages = getBusinessLogic();
-            mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
+            mMessageCollection = mBMessages.GetMessages(mSecurityEntityId);
             CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;

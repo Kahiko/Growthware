@@ -122,6 +122,7 @@ public abstract class AbstractMessageController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
+            string mConstantWhereClause = $"SecurityEntitySeqId = {SecurityEntityUtility.CurrentProfile.Id.ToString()}";
             MSearchCriteria mSearchCriteria = new MSearchCriteria
             {
                 Columns = mColumns,
@@ -131,7 +132,14 @@ public abstract class AbstractMessageController : ControllerBase
                 TableOrView = "[ZGWCoreWeb].[vwSearchMessages]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria, mConstantWhereClause);
+            if(string.IsNullOrWhiteSpace(mRetVal))
+            {
+                // trigger the creation of the messages in the DB for the given security entity
+                _ = MessageUtility.Messages()[0];
+                // re-run the search to get the newly created messages
+                mRetVal = SearchUtility.GetSearchResults(mSearchCriteria, mConstantWhereClause);
+            }
         }
         return mRetVal;
     }
