@@ -21,7 +21,7 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpPost("CopyFunctionSecurity")]
     public ActionResult<bool> CopyFunctionSecurity(int source, int target)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         // Special case where you must be an account with IsSystemAdmin = true
         // Copying the function security is risky b/c the process will delete all existing security for the target
         if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
@@ -40,7 +40,7 @@ public abstract class AbstractFunctionController : ControllerBase
     public ActionResult<bool> Delete(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         if(mSecurityInfo.MayDelete)
         {
             var mEditId =  HttpContext.Session.GetInt32("EditId");
@@ -145,7 +145,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     private MSecurityInfo getSecurityInfo(string action)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
@@ -158,7 +158,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         MSecurityInfo mViewRoleTabSecurityInfo = this.getSecurityInfo("View_Function_Role_Tab");
         MSecurityInfo mViewGroupTabSecurityInfo = this.getSecurityInfo("View_Function_Group_Tab");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         var mEditId =  HttpContext.Session.GetInt32("EditId");
         string mReturnMsg = string.Empty; // to be used for other security checks so we can pass it back to the client
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))

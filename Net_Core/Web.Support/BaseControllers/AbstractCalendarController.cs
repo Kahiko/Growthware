@@ -33,7 +33,7 @@ public abstract class AbstractCalendarController : ControllerBase
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
             if (mFunctionProfile != null)
             {
-                MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+                MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
                 MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                 if (mSecurityInfo.MayView)
                 {
@@ -62,7 +62,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
-            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
@@ -94,7 +94,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
-            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
@@ -122,7 +122,7 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpPost("SaveEvent")]
     public async Task<ActionResult<MCalendarEvent>> SaveEvent(UISaveEventParameters parameters)
     {
-        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
         UISaveEventParameters mParameters = parameters; // Bad practice to alter a parameter in a method.
         if (mParameters.calendarEvent.Id < 1)
         {
@@ -160,7 +160,7 @@ public abstract class AbstractCalendarController : ControllerBase
         {
             if (action == null)
             {
-                if (AccountUtility.CurrentProfile.Id == calendarEvent.AddedBy)
+                if (AccountUtility.CurrentProfile().Id == calendarEvent.AddedBy)
                 {
                     mRetVal = true;
                 }
@@ -170,7 +170,7 @@ public abstract class AbstractCalendarController : ControllerBase
                 MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
                 if (mFunctionProfile != null)
                 {
-                    MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+                    MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
                     MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                     if (mSecurityInfo.MayView)
                     {

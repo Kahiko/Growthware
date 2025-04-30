@@ -33,7 +33,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         }
 
         // authorization
-        MAccountProfile mAccount = AccountUtility.CurrentProfile;
+        MAccountProfile mAccount = AccountUtility.CurrentProfile();
         // var mAccount = (MAccountProfile)context.HttpContext.Items["AccountProfile"];
         if (!String.IsNullOrEmpty(this.m_Action))
         {

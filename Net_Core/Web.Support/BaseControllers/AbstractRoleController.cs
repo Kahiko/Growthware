@@ -18,7 +18,7 @@ public abstract class AbstractRoleController : ControllerBase
     [HttpDelete("DeleteRole")]
     public async Task<ActionResult> DeleteRole(int roleSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -41,7 +41,7 @@ public abstract class AbstractRoleController : ControllerBase
     [HttpGet("GetRoleForEdit")]
     public async Task<ActionResult<UIRole>> GetRoleForEdit(int roleSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -64,7 +64,7 @@ public abstract class AbstractRoleController : ControllerBase
     [HttpPost("SaveRole")]
     public async Task<ActionResult<UIRole>> SaveRole(UIRole roleProfile)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);

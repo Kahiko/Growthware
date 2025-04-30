@@ -165,7 +165,7 @@ public static class AccountUtility
     public static Tuple<string, MAccountProfile> ChangePassword(UIChangePassword changePassword, string ipAddress)
     {
         MMessage mMessageProfile = new MMessage();
-        MAccountProfile mAccountProfile = CurrentProfile;
+        MAccountProfile mAccountProfile = CurrentProfile();
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
         bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
@@ -198,24 +198,21 @@ public static class AccountUtility
     /// Retrieves the current account profile.
     /// </summary>
     /// <returns>MAccountProfile</returns>
-    public static MAccountProfile CurrentProfile
+    public static MAccountProfile CurrentProfile()
     {
-        get
+        /*
+            *  1.) Attempt to get account from session
+            *  2.) Attempt to get account from cache if the return value is null
+            *  3.) If the return value is null the get the Anonymous account from the DB
+            *      and add it to cache.
+            */
+        MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(ConfigSettings.Anonymous);
+        if (mRetVal == null)
         {
-            /*
-             *  1.) Attempt to get account from session
-             *  2.) Attempt to get account from cache if the return value is null
-             *  3.) If the return value is null the get the Anonymous account from the DB
-             *      and add it to cache.
-             */
-            MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(ConfigSettings.Anonymous);
-            if (mRetVal == null)
-            {
-                mRetVal = GetAccount(ConfigSettings.Anonymous, true);
-                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mRetVal);
-            }
-            return mRetVal;
+            mRetVal = GetAccount(ConfigSettings.Anonymous, true);
+            addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mRetVal);
         }
+        return mRetVal;
     }
 
     /// <summary>
@@ -324,7 +321,7 @@ public static class AccountUtility
             mRetVal = mBAccount.GetProfile(account);
             return mRetVal;
         }
-        mRetVal = CurrentProfile;
+        mRetVal = CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mBAccount = BusinessLogic;
@@ -686,7 +683,7 @@ public static class AccountUtility
         BAccounts mBAccount = BusinessLogic;
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
-        if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
+        if ((accountProfile.Id == CurrentProfile().Id) || (CurrentProfile().Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {
             addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         }

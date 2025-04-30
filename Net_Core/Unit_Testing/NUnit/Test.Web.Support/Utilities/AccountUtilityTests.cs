@@ -119,7 +119,7 @@ public class AccountUtilityTests
         // to the profile for m_Mike we need to Authenticate using the "Mike" account.
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(m_Mike_Account, m_Password, m_IpAddress);
         // Get the CurrentProfile
-        MAccountProfile mCurrentProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mCurrentProfile = AccountUtility.CurrentProfile();
 
         // Act - Change the password if the account is "Mike"
         // Since the "CurrentPofile" is used when calling AccountUtility.ChangePassword as the account whose

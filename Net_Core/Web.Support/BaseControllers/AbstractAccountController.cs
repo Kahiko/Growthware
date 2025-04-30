@@ -79,13 +79,13 @@ public abstract class AbstractAccountController : ControllerBase
         // application and deleting it here could be quite an issue
 
         if (accountSeqId < 1) throw new ArgumentNullException(nameof(accountSeqId), " must be a positive number!");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
-            if (mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile.Id)
+            if (mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile().Id)
             {
                 AccountUtility.Delete(accountSeqId);
                 HttpContext.Session.Remove("EditId");
@@ -105,7 +105,7 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
         HttpContext.Session.Remove("EditId");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new (mFunctionProfile, mRequestingProfile);
         MAccountProfile mAccountProfile = new(mRequestingProfile.Id);
@@ -130,7 +130,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("EditProfile")]
     public ActionResult<MAccountProfile> EditProfile(string account)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
@@ -224,7 +224,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetMenuData")]
     public ActionResult<string> GetMenuData(int menuType)
     {
-        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
         string mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
@@ -246,7 +246,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
-        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
         IList<MMenuTree> mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
@@ -283,11 +283,11 @@ public abstract class AbstractAccountController : ControllerBase
     {
         List<string> mExcludedActions = new List<string>() { "api", "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
-        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Hierarchical);
+        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile().Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Horizontal);
+        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile().Account, MenuType.Horizontal);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Vertical);
+        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile().Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
         // not the best way b/c this is defined in the DB but it's better than nothing
         foreach (string mAction in mExcludedActions)
@@ -410,9 +410,9 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRefreshToken = string.Empty;
         }
-        if (AccountUtility.CurrentProfile != null && !string.IsNullOrWhiteSpace(AccountUtility.CurrentProfile.Account)) 
+        if (AccountUtility.CurrentProfile != null && !string.IsNullOrWhiteSpace(AccountUtility.CurrentProfile().Account)) 
         {
-            AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
+            AccountUtility.Logoff(AccountUtility.CurrentProfile().Account, mRefreshToken, ipAddress());
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
@@ -542,10 +542,10 @@ public abstract class AbstractAccountController : ControllerBase
             return BadRequest(new { message = "Token is required" });
 
         // users can revoke their own tokens and admins can revoke any tokens
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("RevokeToken");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if (!AccountUtility.CurrentProfile.OwnsToken(token) && !mSecurityInfo.MayView)
+        if (!AccountUtility.CurrentProfile().OwnsToken(token) && !mSecurityInfo.MayView)
             return Unauthorized(new { message = "Unauthorized" });
 
         AccountUtility.RevokeToken(token, ipAddress());
@@ -567,7 +567,7 @@ public abstract class AbstractAccountController : ControllerBase
         if (string.IsNullOrWhiteSpace(accountProfile.Account)) throw new ArgumentNullException("Account", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);

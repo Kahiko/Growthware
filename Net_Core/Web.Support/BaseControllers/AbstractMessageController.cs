@@ -43,7 +43,7 @@ public abstract class AbstractMessageController : ControllerBase
     [HttpGet("GetProfile")]
     public ActionResult<UIMessageProfile> GetProfile(int id)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
 
@@ -90,7 +90,7 @@ public abstract class AbstractMessageController : ControllerBase
     {
         if (HttpContext.Session.GetString("EditId") != null && HttpContext.Session.GetInt32("EditId") == messageProfile.Id)
         {
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
