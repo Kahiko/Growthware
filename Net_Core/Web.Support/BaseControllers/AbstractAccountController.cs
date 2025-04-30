@@ -36,7 +36,7 @@ public abstract class AbstractAccountController : ControllerBase
         AuthenticationResponse mRetVal = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mRetVal.RefreshToken);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
-        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
+        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState());
         return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 
@@ -267,7 +267,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetPreferences")]
     public UIAccountChoices GetPreferences()
     {
-        UIAccountChoices mRetVal = new UIAccountChoices(ClientChoicesUtility.CurrentState);
+        UIAccountChoices mRetVal = new UIAccountChoices(ClientChoicesUtility.CurrentState());
         return mRetVal;
     }
 
@@ -447,12 +447,12 @@ public abstract class AbstractAccountController : ControllerBase
                 Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
             }
             ClientChoicesUtility.SynchronizeContext(mAuthenticationResponse.Account);
-            mRetVal = Tuple.Create(mAuthenticationResponse, new UIAccountChoices(ClientChoicesUtility.CurrentState));
+            mRetVal = Tuple.Create(mAuthenticationResponse, new UIAccountChoices(ClientChoicesUtility.CurrentState()));
             return Ok(mRetVal);
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
-        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
+        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState());
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
         mRetVal = Tuple.Create(mAuthenticationResponse, mAccountChoice);
         return Ok(mRetVal);
@@ -634,7 +634,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
             MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState();
 
             mClientChoicesState[MClientChoices.Account] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
@@ -740,7 +740,7 @@ public abstract class AbstractAccountController : ControllerBase
         AccountUtility.Save(mAccountProfile, false, false, false);
         AuthenticationResponse mRetVal = new(mAccountProfile);
         ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
-        UIAccountChoices mAccountChoice = new(ClientChoicesUtility.CurrentState);
+        UIAccountChoices mAccountChoice = new(ClientChoicesUtility.CurrentState());
         return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 }

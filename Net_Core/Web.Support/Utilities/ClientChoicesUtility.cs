@@ -110,24 +110,21 @@ public static class ClientChoicesUtility
         SessionHelper.RemoveFromSession(MClientChoices.SessionName);
     }
 
-    public static MClientChoicesState CurrentState
+    public static MClientChoicesState CurrentState()
     {
-        get
+        MClientChoicesState mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
+        if (mRetVal == null)
         {
-            MClientChoicesState mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-            if (mRetVal == null)
-            {
-                string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
-                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
-                mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-            }
-            if(ConfigSettings.SecurityEntityFromUrl)
-            {
-                mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
-                mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
-            }            
-            return mRetVal;
+            string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
+            addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
+            mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
         }
+        if(ConfigSettings.SecurityEntityFromUrl)
+        {
+            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
+            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
+        }            
+        return mRetVal;
     }
 
     /// <summary>
@@ -180,7 +177,7 @@ public static class ClientChoicesUtility
     /// <param name="forAccount"></param>
     public static void SynchronizeContext(string forAccount)
     {
-        if(CurrentState.Account.ToLowerInvariant() != forAccount.ToLowerInvariant())
+        if(CurrentState().Account.ToLowerInvariant() != forAccount.ToLowerInvariant())
         {
             MClientChoicesState mClientChoicesState = getClientChoicesState(forAccount);            
         }
