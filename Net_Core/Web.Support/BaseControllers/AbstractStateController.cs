@@ -16,7 +16,7 @@ public abstract class AbstractStateController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetProfile")]
-    public ActionResult<MState> GetProfile(String state)
+    public async Task<ActionResult<MState>> GetProfile(String state)
     {
         if (string.IsNullOrEmpty(state))
         {
@@ -29,13 +29,13 @@ public abstract class AbstractStateController : ControllerBase
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
-        MState mState = StateUtility.GetState(state);
+        MState mState = await StateUtility.GetState(state);
         HttpContext.Session.SetString("EditId", mState.State);
         return Ok(mState);}
 
     [AllowAnonymous]
     [HttpPost("Save")]
-    public ActionResult<bool> Save(MState state)
+    public async Task<ActionResult<bool>> Save(MState state)
     {
         if (state == null) throw new ArgumentNullException(nameof(state), " can not be null!");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
@@ -44,7 +44,7 @@ public abstract class AbstractStateController : ControllerBase
         if (HttpContext.Session.GetString("EditId") != null)
         {
             string mEditId = HttpContext.Session.GetString("EditId");
-            MState mProfileToSave = StateUtility.GetState(state.State);
+            MState mProfileToSave = await StateUtility.GetState(state.State);
             if(mEditId == mProfileToSave.State)
             {
                 if (mSecurityInfo.MayEdit)
@@ -58,7 +58,7 @@ public abstract class AbstractStateController : ControllerBase
                 }
                 mProfileToSave.Description = state.Description;
                 mProfileToSave.StatusId = state.StatusId;
-                StateUtility.Save(mProfileToSave);
+                await StateUtility.Save(mProfileToSave);
                 return Ok(true);
             }
         }

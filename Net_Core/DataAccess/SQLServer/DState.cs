@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -41,33 +42,30 @@ public class DState : AbstractDBInteraction, IState
 
     private SqlParameter[] getInsertUpdateParameters()
     {
-        SqlParameter[] mParameters = { 
+        SqlParameter[] mParameters = [
             base.GetSqlParameter("@P_State      "   , m_Profile.State, ParameterDirection.Input),
             base.GetSqlParameter("@P_Description"   , m_Profile.Description, ParameterDirection.Input),
             base.GetSqlParameter("@P_StatusSeqId"   , m_Profile.StatusId, ParameterDirection.Input),
             base.GetSqlParameter("@P_Updated_By"    , m_Profile.UpdatedBy, ParameterDirection.Input),
             base.GetSqlParameter("@P_Primary_Key"   , m_Profile.State, ParameterDirection.InputOutput)
-        };
+        ];
         return mParameters;
     }
 
-    DataTable IState.GetStates
+    async Task<DataTable> IState.GetStates()
     {
-        get
-        {
             this.checkValid();
-            String mStoredProcedure  = "ZGWOptional.Get_State";
-            SqlParameter[] mParameters = {
+            String mStoredProcedure  = "[ZGWOptional].[Get_State]";
+            SqlParameter[] mParameters = [
                 new SqlParameter("@P_State", m_Profile.State)
-            };
-            return base.GetDataTable(mStoredProcedure, mParameters);
-        }
+            ];
+            return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    void IState.Save()
+    async Task IState.Save()
     {
         SqlParameter[] mParameters = getInsertUpdateParameters();
-        String mStoreProc = "ZGWOptional.Set_State";
-        base.ExecuteNonQuery( mStoreProc, mParameters);            
+        String mStoreProc = "[ZGWOptional].[Set_State]";
+        await base.ExecuteNonQueryAsync( mStoreProc, mParameters);            
     }
 }
