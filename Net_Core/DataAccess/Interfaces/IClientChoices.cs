@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using System.Collections;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -19,6 +20,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="clientChoicesStateHashtable">Hashtable</param>
         /// <remarks></remarks>
-        void Save(Hashtable clientChoicesStateHashtable);
+        Task Save(Hashtable clientChoicesStateHashtable);
     }
 }

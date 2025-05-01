@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -141,12 +142,12 @@ public class BClientChoices : AbstractBusinessLogic
     /// </summary>
     /// <param name="clientChoicesState">A populated MClientChoicesState object.</param>
     /// <remarks>MClientChoicesState can be found in the GrowthWare.Framework.Model.Profiles namespace.</remarks>
-    public void Save(MClientChoicesState clientChoicesState)
+    public async Task Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState != null)
         {
             Hashtable mChoices = clientChoicesState.ChoicesHashtable;
-            m_DClientChoices.Save(mChoices);
+            await m_DClientChoices.Save(mChoices);
         }
         else
         {

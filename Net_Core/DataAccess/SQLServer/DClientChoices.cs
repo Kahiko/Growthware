@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -33,27 +34,27 @@ public class DClientChoices : AbstractDBInteraction, IClientChoices
         if (String.IsNullOrEmpty(account)) { throw new ArgumentException("Must set the Account property", nameof(account)); };
         SqlParameter[] myParameters =
         {
-            new SqlParameter("@P_ACCOUNT", account)
+            new("@P_ACCOUNT", account)
         };
         return base.GetDataRow(mStoredProcedure, myParameters);
     }
 
-    void IClientChoices.Save(Hashtable clientChoicesStateHashtable)
+    async Task IClientChoices.Save(Hashtable clientChoicesStateHashtable)
     {
         if (clientChoicesStateHashtable == null || clientChoicesStateHashtable.Count == 0) { throw new ArgumentNullException(nameof(clientChoicesStateHashtable), "Must set the clientChoicesStateHashTable property"); };
-        string mStoredProcedure = "ZGWCoreWeb.Set_Account_Choices";
+        string mStoredProcedure = "[ZGWCoreWeb].[Set_Account_Choices]";
         IEnumerator HashKeyEnum = ((IEnumerable)clientChoicesStateHashtable.Keys).GetEnumerator();
         IEnumerator HashValEnum = ((IEnumerable)clientChoicesStateHashtable.Values).GetEnumerator();
         SqlParameter[] commandParameters = new SqlParameter[clientChoicesStateHashtable.Count];
         int x = 0;
         while ((HashKeyEnum.MoveNext() & HashValEnum.MoveNext()))
         {
-            SqlParameter myParameter = new SqlParameter("@P_" + HashKeyEnum.Current.ToString(), SqlDbType.NVarChar, 1000);
+            SqlParameter myParameter = new("@P_" + HashKeyEnum.Current.ToString(), SqlDbType.NVarChar, 1000);
             myParameter.Value = HashValEnum.Current.ToString();
             commandParameters.SetValue(myParameter, x);
-            x = x + 1;
+            x++;
         }
-        base.ExecuteNonQuery(mStoredProcedure, commandParameters);
+        await base.ExecuteNonQueryAsync(mStoredProcedure, commandParameters);
     }
 #endregion
 

@@ -627,7 +627,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     [HttpPost("SaveClientChoices")]
-    public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
+    public async Task<ActionResult<UIAccountChoices>> SaveClientChoices(UIAccountChoices accountChoices)
     {
         if (accountChoices == null) throw new ArgumentNullException(nameof(accountChoices), "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
@@ -653,7 +653,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.HeaderFont] = accountChoices.HeaderFont ?? mDefaultClientChoicesState[MClientChoices.HeaderFont];
 
             mClientChoicesState[MClientChoices.Background] = accountChoices.Background ?? mDefaultClientChoicesState[MClientChoices.Background];
-            ClientChoicesUtility.Save(mClientChoicesState);
+            await ClientChoicesUtility.Save(mClientChoicesState);
             AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
             UIAccountChoices mRetVal = new(mClientChoicesState);
             return Ok(mRetVal);
