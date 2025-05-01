@@ -19,7 +19,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("CopyFunctionSecurity")]
-    public ActionResult<bool> CopyFunctionSecurity(int source, int target)
+    public async Task<ActionResult<bool>> CopyFunctionSecurity(int source, int target)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
         // Special case where you must be an account with IsSystemAdmin = true
@@ -27,7 +27,7 @@ public abstract class AbstractFunctionController : ControllerBase
         if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
         {
             if(source != target && target != 1) {
-                FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
+                await FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
                 return Ok(true);
             }
             return StatusCode(StatusCodes.Status400BadRequest, "The function cannot be copied to itself or the target can not be 'System'");
@@ -37,7 +37,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpDelete("DeleteFunction")]
-    public ActionResult<bool> Delete(int functionSeqId)
+    public async Task<ActionResult<bool>> Delete(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
@@ -46,7 +46,7 @@ public abstract class AbstractFunctionController : ControllerBase
             var mEditId =  HttpContext.Session.GetInt32("EditId");
             if(mEditId != null && mEditId == functionSeqId)
             {
-                FunctionUtility.Delete(functionSeqId);
+                await FunctionUtility.Delete(functionSeqId);
                 return Ok(true);
             }
             this.m_Logger.Error(String.Format("'{0}' attempted to delete a function without having the editid set properly, possible attempt to breach security.", mRequestingProfile.Account));
@@ -86,7 +86,7 @@ public abstract class AbstractFunctionController : ControllerBase
             mRetVal.CanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
             mRetVal.DirectoryData = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             mRetVal.DirectoryData.ImpersonatePassword = string.Empty; // We don't want the password to show
-            mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
+            mRetVal.FunctionMenuOrders = await FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");        
@@ -94,12 +94,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunctionTypes")]
-    public ActionResult<List<UIKeyValuePair>> GetFunctionTypes()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetFunctionTypes()
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = FunctionUtility.GetFunctionTypes();
+            List<UIKeyValuePair> mRetVal = await FunctionUtility.GetFunctionTypes();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -244,7 +244,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
             try
             {
-                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
+                int mFunctionSeqId = await FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
                 mProfileToSave.Id = mFunctionSeqId;
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
@@ -269,7 +269,7 @@ public abstract class AbstractFunctionController : ControllerBase
                     DirectoryUtility.Save(mDirectoryProfile);
                 }
                 string mCommaSeporatedIds = String.Join(",", functionProfile.FunctionMenuOrders.Select(item => item.Function_Seq_Id.ToString()));
-                FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);
+                await FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);
             }
             catch (System.Exception ex)
             {

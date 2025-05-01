@@ -11,6 +11,7 @@ using GrowthWare.Web.Support.Helpers;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -22,10 +23,10 @@ public static class FunctionUtility
 
     private static Collection<MFunctionTypeProfile> m_FunctionTypeProfiles = null;
 
-    public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)
+    public static async Task CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
-        BFunctions mBFunctions = getBusinessLogic();
-        mBFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
+        BFunctions mBusinessLogic = getBusinessLogic();
+        await mBusinessLogic.CopyFunctionSecurity(source, target, added_Updated_By);
         String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
@@ -34,10 +35,10 @@ public static class FunctionUtility
     /// Deletes a function from the database.
     /// </summary>
     /// <param name="functionSeqId">int</param>
-    public static void Delete(int functionSeqId)
+    public static async Task Delete(int functionSeqId)
     {
-        BFunctions mBFunctions = getBusinessLogic();
-        mBFunctions.Delete(functionSeqId);
+        BFunctions mBusinessLogic = getBusinessLogic();
+        await mBusinessLogic.Delete(functionSeqId);
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
@@ -54,8 +55,8 @@ public static class FunctionUtility
         Collection<MFunctionProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
         {
-            BFunctions mBFunctions = getBusinessLogic();
-            mRetVal = mBFunctions.GetFunctions(mSecurityEntityProfile.Id);
+            BFunctions mBusinessLogic = getBusinessLogic();
+            mRetVal = mBusinessLogic.GetFunctions(mSecurityEntityProfile.Id);
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
@@ -93,11 +94,11 @@ public static class FunctionUtility
     /// </summary>
     /// <param name="functionSeqId"></param>
     /// <returns>List<UIFunctionMenuOrder></returns>
-    public static List<UIFunctionMenuOrder> GetFunctionOrder(int functionSeqId)
+    public static async Task<List<UIFunctionMenuOrder>> GetFunctionOrder(int functionSeqId)
     {
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
-        BFunctions mBFunctions = getBusinessLogic();
-        DataTable mDataTable = mBFunctions.GetMenuOrder(mFunctionProfile);
+        BFunctions mBusinessLogic = getBusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetMenuOrder(mFunctionProfile);
         List<UIFunctionMenuOrder> mRetVal = null;
         mRetVal = mDataTable.AsEnumerable().Select(item => new UIFunctionMenuOrder {
             Function_Seq_Id = int.Parse(item["FUNCTION_SEQ_ID"].ToString()) ,
@@ -108,10 +109,10 @@ public static class FunctionUtility
         return mRetVal;
     }
 
-    public static MFunctionTypeProfile GetFunctionType(int functionTypeId)
+    public static async Task<MFunctionTypeProfile> GetFunctionType(int functionTypeId)
     {
         if(m_FunctionTypeProfiles == null) {
-            m_FunctionTypeProfiles =  getBusinessLogic().FunctionTypes();
+            m_FunctionTypeProfiles =  await getBusinessLogic().FunctionTypes();
         }
         return m_FunctionTypeProfiles.Where(item => item.Id == functionTypeId).FirstOrDefault();
     }
@@ -120,11 +121,11 @@ public static class FunctionUtility
     /// Retrieves all function types
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> GetFunctionTypes()
+    public static async Task<List<UIKeyValuePair>> GetFunctionTypes()
     {
         if(m_FunctionTypes == null || m_FunctionTypeProfiles == null) 
         {
-            GetFunctionType(1);
+            await GetFunctionType(1);
             m_FunctionTypes = m_FunctionTypeProfiles.AsEnumerable().Select(item => new UIKeyValuePair {
                 Key = item.Id,
                 Value = item.Name
@@ -191,10 +192,10 @@ public static class FunctionUtility
     /// <param name="saveGroups">bool used to indicate if groups should be saved</param>
     /// <param name="saveRoles">bool used to indicate if roles should be saved</param>
     /// <returns>The Id representing the updated/inserted function</returns>
-    public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
+    public static async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
-        BFunctions mBFunctions = getBusinessLogic();
-        int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
+        BFunctions mBusinessLogic = getBusinessLogic();
+        int mRetVal = await mBusinessLogic.Save(profile, saveGroups, saveRoles);
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveAll();
         // Remove in memory information for the account saving in order to update their menu's
@@ -207,9 +208,9 @@ public static class FunctionUtility
     /// </summary>
     /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
     /// <param name="profile">The profile.</param>
-    public static void UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
+    public static async Task UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
     {
-        BFunctions mBFunctions = getBusinessLogic();
-        mBFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
+        BFunctions mBusinessLogic = getBusinessLogic();
+        await mBusinessLogic.UpdateMenuOrder(commaseparated_Ids, profile);
     }
 }
