@@ -199,7 +199,8 @@ public static class FunctionUtility
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveAll();
         // Remove in memory information for the account saving in order to update their menu's
-        AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile().Account);
+        MAccountProfile mCurrentAccountProfile = await AccountUtility.CurrentProfile();
+        AccountUtility.RemoveInMemoryInformation(mCurrentAccountProfile.Account);
         return mRetVal;
     }
 

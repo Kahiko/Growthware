@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
@@ -84,7 +85,7 @@ public static class AccountUtility
     /// <param name="password"></param>
     /// <param name="ipAddress"></param>
     /// <returns>MAccountProfile or null</returns>
-    public static MAccountProfile Authenticate(string account, string password, string ipAddress)
+    public static async Task<MAccountProfile> Authenticate(string account, string password, string ipAddress)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password), "password cannot be a null reference (Nothing in VB) or empty!");
@@ -93,7 +94,7 @@ public static class AccountUtility
         if (account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             // no need to validate or save
-            mRetVal = GetAccount(account);
+            mRetVal = await GetAccount(account);
             // generate token for the anonymous account b/c it is needed in auth-guard.guard.ts (canActivate)
             // to be able to check if the user is authenticated or not
             mRetVal.Token = m_JwtUtils.GenerateJwtToken(mRetVal);
@@ -102,7 +103,7 @@ public static class AccountUtility
         }
 
         // get account from the DB
-        mRetVal = GetAccount(mAccount, true);
+        mRetVal = await GetAccount(mAccount, true);
         if (mRetVal == null)
         {
             return mRetVal;
@@ -135,7 +136,7 @@ public static class AccountUtility
             {
                 mRetVal.Status = (int)SystemStatus.Disabled;
             }
-            Save(mRetVal, true, false, false);
+            await Save(mRetVal, true, false, false);
             return null;
         }
 
@@ -149,7 +150,7 @@ public static class AccountUtility
         // save changes to db
         mRetVal.FailedAttempts = 0;
         mRetVal.LastLogOn = DateTime.Now;
-        Save(mRetVal, true, false, false);
+        await Save(mRetVal, true, false, false);
         RemoveInMemoryInformation(mRetVal.Account);
         // Update the cache or session which in turn will update the "CurrentProfile" property.
         addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
@@ -162,10 +163,10 @@ public static class AccountUtility
     /// </summary>
     /// <param name="changePassword">UIChangePassword</param>
     /// <returns></returns>
-    public static Tuple<string, MAccountProfile> ChangePassword(UIChangePassword changePassword, string ipAddress)
+    public static async Task<Tuple<string, MAccountProfile>> ChangePassword(UIChangePassword changePassword, string ipAddress)
     {
-        MMessage mMessageProfile = new MMessage();
-        MAccountProfile mAccountProfile = CurrentProfile();
+        MMessage mMessageProfile = new();
+        MAccountProfile mAccountProfile = await CurrentProfile();
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
         bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
@@ -179,7 +180,7 @@ public static class AccountUtility
             setChangePasswordProperties(changePassword, mAccountProfile, mSecurityEntity, ipAddress);
             try
             {
-                Save(mAccountProfile, true, false, false);
+                await Save(mAccountProfile, true, false, false);
                 mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
             }
             catch (System.Exception)
@@ -198,7 +199,7 @@ public static class AccountUtility
     /// Retrieves the current account profile.
     /// </summary>
     /// <returns>MAccountProfile</returns>
-    public static MAccountProfile CurrentProfile()
+    public static async Task<MAccountProfile> CurrentProfile()
     {
         /*
             *  1.) Attempt to get account from session
@@ -209,7 +210,7 @@ public static class AccountUtility
         MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(ConfigSettings.Anonymous);
         if (mRetVal == null)
         {
-            mRetVal = GetAccount(ConfigSettings.Anonymous, true);
+            mRetVal = await GetAccount(ConfigSettings.Anonymous, true);
             addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mRetVal);
         }
         return mRetVal;
@@ -292,16 +293,16 @@ public static class AccountUtility
     /// </summary>
     /// <param name="accountProfile">MAccountProfile for the account to generate a reset token for.</param>
     /// <param name="origin">Used when sending an email.</param>
-    public static MAccountProfile ForgotPassword(string account, string origin)
+    public static async Task<MAccountProfile> ForgotPassword(string account, string origin)
     {
-        MAccountProfile mRetVal = GetAccount(account);
+        MAccountProfile mRetVal = await GetAccount(account);
         // generate reset token
         mRetVal.ResetToken = JwtUtility.GenerateResetToken();
         mRetVal.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
         mRetVal.UpdatedBy = mRetVal.Id;
         mRetVal.UpdatedDate = DateTime.UtcNow;
         // Save the account
-        Save(mRetVal, false, false, false);
+        await Save(mRetVal, false, false, false);
         return mRetVal;
     }
 
@@ -311,21 +312,21 @@ public static class AccountUtility
     /// <param name="account"></param>
     /// <param name="forceDb"></param>
     /// <returns></returns>
-    public static MAccountProfile GetAccount(string account, bool forceDb = false)
+    public static async Task<MAccountProfile> GetAccount(string account, bool forceDb = false)
     {
         MAccountProfile mRetVal = null;
         BAccounts mBAccount = null;
         if (forceDb)
         {
             mBAccount = BusinessLogic;
-            mRetVal = mBAccount.GetProfile(account);
+            mRetVal = await mBAccount.GetProfile(account);
             return mRetVal;
         }
-        mRetVal = CurrentProfile();
+        mRetVal = await CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mBAccount = BusinessLogic;
-            mRetVal = mBAccount.GetProfile(account);
+            mRetVal = await mBAccount.GetProfile(account);
         }
         return mRetVal;
     }
@@ -378,7 +379,7 @@ public static class AccountUtility
         }
     }
 
-    public static MAccountProfile GetProfileByResetToken(string token)
+    public static async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
         BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
@@ -388,16 +389,16 @@ public static class AccountUtility
         }
         catch (System.Exception)
         {
-            mRetVal = GetAccount(ConfigSettings.Anonymous);
+            mRetVal = await GetAccount(ConfigSettings.Anonymous);
         }
         return mRetVal;
     }
 
-    public static void Logoff(string forAccount, string token, string ipAddress)
+    public static async Task Logoff(string forAccount, string token, string ipAddress)
     {
         if (!String.IsNullOrWhiteSpace(token))
         {
-            MAccountProfile mAccountProfile = GetAccount(forAccount);
+            MAccountProfile mAccountProfile = await GetAccount(forAccount);
             if (mAccountProfile.RefreshTokens.Count > 0)
             {
                 MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
@@ -410,7 +411,7 @@ public static class AccountUtility
                 // revoke token and save
                 revokeRefreshToken(mRefreshToken, ipAddress, "Revoked without replacement");
                 // save changes to db
-                AccountUtility.Save(mAccountProfile, true, false, false);
+                await AccountUtility.Save(mAccountProfile, true, false, false);
             }
         }
         removeFromCacheOrSession(forAccount);
@@ -423,7 +424,7 @@ public static class AccountUtility
     /// <param name="token">The refresh token.</param>
     /// <param name="ipAddress">The IP address of the user.</param>
     /// <returns>AuthenticationResponse or null</returns>
-    public static AuthenticationResponse RefreshToken(string token, string ipAddress)
+    public static async Task<AuthenticationResponse> RefreshToken(string token, string ipAddress)
     {
         MAccountProfile mAccountProfile = null;
         try
@@ -432,7 +433,7 @@ public static class AccountUtility
         }
         catch (System.Exception)
         {
-            mAccountProfile = GetAccount(AnonymousAccount);
+            mAccountProfile = await GetAccount(AnonymousAccount);
             // throw;
         }
         if (mAccountProfile.RefreshTokens.Count > 0)
@@ -443,7 +444,7 @@ public static class AccountUtility
             {
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(mRefreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-                AccountUtility.Save(mAccountProfile, true, false, false);
+                await AccountUtility.Save(mAccountProfile, true, false, false);
             }
 
             if (!mRefreshToken.IsActive)
@@ -465,7 +466,7 @@ public static class AccountUtility
             mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
 
             // save changes to db and update session/cache
-            AccountUtility.Save(mAccountProfile, true, false, false);
+            await AccountUtility.Save(mAccountProfile, true, false, false);
         }
 
         AuthenticationResponse mRetVal = new(mAccountProfile);
@@ -473,7 +474,7 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    public static MAccountProfile Register(MAccountProfile accountProfile, string origin)
+    public static async Task<MAccountProfile> Register(MAccountProfile accountProfile, string origin)
     {
         // Get the security entity via the URL or use the default
         MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile();
@@ -489,7 +490,7 @@ public static class AccountUtility
             throw new WebSupportException("Unable to get registration information");
         }
         // Validate (ensure email is not in use as an account)
-        MAccountProfile mProfileToSave = GetAccount(accountProfile.Email, true);
+        MAccountProfile mProfileToSave = await GetAccount(accountProfile.Email, true);
         if(String.IsNullOrWhiteSpace(mProfileToSave.Account)) 
         {
             mProfileToSave = new MAccountProfile(accountProfile)
@@ -518,7 +519,7 @@ public static class AccountUtility
             mProfileToSave.AddedDate = DateTime.Now;
             mProfileToSave.PasswordLastSet = System.DateTime.Now;
             // Save the profile
-            BAccounts mBAccount = new(mTargetSecurityEntity);
+            BAccounts mBusinessLogic = new(mTargetSecurityEntity);
             // Added for clarity
             Boolean mSaveRefreshTokens = false;
             Boolean mSaveRoles = true;
@@ -529,8 +530,8 @@ public static class AccountUtility
             // as well.
             string mVerificationToken = mJwtUtility.GenerateVerificationToken();
             mProfileToSave.VerificationToken = mVerificationToken;
-            mBAccount.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
-            mProfileToSave = GetAccount(mProfileToSave.Account, true);
+            await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
+            mProfileToSave = await GetAccount(mProfileToSave.Account, true);
             mProfileToSave.VerificationToken = mVerificationToken;
         }
         else 
@@ -570,7 +571,7 @@ public static class AccountUtility
         token.ReplacedByToken = replacedByToken;
     }
 
-    public static void RevokeToken(string token, string ipAddress)
+    public static async Task RevokeToken(string token, string ipAddress)
     {
         MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
         MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
@@ -580,7 +581,7 @@ public static class AccountUtility
 
         // revoke token and save
         revokeRefreshToken(mRefreshToken, ipAddress, "Revoked without replacement");
-        Save(mAccountProfile, true, false, false);
+        await Save(mAccountProfile, true, false, false);
     }
 
     /// Recursively traverses the refresh token chain and ensures all descendants are revoked.
@@ -645,7 +646,7 @@ public static class AccountUtility
         }
     }
 
-    public static void ResetPassword(MAccountProfile forAccount, string password)
+    public static async Task ResetPassword(MAccountProfile forAccount, string password)
     {
         CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression);
         // TODO: find a better way then changing properties on the passed in parameter!
@@ -658,7 +659,7 @@ public static class AccountUtility
         forAccount.Status = (int)SystemStatus.Active;
         forAccount.UpdatedBy = forAccount.Id;
         forAccount.UpdatedDate = System.DateTime.Now;
-        Save(forAccount, false, false, false);
+        await Save(forAccount, false, false, false);
     }
 
     /// <summary>
@@ -669,7 +670,7 @@ public static class AccountUtility
     /// <param name="saveRoles">Boolean</param>
     /// <param name="saveGroups">Boolean</param>
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
+    public static async Task<MAccountProfile> Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
         /*
          * Roles, groups, and refresh tokens are stored in detail tables and it is not always necessary to save them.
@@ -680,10 +681,11 @@ public static class AccountUtility
             return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBAccount = BusinessLogic;
-        mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
-        MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
-        if ((accountProfile.Id == CurrentProfile().Id) || (CurrentProfile().Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
+        BAccounts mBusinessLogic = BusinessLogic;
+        await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
+        MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account);
+        MAccountProfile mCurrentAccountProfile = await CurrentProfile();
+        if ((accountProfile.Id == mCurrentAccountProfile.Id) || (mCurrentAccountProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {
             addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         }

@@ -41,7 +41,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<MNameValuePair>> GetMNameValuePair(int nameValuePairSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
@@ -81,7 +81,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         if (nameValuePairDetail.Id == -1 || nameValuePairDetail.Id == HttpContext.Session.GetInt32("EditId"))
         {
             MNameValuePairDetail mNameValuePairDetail = nameValuePairDetail;
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if (mNameValuePairDetail.Id != -1)
             {
@@ -119,7 +119,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         if (nameValuePair.Id == -1 || nameValuePair.Id == HttpContext.Session.GetInt32("EditId"))
         {
             MNameValuePair mNameValuePair = nameValuePair;
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if (mNameValuePair.Id == -1)
             {

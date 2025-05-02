@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -136,7 +137,7 @@ public class BAccounts : AbstractBusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public MAccountProfile GetProfile(string account)
+    public async Task<MAccountProfile> GetProfile(string account)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
@@ -149,7 +150,7 @@ public class BAccounts : AbstractBusinessLogic
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                mRetVal = new MAccountProfile(await m_DAccounts.GetAccount(), mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
             else 
             {
@@ -362,7 +363,7 @@ public class BAccounts : AbstractBusinessLogic
     /// mMAccountProfile = mBill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
     /// </code>
     /// </example>
-    public void Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
+    public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         m_DAccounts.Profile = profile;
@@ -381,7 +382,7 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.SaveRoles();
             }
-            profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
+            profile = new MAccountProfile(await m_DAccounts.GetAccount(), m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
         }
     }
 

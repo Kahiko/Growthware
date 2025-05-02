@@ -24,7 +24,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     [HttpGet("GetFeedbackAccounts")]
     public async Task<ActionResult<Tuple<string[], string[]>>> GetFeedbackAccounts()
     {
-        MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile());
+        MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), await AccountUtility.CurrentProfile());
         if (mSecurityInfo.MayEdit)
         {
             int mSecurityId = SecurityEntityUtility.CurrentProfile().Id;
@@ -83,7 +83,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     public async Task<ActionResult<bool>> SaveFeedback(UIFeedback feedback)
     {
         bool mRetVal = false;
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");

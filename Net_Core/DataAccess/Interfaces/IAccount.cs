@@ -2,6 +2,7 @@ using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -40,7 +41,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Retrieves Account information
 		/// </summary>
 		/// <returns>DataRow</returns>
-		DataRow GetAccount { get; }
+		Task<DataRow> GetAccount();
 
 		/// <summary>
 		/// Retrieves Account information given the reset token

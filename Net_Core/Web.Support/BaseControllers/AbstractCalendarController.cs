@@ -28,12 +28,12 @@ public abstract class AbstractCalendarController : ControllerBase
     public async Task<ActionResult<bool>> DeleteEvent(int calendarEventSeqId, string action)
     {
         MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId);
-        if (getEventSecurity(mCalendarEvent))
+        if (await getEventSecurity(mCalendarEvent))
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
             if (mFunctionProfile != null)
             {
-                MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+                MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
                 MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                 if (mSecurityInfo.MayView)
                 {
@@ -62,7 +62,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
-            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+            MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
@@ -94,7 +94,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
-            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+            MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
             if (mSecurityInfo.MayView)
             {
@@ -122,7 +122,7 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpPost("SaveEvent")]
     public async Task<ActionResult<MCalendarEvent>> SaveEvent(UISaveEventParameters parameters)
     {
-        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
         UISaveEventParameters mParameters = parameters; // Bad practice to alter a parameter in a method.
         if (mParameters.calendarEvent.Id < 1)
         {
@@ -135,7 +135,7 @@ public abstract class AbstractCalendarController : ControllerBase
             mParameters.calendarEvent.UpdatedDate = DateTime.Now;
         }
         MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), mParameters.calendarEvent.Id);
-        if (getEventSecurity(mCalendarEvent, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
+        if (await getEventSecurity(mCalendarEvent, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mParameters.action);
             MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mParameters.calendarEvent);
@@ -152,7 +152,7 @@ public abstract class AbstractCalendarController : ControllerBase
         return Ok(getEventSecurity(mCalendarEvent));
     }
 
-    private bool getEventSecurity(MCalendarEvent calendarEvent, string action = null)
+    private async Task<bool> getEventSecurity(MCalendarEvent calendarEvent, string action = null)
     {
         bool mRetVal = false;
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
@@ -170,7 +170,7 @@ public abstract class AbstractCalendarController : ControllerBase
                 MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
                 if (mFunctionProfile != null)
                 {
-                    MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+                    MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
                     MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
                     if (mSecurityInfo.MayView)
                     {

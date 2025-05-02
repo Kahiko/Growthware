@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 /// <summary>
@@ -40,18 +41,15 @@ public class DAccounts : AbstractDBInteraction, IAccount
         set { m_SecurityEntitySeqID = value; }
     }
 
-    DataRow IAccount.GetAccount
+    async Task<DataRow> IAccount.GetAccount()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
-                    GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
-                    GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
+        SqlParameter[] mParameters = [
+                GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
+                GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
+                GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
+            ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
     DataRow IAccount.GetAccountByRefreshToken

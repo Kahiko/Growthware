@@ -21,10 +21,7 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpPost("DeleteGroup")]
     public async Task<ActionResult<bool>> DeleteGroup(int groupSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = await this.getRequestingSecurityInfo(ConfigSettings.Actions_EditGroups);
         if (mSecurityInfo.MayDelete)
         {
             if (HttpContext.Session.GetString("EditId") != null)
@@ -45,10 +42,8 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpGet("GetGroupForEdit")]
     public async Task<ActionResult<UIGroupProfile>> GetGroupForEdit(int groupSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = await this.getRequestingSecurityInfo(ConfigSettings.Actions_EditGroups);
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
             HttpContext.Session.SetString("EditId", groupSeqId.ToString());
@@ -62,8 +57,16 @@ public abstract class AbstractGroupController : ControllerBase
     public async Task<ActionResult<ArrayList>> GetGroups()
     {
         ArrayList mRetVal;
-        mRetVal = await GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        MSecurityEntity mCurrentSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        mRetVal = await GroupUtility.GetGroupsArrayListBySecurityEntity(mCurrentSecurityEntity.Id);
         return Ok(mRetVal);
+    }
+
+    public async Task<MSecurityInfo> getRequestingSecurityInfo(string action)
+    {
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        return new(mFunctionProfile, mRequestingProfile);
     }
 
     [AllowAnonymous]
@@ -72,14 +75,15 @@ public abstract class AbstractGroupController : ControllerBase
     {
         if (HttpContext.Session.GetString("EditId") != null)
         {
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+            MSecurityInfo mSecurityInfo = await this.getRequestingSecurityInfo(ConfigSettings.Actions_EditGroups);
             int mSecurityEntityId = SecurityEntityUtility.CurrentProfile().Id;
 
             // Get the group profile populated with the parameter values
-            MGroupProfile mProfileToSave = new MGroupProfile(groupProfile);
-            mProfileToSave.SecurityEntityID = mSecurityEntityId;
+            MGroupProfile mProfileToSave = new(groupProfile)
+            {
+                SecurityEntityID = mSecurityEntityId
+            };
             // Get a commaseparated string of roles
             string mRoles = string.Join(",", groupProfile.RolesInGroup);
             // Get a MGroupRoles object

@@ -41,9 +41,9 @@ public abstract class AbstractMessageController : ControllerBase
 
     [Authorize("Search_Messages")]
     [HttpGet("GetProfile")]
-    public ActionResult<UIMessageProfile> GetProfile(int id)
+    public async Task<ActionResult<UIMessageProfile>> GetProfile(int id)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
 
@@ -86,11 +86,11 @@ public abstract class AbstractMessageController : ControllerBase
 
     [Authorize("Search_Messages")]
     [HttpPost("Save")]
-    public ActionResult<UIMessageProfile> Save(UIMessageProfile messageProfile)
+    public async Task<ActionResult<UIMessageProfile>> Save(UIMessageProfile messageProfile)
     {
         if (HttpContext.Session.GetString("EditId") != null && HttpContext.Session.GetInt32("EditId") == messageProfile.Id)
         {
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile();
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
