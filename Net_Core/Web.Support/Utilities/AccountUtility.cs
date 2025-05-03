@@ -340,11 +340,11 @@ public static class AccountUtility
     /// </returns>
     /// <exception cref="ArgumentException">Thrown when the provided token is null or empty.</exception>
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
-    private static MAccountProfile getAccountByRefreshToken(string token)
+    private static async Task<MAccountProfile> getAccountByRefreshToken(string token)
     {
         BAccounts mBAccount = BusinessLogic;
         MAccountProfile mRetVal = null;
-        mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        mRetVal = await mBAccount.GetProfileByRefreshToken(token);
         return mRetVal;
     }
 
@@ -429,7 +429,7 @@ public static class AccountUtility
         MAccountProfile mAccountProfile = null;
         try
         {
-            mAccountProfile = getAccountByRefreshToken(token);
+            mAccountProfile = await getAccountByRefreshToken(token);
         }
         catch (System.Exception)
         {
@@ -573,7 +573,7 @@ public static class AccountUtility
 
     public static async Task RevokeToken(string token, string ipAddress)
     {
-        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+        MAccountProfile mAccountProfile = await getAccountByRefreshToken(token);
         MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
         if (!mRefreshToken.IsActive)
