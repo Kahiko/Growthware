@@ -223,16 +223,18 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public MAccountProfile GetProfileByVerificationToken(string token)
+    public async Task<MAccountProfile> GetProfileByVerificationToken(string token)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
         {
             string mAccount = string.Empty;
             string mColumnName = "ACCT";
-            m_DAccounts.Profile = new MAccountProfile();
-            m_DAccounts.Profile.VerificationToken = token;
-            DataRow mDataRow = m_DAccounts.GetAccountByVerificationToken;
+            m_DAccounts.Profile = new MAccountProfile
+            {
+                VerificationToken = token
+            };
+            DataRow mDataRow = await m_DAccounts.GetAccountByVerificationToken();
             // we will need the "Account" in order to get the correct roles and groups
             if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
             {

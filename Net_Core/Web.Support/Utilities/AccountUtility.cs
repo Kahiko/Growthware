@@ -348,13 +348,13 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    private static MAccountProfile getProfileByVerificationToken(string token)
+    private static async Task<MAccountProfile> getProfileByVerificationToken(string token)
     {
         BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile());
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = mBAccount.GetProfileByVerificationToken(token);
+            mRetVal = await mBAccount.GetProfileByVerificationToken(token);
         }
         catch (System.Exception)
         {
@@ -737,11 +737,11 @@ public static class AccountUtility
     /// <param name="email">The email address to compare against.</param>
     /// <returns>The verified account profile if the verification token and email match, otherwise null.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the verificationToken parameter is null.</exception>
-    public static MAccountProfile VerifyAccount(string verificationToken, string email)
+    public static async Task<MAccountProfile> VerifyAccount(string verificationToken, string email)
     {
         if (verificationToken == null) throw new ArgumentNullException(nameof(verificationToken), "verificationToken cannot be a null reference (Nothing in VB)!");
         MAccountProfile mRetVal = null;
-        MAccountProfile mAccountProfile = getProfileByVerificationToken(verificationToken);
+        MAccountProfile mAccountProfile = await getProfileByVerificationToken(verificationToken);
         if(mAccountProfile != null && !String.IsNullOrWhiteSpace(mAccountProfile.Email) && mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
         {
             mRetVal = mAccountProfile;

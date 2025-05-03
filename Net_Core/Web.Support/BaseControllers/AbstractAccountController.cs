@@ -732,7 +732,7 @@ public abstract class AbstractAccountController : ControllerBase
         //      Save the profile
         //      return the account and account choices
         // If the account does not exist or the verification token is invalid, throw an exception
-        MAccountProfile mAccountProfile = AccountUtility.VerifyAccount(verificationToken, email);
+        MAccountProfile mAccountProfile = await AccountUtility.VerifyAccount(verificationToken, email);
         if(mAccountProfile == null)
         {
             return StatusCode(StatusCodes.Status406NotAcceptable, "The verification token is not invalid");

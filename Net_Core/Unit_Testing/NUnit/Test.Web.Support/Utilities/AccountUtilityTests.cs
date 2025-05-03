@@ -11,6 +11,7 @@ using System.Reflection;
 using GrowthWare.Framework;
 using System.Data.SqlClient;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Test.Web.Support.Utilities;
 
@@ -32,7 +33,7 @@ public class AccountUtilityTests
     private string m_Mike_Token = "Needs to be set in setup for each run";
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
         m_HttpContextAccessorMock = new Mock<IHttpContextAccessor>();
         m_HttpContextMock = new Mock<HttpContext>();
@@ -65,8 +66,8 @@ public class AccountUtilityTests
             mMethodNames.Add(mInfo.Name);
         }
 
-        m_Developer_Profile = AccountUtility.GetAccount(m_Developer_Account, true);
-        m_Mike_Profile = AccountUtility.GetAccount(m_Mike_Account, true);
+        m_Developer_Profile = await AccountUtility.GetAccount(m_Developer_Account, true);
+        m_Mike_Profile = await AccountUtility.GetAccount(m_Mike_Account, true);
 
         if (m_Developer_Profile == null || m_Mike_Profile == null)
         {
@@ -95,10 +96,10 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void Authenticate_ValidCredentials_ReturnsAccountProfile()
+    public async Task Authenticate_ValidCredentials_ReturnsAccountProfile()
     {
         // Act
-        var result = AccountUtility.Authenticate(m_Developer_Account, m_Password, m_IpAddress);
+        var result = await AccountUtility.Authenticate(m_Developer_Account, m_Password, m_IpAddress);
 
         // Assert
         Assert.That(result, Is.Not.Null, "The result should not be null.");
@@ -106,7 +107,7 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void ChangePassword_ValidChange_ReturnsSuccessMessage()
+    public async Task ChangePassword_ValidChange_ReturnsSuccessMessage()
     {
         // Arrange
         var changePassword = new UIChangePassword
@@ -117,9 +118,9 @@ public class AccountUtilityTests
         Tuple<string, MAccountProfile> result = new("Did not attempt to change password", new MAccountProfile());
         // AccountUtility.ChangePassword uses the CurrentProfile so in order to update the CurrentProfile
         // to the profile for m_Mike we need to Authenticate using the "Mike" account.
-        MAccountProfile mAccountProfile = AccountUtility.Authenticate(m_Mike_Account, m_Password, m_IpAddress);
+        MAccountProfile mAccountProfile = await AccountUtility.Authenticate(m_Mike_Account, m_Password, m_IpAddress);
         // Get the CurrentProfile
-        MAccountProfile mCurrentProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mCurrentProfile = await AccountUtility.CurrentProfile();
 
         // Act - Change the password if the account is "Mike"
         // Since the "CurrentPofile" is used when calling AccountUtility.ChangePassword as the account whose
@@ -132,7 +133,7 @@ public class AccountUtilityTests
         else 
         {
             // Change the password and in doing so the get a new Profile in "Item2" with an updated .PasswordLastSet property
-            result = AccountUtility.ChangePassword(changePassword, m_IpAddress);
+            result = await AccountUtility.ChangePassword(changePassword, m_IpAddress);
         }
         
         // Assert
@@ -174,10 +175,10 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void GetAccount_ValidAccount_ReturnsAccountProfile()
+    public async Task GetAccount_ValidAccount_ReturnsAccountProfile()
     {
         // Act
-        var result = AccountUtility.GetAccount(m_Developer_Account);
+        var result = await AccountUtility.GetAccount(m_Developer_Account);
 
         // Assert
         Assert.That(result, Is.Not.Null, "The account profile should not be null.");
@@ -186,10 +187,10 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void GetAccount_InValidAccount_ReturnsAccountProfile()
+    public async Task GetAccount_InValidAccount_ReturnsAccountProfile()
     {
         // Act
-        var result = AccountUtility.GetAccount("InvalidAccount");
+        var result = await AccountUtility.GetAccount("InvalidAccount");
 
         // Assert
         Assert.That(result.Account, Is.Null, "The Profile.Account should be null.");
@@ -237,10 +238,10 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void Logoff_ValidAccount_LogsOut()
+    public async Task Logoff_ValidAccount_LogsOut()
     {
         // Act
-        AccountUtility.Logoff(m_Developer_Account, m_Developer_Token, m_IpAddress);
+        await AccountUtility.Logoff(m_Developer_Account, m_Developer_Token, m_IpAddress);
 
         // Assert
         // TODO: Need to add assertions -- perhaps could .CurrentProfile and verify that
@@ -315,10 +316,10 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void Save_ValidAccountProfile_SavesProfile()
+    public async Task Save_ValidAccountProfile_SavesProfile()
     {
         // Arrange
-        MAccountProfile mProfileToSave = AccountUtility.GetAccount(m_Mike_Account);
+        MAccountProfile mProfileToSave = await AccountUtility.GetAccount(m_Mike_Account);
 
         // Act
         // AccountUtility.Save(mProfileToSave, true, true, true);

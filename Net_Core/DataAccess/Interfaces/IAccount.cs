@@ -51,7 +51,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Retrieves Account information given the verification token
 		/// </summary>
-		DataRow GetAccountByVerificationToken { get; }
+		Task<DataRow> GetAccountByVerificationToken();
 
 		/// <summary>
 		/// Retrieves Account information given the JWT

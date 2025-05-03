@@ -73,16 +73,13 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    DataRow IAccount.GetAccountByVerificationToken
+    async Task<DataRow> IAccount.GetAccountByVerificationToken()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account_By_Verification_Token";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_VerificationToken", this.Cleanup(m_Profile.VerificationToken), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_By_Verification_Token]";
+        SqlParameter[] mParameters = [
+            GetSqlParameter("@P_VerificationToken", this.Cleanup(m_Profile.VerificationToken), ParameterDirection.Input)
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
     DataTable IAccount.GetAccounts
