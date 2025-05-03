@@ -385,7 +385,7 @@ public static class AccountUtility
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = mBAccount.GetProfileByResetToken(token);
+            mRetVal = await mBAccount.GetProfileByResetToken(token);
         }
         catch (System.Exception)
         {

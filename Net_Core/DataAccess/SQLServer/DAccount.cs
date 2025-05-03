@@ -64,16 +64,13 @@ public class DAccounts : AbstractDBInteraction, IAccount
         }
     }
 
-    DataRow IAccount.GetAccountByResetToken
+    async Task<DataRow> IAccount.GetAccountByResetToken()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account_By_Reset_Token";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_ResetToken", this.Cleanup(m_Profile.ResetToken), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_By_Reset_Token]";
+        SqlParameter[] mParameters = [
+            GetSqlParameter("@P_ResetToken", this.Cleanup(m_Profile.ResetToken), ParameterDirection.Input)
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
     DataRow IAccount.GetAccountByVerificationToken

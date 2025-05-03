@@ -46,7 +46,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Retrieves Account information given the reset token
 		/// </summary>
-		DataRow GetAccountByResetToken { get; }
+		Task<DataRow> GetAccountByResetToken();
 
 		/// <summary>
 		/// Retrieves Account information given the verification token

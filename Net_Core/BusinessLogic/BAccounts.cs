@@ -189,7 +189,7 @@ public class BAccounts : AbstractBusinessLogic
         return mRetVal;
     }
 
-    public MAccountProfile GetProfileByResetToken(string token)
+    public async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
@@ -198,7 +198,7 @@ public class BAccounts : AbstractBusinessLogic
             string mColumnName = "ACCT";
             m_DAccounts.Profile = new MAccountProfile();
             m_DAccounts.Profile.ResetToken = token;
-            DataRow mDataRow = m_DAccounts.GetAccountByResetToken;
+            DataRow mDataRow = await m_DAccounts.GetAccountByResetToken();
             // we will need the "Account" in order to get the correct roles and groups
             if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
             {
