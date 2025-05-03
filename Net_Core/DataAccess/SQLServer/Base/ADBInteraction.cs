@@ -59,44 +59,44 @@ public abstract class AbstractDBInteraction : IDBInteraction
         {
             string mCommandText = string.Empty;
 
-            using var mSqlConnection = new SqlConnection(this.ConnectionString);
+            using SqlConnection mSqlConnection = new(this.ConnectionString);
             mSqlConnection.Open();
             SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
             try
             {
                 // 1.) Create Destination Table
                 mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", bulkInsertParameters.TempTableName, bulkInsertParameters.DestinationTableName);
-                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
                 {
                     mSqlCommand.CommandType = CommandType.Text;
                     mSqlCommand.ExecuteNonQuery();
                 }
 
                 // Retrieve ordered column names from the temporary table
-                string[] orderedColumns;
+                string[] mOrderedColumns;
                 mCommandText = string.Format("SELECT * FROM {0}", bulkInsertParameters.TempTableName);
-                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
                 {
                     mSqlCommand.CommandType = CommandType.Text;
-                    using (var reader = mSqlCommand.ExecuteReader())
+                    using (SqlDataReader mSqlDataReader = mSqlCommand.ExecuteReader())
                     {
-                        orderedColumns = new string[reader.FieldCount]; // Initialize array with the number of columns
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        mOrderedColumns = new string[mSqlDataReader.FieldCount]; // Initialize array with the number of columns
+                        for (int i = 0; i < mSqlDataReader.FieldCount; i++)
                         {
-                            orderedColumns[i] = reader.GetName(i); // Get column names in order
+                            mOrderedColumns[i] = mSqlDataReader.GetName(i); // Get column names in order
                         }
                     }
                 }
 
                 // Remove primary key column name if needed and it exists from orderedColumns
-                if (!bulkInsertParameters.IncludePrimaryKey && orderedColumns.Contains(bulkInsertParameters.PrimaryKeyName, StringComparer.OrdinalIgnoreCase))
+                if (!bulkInsertParameters.IncludePrimaryKey && mOrderedColumns.Contains(bulkInsertParameters.PrimaryKeyName, StringComparer.OrdinalIgnoreCase))
                 {
-                    orderedColumns = orderedColumns.Where(x => !string.Equals(x, bulkInsertParameters.PrimaryKeyName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    mOrderedColumns = mOrderedColumns.Where(x => !string.Equals(x, bulkInsertParameters.PrimaryKeyName, StringComparison.OrdinalIgnoreCase)).ToArray();
                 }
 
                 // Create DataTable with the columns in the same order as the temporary table
                 IDatabaseTable mFirstObj = (IDatabaseTable)bulkInsertParameters.ListOfProfiles.First();
-                DataTable mDataTable = mFirstObj.GetEmptyTable(bulkInsertParameters.TempTableName, bulkInsertParameters.IncludePrimaryKey, orderedColumns);
+                DataTable mDataTable = mFirstObj.GetEmptyTable(bulkInsertParameters.TempTableName, bulkInsertParameters.IncludePrimaryKey, mOrderedColumns);
 
                 // Now populate the DataTable
                 foreach (var item in bulkInsertParameters.ListOfProfiles)
@@ -104,7 +104,145 @@ public abstract class AbstractDBInteraction : IDBInteraction
                     DataRow mRow = mDataTable.NewRow();
                     PropertyInfo[] mProperties = item.GetType().GetProperties();
 
-                    foreach (var columnName in orderedColumns)
+                    foreach (var mColumnName in mOrderedColumns)
+                    {
+                        var mPropertyItem = mProperties.FirstOrDefault(p => string.Equals(p.Name, mColumnName, StringComparison.OrdinalIgnoreCase));
+                        if (mPropertyItem != null)
+                        {
+                            var mValue = mPropertyItem.GetValue(item, null);
+                            // Handle nullable properties
+                            if (mPropertyItem.PropertyType.IsGenericType && mPropertyItem.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                mValue = mValue ?? DBNull.Value;
+                            }
+
+                            mRow[mColumnName] = mValue ?? DBNull.Value; // Set to DBNull if null
+                        }
+                    }
+                    mDataTable.Rows.Add(mRow);
+                }
+
+                if (!bulkInsertParameters.IncludePrimaryKey)
+                {
+                    mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", bulkInsertParameters.TempTableName, bulkInsertParameters.PrimaryKeyName);
+                    using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
+                    {
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // 2.) Perform SqlBulkCopy of the data table in a temporary table
+                using (SqlBulkCopy mSqlBulkCopy = new(mSqlConnection, SqlBulkCopyOptions.Default, mSqlTransaction))
+                {
+                    mSqlBulkCopy.BatchSize = 5000;
+                    mSqlBulkCopy.DestinationTableName = bulkInsertParameters.TempTableName;
+                    mSqlBulkCopy.WriteToServer(mDataTable);
+                }
+
+                // 3.) Delete all rows associated from the db if needed
+                if (bulkInsertParameters.DoDelete)
+                {
+                    // semi correct should account for the primary key or in other words join on all columns except the primary key
+                    // b/c the primary key if one exists is always unique
+                    // for now I'm going to insist that the Destination have a single foreign key
+                    mCommandText = "DELETE {0} FROM {0} Destination INNER JOIN {1} TempTable ON Destination.{2} = TempTable.{2};";
+                    mCommandText = string.Format(mCommandText, bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName, bulkInsertParameters.ForeignKeyName);
+                    using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
+                    {
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                }
+                // 4.) Insert all the rows from the temp table into Destination
+                mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", bulkInsertParameters.DestinationTableName, bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.ExecuteNonQuery();
+                }
+                mSqlTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Roll back the transaction if an error occurs
+                mSqlTransaction.Rollback();
+                // provide more context
+                DataAccessLayerException mException = new("An error occurred during bulk insert.", ex);
+                // Log the exception
+                m_Logger.Error(mException);
+                throw mException;
+            }
+            finally
+            {
+                // 5.) finally delete the temporary table
+                mCommandText = string.Format("IF OBJECT_ID('{0}', 'U') IS NOT NULL DROP TABLE {0};", bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Performs an async bulk upload of IDatabaseFunctions objects into the
+    /// database. Note: Requires an object with a primary key!
+    /// </summary>
+    /// <param name="bulkInsertParameters">A DTO representing multiple parameters</param>
+    internal async Task BulkInsertAsync(DTO_BulkInsert_Parameters bulkInsertParameters)
+    {
+        if (bulkInsertParameters.ListOfProfiles != null && bulkInsertParameters.ListOfProfiles.Any())
+        {
+            string mCommandText = string.Empty;
+
+            using SqlConnection mSqlConnection = new(this.ConnectionString);
+            mSqlConnection.Open();
+            SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
+            try
+            {
+                // 1.) Create Destination Table
+                mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", bulkInsertParameters.TempTableName, bulkInsertParameters.DestinationTableName);
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    await mSqlCommand.ExecuteNonQueryAsync();
+                }
+
+                // Retrieve ordered column names from the temporary table
+                string[] mOrderedColumns;
+                mCommandText = string.Format("SELECT * FROM {0}", bulkInsertParameters.TempTableName);
+                using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
+                {
+                    mSqlCommand.CommandType = CommandType.Text;
+                    using (SqlDataReader mSqlDataReader = await mSqlCommand.ExecuteReaderAsync())
+                    {
+                        mOrderedColumns = new string[mSqlDataReader.FieldCount]; // Initialize array with the number of columns
+                        for (int i = 0; i < mSqlDataReader.FieldCount; i++)
+                        {
+                            mOrderedColumns[i] = mSqlDataReader.GetName(i); // Get column names in order
+                        }
+                    }
+                }
+
+                // Remove primary key column name if needed and it exists from orderedColumns
+                if (!bulkInsertParameters.IncludePrimaryKey && mOrderedColumns.Contains(bulkInsertParameters.PrimaryKeyName, StringComparer.OrdinalIgnoreCase))
+                {
+                    mOrderedColumns = mOrderedColumns.Where(x => !string.Equals(x, bulkInsertParameters.PrimaryKeyName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                }
+
+                // Create DataTable with the columns in the same order as the temporary table
+                IDatabaseTable mFirstObj = (IDatabaseTable)bulkInsertParameters.ListOfProfiles.First();
+                DataTable mDataTable = mFirstObj.GetEmptyTable(bulkInsertParameters.TempTableName, bulkInsertParameters.IncludePrimaryKey, mOrderedColumns);
+
+                // Now populate the DataTable
+                foreach (var item in bulkInsertParameters.ListOfProfiles)
+                {
+                    DataRow mRow = mDataTable.NewRow();
+                    PropertyInfo[] mProperties = item.GetType().GetProperties();
+
+                    foreach (var columnName in mOrderedColumns)
                     {
                         var mPropertyItem = mProperties.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase));
                         if (mPropertyItem != null)
@@ -125,10 +263,10 @@ public abstract class AbstractDBInteraction : IDBInteraction
                 if (!bulkInsertParameters.IncludePrimaryKey)
                 {
                     mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", bulkInsertParameters.TempTableName, bulkInsertParameters.PrimaryKeyName);
-                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
+                    using (SqlCommand mSqlCommand = new(mCommandText, mSqlConnection, mSqlTransaction))
                     {
                         mSqlCommand.CommandType = CommandType.Text;
-                        mSqlCommand.ExecuteNonQuery();
+                        await mSqlCommand.ExecuteNonQueryAsync();
                     }
                 }
 
@@ -137,7 +275,7 @@ public abstract class AbstractDBInteraction : IDBInteraction
                 {
                     mSqlBulkCopy.BatchSize = 5000;
                     mSqlBulkCopy.DestinationTableName = bulkInsertParameters.TempTableName;
-                    mSqlBulkCopy.WriteToServer(mDataTable);
+                    await mSqlBulkCopy.WriteToServerAsync(mDataTable);
                 }
 
                 // 3.) Delete all rows associated from the db if needed
@@ -151,7 +289,7 @@ public abstract class AbstractDBInteraction : IDBInteraction
                     using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
                     {
                         mSqlCommand.CommandType = CommandType.Text;
-                        mSqlCommand.ExecuteNonQuery();
+                        await mSqlCommand.ExecuteNonQueryAsync();
                     }
                 }
                 // 4.) Insert all the rows from the temp table into Destination
@@ -159,7 +297,7 @@ public abstract class AbstractDBInteraction : IDBInteraction
                 using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection, mSqlTransaction))
                 {
                     mSqlCommand.CommandType = CommandType.Text;
-                    mSqlCommand.ExecuteNonQuery();
+                    await mSqlCommand.ExecuteNonQueryAsync();
                 }
                 mSqlTransaction.Commit();
             }
@@ -180,7 +318,7 @@ public abstract class AbstractDBInteraction : IDBInteraction
                 using (SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection))
                 {
                     mSqlCommand.CommandType = CommandType.Text;
-                    mSqlCommand.ExecuteNonQuery();
+                    await mSqlCommand.ExecuteNonQueryAsync();
                 }
             }
         }
