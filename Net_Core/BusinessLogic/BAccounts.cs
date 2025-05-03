@@ -144,11 +144,13 @@ public class BAccounts : AbstractBusinessLogic
         {
             if(account != null && !String.IsNullOrWhiteSpace(account)) 
             {
-                m_DAccounts.Profile = new MAccountProfile();
-                m_DAccounts.Profile.Account = account;
+                m_DAccounts.Profile = new MAccountProfile
+                {
+                    Account = account
+                };
                 DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
+                DataTable mAssignedGroups = await m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
                 mRetVal = new MAccountProfile(await m_DAccounts.GetAccount(), mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
@@ -177,7 +179,7 @@ public class BAccounts : AbstractBusinessLogic
                 m_DAccounts.Profile.Account = mAccount;
                 DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
+                DataTable mAssignedGroups = await m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
                 mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             } 
@@ -211,7 +213,7 @@ public class BAccounts : AbstractBusinessLogic
             m_DAccounts.Profile.Account = mAccount;
             DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = m_DAccounts.Roles();
-            DataTable mAssignedGroups = m_DAccounts.Groups();
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
             DataTable mRoles = m_DAccounts.Security();
             mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
         }
@@ -247,7 +249,7 @@ public class BAccounts : AbstractBusinessLogic
             m_DAccounts.Profile.Account = mAccount;
             DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = m_DAccounts.Roles();
-            DataTable mAssignedGroups = m_DAccounts.Groups();
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
             DataTable mRoles = m_DAccounts.Security();
             mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
         }
@@ -259,14 +261,14 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">An instance of MAccountProfile</param>
     /// <returns></returns>
-    public Collection<MAccountProfile> GetAccounts(MAccountProfile profile)
+    public async Task<Collection<MAccountProfile>> GetAccounts(MAccountProfile profile)
     {
         Collection<MAccountProfile> mRetList = new Collection<MAccountProfile>();
         DataTable mDataTable = null;
         try
         {
             m_DAccounts.Profile = profile;
-            if (DatabaseIsOnline()) mDataTable = m_DAccounts.GetAccounts;
+            if (DatabaseIsOnline()) mDataTable = await m_DAccounts.GetAccounts();
             if (mDataTable != null) 
             {
                 foreach (DataRow item in mDataTable.Rows)
@@ -384,7 +386,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.SaveRoles();
             }
-            profile = new MAccountProfile(await m_DAccounts.GetAccount(), m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
+            DataRow mAccount_DR = await m_DAccounts.GetAccount();
+            DataTable mRefreshTokens_DT = m_DAccounts.RefreshTokens();
+            DataTable mRoles_DT = m_DAccounts.Roles();
+            DataTable mGroups_DT = await m_DAccounts.Groups();
+            DataTable mSecurity_DT = m_DAccounts.Security();
+            profile = new MAccountProfile(mAccount_DR, mRefreshTokens_DT, mRoles_DT, mGroups_DT, mSecurity_DT);
         }
     }
 
