@@ -79,16 +79,20 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    async Task<DataTable> IAccount.GetAccounts()
+    DataTable IAccount.GetAccounts
     {
-        checkValid();
-        String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
-        SqlParameter[] mParameters = [
-            new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
-            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-            new("@P_Account", "")
-        ];
-        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
+        get
+        {
+            checkValid();
+            String mStoredProcedure = "ZGWSecurity.Get_Account";
+            SqlParameter[] mParameters =
+            {
+                    new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+                    new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+                    new("@P_Account", "")
+                };
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
     }
 #endregion
 
@@ -178,15 +182,15 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return base.GetDataTable(mStoredProcedure, mParameters);
     }
 
-    async Task<DataTable> IAccount.Groups()
+    DataTable IAccount.Groups()
     {
         checkValid();
-        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Groups]";
-        SqlParameter[] mParameters = [
-            new("@P_Account", this.Cleanup(m_Profile.Account)),
-            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-        ];
-        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
+        String mStoredProcedure = "ZGWSecurity.Get_Account_Groups";
+        SqlParameter[] mParameters = {
+                new("@P_Account", this.Cleanup(m_Profile.Account)),
+                new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
+            };
+        return base.GetDataTable(mStoredProcedure, mParameters);
     }
 
     DataTable IAccount.Security()

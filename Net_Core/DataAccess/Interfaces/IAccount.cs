@@ -59,13 +59,13 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <returns>DataRow</returns>
 		Task<DataRow> GetAccountByRefreshToken();
 
-		Task<DataTable> GetAccounts();
+		DataTable GetAccounts { get; }
 
 		/// <summary>
 		/// Returns all roles associated with a given SecurityEntitySeqID.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		Task<DataTable> Groups();
+		DataTable Groups();
 
 		/// <summary>
 		/// Retrieves menu data for a given account and MenuType

@@ -31,8 +31,6 @@
         - Task<DataRow> GetAccountByResetToken()
         - Task<DataRow> GetAccountByVerificationToken()
         - Task<DataRow> GetAccountByRefreshToken()
-        - Task<DataTable> GetAccounts()
-        - Task<DataTable> Groups()
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
