@@ -147,7 +147,7 @@ public class BAccounts : AbstractBusinessLogic
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
                 DataRow mAccountRow = await m_DAccounts.GetAccount();
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
@@ -176,7 +176,7 @@ public class BAccounts : AbstractBusinessLogic
             {
                 mAccount = mDataRow[mColumnName].ToString().Trim();
                 m_DAccounts.Profile.Account = mAccount;
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
@@ -210,7 +210,7 @@ public class BAccounts : AbstractBusinessLogic
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
             DataTable mRoles = m_DAccounts.Security();
@@ -246,7 +246,7 @@ public class BAccounts : AbstractBusinessLogic
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
             DataTable mRoles = m_DAccounts.Security();
@@ -385,8 +385,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.SaveRoles();
             }
+            DataRow mAccountRow = await m_DAccounts.GetAccount();
             DataTable mDataTableGroups = await m_DAccounts.Groups();
-            profile = new MAccountProfile(await m_DAccounts.GetAccount(), m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), mDataTableGroups, m_DAccounts.Security());
+            DataTable mDataTableRoles = m_DAccounts.Roles();
+            DataTable mDataTableRefreshTokens = await m_DAccounts.RefreshTokens();
+            DataTable mDataTableSecurity = m_DAccounts.Security();
+            profile = new MAccountProfile(mAccountRow, mDataTableRefreshTokens, mDataTableRoles, mDataTableGroups, mDataTableSecurity);
         }
     }
 

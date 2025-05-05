@@ -122,16 +122,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetVal;
     }
 
-    DataTable IAccount.RefreshTokens()
+    async Task<DataTable> IAccount.RefreshTokens()
     {
         string mCommandText = "SELECT [RefreshTokenId], RT.[AccountSeqId], [Token], [Expires], [Created], [CreatedByIp], [Revoked], [RevokedByIp], [ReplacedByToken], [ReasonRevoked] ";
         mCommandText += "FROM [ZGWSecurity].[RefreshTokens] RT ";
         mCommandText += "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
         mCommandText += "ORDER BY [Created] ASC;";
-        SqlParameter[] mParameters = {
-                new("@P_Account", m_Profile.Account),
-            };
-        return base.GetDataTable(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_Account", m_Profile.Account),
+        ];
+        return await base.GetDataTableAsync(mCommandText, mParameters, true);
     }
 
     bool IAccount.ResetTokenExists(string resetToken)
