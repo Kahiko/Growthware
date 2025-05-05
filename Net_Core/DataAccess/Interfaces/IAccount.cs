@@ -89,7 +89,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// groups.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		DataTable Security();
+		Task<DataTable> Security();
 
 		/// <summary>
 		/// Inserts or updates account information

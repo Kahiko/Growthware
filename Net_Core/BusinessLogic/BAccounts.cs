@@ -150,7 +150,7 @@ public class BAccounts : AbstractBusinessLogic
                 DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = await m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mDerivedRoles = m_DAccounts.Security();
+                DataTable mDerivedRoles = await m_DAccounts.Security();
                 mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else 
@@ -179,7 +179,7 @@ public class BAccounts : AbstractBusinessLogic
                 DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = await m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mDerivedRoles = m_DAccounts.Security();
+                DataTable mDerivedRoles = await m_DAccounts.Security();
                 mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             } 
             else 
@@ -213,7 +213,7 @@ public class BAccounts : AbstractBusinessLogic
             DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = await m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mDerivedRoles = m_DAccounts.Security();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
             mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
@@ -249,7 +249,7 @@ public class BAccounts : AbstractBusinessLogic
             DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
             DataTable mAssignedRoles = await m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mDerivedRoles = m_DAccounts.Security();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
             mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
@@ -389,7 +389,7 @@ public class BAccounts : AbstractBusinessLogic
             DataTable mAssignedGroups = await m_DAccounts.Groups();
             DataTable mAssignedRoles = await m_DAccounts.Roles();
             DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mDerivedRoles = m_DAccounts.Security();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
             profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }
