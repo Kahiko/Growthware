@@ -378,7 +378,7 @@ public class BAccounts : AbstractBusinessLogic
             }
             if(saveRefreshTokens)
             {
-                m_DAccounts.SaveRefreshTokens();
+                await m_DAccounts.SaveRefreshTokens();
             }
             if (saveRoles)
             {

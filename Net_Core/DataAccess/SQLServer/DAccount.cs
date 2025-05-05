@@ -253,7 +253,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
         await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
-    void IAccount.SaveRefreshTokens()
+    async Task IAccount.SaveRefreshTokens()
     {
         MRefreshToken[] mRefreshTokens = this.m_Profile.RefreshTokens.ToArray();
         IDatabaseTable mFirstObj = (IDatabaseTable)mRefreshTokens.First();
@@ -273,7 +273,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
             PrimaryKeyName = mPrimaryKeyName
         };
 
-        base.BulkInsert(mBulkInsertParameters);
+        await base.BulkInsertAsync(mBulkInsertParameters);
     }
 
     void IAccount.SaveRoles()

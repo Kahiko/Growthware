@@ -105,7 +105,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Save refresh tokens by passing an array of IDatabaseFunctions objects to the database.
 		/// </summary>
-		void SaveRefreshTokens();
+		Task SaveRefreshTokens();
 
 		/// <summary>
 		/// Save roles by passing a string or comma separated roles to the database.
