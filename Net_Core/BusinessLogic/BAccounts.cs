@@ -398,8 +398,8 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public bool VerificationTokenExists(string token)
+    public async Task<bool> VerificationTokenExists(string token)
     {
-        return m_DAccounts.VerificationTokenExists(token);
+        return await m_DAccounts.VerificationTokenExists(token);
     }
 }

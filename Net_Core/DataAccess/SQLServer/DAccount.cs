@@ -296,16 +296,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
         base.ExecuteNonQuery(myStoreProcedure, myParameters);
     }
 
-    bool IAccount.VerificationTokenExists(string token)
+    async Task<bool> IAccount.VerificationTokenExists(string token)
     {
         bool mRetVal = true;
         Int32 mCount = 0;
         string mCleanedValue = this.Cleanup(token);
         string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @P_Token";
-        SqlParameter[] mParameters = {
-                new("@P_Token", mCleanedValue),
-            };
-        var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_Token", mCleanedValue),
+        ];
+        var mDbValue = await base.ExecuteScalarAsync(mCommandText, mParameters, true);
         if (mDbValue != null)
         {
             mCount = (Int32)mDbValue;

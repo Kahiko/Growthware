@@ -9,6 +9,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Utilities;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Jwt;
 public class JwtUtility : IJwtUtility
@@ -151,14 +152,14 @@ public class JwtUtility : IJwtUtility
     /// Generates a unique verification token.
     /// </summary>
     /// <returns>string</returns>
-    public string GenerateVerificationToken()
+    public async Task<string> GenerateVerificationToken()
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        bool mTokenExists = BusinessLogic.VerificationTokenExists(mRetVal);
+        bool mTokenExists = await BusinessLogic.VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
-            return GenerateVerificationToken();
+            return await GenerateVerificationToken();
         }
         return mRetVal;
     }

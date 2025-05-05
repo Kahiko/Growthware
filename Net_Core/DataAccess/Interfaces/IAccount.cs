@@ -112,6 +112,6 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// </summary>
 		Task SaveRoles();
 
-		bool VerificationTokenExists(string token);
+		Task<bool> VerificationTokenExists(string token);
     }
 }

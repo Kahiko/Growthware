@@ -528,7 +528,7 @@ public static class AccountUtility
             // TODO: At this point I think this needs to be in the upgrade downgrade scripts
             // but for now it will be done here, should also be thinking about [ResetToken]
             // as well.
-            string mVerificationToken = mJwtUtility.GenerateVerificationToken();
+            string mVerificationToken = await mJwtUtility.GenerateVerificationToken();
             mProfileToSave.VerificationToken = mVerificationToken;
             await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
             mProfileToSave = await GetAccount(mProfileToSave.Account, true);
