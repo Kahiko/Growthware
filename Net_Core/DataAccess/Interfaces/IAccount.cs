@@ -82,7 +82,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Returns all groups associated with a given SecurityEntitySeqID.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		DataTable Roles();
+		Task<DataTable> Roles();
 
 		/// <summary>
 		/// Returns all roles either direct association or by association via

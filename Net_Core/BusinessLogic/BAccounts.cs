@@ -148,10 +148,10 @@ public class BAccounts : AbstractBusinessLogic
                 m_DAccounts.Profile.Account = account;
                 DataRow mAccountRow = await m_DAccounts.GetAccount();
                 DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
+                DataTable mAssignedRoles = await m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                DataTable mDerivedRoles = m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else 
             {
@@ -177,10 +177,10 @@ public class BAccounts : AbstractBusinessLogic
                 mAccount = mDataRow[mColumnName].ToString().Trim();
                 m_DAccounts.Profile.Account = mAccount;
                 DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
+                DataTable mAssignedRoles = await m_DAccounts.Roles();
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                DataTable mDerivedRoles = m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             } 
             else 
             {
@@ -211,10 +211,10 @@ public class BAccounts : AbstractBusinessLogic
             }
             m_DAccounts.Profile.Account = mAccount;
             DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = m_DAccounts.Roles();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mRoles = m_DAccounts.Security();
-            mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+            DataTable mDerivedRoles = m_DAccounts.Security();
+            mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
     }
@@ -247,10 +247,10 @@ public class BAccounts : AbstractBusinessLogic
             }
             m_DAccounts.Profile.Account = mAccount;
             DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = m_DAccounts.Roles();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mRoles = m_DAccounts.Security();
-            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+            DataTable mDerivedRoles = m_DAccounts.Security();
+            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
     }
@@ -386,11 +386,11 @@ public class BAccounts : AbstractBusinessLogic
                 m_DAccounts.SaveRoles();
             }
             DataRow mAccountRow = await m_DAccounts.GetAccount();
-            DataTable mDataTableGroups = await m_DAccounts.Groups();
-            DataTable mDataTableRoles = m_DAccounts.Roles();
-            DataTable mDataTableRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mDataTableSecurity = m_DAccounts.Security();
-            profile = new MAccountProfile(mAccountRow, mDataTableRefreshTokens, mDataTableRoles, mDataTableGroups, mDataTableSecurity);
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+            DataTable mDerivedRoles = m_DAccounts.Security();
+            profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }
 
