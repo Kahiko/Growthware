@@ -240,17 +240,17 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetInt;
     }
 
-    void IAccount.SaveGroups()
+    async Task IAccount.SaveGroups()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Set_Account_Groups";
-        SqlParameter[] mParameters = {
+        String mStoredProcedure = "[ZGWSecurity].[Set_Account_Groups]";
+        SqlParameter[] mParameters = [
             new("@P_Account", this.Cleanup(m_Profile.Account)),
             new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
             new("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
             new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
     void IAccount.SaveRefreshTokens()

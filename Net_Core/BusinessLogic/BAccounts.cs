@@ -374,7 +374,7 @@ public class BAccounts : AbstractBusinessLogic
             profile.Id = await m_DAccounts.Save();
             if (saveGroups)
             {
-                m_DAccounts.SaveGroups();
+                await m_DAccounts.SaveGroups();
             }
             if(saveRefreshTokens)
             {

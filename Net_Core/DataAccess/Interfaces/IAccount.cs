@@ -100,7 +100,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Save groups by passing a string or comma separated groups to the database.
 		/// </summary>
-		void SaveGroups();
+		Task SaveGroups();
 
 		/// <summary>
 		/// Save refresh tokens by passing an array of IDatabaseFunctions objects to the database.
