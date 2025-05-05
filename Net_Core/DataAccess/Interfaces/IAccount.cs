@@ -110,7 +110,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Save roles by passing a string or comma separated roles to the database.
 		/// </summary>
-		void SaveRoles();
+		Task SaveRoles();
 
 		bool VerificationTokenExists(string token);
     }

@@ -276,17 +276,17 @@ public class DAccounts : AbstractDBInteraction, IAccount
         await base.BulkInsertAsync(mBulkInsertParameters);
     }
 
-    void IAccount.SaveRoles()
+    async Task IAccount.SaveRoles()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Set_Account_Roles";
-        SqlParameter[] mParameters = {
+        String mStoredProcedure = "[ZGWSecurity].[Set_Account_Roles]";
+        SqlParameter[] mParameters = [
             new("@P_Account", this.Cleanup(m_Profile.Account)),
             new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
             new("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
             new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
     void IAccount.Delete()

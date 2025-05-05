@@ -382,7 +382,7 @@ public class BAccounts : AbstractBusinessLogic
             }
             if (saveRoles)
             {
-                m_DAccounts.SaveRoles();
+                await m_DAccounts.SaveRoles();
             }
             DataRow mAccountRow = await m_DAccounts.GetAccount();
             DataTable mAssignedGroups = await m_DAccounts.Groups();
