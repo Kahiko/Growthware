@@ -178,15 +178,15 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return base.GetDataTable(mStoredProcedure, mParameters);
     }
 
-    DataTable IAccount.Groups()
+    async Task<DataTable> IAccount.Groups()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Get_Account_Groups";
-        SqlParameter[] mParameters = {
-                new("@P_Account", this.Cleanup(m_Profile.Account)),
-                new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-            };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Groups]";
+        SqlParameter[] mParameters = [
+            new("@P_Account", this.Cleanup(m_Profile.Account)),
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     DataTable IAccount.Security()
