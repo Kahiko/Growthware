@@ -198,7 +198,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    int IAccount.Save()
+    async Task<int> IAccount.Save()
     {
         checkValid();
         int mRetInt;
@@ -235,7 +235,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
             new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
             new("@P_VerificationToken", !string.IsNullOrWhiteSpace(m_Profile.VerificationToken) ? m_Profile.VerificationToken : DBNull.Value)
         ];
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         mRetInt = int.Parse(GetParameterValue("@P_AccountSeqId", mParameters), CultureInfo.InvariantCulture);
         return mRetInt;
     }

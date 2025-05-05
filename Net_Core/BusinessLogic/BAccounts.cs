@@ -368,11 +368,10 @@ public class BAccounts : AbstractBusinessLogic
     /// </example>
     public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
-        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        m_DAccounts.Profile = profile;
+        m_DAccounts.Profile = profile ?? throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (DatabaseIsOnline()) 
         {
-            profile.Id = m_DAccounts.Save();
+            profile.Id = await m_DAccounts.Save();
             if (saveGroups)
             {
                 m_DAccounts.SaveGroups();

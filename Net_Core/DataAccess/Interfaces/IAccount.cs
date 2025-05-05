@@ -95,7 +95,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Inserts or updates account information
 		/// </summary>
 		/// <returns>int</returns>
-		int Save();
+		Task<int> Save();
 
 		/// <summary>
 		/// Save groups by passing a string or comma separated groups to the database.
