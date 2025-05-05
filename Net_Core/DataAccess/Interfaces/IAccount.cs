@@ -59,7 +59,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <returns>DataRow</returns>
 		Task<DataRow> GetAccountByRefreshToken();
 
-		DataTable GetAccounts { get; }
+		Task<DataTable> GetAccounts();
 
 		/// <summary>
 		/// Returns all roles associated with a given SecurityEntitySeqID.

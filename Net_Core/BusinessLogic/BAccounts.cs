@@ -259,14 +259,14 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">An instance of MAccountProfile</param>
     /// <returns></returns>
-    public Collection<MAccountProfile> GetAccounts(MAccountProfile profile)
+    public async Task<Collection<MAccountProfile>> GetAccounts(MAccountProfile profile)
     {
-        Collection<MAccountProfile> mRetList = new Collection<MAccountProfile>();
+        Collection<MAccountProfile> mRetList = [];
         DataTable mDataTable = null;
         try
         {
             m_DAccounts.Profile = profile;
-            if (DatabaseIsOnline()) mDataTable = m_DAccounts.GetAccounts;
+            if (DatabaseIsOnline()) mDataTable = await m_DAccounts.GetAccounts();
             if (mDataTable != null) 
             {
                 foreach (DataRow item in mDataTable.Rows)
