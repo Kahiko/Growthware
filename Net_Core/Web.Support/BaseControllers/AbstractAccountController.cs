@@ -229,11 +229,11 @@ public abstract class AbstractAccountController : ControllerBase
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
-            mRetVal = AccountUtility.GetMenuData(mAccountProfile.Account, mMenuType);
+            mRetVal = await AccountUtility.GetMenuData(mAccountProfile.Account, mMenuType);
         }
         else
         {
-            mRetVal = AccountUtility.GetMenuData(ConfigSettings.Anonymous, mMenuType);
+            mRetVal = await AccountUtility.GetMenuData(ConfigSettings.Anonymous, mMenuType);
         }
         return Ok(mRetVal);
     }
@@ -251,11 +251,11 @@ public abstract class AbstractAccountController : ControllerBase
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
-            mRetVal = AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
+            mRetVal = await AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
         }
         else
         {
-            mRetVal = AccountUtility.GetMenuItems(ConfigSettings.Anonymous, mMenuType);
+            mRetVal = await AccountUtility.GetMenuItems(ConfigSettings.Anonymous, mMenuType);
         }
         return Ok(mRetVal);
     }
@@ -284,11 +284,11 @@ public abstract class AbstractAccountController : ControllerBase
         List<string> mExcludedActions = new List<string>() { "api", "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
         MAccountProfile mCurrentAccountProfile = await AccountUtility.CurrentProfile();
-        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Hierarchical);
+        IList<MMenuTree> mMenuItems = await AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Horizontal);
+        mMenuItems = await AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Horizontal);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Vertical);
+        mMenuItems = await AccountUtility.GetMenuItems(mCurrentAccountProfile.Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
         // not the best way b/c this is defined in the DB but it's better than nothing
         foreach (string mAction in mExcludedActions)

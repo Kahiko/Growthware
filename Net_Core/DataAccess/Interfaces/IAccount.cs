@@ -74,7 +74,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <param name="menuType">MenuType</param>
 		/// <returns>DataTable</returns>
 		/// <remarks></remarks>
-		DataTable GetMenu(string account, MenuType menuType);
+		Task<DataTable> GetMenu(string account, MenuType menuType);
 
 		DataTable RefreshTokens();
 

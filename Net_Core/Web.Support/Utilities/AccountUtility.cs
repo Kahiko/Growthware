@@ -236,7 +236,7 @@ public static class AccountUtility
     /// <param name="menuType"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static string GetMenuData(string account, MenuType menuType)
+    public static async Task<string> GetMenuData(string account, MenuType menuType)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         string mMenuName = menuType.ToString() + "_" + account + "_Menu_Data";
@@ -246,7 +246,7 @@ public static class AccountUtility
             return mRetVal;
         }
         BAccounts mBAccount = BusinessLogic;
-        DataTable mDataTable = mBAccount.GetMenu(account, menuType);
+        DataTable mDataTable = await mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
             mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
@@ -262,7 +262,7 @@ public static class AccountUtility
     /// <param name="menuType"></param>
     /// <returns>The list of menu items for the specified account and menu type.</returns>
     /// <exception cref="ArgumentNullException">he type of menu (e.g., Hierarchical, Horizontal, or Vertical) to retrieve the menu items for.</exception>
-    public static IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
+    public static async Task<IList<MMenuTree>> GetMenuItems(string account, MenuType menuType)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
@@ -275,7 +275,7 @@ public static class AccountUtility
         mRetVal = new List<MMenuTree>();
         BAccounts mBAccount = BusinessLogic;
         DataTable mDataTable = null;
-        mDataTable = mBAccount.GetMenu(account, menuType);
+        mDataTable = await mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
         {
             mRetVal = MMenuTree.GetFlatList(mDataTable);

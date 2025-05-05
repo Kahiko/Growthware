@@ -297,12 +297,12 @@ public class BAccounts : AbstractBusinessLogic
     /// <param name="menuType">MenuType</param>
     /// <returns>DataTable</returns>
     /// <remarks></remarks>
-    public DataTable GetMenu(String account, MenuType menuType)
+    public async Task<DataTable> GetMenu(String account, MenuType menuType)
     {
         DataTable mRetVal = null;
         if (DatabaseIsOnline()) 
         {
-            mRetVal = m_DAccounts.GetMenu(account, menuType);
+            mRetVal = await m_DAccounts.GetMenu(account, menuType);
         }
         return mRetVal;
     }

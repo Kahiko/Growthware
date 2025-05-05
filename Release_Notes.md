@@ -33,6 +33,7 @@
         - Task<DataRow> GetAccountByRefreshToken()
         - Task<DataTable> GetAccounts()
         - Task<DataTable> Groups()
+        - Task<DataTable> GetMenu(string account, MenuType menuType)
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
@@ -42,6 +43,7 @@
 - Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
 - BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
 - GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
+- When editting a role the members are not being always being populated
 
 ### Bug Fixes
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs

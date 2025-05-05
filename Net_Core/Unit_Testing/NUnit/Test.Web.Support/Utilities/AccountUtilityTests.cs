@@ -197,26 +197,26 @@ public class AccountUtilityTests
     }
 
     [Test]
-    public void GetMenuItems_ValidAccount_ReturnsMenuItems()
+    public async Task GetMenuItems_ValidAccount_ReturnsMenuItems()
     {
         // Arrange
         MenuType mMenuType = MenuType.Horizontal; // Example menu type
 
         // Act
-        var mResult = AccountUtility.GetMenuItems(m_Developer_Account, mMenuType);
+        var mResult = await AccountUtility.GetMenuItems(m_Developer_Account, mMenuType);
 
         // Assert
         Assert.That(mResult, Is.Not.Null);
     }
 
     [Test]
-    public void GetMenuData_ValidAccountAndMenuType_ReturnsMenuData()
+    public async Task GetMenuData_ValidAccountAndMenuType_ReturnsMenuData()
     {
         // Arrange
         MenuType mMenuType = MenuType.Horizontal; // Example menu type
 
         // Act
-        var mResult = AccountUtility.GetMenuData(m_Developer_Account, mMenuType);
+        var mResult = await AccountUtility.GetMenuData(m_Developer_Account, mMenuType);
 
         // Assert
         Assert.That(mResult, Is.Not.Null, "Menu data should not be null.");
