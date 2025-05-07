@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -10,7 +11,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Deletes the registration information given a security entity sequence id.
         /// </summary>
         /// <param name="securityEntitySeqId"></param>
-        void DeleteRegistrationInformation(int securityEntitySeqId);
+        Task DeleteRegistrationInformation(int securityEntitySeqId);
 
         /// <summary>
         /// Returns all rows from [ZGWSecurity].[Registration_Information]

@@ -173,7 +173,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 {
                     return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                 }
-                SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
+                await SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
             }
         } 
         else 

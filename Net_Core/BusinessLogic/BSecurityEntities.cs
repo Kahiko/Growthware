@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 /// <summary>
@@ -110,9 +111,9 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// Deletes the registration information.
     /// </summary>
     /// <param name="securityEntitySeqId">int</param>
-    public void DeleteRegistrationInformation(int securityEntitySeqId)
+    public async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
+        await m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
     }
 
     public Collection<MRegistrationInformation> GetRegistrationInformation()

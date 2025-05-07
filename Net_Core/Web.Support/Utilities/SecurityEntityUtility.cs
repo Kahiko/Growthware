@@ -8,6 +8,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Helpers;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -64,9 +65,9 @@ public static class SecurityEntityUtility
         };
     }
 
-    public static void DeleteRegistrationInformation(int securityEntitySeqId)
+    public static async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
+        await getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
     }
 

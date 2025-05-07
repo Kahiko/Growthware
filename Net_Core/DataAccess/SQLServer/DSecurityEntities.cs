@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -21,14 +22,13 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     }
 #endregion
 
-    void ISecurityEntities.DeleteRegistrationInformation(int securityEntitySeqId)
+    async Task ISecurityEntities.DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        string mStoredProcedure = "ZGWSecurity.Delete_Registration_Information";
-        SqlParameter[] mParameters =
-        {
+        string mStoredProcedure = "[ZGWSecurity].[Delete_Registration_Information]";
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", securityEntitySeqId)
-        };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
     DataTable ISecurityEntities.GetRegistrationInformation()
