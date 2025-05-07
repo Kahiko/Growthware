@@ -11,48 +11,15 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class ClientChoicesUtility
 {
+    private static BClientChoices m_BClientChoices = null;
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
-#region "Cache/Session Methods"
     /// <summary>
-    /// Adds or updates a value in the cache or session.
+    /// Converts a JSON string to a MClientChoicesState object
     /// </summary>
-    /// <param name="forAccount">The name of the value to add or update.</param>
-    /// <param name="value">The string value to add or update.</param>
-    /// <remarks>
-    /// The MClientChoicesState object does not deserialize correctly b/c it does not have
-    /// concrete properties, so, we store a serialize DataRow.ItemArray.
-    /// </remarks>
-    private static void addOrUpdateCacheOrSession(string forAccount, string value)
-    {
-        if (forAccount.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
-        {
-            SessionHelper.AddToSession(MClientChoices.SessionName, value);
-            return;
-        }
-        SessionHelper.AddToSession(MClientChoices.SessionName, value);
-        m_CacheHelper.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
-    }
-
-    /// <summary>
-    /// Retrieves a value from either the cache or the session, based on the provided parameters.
-    /// </summary>
-    /// <param name="forAccount">The account for which the value is being retrieved.</param>
-    /// <param name="name">The name of the value to retrieve.</param>
-    /// <returns>The retrieved value.</returns>
-    private static MClientChoicesState getFromCacheOrSession(string forAccount)
-    {
-        string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName) ?? m_CacheHelper.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
-        if(mJsonString != null && mJsonString.Length > 0) 
-        {
-            return convertToClientChoicesState(mJsonString);
-        }
-        return null;
-    }
-#endregion
-
-#region "Helper Methods"
-    private static MClientChoicesState convertToClientChoicesState(string jsonData)
+    /// <param name="jsonData"></param>
+    /// <returns></returns>
+    private static MClientChoicesState stringToClientChoicesSTate(string jsonData)
     {
         /*
          *  1.) Make a copy of jsonData (As a matter of habbit we don't want to change the orginal parameter even if it is imutable)
@@ -60,7 +27,7 @@ public static class ClientChoicesUtility
          *  3.) return MAccountProfile from the DataTable populated DataRow
          */
         string mJsonString = jsonData;
-        DataTable mDataTable = new DataTable();
+        DataTable mDataTable = new();
         mDataTable.Columns.Add("Account");
         mDataTable.Columns.Add("SecurityEntityID");
         mDataTable.Columns.Add("SecurityEntityName");
@@ -89,62 +56,52 @@ public static class ClientChoicesUtility
         MClientChoicesState mRetVal = new(mDataTable.Rows[0]);
         return mRetVal;
     }
-#endregion
 
-    public static MClientChoicesState AnonymousState
+    private static MClientChoicesState adjustSecurityEntity(MClientChoicesState clientChoicesState)
     {
-        get
-        {
-            MClientChoicesState mRetVal = getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-            if (mRetVal == null)
-            {
-                string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
-                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
-                mRetVal = getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-            }
-            return mRetVal;
-        }
-    }
-
-    public static void ClearSession()
-    {
-        SessionHelper.RemoveFromSession(MClientChoices.SessionName);
-    }
-
-    public static MClientChoicesState CurrentState()
-    {
-        MClientChoicesState mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-        if (mRetVal == null)
-        {
-            string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
-            addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
-            mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
-        }
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
-            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
-        }            
-        return mRetVal;
+            clientChoicesState[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
+            clientChoicesState[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
+        }
+        return clientChoicesState;
     }
 
     /// <summary>
-    /// Retrieves the client choices state for the specified account and updates Cache/Session.
+    /// Returns the client choices state for the anonymous account from cache.
     /// </summary>
-    /// <param name="forAccount">The account for which to retrieve the client choices state.</param>
-    /// <returns>The client choices state for the specified account.</returns>
-    private static MClientChoicesState getClientChoicesState(string forAccount)
+    /// <returns>MClientChoicesState</returns>
+    public static MClientChoicesState AnonymousState()
     {
-        DataRow mDataRow = getFromDB(forAccount);
-        string mJsonString = JsonSerializer.Serialize(mDataRow.ItemArray);
-        addOrUpdateCacheOrSession(forAccount, mJsonString);
-        MClientChoicesState mRetVal = getFromCacheOrSession(forAccount);
-        if(ConfigSettings.SecurityEntityFromUrl)
+        string mJsonString = m_CacheHelper.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
+        if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
         {
-            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
-            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
+            mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
+            m_CacheHelper.AddToCache(MClientChoices.AnonymousClientChoicesState, mJsonString);
         }
-        return mRetVal;
+        MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
+        return adjustSecurityEntity(mRetVal);
+    }
+
+    static BClientChoices BusinessLogic()
+    {
+        m_BClientChoices ??= new(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
+        return m_BClientChoices;
+    }
+
+    /// <summary>
+    /// Returns the current client choices state.
+    /// </summary>
+    /// <returns></returns>
+    public static MClientChoicesState CurrentState()
+    {
+        string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName);
+        if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
+        {
+            return AnonymousState();
+        }
+        MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
+        return adjustSecurityEntity(mRetVal);
     }
 
     /// <summary>
@@ -154,8 +111,7 @@ public static class ClientChoicesUtility
     /// <returns></returns>
     private static DataRow getFromDB(string forAccount)
     {
-        BClientChoices mBusinessLayer = new(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
-        return mBusinessLayer.GetDataRow(forAccount);
+        return BusinessLogic().GetDataRow(forAccount);
     }
 
     /// <summary>
@@ -167,9 +123,7 @@ public static class ClientChoicesUtility
     public static async Task Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
-        BClientChoices mBusinessLayer = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
-        await mBusinessLayer.Save(clientChoicesState);
-        getClientChoicesState(clientChoicesState.Account);
+        await BusinessLogic().Save(clientChoicesState);
     }
 
     /// <summary>
@@ -178,9 +132,10 @@ public static class ClientChoicesUtility
     /// <param name="forAccount"></param>
     public static void SynchronizeContext(string forAccount)
     {
-        if(CurrentState().Account.ToLowerInvariant() != forAccount.ToLowerInvariant())
+        if(!forAccount.Equals(CurrentState().Account, StringComparison.InvariantCultureIgnoreCase))
         {
-            MClientChoicesState mClientChoicesState = getClientChoicesState(forAccount);            
+            string mJsonString = JsonSerializer.Serialize(getFromDB(forAccount).ItemArray);
+            SessionHelper.AddToSession(MClientChoices.SessionName, mJsonString);
         }
-    }
+    }    
 }

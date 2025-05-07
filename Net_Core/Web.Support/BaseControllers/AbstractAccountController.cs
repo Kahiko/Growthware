@@ -636,7 +636,7 @@ public abstract class AbstractAccountController : ControllerBase
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
-            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
+            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState();
 
             mClientChoicesState[MClientChoices.Account] = accountChoices.Account;
