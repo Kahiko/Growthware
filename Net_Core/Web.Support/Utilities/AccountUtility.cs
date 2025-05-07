@@ -225,7 +225,7 @@ public static class AccountUtility
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = BusinessLogic;
+        BAccounts mBAccount = BusinessLogic();
         mBAccount.Delete(accountSeqId);
     }
 
@@ -245,7 +245,7 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = BusinessLogic;
+        BAccounts mBAccount = BusinessLogic();
         DataTable mDataTable = await mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
@@ -273,7 +273,7 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = BusinessLogic;
+        BAccounts mBAccount = BusinessLogic();
         DataTable mDataTable = null;
         mDataTable = await mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
@@ -318,14 +318,14 @@ public static class AccountUtility
         BAccounts mBAccount = null;
         if (forceDb)
         {
-            mBAccount = BusinessLogic;
+            mBAccount = BusinessLogic();
             mRetVal = await mBAccount.GetProfile(account);
             return mRetVal;
         }
         mRetVal = await CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = BusinessLogic;
+            mBAccount = BusinessLogic();
             mRetVal = await mBAccount.GetProfile(account);
         }
         return mRetVal;
@@ -342,7 +342,7 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static async Task<MAccountProfile> getAccountByRefreshToken(string token)
     {
-        BAccounts mBAccount = BusinessLogic;
+        BAccounts mBAccount = BusinessLogic();
         MAccountProfile mRetVal = null;
         mRetVal = await mBAccount.GetProfileByRefreshToken(token);
         return mRetVal;
@@ -367,21 +367,18 @@ public static class AccountUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts BusinessLogic
+    private static BAccounts BusinessLogic()
     {
-        get
+        if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
         {
-            if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
-            {
-                m_BAccounts = new(SecurityEntityUtility.CurrentProfile());
-            }
-            return m_BAccounts;
+            m_BAccounts = new(SecurityEntityUtility.CurrentProfile());
         }
+        return m_BAccounts;
     }
 
     public static async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
-        BAccounts mBAccount = BusinessLogic;
+        BAccounts mBAccount = BusinessLogic();
         MAccountProfile mRetVal = null;
         try
         {
@@ -681,7 +678,7 @@ public static class AccountUtility
             return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBusinessLogic = BusinessLogic;
+        BAccounts mBusinessLogic = BusinessLogic();
         await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account);
         MAccountProfile mCurrentAccountProfile = await CurrentProfile();
