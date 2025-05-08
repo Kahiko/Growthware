@@ -25,16 +25,13 @@ public class JwtUtility : IJwtUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts BusinessLogic
+    private static BAccounts BusinessLogic()
     {
-        get
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
-            {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
-            }
-            return m_BusinessLogic;
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
         }
+        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -122,7 +119,8 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        var tokenIsUnique = BusinessLogic.RefreshTokenExists(refreshToken.Token);
+        BAccounts mBusinessLogic = BusinessLogic();
+        var tokenIsUnique = mBusinessLogic.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
             return GenerateRefreshToken(ipAddress, accountSeqId);
@@ -137,8 +135,8 @@ public class JwtUtility : IJwtUtility
     public static string GenerateResetToken()
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-
-        bool mTokenIsUnique = BusinessLogic.ResetTokenExists(mRetVal);
+        BAccounts mBusinessLogic = BusinessLogic();
+        bool mTokenIsUnique = mBusinessLogic.ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {
@@ -156,7 +154,8 @@ public class JwtUtility : IJwtUtility
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        bool mTokenExists = await BusinessLogic.VerificationTokenExists(mRetVal);
+        BAccounts mBusinessLogic = BusinessLogic();
+        bool mTokenExists = await mBusinessLogic.VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
             return await GenerateVerificationToken();
