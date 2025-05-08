@@ -15,56 +15,21 @@ public static class ClientChoicesUtility
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
-    /// Converts a JSON string to a MClientChoicesState object
+    /// Adjusts the security entity ID and name in the client choices state if the selected security entity is supposed to be determined from the URL.
     /// </summary>
-    /// <param name="jsonData"></param>
-    /// <returns></returns>
-    private static MClientChoicesState stringToClientChoicesSTate(string jsonData)
-    {
-        /*
-         *  1.) Make a copy of jsonData (As a matter of habbit we don't want to change the orginal parameter even if it is imutable)
-         *  2.) Create a DataTable with the client choices "columns" in the correct order and add a new row
-         *  3.) return MAccountProfile from the DataTable populated DataRow
-         */
-        string mJsonString = jsonData;
-        DataTable mDataTable = new();
-        mDataTable.Columns.Add("Account");
-        mDataTable.Columns.Add("SecurityEntityID");
-        mDataTable.Columns.Add("SecurityEntityName");
-        mDataTable.Columns.Add("FavoriteAction");
-        mDataTable.Columns.Add("RecordsPerPage");
-
-        mDataTable.Columns.Add("ColorScheme");
-        mDataTable.Columns.Add("EvenRow");
-        mDataTable.Columns.Add("EvenFont");
-        mDataTable.Columns.Add("OddRow");
-        mDataTable.Columns.Add("OddFont");
-        mDataTable.Columns.Add("HeaderRow");
-        mDataTable.Columns.Add("HeaderFont");
-        mDataTable.Columns.Add("Background");
-
-        mDataTable.Rows.Add(mDataTable.NewRow());
-        // Remove unnecessary characters from the JSON string
-        mJsonString = mJsonString.Replace("[", "").Replace("]", "").Replace("\"", "");
-        // Split the JSON string into an array
-        string[] mJsonStringArray = mJsonString.Split(',');
-        // Iterate over the array and assign values to the DataTable DataRow
-        for (int i = 0; i < mJsonStringArray.Length; i++)
-        {
-            mDataTable.Rows[0][i] = mJsonStringArray[i];
-        }
-        MClientChoicesState mRetVal = new(mDataTable.Rows[0]);
-        return mRetVal;
-    }
-
+    /// <param name="clientChoicesState"></param>
+    /// <returns>MClientChoicesState</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     private static MClientChoicesState adjustSecurityEntity(MClientChoicesState clientChoicesState)
     {
+        if(clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
+        MClientChoicesState mRetVal = new(clientChoicesState);
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            clientChoicesState[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
-            clientChoicesState[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
+            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
+            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
         }
-        return clientChoicesState;
+        return mRetVal;
     }
 
     /// <summary>
@@ -124,6 +89,49 @@ public static class ClientChoicesUtility
     {
         if (clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
         await BusinessLogic().Save(clientChoicesState);
+    }
+
+    /// <summary>
+    /// Converts a JSON string to a MClientChoicesState object
+    /// </summary>
+    /// <param name="jsonData"></param>
+    /// <returns></returns>
+    private static MClientChoicesState stringToClientChoicesSTate(string jsonData)
+    {
+        /*
+         *  1.) Make a copy of jsonData (As a matter of habbit we don't want to change the orginal parameter even if it is imutable)
+         *  2.) Create a DataTable with the client choices "columns" in the correct order and add a new row
+         *  3.) return MAccountProfile from the DataTable populated DataRow
+         */
+        string mJsonString = jsonData;
+        DataTable mDataTable = new();
+        mDataTable.Columns.Add("Account");
+        mDataTable.Columns.Add("SecurityEntityID");
+        mDataTable.Columns.Add("SecurityEntityName");
+        mDataTable.Columns.Add("FavoriteAction");
+        mDataTable.Columns.Add("RecordsPerPage");
+
+        mDataTable.Columns.Add("ColorScheme");
+        mDataTable.Columns.Add("EvenRow");
+        mDataTable.Columns.Add("EvenFont");
+        mDataTable.Columns.Add("OddRow");
+        mDataTable.Columns.Add("OddFont");
+        mDataTable.Columns.Add("HeaderRow");
+        mDataTable.Columns.Add("HeaderFont");
+        mDataTable.Columns.Add("Background");
+
+        mDataTable.Rows.Add(mDataTable.NewRow());
+        // Remove unnecessary characters from the JSON string
+        mJsonString = mJsonString.Replace("[", "").Replace("]", "").Replace("\"", "");
+        // Split the JSON string into an array
+        string[] mJsonStringArray = mJsonString.Split(',');
+        // Iterate over the array and assign values to the DataTable DataRow
+        for (int i = 0; i < mJsonStringArray.Length; i++)
+        {
+            mDataTable.Rows[0][i] = mJsonStringArray[i];
+        }
+        MClientChoicesState mRetVal = new(mDataTable.Rows[0]);
+        return mRetVal;
     }
 
     /// <summary>
