@@ -20,8 +20,7 @@ public class MClientChoicesState
     /// Initializes a new instance of the <see cref="MClientChoicesState" /> class.
     /// </summary>
     /// <param name="clientChoicesData">The client choices data.</param>
-    public MClientChoicesState(DataRow clientChoicesData)
-        : base()
+    public MClientChoicesState(DataRow clientChoicesData) : base()
     {
         m_Account = Account;
         if (clientChoicesData != null)
@@ -43,6 +42,17 @@ public class MClientChoicesState
                 throw;
             }
         }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MClientChoicesState" /> class from an existing instance.
+    /// </summary>
+    /// <param name="original"></param>
+    public MClientChoicesState(MClientChoicesState original)
+    {
+        Account = original.Account;
+        m_ClientChoices = new Hashtable(original.ChoicesHashtable);
+        m_IsDirty = false;
     }
 
     /// <summary>
