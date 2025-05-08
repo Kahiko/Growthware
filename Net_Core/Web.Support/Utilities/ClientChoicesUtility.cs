@@ -15,24 +15,6 @@ public static class ClientChoicesUtility
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
-    /// Adjusts the security entity ID and name in the client choices state if the selected security entity is supposed to be determined from the URL.
-    /// </summary>
-    /// <param name="clientChoicesState"></param>
-    /// <returns>MClientChoicesState</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    private static MClientChoicesState adjustSecurityEntity(MClientChoicesState clientChoicesState)
-    {
-        if(clientChoicesState == null) throw new ArgumentNullException(nameof(clientChoicesState), "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
-        MClientChoicesState mRetVal = new(clientChoicesState);
-        if(ConfigSettings.SecurityEntityFromUrl)
-        {
-            mRetVal[MClientChoices.SecurityEntityId] = SecurityEntityUtility.CurrentProfile().Id.ToString();
-            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile().Name;
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
     /// Returns the client choices state for the anonymous account from cache.
     /// </summary>
     /// <returns>MClientChoicesState</returns>
@@ -45,7 +27,7 @@ public static class ClientChoicesUtility
             m_CacheHelper.AddToCache(MClientChoices.AnonymousClientChoicesState, mJsonString);
         }
         MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
-        return adjustSecurityEntity(mRetVal);
+        return mRetVal;
     }
 
     static BClientChoices BusinessLogic()
@@ -66,7 +48,7 @@ public static class ClientChoicesUtility
             return AnonymousState();
         }
         MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
-        return adjustSecurityEntity(mRetVal);
+        return mRetVal;
     }
 
     /// <summary>
