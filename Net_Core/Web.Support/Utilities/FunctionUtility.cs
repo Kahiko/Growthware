@@ -68,7 +68,8 @@ public static class FunctionUtility
     /// <returns>List<UIKeyValuePair></returns>
     public static List<UIKeyValuePair> GetAvalibleParents()
     {
-        List<UIKeyValuePair> mRetVal = Functions().Where(item => item.IsNavigable).Select(item => new UIKeyValuePair {
+        Collection<MFunctionProfile> mFunctionProfiles = Functions();
+        List<UIKeyValuePair> mRetVal = mFunctionProfiles.Where(item => item.IsNavigable).Select(item => new UIKeyValuePair {
             Key = item.Id ,
             Value = item.Name
         }).OrderBy(item => item.Value).ToList();
@@ -146,7 +147,8 @@ public static class FunctionUtility
         MFunctionProfile mRetVal = null;
         if (!string.IsNullOrEmpty(action))
         {
-            var mResult = from mProfile in Functions()
+            Collection<MFunctionProfile> mFunctionProfiles = Functions();
+            var mResult = from mProfile in mFunctionProfiles
                           where mProfile.Action.ToLower(CultureInfo.CurrentCulture) == action.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             mRetVal = new MFunctionProfile();
@@ -170,7 +172,8 @@ public static class FunctionUtility
     public static MFunctionProfile GetProfile(int functionSeqId)
     {
         MFunctionProfile mRetVal = null;
-        var mResult = from mProfile in Functions()
+        Collection<MFunctionProfile> mFunctionProfiles = Functions();
+        var mResult = from mProfile in mFunctionProfiles
                         where mProfile.Id == functionSeqId
                         select mProfile;
         mRetVal = new MFunctionProfile();
