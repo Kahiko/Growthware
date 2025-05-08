@@ -22,6 +22,10 @@ public static class SecurityEntityUtility
     private static String s_CacheName = "Cached_SecurityEntities";
     private static string s_CacheRegistrationsName = "Cached_RegistrationInformations";
 
+    /// <summary>
+    /// Returns the current security entity based on the SecurityEntityFromUrl config setting.
+    /// </summary>
+    /// <returns>MSecurityEntity</returns>
     public static MSecurityEntity CurrentProfile()
     {
         MSecurityEntity mRetProfile = null;
