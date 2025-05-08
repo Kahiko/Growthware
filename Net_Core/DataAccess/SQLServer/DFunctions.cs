@@ -38,7 +38,7 @@ public class DFunctions : AbstractDBInteraction, IFunction
         return await base.GetDataRowAsync(mStoreProcedure, mParameters);
     }
 
-    DataSet IFunction.GetFunctions()
+    async Task<DataSet> IFunction.GetFunctions()
     {
         DataSet mDSFunctions = null;
         checkValid();
@@ -48,8 +48,8 @@ public class DFunctions : AbstractDBInteraction, IFunction
         try
         {
             string mStoredProcedure = "[ZGWSecurity].[Get_Function]";
-            DataTable mFunctions = base.GetDataTable(mStoredProcedure, mParameters);
-            mDSFunctions = this.getSecurity();
+            DataTable mFunctions = await base.GetDataTableAsync(mStoredProcedure, mParameters);
+            mDSFunctions = await this.getSecurity();
             mDSFunctions.Tables[0].TableName = "DerivedRoles";
             mDSFunctions.Tables[1].TableName = "AssignedRoles";
             mDSFunctions.Tables[2].TableName = "Groups";
@@ -240,10 +240,10 @@ public class DFunctions : AbstractDBInteraction, IFunction
         }
     }
 
-    private DataSet getSecurity()
+    private async Task<DataSet> getSecurity()
     {
         string mStoreProcedure = "[ZGWSecurity].[Get_Function_Security]";
-        SqlParameter[] mParameters = { new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
-        return base.GetDataSet(mStoreProcedure, mParameters);
+        SqlParameter[] mParameters = [ new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) ];
+        return await base.GetDataSetAsync(mStoreProcedure, mParameters);
     }
 }

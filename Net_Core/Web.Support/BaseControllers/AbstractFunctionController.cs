@@ -62,7 +62,8 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
-            return Ok(FunctionUtility.GetAvalibleParents());
+            List<UIKeyValuePair> mRetVal = await FunctionUtility.GetAvalibleParents();
+            return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -75,7 +76,7 @@ public abstract class AbstractFunctionController : ControllerBase
         if(mSecurityInfo != null && mSecurityInfo.MayView)
         {
             MFunctionProfile mFunctionProfile = new MFunctionProfile();
-            mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+            mFunctionProfile = await FunctionUtility.GetProfile(functionSeqId);
             if(mFunctionProfile == null)
             {
                 mFunctionProfile = new MFunctionProfile();
@@ -148,7 +149,7 @@ public abstract class AbstractFunctionController : ControllerBase
     private async Task<MSecurityInfo> getSecurityInfo(string action)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
     }
@@ -166,7 +167,7 @@ public abstract class AbstractFunctionController : ControllerBase
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MFunctionProfile mExistingProfile = FunctionUtility.GetProfile(functionProfile.Id);
+            MFunctionProfile mExistingProfile = await FunctionUtility.GetProfile(functionProfile.Id);
             if(mExistingProfile == null)
             {
                 mExistingProfile = new MFunctionProfile();

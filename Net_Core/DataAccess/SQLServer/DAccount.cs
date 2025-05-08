@@ -124,7 +124,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
 
     async Task<DataTable> IAccount.RefreshTokens()
     {
-        string mCommandText = "SELECT [RefreshTokenId], RT.[AccountSeqId], [Token], [Expires], [Created], [CreatedByIp], [Revoked], [RevokedByIp], [ReplacedByToken], [ReasonRevoked] ";
+        string mCommandText = "SELECT RT.[RefreshTokenId], RT.[AccountSeqId], RT.[Token], RT.[Expires], RT.[Created], RT.[CreatedByIp], RT.[Revoked], RT.[RevokedByIp], RT.[ReplacedByToken], RT.[ReasonRevoked] ";
         mCommandText += "FROM [ZGWSecurity].[RefreshTokens] RT ";
         mCommandText += "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
         mCommandText += "ORDER BY [Created] ASC;";

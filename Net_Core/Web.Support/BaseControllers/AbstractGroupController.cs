@@ -65,7 +65,7 @@ public abstract class AbstractGroupController : ControllerBase
     public async Task<MSecurityInfo> getRequestingSecurityInfo(string action)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         return new(mFunctionProfile, mRequestingProfile);
     }
 

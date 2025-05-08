@@ -21,8 +21,6 @@
     - DSearch
     - DState
     - DFunctions
-        Excluding:
-                - DataSet GetFunctions()
     - DClientChoices
         Excluding:
                 - DataRow GetChoices(string account)

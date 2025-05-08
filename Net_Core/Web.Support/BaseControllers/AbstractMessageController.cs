@@ -44,7 +44,7 @@ public abstract class AbstractMessageController : ControllerBase
     public async Task<ActionResult<UIMessageProfile>> GetProfile(int id)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
 
         if (mSecurityInfo.MayView)
@@ -91,7 +91,7 @@ public abstract class AbstractMessageController : ControllerBase
         if (HttpContext.Session.GetString("EditId") != null && HttpContext.Session.GetInt32("EditId") == messageProfile.Id)
         {
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))

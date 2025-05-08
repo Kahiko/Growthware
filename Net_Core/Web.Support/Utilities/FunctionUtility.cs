@@ -48,7 +48,7 @@ public static class FunctionUtility
     /// </summary>
     /// <returns>A Collection of MFunctionProfiles</returns>
     [CLSCompliant(false)]
-    public static Collection<MFunctionProfile> Functions()
+    public static async Task<Collection<MFunctionProfile>> Functions()
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
@@ -56,7 +56,7 @@ public static class FunctionUtility
         if (mRetVal == null)
         {
             BFunctions mBusinessLogic = getBusinessLogic();
-            mRetVal = mBusinessLogic.GetFunctions(mSecurityEntityProfile.Id);
+            mRetVal = await mBusinessLogic.GetFunctions(mSecurityEntityProfile.Id);
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
@@ -66,9 +66,9 @@ public static class FunctionUtility
     /// Retrieves all of the avalible parents
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> GetAvalibleParents()
+    public static async Task<List<UIKeyValuePair>> GetAvalibleParents()
     {
-        Collection<MFunctionProfile> mFunctionProfiles = Functions();
+        Collection<MFunctionProfile> mFunctionProfiles = await Functions();
         List<UIKeyValuePair> mRetVal = mFunctionProfiles.Where(item => item.IsNavigable).Select(item => new UIKeyValuePair {
             Key = item.Id ,
             Value = item.Name
@@ -97,7 +97,7 @@ public static class FunctionUtility
     /// <returns>List<UIFunctionMenuOrder></returns>
     public static async Task<List<UIFunctionMenuOrder>> GetFunctionOrder(int functionSeqId)
     {
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+        MFunctionProfile mFunctionProfile = await GetProfile(functionSeqId);
         BFunctions mBusinessLogic = getBusinessLogic();
         DataTable mDataTable = await mBusinessLogic.GetMenuOrder(mFunctionProfile);
         List<UIFunctionMenuOrder> mRetVal = null;
@@ -142,12 +142,12 @@ public static class FunctionUtility
     /// <param name="action">string</param>
     /// <returns>MFunctionProfile</returns>
     [CLSCompliant(false)]
-    public static MFunctionProfile GetProfile(String action)
+    public static async Task<MFunctionProfile> GetProfile(String action)
     {
         MFunctionProfile mRetVal = null;
         if (!string.IsNullOrEmpty(action))
         {
-            Collection<MFunctionProfile> mFunctionProfiles = Functions();
+            Collection<MFunctionProfile> mFunctionProfiles = await Functions();
             var mResult = from mProfile in mFunctionProfiles
                           where mProfile.Action.ToLower(CultureInfo.CurrentCulture) == action.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
@@ -169,10 +169,10 @@ public static class FunctionUtility
     /// </summary>
     /// <param name="functionSeqId">int</param>
     /// <returns>MFunctionProfile</returns>
-    public static MFunctionProfile GetProfile(int functionSeqId)
+    public static async Task<MFunctionProfile> GetProfile(int functionSeqId)
     {
         MFunctionProfile mRetVal = null;
-        Collection<MFunctionProfile> mFunctionProfiles = Functions();
+        Collection<MFunctionProfile> mFunctionProfiles = await Functions();
         var mResult = from mProfile in mFunctionProfiles
                         where mProfile.Id == functionSeqId
                         select mProfile;

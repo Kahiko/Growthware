@@ -393,7 +393,7 @@ public abstract class AbstractFileController : ControllerBase
     private async Task<Tuple <MSecurityInfo, MFunctionProfile>> getRequestingSecurityInfo(string action)
     {
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             return new(mSecurityInfo, mFunctionProfile);
     }

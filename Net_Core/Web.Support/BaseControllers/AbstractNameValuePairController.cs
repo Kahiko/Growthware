@@ -42,7 +42,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
     public async Task<ActionResult<MNameValuePair>> GetMNameValuePair(int nameValuePairSeqId)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {

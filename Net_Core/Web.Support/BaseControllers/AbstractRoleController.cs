@@ -19,7 +19,7 @@ public abstract class AbstractRoleController : ControllerBase
     public async Task<ActionResult> DeleteRole(int roleSeqId)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (HttpContext.Session.GetString("EditId") != null)
@@ -42,7 +42,7 @@ public abstract class AbstractRoleController : ControllerBase
     public async Task<ActionResult<UIRole>> GetRoleForEdit(int roleSeqId)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
@@ -65,9 +65,9 @@ public abstract class AbstractRoleController : ControllerBase
     public async Task<ActionResult<UIRole>> SaveRole(UIRole roleProfile)
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         MRole mProfileToSave = new MRole(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {

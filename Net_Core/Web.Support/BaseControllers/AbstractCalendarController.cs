@@ -30,7 +30,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId);
         if (await getEventSecurity(mCalendarEvent))
         {
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
             if (mFunctionProfile != null)
             {
                 MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
@@ -59,7 +59,7 @@ public abstract class AbstractCalendarController : ControllerBase
           * purpose is to set the EditId in the session, to be used when
           * enforcing security during the save.
           */
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
             MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
@@ -91,7 +91,7 @@ public abstract class AbstractCalendarController : ControllerBase
           * is presented in the UI as whole weeks so some day's for the first week will be from
           * the previous month.  The same is true for the last week.
           */
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
             MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
@@ -137,7 +137,7 @@ public abstract class AbstractCalendarController : ControllerBase
         MCalendarEvent mCalendarEvent = await CalendarUtility.GetEvent(SecurityEntityUtility.CurrentProfile(), mParameters.calendarEvent.Id);
         if (await getEventSecurity(mCalendarEvent, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mParameters.action);
+            MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(mParameters.action);
             MCalendarEvent mRetVal = await CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mParameters.calendarEvent);
             return Ok(mRetVal);
         }
@@ -167,7 +167,7 @@ public abstract class AbstractCalendarController : ControllerBase
             }
             else
             {
-                MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+                MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
                 if (mFunctionProfile != null)
                 {
                     MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
