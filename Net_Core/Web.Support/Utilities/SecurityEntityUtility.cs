@@ -56,6 +56,10 @@ public static class SecurityEntityUtility
         return mRetProfile;
     }
 
+    /// <summary>
+    /// Returns a security entity populated with the config settings.
+    /// </summary>
+    /// <returns>MSecurityEntity</returns>
     public static MSecurityEntity DefaultProfile()
     {
         return new MSecurityEntity
@@ -69,6 +73,11 @@ public static class SecurityEntityUtility
         };
     }
 
+    /// <summary>
+    /// Deletes the registration information from the database and the cache.
+    /// </summary>
+    /// <param name="securityEntitySeqId"></param>
+    /// <returns></returns>
     public static async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
         await getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
@@ -197,6 +206,11 @@ public static class SecurityEntityUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Saves the registration information to the database and "updates" the cache.
+    /// </summary>
+    /// <param name="profile"></param>
+    /// <returns></returns>
     public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
     {
         MRegistrationInformation mRetVal = getBusinessLogic().SaveRegistrationInformation(profile);
@@ -204,12 +218,23 @@ public static class SecurityEntityUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Set the HttpContextAccessor used by the class.
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {
         m_HttpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// Gets a collection of MRegistrationInformation objects.
+    /// </summary>
+    /// <returns>Collection of MRegistrationInformation</returns>
+    /// <remarks>
+    /// The collection is cached. The cache is cleared when the SaveRegistrationInformation method is called.
+    /// </remarks>
     public static Collection<MRegistrationInformation> RegistrationInformation()
     {
         Collection<MRegistrationInformation> mRegistrationInformations = m_CacheHelper.GetFromCache<Collection<MRegistrationInformation>>(s_CacheRegistrationsName);
@@ -225,6 +250,13 @@ public static class SecurityEntityUtility
         return mRegistrationInformations;
     }
 
+    /// <summary>
+    /// Gets the collection of MSecurityEntity objects. The collection is cached. The cache is cleared when the Save method is called.
+    /// </summary>
+    /// <returns>Collection of MSecurityEntity</returns>
+    /// <remarks>
+    /// The returned collection contains the decrypted connection string.
+    /// </remarks>
     public static Collection<MSecurityEntity> Profiles()
     {
         Collection<MSecurityEntity> mSecurityEntities = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
