@@ -267,7 +267,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetPreferences")]
     public async Task<UIAccountChoices> GetPreferences()
     {
-        UIAccountChoices mRetVal = new UIAccountChoices(await ClientChoicesUtility.CurrentState());
+        UIAccountChoices mRetVal = new(await ClientChoicesUtility.CurrentState());
         return mRetVal;
     }
 
@@ -455,7 +455,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         MAccountProfile mAccountProfile = await AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
-        UIAccountChoices mAccountChoice = new UIAccountChoices(await ClientChoicesUtility.CurrentState());
+        UIAccountChoices mAccountChoice = new(await ClientChoicesUtility.CurrentState());
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
         mRetVal = Tuple.Create(mAuthenticationResponse, mAccountChoice);
         return Ok(mRetVal);
