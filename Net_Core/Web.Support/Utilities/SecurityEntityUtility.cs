@@ -249,7 +249,7 @@ public static class SecurityEntityUtility
         {
             mRegistrationInformations = new Collection<MRegistrationInformation>();
             BSecurityEntities mBusinessLogic = await getBusinessLogic(true);
-            foreach (MRegistrationInformation mRegistrationInformation in mBusinessLogic.GetRegistrationInformation())
+            foreach (MRegistrationInformation mRegistrationInformation in await mBusinessLogic.GetRegistrationInformation())
             {
                 mRegistrationInformations.Add(mRegistrationInformation);
             }

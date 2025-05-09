@@ -116,7 +116,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         await m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
     }
 
-    public Collection<MRegistrationInformation> GetRegistrationInformation()
+    public async Task<Collection<MRegistrationInformation>> GetRegistrationInformation()
     {
         Collection<MRegistrationInformation> mRetVal = new Collection<MRegistrationInformation>();
         DataTable mDataTable = null;
@@ -124,7 +124,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         {
             if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
             {
-                mDataTable = m_DSecurityEntities.GetRegistrationInformation();
+                mDataTable = await m_DSecurityEntities.GetRegistrationInformation();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     MRegistrationInformation mProfile = new(item);

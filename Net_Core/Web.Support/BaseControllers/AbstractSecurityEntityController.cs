@@ -72,7 +72,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo(ConfigSettings.Actions_EditSecurityEntities);
         if (mSecurityInfo.MayView)
         {
-            return Ok(SecurityEntityUtility.GetRegistrationInformation(securityEntitySeqId));
+            return Ok(await SecurityEntityUtility.GetRegistrationInformation(securityEntitySeqId));
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }

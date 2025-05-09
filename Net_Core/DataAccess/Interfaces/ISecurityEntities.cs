@@ -17,7 +17,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Returns all rows from [ZGWSecurity].[Registration_Information]
         /// </summary>
         /// <returns></returns>
-        DataTable GetRegistrationInformation();
+        Task<DataTable> GetRegistrationInformation();
 
         /// <summary>
         /// Retrieves all Security Entities as a data table.

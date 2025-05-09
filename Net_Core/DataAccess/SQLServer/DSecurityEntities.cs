@@ -31,14 +31,13 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetRegistrationInformation()
+    async Task<DataTable> ISecurityEntities.GetRegistrationInformation()
     {
-        string mStoredProcedure = "ZGWSecurity.Get_Registration_Information";
-        SqlParameter[] mParameters =
-        {
+        string mStoredProcedure = "[ZGWSecurity].[Get_Registration_Information]";
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", -1)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     DataTable ISecurityEntities.GetSecurityEntities()
