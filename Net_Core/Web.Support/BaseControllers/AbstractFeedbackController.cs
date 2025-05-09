@@ -88,7 +88,7 @@ public abstract class AbstractFeedbackController : ControllerBase
         bool mRetVal = false;
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
@@ -134,7 +134,8 @@ public abstract class AbstractFeedbackController : ControllerBase
                 if(feedback.FeedbackId == -1)
                 {
                     // The default values for a new feedback
-                    mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                    MFunctionProfile mActionFunctionProfile = await FunctionUtility.GetProfile(feedback.Action);
+                    mFeedbackToSave.FunctionSeqId = mActionFunctionProfile.Id;
                     mFeedbackToSave.DateOpened = DateTime.Now;
                     mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultSystemDateTime;
                     mFeedbackToSave.SubmittedById = mRequestingProfile.Id;

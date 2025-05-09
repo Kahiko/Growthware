@@ -17,7 +17,7 @@ public class DRoles : AbstractDBInteraction, IRoles
 #region Member Fields
     private int m_SecurityEntityID;
 
-    private MRole m_Profile = new MRole();
+    private MRole m_Profile = new();
 #endregion
 
 #region Constructors

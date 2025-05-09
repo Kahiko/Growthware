@@ -39,7 +39,7 @@ public class AuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
         if (!String.IsNullOrEmpty(this.m_Action))
         {
             MFunctionProfile mFunction = await FunctionUtility.GetProfile(this.m_Action);
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
+            MSecurityInfo mSecurityInfo = new(mFunction, mAccount);
             context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
             context.HttpContext.Items["Function"] = mFunction;
             // if(mAccount.IsSystemAdmin) return;

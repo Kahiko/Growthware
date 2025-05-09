@@ -46,7 +46,7 @@ public abstract class AbstractMessageController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
 
         if (mSecurityInfo.MayView)
         {
@@ -94,7 +94,7 @@ public abstract class AbstractMessageController : ControllerBase
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
             MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
             MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+            MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))
             {
                 MMessage mProfileToSave = new MMessage();

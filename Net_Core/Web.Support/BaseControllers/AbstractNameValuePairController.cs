@@ -43,7 +43,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
             List<MNameValuePair> mNameValuePairs = await this.GetMNameValuePairs();

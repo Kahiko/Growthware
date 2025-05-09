@@ -69,7 +69,7 @@ public abstract class AbstractRoleController : ControllerBase
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
-        MRole mProfileToSave = new MRole(roleProfile);
+        MRole mProfileToSave = new(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleProfile.Id)

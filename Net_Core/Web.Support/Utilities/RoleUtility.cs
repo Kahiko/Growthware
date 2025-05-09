@@ -107,7 +107,7 @@ public static class RoleUtility
     public static async Task<bool> DeleteRole(int roleSeqId, int securityEntitySeqId)
     {
         UIRole mRoleFromDB = await GetUIProfile(roleSeqId, securityEntitySeqId);
-        MRole mRoleToDelete = new MRole(mRoleFromDB);
+        MRole mRoleToDelete = new(mRoleFromDB);
         mRoleToDelete.Id = roleSeqId;
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
         BRoles mBusinessLogic = await getBusinessLogic();
@@ -138,7 +138,7 @@ public static class RoleUtility
          DataTable mRolesTable = await GetAllRolesBySecurityEntity(securityEntityId);
          foreach (DataRow item in mRolesTable.Rows)
          {
-             mReturn.Add(new MRole(item));
+             mReturn.Add(new(item));
          }
          return mReturn;        
     }
@@ -151,7 +151,7 @@ public static class RoleUtility
     /// <returns>A UIRole object containing the role profile, accounts in role, and accounts not in role.</returns>
     public static async Task<UIRole> GetUIProfile(int roleSeqId, int securityEntitySeqId)
     {
-        MRole mRoleProfile = new MRole();
+        MRole mRoleProfile = new();
         mRoleProfile.Id = roleSeqId;
         mRoleProfile.SecurityEntityID = securityEntitySeqId;
         BRoles mBusinessLogic = await getBusinessLogic();

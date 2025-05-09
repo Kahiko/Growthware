@@ -24,7 +24,7 @@ public abstract class AbstractStateController : ControllerBase
         }
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile("EditState");
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if(!mSecurityInfo.MayView)
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -40,7 +40,7 @@ public abstract class AbstractStateController : ControllerBase
         if (state == null) throw new ArgumentNullException(nameof(state), " can not be null!");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);        
         if (HttpContext.Session.GetString("EditId") != null)
         {
             string mEditId = HttpContext.Session.GetString("EditId");

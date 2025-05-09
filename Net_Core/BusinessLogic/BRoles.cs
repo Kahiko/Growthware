@@ -123,9 +123,9 @@ public class BRoles : AbstractBusinessLogic
     public async Task<MRole> GetProfile(MRole profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        MRole mRetVal = new MRole();
+        MRole mRetVal = new();
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = new MRole(await m_DRoles.ProfileData());
+        if (DatabaseIsOnline()) mRetVal = new(await m_DRoles.ProfileData());
         return mRetVal;
     }
 

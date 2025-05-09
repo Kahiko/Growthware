@@ -81,7 +81,7 @@ public abstract class AbstractAccountController : ControllerBase
         if (accountSeqId < 1) throw new ArgumentNullException(nameof(accountSeqId), " must be a positive number!");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
@@ -132,7 +132,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
         {
             MAccountProfile mAccountProfile = await this.getAccount(account);
@@ -547,7 +547,7 @@ public abstract class AbstractAccountController : ControllerBase
         // users can revoke their own tokens and admins can revoke any tokens
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile("RevokeToken");
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         MAccountProfile mCurrentAccountProfile = await AccountUtility.CurrentProfile();
         if (!mCurrentAccountProfile.OwnsToken(token) && !mSecurityInfo.MayView)
             return Unauthorized(new { message = "Unauthorized" });
@@ -573,9 +573,9 @@ public abstract class AbstractAccountController : ControllerBase
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile.LastName can not be blank");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile("SaveAccount");
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
-        MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Group = new(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Role = new(await FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {

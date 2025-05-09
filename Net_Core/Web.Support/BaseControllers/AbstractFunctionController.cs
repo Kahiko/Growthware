@@ -141,7 +141,7 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
-            return Ok(FunctionUtility.GetFunctionOrder(functionSeqId));
+            return Ok(await FunctionUtility.GetFunctionOrder(functionSeqId));
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -150,7 +150,7 @@ public abstract class AbstractFunctionController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
     }
 
