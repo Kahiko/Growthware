@@ -408,7 +408,7 @@ public static class AccountUtility
                 // revoke token and save
                 revokeRefreshToken(mRefreshToken, ipAddress, "Revoked without replacement");
                 // save changes to db
-                await AccountUtility.Save(mAccountProfile, true, false, false);
+                await Save(mAccountProfile, true, false, false);
             }
         }
         removeFromCacheOrSession(forAccount);
@@ -441,7 +441,7 @@ public static class AccountUtility
             {
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(mRefreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-                await AccountUtility.Save(mAccountProfile, true, false, false);
+                await Save(mAccountProfile, true, false, false);
             }
 
             if (!mRefreshToken.IsActive)
@@ -463,7 +463,7 @@ public static class AccountUtility
             mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
 
             // save changes to db and update session/cache
-            await AccountUtility.Save(mAccountProfile, true, false, false);
+            await Save(mAccountProfile, true, false, false);
         }
 
         AuthenticationResponse mRetVal = new(mAccountProfile);
@@ -512,7 +512,8 @@ public static class AccountUtility
             CryptoUtility.TryEncrypt(ConfigSettings.RegistrationPassword, out string mEncryptedPassword, mTargetSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
             mProfileToSave.Password = mEncryptedPassword;
             // Set the AddedBy/AddedDate
-            mProfileToSave.AddedBy = GetAccount("System").Id;
+            MAccountProfile mSystemAccount = await GetAccount("System");
+            mProfileToSave.AddedBy = mSystemAccount.Id;
             mProfileToSave.AddedDate = DateTime.Now;
             mProfileToSave.PasswordLastSet = System.DateTime.Now;
             // Save the profile

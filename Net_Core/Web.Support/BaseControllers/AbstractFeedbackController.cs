@@ -97,13 +97,16 @@ public abstract class AbstractFeedbackController : ControllerBase
                 // Populate a MFeedback object with the UI Feedback
                 MFeedback mFeedbackToSave = new(feedback);
                 // Get the Ids for the Assignee, VerifiedBy and FunctionSeq
-                int mAnonymousId = AccountUtility.GetAccount("Anonymous").Id;
-                int mAssigneeId = AccountUtility.GetAccount(feedback.Assignee).Id;
+                MAccountProfile mAnonymousAccount = await AccountUtility.GetAccount("Anonymous");
+                MAccountProfile mAssigneeAccount = await AccountUtility.GetAccount(feedback.Assignee);
+                int mAnonymousId = mAnonymousAccount.Id;
+                int mAssigneeId = mAssigneeAccount.Id;
                 int mFunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
                 int mVerifiedById = -1;
                 if (!string.IsNullOrEmpty(feedback.VerifiedBy))
                 {
-                    mVerifiedById = AccountUtility.GetAccount(feedback.VerifiedBy).Id;
+                    MAccountProfile mVerifiedByAccount = await AccountUtility.GetAccount(feedback.VerifiedBy);
+                    mVerifiedById = mVerifiedByAccount.Id;
                 }
                 if (mAssigneeId == 0)
                 {
