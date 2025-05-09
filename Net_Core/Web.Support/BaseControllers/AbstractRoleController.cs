@@ -20,8 +20,8 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleSeqId)
@@ -43,11 +43,11 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
-            UIRole mRetVal = await RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile().Id);
+            UIRole mRetVal = await RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }
@@ -57,7 +57,8 @@ public abstract class AbstractRoleController : ControllerBase
     [HttpGet("GetRoles")]
     public async Task<ActionResult<ArrayList>> GetRoles()
     {
-        ArrayList mRetVal = await RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        ArrayList mRetVal = await RoleUtility.GetRolesArrayListBySecurityEntity(mSecurityEntity.Id);
         return Ok(mRetVal);
     }
 
@@ -66,7 +67,7 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         MRole mProfileToSave = new MRole(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
@@ -98,7 +99,7 @@ public abstract class AbstractRoleController : ControllerBase
                     }
                 }
             }
-            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
+            mProfileToSave.SecurityEntityID = mSecurityEntity.Id;
             UIRole mRetVal = await RoleUtility.Save(mProfileToSave, roleProfile.AccountsInRole);
             return Ok(mRetVal);
         }
@@ -113,10 +114,10 @@ public abstract class AbstractRoleController : ControllerBase
         string mColumns = "[RoleSeqId], [Name], [Description], [Is_System], [Is_System_Only], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
         if(searchCriteria.sortColumns.Length > 0)
         {
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
-            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
-            // mSearchCriteria.WhereClause += " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
+            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + mSecurityEntity.Id.ToString();
             MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,

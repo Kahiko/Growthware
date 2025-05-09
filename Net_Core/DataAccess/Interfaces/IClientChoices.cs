@@ -13,7 +13,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="account">String</param>
         /// <returns>DataRow</returns>
         /// <remarks></remarks>
-        DataRow GetChoices(string account);
+        Task<DataRow> GetChoices(string account);
 
         /// <summary>
         /// Save the client choices

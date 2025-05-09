@@ -142,7 +142,7 @@ public static class AccountUtility
 
         // authentication successful so generate jwt and refresh tokens
         mRetVal.Token = m_JwtUtils.GenerateJwtToken(mRetVal);
-        mRetVal.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, mRetVal.Id));
+        mRetVal.RefreshTokens.Add(await m_JwtUtils.GenerateRefreshToken(ipAddress, mRetVal.Id));
 
         // remove old refresh tokens from account
         removeOldRefreshTokens(mRetVal);
@@ -154,7 +154,7 @@ public static class AccountUtility
         RemoveInMemoryInformation(mRetVal.Account);
         // Update the cache or session which in turn will update the "CurrentProfile" property.
         addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
-        ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
+        await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
     }
 
@@ -167,7 +167,7 @@ public static class AccountUtility
     {
         MMessage mMessageProfile = new();
         MAccountProfile mAccountProfile = await CurrentProfile();
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
         bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
         bool mCheckOldPassword = mAccountProfile.Status != (int)SystemStatus.ChangePassword;
@@ -177,20 +177,20 @@ public static class AccountUtility
         }
         if(mPasswordVerifed)
         {
-            setChangePasswordProperties(changePassword, mAccountProfile, mSecurityEntity, ipAddress);
+            await setChangePasswordProperties(changePassword, mAccountProfile, mSecurityEntity, ipAddress);
             try
             {
                 await Save(mAccountProfile, true, false, false);
-                mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
+                mMessageProfile = await MessageUtility.GetProfile("SuccessChangePassword");
             }
             catch (System.Exception)
             {
-                mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+                mMessageProfile = await MessageUtility.GetProfile("UnSuccessChangePassword");
             }
         } 
         else 
         {
-            mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
+            mMessageProfile = await MessageUtility.GetProfile("PasswordNotMatched");
         }
         return new Tuple<string, MAccountProfile>(mMessageProfile.Body, mAccountProfile);
     }
@@ -220,13 +220,13 @@ public static class AccountUtility
     /// Deletes an account with the specified accountSeqId.
     /// </summary>
     /// <param name="accountSeqId"></param>
-    public static void Delete(int accountSeqId)
+    public static async Task Delete(int accountSeqId)
     {
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = BusinessLogic();
-        mBAccount.Delete(accountSeqId);
+        BAccounts mBusinessLogic = await BusinessLogic();
+        mBusinessLogic.Delete(accountSeqId);
     }
 
     /// <summary>
@@ -245,8 +245,8 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = BusinessLogic();
-        DataTable mDataTable = await mBAccount.GetMenu(account, menuType);
+        BAccounts mBusinessLogic = await BusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetMenu(account, menuType);
         if (mDataTable != null)
         {
             mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
@@ -273,9 +273,9 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = BusinessLogic();
+        BAccounts mBusinessLogic = await BusinessLogic();
         DataTable mDataTable = null;
-        mDataTable = await mBAccount.GetMenu(account, menuType);
+        mDataTable = await mBusinessLogic.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
         {
             mRetVal = MMenuTree.GetFlatList(mDataTable);
@@ -297,7 +297,7 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = await GetAccount(account);
         // generate reset token
-        mRetVal.ResetToken = JwtUtility.GenerateResetToken();
+        mRetVal.ResetToken = await JwtUtility.GenerateResetToken();
         mRetVal.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
         mRetVal.UpdatedBy = mRetVal.Id;
         mRetVal.UpdatedDate = DateTime.UtcNow;
@@ -315,18 +315,18 @@ public static class AccountUtility
     public static async Task<MAccountProfile> GetAccount(string account, bool forceDb = false)
     {
         MAccountProfile mRetVal = null;
-        BAccounts mBAccount = null;
+        BAccounts mBusinessLogic = null;
         if (forceDb)
         {
-            mBAccount = BusinessLogic();
-            mRetVal = await mBAccount.GetProfile(account);
+            mBusinessLogic = await BusinessLogic();
+            mRetVal = await mBusinessLogic.GetProfile(account);
             return mRetVal;
         }
         mRetVal = await CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = BusinessLogic();
-            mRetVal = await mBAccount.GetProfile(account);
+            mBusinessLogic = await BusinessLogic();
+            mRetVal = await mBusinessLogic.GetProfile(account);
         }
         return mRetVal;
     }
@@ -342,19 +342,19 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static async Task<MAccountProfile> getAccountByRefreshToken(string token)
     {
-        BAccounts mBAccount = BusinessLogic();
+        BAccounts mBusinessLogic = await BusinessLogic();
         MAccountProfile mRetVal = null;
-        mRetVal = await mBAccount.GetProfileByRefreshToken(token);
+        mRetVal = await mBusinessLogic.GetProfileByRefreshToken(token);
         return mRetVal;
     }
 
     private static async Task<MAccountProfile> getProfileByVerificationToken(string token)
     {
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile());
+        BAccounts mBusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = await mBAccount.GetProfileByVerificationToken(token);
+            mRetVal = await mBusinessLogic.GetProfileByVerificationToken(token);
         }
         catch (System.Exception)
         {
@@ -367,22 +367,22 @@ public static class AccountUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts BusinessLogic()
+    private static async Task<BAccounts> BusinessLogic()
     {
         if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
         {
-            m_BAccounts = new(SecurityEntityUtility.CurrentProfile());
+            m_BAccounts = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BAccounts;
     }
 
     public static async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
-        BAccounts mBAccount = BusinessLogic();
+        BAccounts mBusinessLogic = await BusinessLogic();
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = await mBAccount.GetProfileByResetToken(token);
+            mRetVal = await mBusinessLogic.GetProfileByResetToken(token);
         }
         catch (System.Exception)
         {
@@ -448,7 +448,7 @@ public static class AccountUtility
                 throw new WebSupportException("Invalid token");
 
             // replace old refresh token with a new one (rotate token)
-            var newRefreshToken = rotateRefreshToken(mAccountProfile.Id, mRefreshToken, ipAddress);
+            var newRefreshToken = await rotateRefreshToken(mAccountProfile.Id, mRefreshToken, ipAddress);
             mAccountProfile.RefreshTokens.Add(newRefreshToken);
 
             // remove old refresh tokens from account
@@ -467,20 +467,20 @@ public static class AccountUtility
         }
 
         AuthenticationResponse mRetVal = new(mAccountProfile);
-        ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
+        await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
     }
 
     public static async Task<MAccountProfile> Register(MAccountProfile accountProfile, string origin)
     {
         // Get the security entity via the URL or use the default
-        MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mTargetSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            mTargetSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
+            mTargetSecurityEntity = await SecurityEntityUtility.GetProfileByUrl(origin);
         }
         // Need to get the roles so need to get the Registration_Information
-        MRegistrationInformation mRegistrationInformation = SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
+        MRegistrationInformation mRegistrationInformation = await SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
         if(mRegistrationInformation == null) 
         {
             m_Logger.Fatal("Unable to get registration information");
@@ -606,9 +606,9 @@ public static class AccountUtility
     /// <param name="refreshToken">The current refresh token.</param>
     /// <param name="ipAddress">The IP address of the user.</param>
     /// <returns>The new refresh token.</returns>    
-    private static MRefreshToken rotateRefreshToken(int accountSeqId, MRefreshToken refreshToken, string ipAddress)
+    private static async Task<MRefreshToken> rotateRefreshToken(int accountSeqId, MRefreshToken refreshToken, string ipAddress)
     {
-        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress, accountSeqId);
+        var newRefreshToken = await m_JwtUtils.GenerateRefreshToken(ipAddress, accountSeqId);
         revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
         return newRefreshToken;
     }
@@ -645,7 +645,8 @@ public static class AccountUtility
 
     public static async Task ResetPassword(MAccountProfile forAccount, string password)
     {
-        CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, mCurrentSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
         // TODO: find a better way then changing properties on the passed in parameter!
         forAccount.FailedAttempts = 0;
         forAccount.LastLogOn = System.DateTime.Now;
@@ -677,8 +678,8 @@ public static class AccountUtility
         {
             return accountProfile;
         }
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBusinessLogic = BusinessLogic();
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        BAccounts mBusinessLogic = await BusinessLogic();
         await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account);
         MAccountProfile mCurrentAccountProfile = await CurrentProfile();
@@ -709,7 +710,7 @@ public static class AccountUtility
     /// </list>
     /// In memory information is also updated (removed/added).
     /// </remarks>
-    private static void setChangePasswordProperties(UIChangePassword changePassword, MAccountProfile mAccountProfile, MSecurityEntity mSecurityEntity, string ipAddress)
+    private static async Task setChangePasswordProperties(UIChangePassword changePassword, MAccountProfile mAccountProfile, MSecurityEntity mSecurityEntity, string ipAddress)
     {
         mAccountProfile.PasswordLastSet = System.DateTime.Now;
         mAccountProfile.Status = (int)SystemStatus.Active;
@@ -719,7 +720,7 @@ public static class AccountUtility
         mAccountProfile.Password = mEncryptedPassword;
         // password change successful so generate jwt and refresh tokens
         mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
-        mAccountProfile.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, mAccountProfile.Id));
+        mAccountProfile.RefreshTokens.Add(await m_JwtUtils.GenerateRefreshToken(ipAddress, mAccountProfile.Id));
         // remove old refresh tokens from account
         removeOldRefreshTokens(mAccountProfile);
         // update the in-memory information

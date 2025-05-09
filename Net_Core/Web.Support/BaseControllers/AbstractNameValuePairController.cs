@@ -82,7 +82,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             MNameValuePairDetail mNameValuePairDetail = nameValuePairDetail;
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             if (mNameValuePairDetail.Id != -1)
             {
                 MNameValuePairDetail mOriginal = await NameValuePairUtility.GetNameValuePairDetail(nameValuePairDetail.NameValuePairSeqId, nameValuePairDetail.Id);
@@ -120,7 +120,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             MNameValuePair mNameValuePair = nameValuePair;
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             if (mNameValuePair.Id == -1)
             {
                 mNameValuePair.AddedDate = DateTime.Now;

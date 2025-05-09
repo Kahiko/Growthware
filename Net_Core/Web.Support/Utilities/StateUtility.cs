@@ -19,11 +19,11 @@ public static class StateUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BStates getBusinessLogic()
+    private static async Task<BStates> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -33,7 +33,8 @@ public static class StateUtility
         Collection<MState> mRetVal = m_CacheHelper.GetFromCache<Collection<MState>>(m_CacheName);
         if(mRetVal == null)
         {
-            mRetVal = await getBusinessLogic().GetStates();
+            BStates mBusinessLogic = await getBusinessLogic();
+            mRetVal = await mBusinessLogic.GetStates();
             m_CacheHelper.AddToCache(m_CacheName, mRetVal);
         }
         
@@ -64,7 +65,8 @@ public static class StateUtility
 
     public static async Task Save(MState state)
     {
-        await getBusinessLogic().Save(state);
+        BStates mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.Save(state);
         m_CacheHelper.RemoveFromCache(m_CacheName);
     }
 }

@@ -15,11 +15,11 @@ public static class SearchUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BSearch getBusinessLogic()
+    private static async Task<BSearch> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -74,7 +74,8 @@ public static class SearchUtility
         // we do not want to change the original where clause
         string mOriginalWhereClause = searchCriteria.WhereClause;
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
-        mDataTable = await getBusinessLogic().GetSearchResults(searchCriteria);
+        BSearch mBusinessLogic = await getBusinessLogic();
+        mDataTable = await mBusinessLogic.GetSearchResults(searchCriteria);
         searchCriteria.WhereClause = mOriginalWhereClause;
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;

@@ -25,7 +25,8 @@ public static class RoleUtility
     private static async Task<string[]> getAccountsInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        DataTable mDataTable = await getBusinessLogic().GetAccountsInRole(profile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetAccountsInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
@@ -38,7 +39,8 @@ public static class RoleUtility
     private static async Task<string[]> getAccountsNotInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        DataTable mDataTable = await getBusinessLogic().GetAccountsNotInRole(profile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetAccountsNotInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
@@ -76,7 +78,8 @@ public static class RoleUtility
         DataTable mRoles = m_CacheHelper.GetFromCache<DataTable>(securityEntityId.ToString() + "_Roles");
         if (mRoles == null)
         {
-            mRoles = await getBusinessLogic().GetRolesBySecurityEntity(securityEntityId);
+            BRoles mBusinessLogic = await getBusinessLogic();
+            mRoles = await mBusinessLogic.GetRolesBySecurityEntity(securityEntityId);
             m_CacheHelper.AddToCache(securityEntityId.ToString() + "_Roles", mRoles);
         }
         return mRoles;
@@ -86,11 +89,11 @@ public static class RoleUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BRoles getBusinessLogic()
+    private static async Task<BRoles> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -107,7 +110,8 @@ public static class RoleUtility
         MRole mRoleToDelete = new MRole(mRoleFromDB);
         mRoleToDelete.Id = roleSeqId;
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
-        await getBusinessLogic().DeleteRole(mRoleToDelete);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.DeleteRole(mRoleToDelete);
         m_CacheHelper.RemoveFromCache(securityEntitySeqId.ToString() + "_Roles");
         return true;
     }
@@ -150,7 +154,8 @@ public static class RoleUtility
         MRole mRoleProfile = new MRole();
         mRoleProfile.Id = roleSeqId;
         mRoleProfile.SecurityEntityID = securityEntitySeqId;
-        mRoleProfile = await getBusinessLogic().GetProfile(mRoleProfile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        mRoleProfile = await mBusinessLogic.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
         mRetVal.AccountsInRole = await getAccountsInRole(mRoleProfile);
         mRetVal.AccountsNotInRole = await getAccountsNotInRole(mRoleProfile);
@@ -165,15 +170,15 @@ public static class RoleUtility
     /// <returns>The saved UIRole object.</returns>
     public static async Task<UIRole> Save(MRole roleProfile, string[] accountsInRole)
     {
-        MRole mRoleToSave = new MRole(roleProfile);
-        BRoles mBRoles = getBusinessLogic();
+        MRole mRoleToSave = new(roleProfile);
+        BRoles mBusinessLogic = await getBusinessLogic();
         if (roleProfile.Id > -1)
         {
-            MRole mProfileFromDB = await mBRoles.GetProfile(mRoleToSave);
+            MRole mProfileFromDB = await mBusinessLogic.GetProfile(mRoleToSave);
             mRoleToSave.AddedBy = mProfileFromDB.AddedBy;
             mRoleToSave.AddedDate = mProfileFromDB.AddedDate;
         }
-        mRoleToSave.Id = await getBusinessLogic().Save(mRoleToSave);
+        mRoleToSave.Id = await mBusinessLogic.Save(mRoleToSave);
         await UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
         m_CacheHelper.RemoveFromCache(mRoleToSave.SecurityEntityID.ToString() + "_Roles");
         return new UIRole(mRoleToSave);
@@ -189,6 +194,7 @@ public static class RoleUtility
     /// <returns>True if the update was successful, false otherwise.</returns>
     public static async Task<bool> UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
     {
-        return await getBusinessLogic().UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
     }
 }

@@ -24,7 +24,7 @@ public static class GroupUtility
     /// <returns>The saved UIGroupProfile.</returns>
     public static async Task<UIGroupProfile> Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
-        BGroups mBusinessLogic = getBusinessLogic();
+        BGroups mBusinessLogic = await getBusinessLogic();
         // Save the profile
         int mGroupSeqId = await mBusinessLogic.Save(profile);
         // set the groupRoles id's
@@ -68,7 +68,7 @@ public static class GroupUtility
         MGroupProfile mGroupProfile = new MGroupProfile();
         if(groupSeqId != -1)
         {
-            BGroups mBusinessLogic = getBusinessLogic();
+            BGroups mBusinessLogic = await getBusinessLogic();
             // Get the group profile from the data store
             mGroupProfile = await mBusinessLogic.GetProfile(groupSeqId);
         }
@@ -109,7 +109,7 @@ public static class GroupUtility
         if(profile.Id != -1) 
         {
             bool success = false;
-            BGroups mBusinessLogic = getBusinessLogic();
+            BGroups mBusinessLogic = await getBusinessLogic();
             success = await mBusinessLogic.DeleteGroup(profile);
         }
     }
@@ -121,7 +121,7 @@ public static class GroupUtility
     /// <returns>The group profile for the given group sequence ID.</returns>
     public static async Task<MGroupProfile> GetGroupProfile(int groupSeqId) 
     {
-        BGroups mBusinessLogic = getBusinessLogic();
+        BGroups mBusinessLogic = await getBusinessLogic();
         MGroupProfile mRetVal = await mBusinessLogic.GetProfile(groupSeqId);
         return mRetVal;
     }
@@ -134,7 +134,7 @@ public static class GroupUtility
     private static async Task<string[]> GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
-        BGroups mBusinessLogic = getBusinessLogic();
+        BGroups mBusinessLogic = await getBusinessLogic();
         mRetVal = await mBusinessLogic.GetSelectedRoles(groupRoles);
         return mRetVal;
     }
@@ -166,7 +166,7 @@ public static class GroupUtility
         DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
         {
-            BGroups mBusinessLogic = getBusinessLogic();
+            BGroups mBusinessLogic = await getBusinessLogic();
             mRetVal = await mBusinessLogic.GetGroupsBySecurityEntity(securityEntityId);
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
@@ -177,11 +177,11 @@ public static class GroupUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BGroups getBusinessLogic()
+    private static async Task<BGroups> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }

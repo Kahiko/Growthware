@@ -28,15 +28,14 @@ public class DClientChoices : AbstractDBInteraction, IClientChoices
 #endregion
 
 #region Pubic Methods
-    DataRow IClientChoices.GetChoices(string account)
+    async Task<DataRow> IClientChoices.GetChoices(string account)
     {
-        string mStoredProcedure = "ZGWCoreWeb.Get_Account_Choice";
+        string mStoredProcedure = "[ZGWCoreWeb].[Get_Account_Choice]";
         if (String.IsNullOrEmpty(account)) { throw new ArgumentException("Must set the Account property", nameof(account)); };
-        SqlParameter[] myParameters =
-        {
+        SqlParameter[] myParameters = [
             new("@P_ACCOUNT", account)
-        };
-        return base.GetDataRow(mStoredProcedure, myParameters);
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, myParameters);
     }
 
     async Task IClientChoices.Save(Hashtable clientChoicesStateHashtable)

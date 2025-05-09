@@ -22,8 +22,6 @@
     - DState
     - DFunctions
     - DClientChoices
-        Excluding:
-                - DataRow GetChoices(string account)
     - DAccounts
     - DSecurityEntities
         - Task DeleteRegistrationInformation(int securityEntitySeqId)

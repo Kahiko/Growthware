@@ -57,11 +57,11 @@ public static class NameValuePairUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BNameValuePairs getBusinessLogic()
+    private static async Task<BNameValuePairs> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -90,13 +90,15 @@ public static class NameValuePairUtility
 
     public static async Task<MNameValuePairDetail> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
     {
-        MNameValuePairDetail mRetVal = await getBusinessLogic().SaveNameValuePairDetail(nameValuePairDetail);        
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        MNameValuePairDetail mRetVal = await mBusinessLogic.SaveNameValuePairDetail(nameValuePairDetail);        
         return mRetVal;
     }
 
     public static async Task<MNameValuePair> SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
-        await getBusinessLogic().Save(nameValuePair);
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.Save(nameValuePair);
         return nameValuePair;
     }
 
@@ -110,13 +112,15 @@ public static class NameValuePairUtility
 
     public static async Task<MNameValuePairDetail> GetNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
     {
-        MNameValuePairDetail mRetVal = await getBusinessLogic().GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        MNameValuePairDetail mRetVal = await mBusinessLogic.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
         return mRetVal;
     }
 
     private static async Task<DataTable> getNameValuePairs()
     {
-        return await getBusinessLogic().GetAllNameValuePair();
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.GetAllNameValuePair();
     }
 
     private static async Task<DataTable> getNameValuePairDetails(int nameValuePairSeqId)
@@ -150,6 +154,7 @@ public static class NameValuePairUtility
 
     private static async Task<DataTable> getNameValuePairDetails()
     {
-        return await getBusinessLogic().GetAllNameValuePairDetail();
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.GetAllNameValuePairDetail();
     }
 }

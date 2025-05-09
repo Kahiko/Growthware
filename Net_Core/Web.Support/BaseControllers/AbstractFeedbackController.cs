@@ -27,9 +27,10 @@ public abstract class AbstractFeedbackController : ControllerBase
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
         MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         if (mSecurityInfo.MayEdit)
         {
-            int mSecurityId = SecurityEntityUtility.CurrentProfile().Id;
+            int mSecurityId = mSecurityEntity.Id;
             // Get all of the roles for the security entity
             List<MRole> mRoles = await RoleUtility.GetRolesBySecurityEntity(mSecurityId);
             // Get the Developer and QA roles

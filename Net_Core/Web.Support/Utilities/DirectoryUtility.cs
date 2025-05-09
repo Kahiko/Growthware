@@ -28,13 +28,13 @@ public static class DirectoryUtility
     /// <returns>Collection{MDirectoryProfile}.</returns>
     public static async Task<Collection<MDirectoryProfile>> Directories()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntityProfile = await SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         Collection<MDirectoryProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MDirectoryProfile>>(mCacheName); ;
         if (mRetVal == null)
         {
-            BDirectories mBDirectories = getBusinessLogic();
-            mRetVal = await mBDirectories.Directories();
+            BDirectories mBusinessLogic = await getBusinessLogic();
+            mRetVal = await mBusinessLogic.Directories();
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
@@ -44,11 +44,11 @@ public static class DirectoryUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BDirectories getBusinessLogic()
+    private static async Task<BDirectories> getBusinessLogic()
     {
         if (m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -80,11 +80,12 @@ public static class DirectoryUtility
         return mRetVal;
     }
 
-    public static void Save(MDirectoryProfile profile)
+    public static async Task Save(MDirectoryProfile profile)
     {
-        BDirectories mBDirectories = getBusinessLogic();
-        mBDirectories.Save(profile);
-        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
+        BDirectories mBusinessLogic = await getBusinessLogic();
+        mBusinessLogic.Save(profile);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        String mCacheName = mCurrentSecurityEntity.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 }

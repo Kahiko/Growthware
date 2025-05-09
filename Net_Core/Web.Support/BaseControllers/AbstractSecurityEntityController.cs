@@ -12,6 +12,7 @@ using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -38,7 +39,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MSecurityEntity mOriginal = new MSecurityEntity();
         if (securityEntitySeqId > -1)
         {
-            mOriginal = SecurityEntityUtility.GetProfile(securityEntitySeqId);
+            mOriginal = await SecurityEntityUtility.GetProfile(securityEntitySeqId);
         }
         if (mOriginal == null)
         {
@@ -55,9 +56,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetProfileByURL")]
-    public ActionResult<MSecurityEntity> GetProfileByURL(string url)
+    public async Task<ActionResult<MSecurityEntity>> GetProfileByURL(string url)
     {
-        MSecurityEntity mRetVal = SecurityEntityUtility.GetProfileByUrl(url);
+        MSecurityEntity mRetVal = await SecurityEntityUtility.GetProfileByUrl(url);
         if (mRetVal == null)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "No matching profile found");
@@ -93,7 +94,8 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         if (mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = new List<UIKeyValuePair>();
-            var mSecurityEntities = from mProfile in SecurityEntityUtility.Profiles()
+            Collection<MSecurityEntity> mAllSecurityEntities = await SecurityEntityUtility.Profiles();
+            var mSecurityEntities = from mProfile in mAllSecurityEntities
                                     where mProfile.Id != securityEntitySeqId
                                     select mProfile;
             mSecurityEntities.ToList().ForEach(item => mRetVal.Add(new UIKeyValuePair { Key = item.Id, Value = item.Name }));
@@ -111,10 +113,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        List<UIValidSecurityEntity> mRetVal = new List<UIValidSecurityEntity>();
-
-        DataTable mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        List<UIValidSecurityEntity> mRetVal = [];
+        DataTable mDataView = await SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
         foreach (DataRow mDataRowView in mDataView.Rows)
         {
             UIValidSecurityEntity mItem = new UIValidSecurityEntity(mDataRowView);
@@ -136,7 +137,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             if (mProfileToSave.Id == -1)
             {
                 if (!mSecurityInfo.MayAdd)
@@ -156,16 +157,17 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 }
                 if (mParamSecurityEntity.Id != -1 && string.IsNullOrWhiteSpace(mParamSecurityEntity.ConnectionString))
                 {
-                    mProfileToSave.ConnectionString = SecurityEntityUtility.GetProfile(mParamSecurityEntity.Id).ConnectionString;
+                    MSecurityEntity mDBSecurityEntity = await SecurityEntityUtility.GetProfile(mParamSecurityEntity.Id);
+                    mProfileToSave.ConnectionString = mDBSecurityEntity.ConnectionString;
                 }
                 mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                 mProfileToSave.UpdatedDate = DateTime.Now;
                 mRegistrationToSave.UpdatedBy = mRequestingProfile.Id;
                 mRegistrationToSave.UpdatedDate = DateTime.Now;
             }
-            mRegistrationToSave.Id = SecurityEntityUtility.SaveProfile(mProfileToSave);
+            mRegistrationToSave.Id = await SecurityEntityUtility.SaveProfile(mProfileToSave);
             if(mRegistrationToSave.AddAccount > 0){
-                SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
+                await SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
             }
             else
             {

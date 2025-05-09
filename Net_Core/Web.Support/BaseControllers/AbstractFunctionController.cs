@@ -271,7 +271,7 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
-                    DirectoryUtility.Save(mDirectoryProfile);
+                    await DirectoryUtility.Save(mDirectoryProfile);
                 }
                 string mCommaSeporatedIds = String.Join(",", functionProfile.FunctionMenuOrders.Select(item => item.Function_Seq_Id.ToString()));
                 await FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);

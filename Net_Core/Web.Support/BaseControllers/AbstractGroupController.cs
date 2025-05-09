@@ -42,7 +42,7 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpGet("GetGroupForEdit")]
     public async Task<ActionResult<UIGroupProfile>> GetGroupForEdit(int groupSeqId)
     {
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = await this.getRequestingSecurityInfo(ConfigSettings.Actions_EditGroups);
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
@@ -57,7 +57,7 @@ public abstract class AbstractGroupController : ControllerBase
     public async Task<ActionResult<ArrayList>> GetGroups()
     {
         ArrayList mRetVal;
-        MSecurityEntity mCurrentSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         mRetVal = await GroupUtility.GetGroupsArrayListBySecurityEntity(mCurrentSecurityEntity.Id);
         return Ok(mRetVal);
     }
@@ -77,7 +77,8 @@ public abstract class AbstractGroupController : ControllerBase
         {
             MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
             MSecurityInfo mSecurityInfo = await this.getRequestingSecurityInfo(ConfigSettings.Actions_EditGroups);
-            int mSecurityEntityId = SecurityEntityUtility.CurrentProfile().Id;
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+            int mSecurityEntityId = mSecurityEntity.Id;
 
             // Get the group profile populated with the parameter values
             MGroupProfile mProfileToSave = new(groupProfile)
@@ -140,8 +141,9 @@ public abstract class AbstractGroupController : ControllerBase
         if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             string mOrderByClause = mOrderByAndWhere.Item1;
-            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
+            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + mSecurityEntity.Id.ToString();
             MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,

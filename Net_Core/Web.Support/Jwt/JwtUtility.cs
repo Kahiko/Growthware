@@ -25,11 +25,11 @@ public class JwtUtility : IJwtUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BAccounts BusinessLogic()
+    private static async Task<BAccounts> BusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -104,7 +104,7 @@ public class JwtUtility : IJwtUtility
     /// </summary>
     /// <param name="ipAddress">The IP address of the client requesting the refresh token.</param>
     /// <returns>An instance of MRefreshToken representing the generated refresh token.</returns>
-    public MRefreshToken GenerateRefreshToken(string ipAddress, int accountSeqId)
+    public async Task<MRefreshToken> GenerateRefreshToken(string ipAddress, int accountSeqId)
     {
         var refreshToken = new MRefreshToken
         {
@@ -119,11 +119,10 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        BAccounts mBusinessLogic = BusinessLogic();
-        var tokenIsUnique = mBusinessLogic.RefreshTokenExists(refreshToken.Token);
+        var tokenIsUnique = (await BusinessLogic()).RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
-            return GenerateRefreshToken(ipAddress, accountSeqId);
+            return await GenerateRefreshToken(ipAddress, accountSeqId);
 
         return refreshToken;
     }
@@ -132,15 +131,14 @@ public class JwtUtility : IJwtUtility
     /// Generates a unique reset token.
     /// </summary>
     /// <returns>string</returns>
-    public static string GenerateResetToken()
+    public static async Task<string> GenerateResetToken()
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        BAccounts mBusinessLogic = BusinessLogic();
-        bool mTokenIsUnique = mBusinessLogic.ResetTokenExists(mRetVal);
+        bool mTokenIsUnique = (await BusinessLogic()).ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {
-            return GenerateResetToken();
+            return await GenerateResetToken();
         }
         
         return mRetVal;
@@ -154,8 +152,7 @@ public class JwtUtility : IJwtUtility
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        BAccounts mBusinessLogic = BusinessLogic();
-        bool mTokenExists = await mBusinessLogic.VerificationTokenExists(mRetVal);
+        bool mTokenExists = await (await BusinessLogic()).VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
             return await GenerateVerificationToken();

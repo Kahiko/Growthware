@@ -19,19 +19,18 @@ public static class DBInformationUtility
     /// <returns>MDBInformation</returns>
     public static async Task<MDBInformation> DBInformation()
     {
-        BDBInformation mBusinessLogic = getBusinessLogic();
-        return await mBusinessLogic.GetProfile();
+        return await(await getBusinessLogic()).GetProfile();
     }
 
     /// <summary>
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BDBInformation getBusinessLogic()
+    private static async Task<BDBInformation> getBusinessLogic()
     {
         if (m_BDBInformation == null || ConfigSettings.CentralManagement == true)
         {
-            m_BDBInformation = new(SecurityEntityUtility.CurrentProfile());
+            m_BDBInformation = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BDBInformation;
     }
@@ -44,8 +43,7 @@ public static class DBInformationUtility
     public static async Task<bool> UpdateProfile(MDBInformation profile)
     {
         bool mRetVal = false;
-        BDBInformation mBusinessLogic = getBusinessLogic();
-        mRetVal = await mBusinessLogic.UpdateProfile(profile);
+        mRetVal = await (await getBusinessLogic()).UpdateProfile(profile);
         return mRetVal;
     }
 }

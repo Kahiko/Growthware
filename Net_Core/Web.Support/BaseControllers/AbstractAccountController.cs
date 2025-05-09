@@ -35,8 +35,8 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = await AccountUtility.Authenticate(account, password, ipAddress());
         AuthenticationResponse mRetVal = new(mAccountProfile);
         setTokenCookie(mRetVal.RefreshToken);
-        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
-        UIAccountChoices mAccountChoice = new(ClientChoicesUtility.CurrentState());
+        await ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
+        UIAccountChoices mAccountChoice = new(await ClientChoicesUtility.CurrentState());
         return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 
@@ -85,9 +85,9 @@ public abstract class AbstractAccountController : ControllerBase
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
-            if (mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile().Id)
+            if (mSecurityInfo.MayDelete && accountSeqId != mRequestingProfile.Id)
             {
-                AccountUtility.Delete(accountSeqId);
+                await AccountUtility.Delete(accountSeqId);
                 HttpContext.Session.Remove("EditId");
                 return Ok(true);
             }
@@ -175,7 +175,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = await AccountUtility.ForgotPassword(account, Request.Headers["origin"]);
         if (mAccountProfile != null)
         {
-            MMessage mMessage = MessageUtility.GetProfile("RequestNewPassword");
+            MMessage mMessage = await MessageUtility.GetProfile("RequestNewPassword");
             MRequestNewPassword mRequestNewPassword = new(mMessage)
             {
                 AccountName = Uri.EscapeDataString(mAccountProfile.Account),
@@ -189,7 +189,7 @@ public abstract class AbstractAccountController : ControllerBase
             // send email
             MessageUtility.SendMail(mRequestNewPassword, mAccountProfile);
             // Get return value
-            mMessage = MessageUtility.GetProfile("Request Password Reset UI");
+            mMessage = await MessageUtility.GetProfile("Request Password Reset UI");
             return Ok(mMessage.Body.Replace("<b>", "").Replace("</b>", ""));
         }
         return StatusCode(StatusCodes.Status204NoContent, "Could not request password change");
@@ -265,9 +265,9 @@ public abstract class AbstractAccountController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("GetPreferences")]
-    public UIAccountChoices GetPreferences()
+    public async Task<UIAccountChoices> GetPreferences()
     {
-        UIAccountChoices mRetVal = new UIAccountChoices(ClientChoicesUtility.CurrentState());
+        UIAccountChoices mRetVal = new UIAccountChoices(await ClientChoicesUtility.CurrentState());
         return mRetVal;
     }
 
@@ -417,8 +417,9 @@ public abstract class AbstractAccountController : ControllerBase
             await AccountUtility.Logoff(mCurrentAccountProfile.Account, mRefreshToken, ipAddress());
         }
         MAccountProfile mAnonymousAccountProfile = await AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
-        ClientChoicesUtility.SynchronizeContext(mAnonymousAccountProfile.Account);
-        CryptoUtility.TryEncrypt(mAnonymousAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
+        await ClientChoicesUtility.SynchronizeContext(mAnonymousAccountProfile.Account);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        CryptoUtility.TryEncrypt(mAnonymousAccountProfile.Password, out string mPassword, (EncryptionType)mCurrentSecurityEntity.EncryptionType);
         return await Authenticate(mAnonymousAccountProfile.Account, mPassword);
     }
 
@@ -448,13 +449,13 @@ public abstract class AbstractAccountController : ControllerBase
             {
                 Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
             }
-            ClientChoicesUtility.SynchronizeContext(mAuthenticationResponse.Account);
-            mRetVal = Tuple.Create(mAuthenticationResponse, new UIAccountChoices(ClientChoicesUtility.CurrentState()));
+            await ClientChoicesUtility.SynchronizeContext(mAuthenticationResponse.Account);
+            mRetVal = Tuple.Create(mAuthenticationResponse, new UIAccountChoices(await ClientChoicesUtility.CurrentState()));
             return Ok(mRetVal);
         }
         MAccountProfile mAccountProfile = await AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
-        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState());
+        UIAccountChoices mAccountChoice = new UIAccountChoices(await ClientChoicesUtility.CurrentState());
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
         mRetVal = Tuple.Create(mAuthenticationResponse, mAccountChoice);
         return Ok(mRetVal);
@@ -471,15 +472,15 @@ public abstract class AbstractAccountController : ControllerBase
     public async Task<IActionResult> Register(MAccountProfile accountProfile)
     {
         if (accountProfile == null) throw new ArgumentNullException(nameof(accountProfile), " can not be blank");
-        if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
-        if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
-        if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile.Email can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile.FirstName can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile.LastName can not be blank");
         MAccountProfile mSavedAccountProfile = await AccountUtility.Register(accountProfile, Request.Headers.Origin);
         string mRetunMsg = "Registration successful, please check your email for verification instructions";
         bool mMailSent = false;
         if(mSavedAccountProfile != null)
         {
-            MMessage mMessage = MessageUtility.GetProfile("RegistrationSuccess");
+            MMessage mMessage = await MessageUtility.GetProfile("RegistrationSuccess");
             MRegistrationSuccess mRegistrationSuccess = new(mMessage)
             {
                 Email = mSavedAccountProfile.Email,
@@ -494,7 +495,7 @@ public abstract class AbstractAccountController : ControllerBase
             if(!mMailSent)
             {
                 mRetunMsg = "Registration failed, could not send mail to '" + accountProfile.Email + "' the account was not created!";
-                AccountUtility.Delete(mSavedAccountProfile.Id);
+                await AccountUtility.Delete(mSavedAccountProfile.Id);
             }
             return Ok(new { message = mRetunMsg });
         }
@@ -502,7 +503,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             if(mSavedAccountProfile != null && mSavedAccountProfile.Id > 0)
             {
-                AccountUtility.Delete(mSavedAccountProfile.Id);
+                await AccountUtility.Delete(mSavedAccountProfile.Id);
             }
             // Send email indicating error
             mRetunMsg = "Registration failed, please try again";
@@ -635,9 +636,9 @@ public abstract class AbstractAccountController : ControllerBase
         if (accountChoices == null) throw new ArgumentNullException(nameof(accountChoices), "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
-            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState();
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityId);
+            MClientChoicesState mDefaultClientChoicesState = await ClientChoicesUtility.AnonymousState();
+            MClientChoicesState mClientChoicesState = await ClientChoicesUtility.CurrentState();
 
             mClientChoicesState[MClientChoices.Account] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
@@ -742,8 +743,8 @@ public abstract class AbstractAccountController : ControllerBase
         mAccountProfile.VerificationToken = null;
         await AccountUtility.Save(mAccountProfile, false, false, false);
         AuthenticationResponse mRetVal = new(mAccountProfile);
-        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
-        UIAccountChoices mAccountChoice = new(ClientChoicesUtility.CurrentState());
+        await ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
+        UIAccountChoices mAccountChoice = new(await ClientChoicesUtility.CurrentState());
         return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 }

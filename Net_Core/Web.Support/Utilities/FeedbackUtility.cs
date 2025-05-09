@@ -23,16 +23,13 @@ public static class FeedbackUtility
     /// <summary>
     /// Retrieves the business logic instance.
     /// </summary>
-    private static BFeedbacks BusinessLogic
+    private static async Task<BFeedbacks> BusinessLogic()
     {
-        get 
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
-            {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
-            }
-            return m_BusinessLogic;
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
+        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -47,7 +44,7 @@ public static class FeedbackUtility
     {
         try
         {
-            UIFeedback mRetVal = await BusinessLogic.GetFeedback(feedbackId);
+            UIFeedback mRetVal = await (await BusinessLogic()).GetFeedback(feedbackId);
             if (mRetVal == null)
             {
                 throw new NullReferenceException($"The feedback with the ID {feedbackId} was not found.");
@@ -79,7 +76,7 @@ public static class FeedbackUtility
 
         try
         {
-            UIFeedback mRetVal = await BusinessLogic.SaveFeedback(feedback);
+            UIFeedback mRetVal = await (await BusinessLogic()).SaveFeedback(feedback);
             if (mRetVal == null)
             {
                 throw new NullReferenceException("The saved feedback was null.");

@@ -18,12 +18,13 @@ public static class ClientChoicesUtility
     /// Returns the client choices state for the anonymous account from cache.
     /// </summary>
     /// <returns>MClientChoicesState</returns>
-    public static MClientChoicesState AnonymousState()
+    public static async Task<MClientChoicesState> AnonymousState()
     {
         string mJsonString = m_CacheHelper.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
         if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
         {
-            mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
+            DataRow mClientChoicesDataRow = await getFromDB(ConfigSettings.Anonymous);
+            mJsonString = JsonSerializer.Serialize(mClientChoicesDataRow.ItemArray);
             m_CacheHelper.AddToCache(MClientChoices.AnonymousClientChoicesState, mJsonString);
         }
         MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
@@ -40,12 +41,12 @@ public static class ClientChoicesUtility
     /// Returns the current client choices state.
     /// </summary>
     /// <returns></returns>
-    public static MClientChoicesState CurrentState()
+    public static async Task<MClientChoicesState> CurrentState()
     {
         string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName);
         if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
         {
-            return AnonymousState();
+            return await AnonymousState();
         }
         MClientChoicesState mRetVal = stringToClientChoicesSTate(mJsonString);
         return mRetVal;
@@ -56,9 +57,10 @@ public static class ClientChoicesUtility
     /// </summary>
     /// <param name="forAccount"></param>
     /// <returns></returns>
-    private static DataRow getFromDB(string forAccount)
+    private static async Task<DataRow> getFromDB(string forAccount)
     {
-        return BusinessLogic().GetDataRow(forAccount);
+        BClientChoices mBusinessLogic = BusinessLogic();
+        return await mBusinessLogic.GetDataRow(forAccount);
     }
 
     /// <summary>
@@ -120,11 +122,13 @@ public static class ClientChoicesUtility
     /// Ensures the Session/Cache matches for the given account.
     /// </summary>
     /// <param name="forAccount"></param>
-    public static void SynchronizeContext(string forAccount)
+    public static async Task SynchronizeContext(string forAccount)
     {
-        if(!forAccount.Equals(CurrentState().Account, StringComparison.InvariantCultureIgnoreCase))
+        MClientChoicesState mCurrentState = await CurrentState();   
+        if(!forAccount.Equals(mCurrentState.Account, StringComparison.InvariantCultureIgnoreCase))
         {
-            string mJsonString = JsonSerializer.Serialize(getFromDB(forAccount).ItemArray);
+            DataRow mClientChoicesDataRow = await getFromDB(forAccount);
+            string mJsonString = JsonSerializer.Serialize(mClientChoicesDataRow.ItemArray);
             SessionHelper.AddToSession(MClientChoices.SessionName, mJsonString);
         }
     }    

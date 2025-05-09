@@ -26,18 +26,18 @@ public static class SecurityEntityUtility
     /// Returns the current security entity based on the SecurityEntityFromUrl config setting.
     /// </summary>
     /// <returns>MSecurityEntity</returns>
-    public static MSecurityEntity CurrentProfile()
+    public static async Task<MSecurityEntity> CurrentProfile()
     {
         MSecurityEntity mRetProfile = null;
         if(!ConfigSettings.SecurityEntityFromUrl)
         {
             if (m_HttpContextAccessor != null)
             {
-                MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState();
+                MClientChoicesState mClientChoicesState = await ClientChoicesUtility.CurrentState();
                 if (mClientChoicesState != null)
                 {
                     int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
-                    mRetProfile = GetProfile(mSecurityEntity);
+                    mRetProfile = await GetProfile(mSecurityEntity);
                 }
             }
         }
@@ -46,7 +46,7 @@ public static class SecurityEntityUtility
             if (m_HttpContextAccessor != null)
             {
                 string mUrl = m_HttpContextAccessor.HttpContext.Request.Scheme + "://" + m_HttpContextAccessor.HttpContext.Request.Host.Host;
-                mRetProfile = GetProfileByUrl(mUrl);
+                mRetProfile = await GetProfileByUrl(mUrl);
                 // TODO: Unsure if I should attempt to get the selected profile from ClientChoices
                 // for now we'll get the default one I am not and just lettting the
                 // the default profile to be returned
@@ -80,7 +80,8 @@ public static class SecurityEntityUtility
     /// <returns></returns>
     public static async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        await getBusinessLogic().DeleteRegistrationInformation(securityEntitySeqId);
+        BSecurityEntities mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.DeleteRegistrationInformation(securityEntitySeqId);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
     }
 
@@ -88,13 +89,13 @@ public static class SecurityEntityUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BSecurityEntities getBusinessLogic(bool useDefault = false)
+    private static async Task<BSecurityEntities> getBusinessLogic(bool useDefault = false)
     {
         if(!useDefault)
         {
             if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
             {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+                m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
             }
             return m_BusinessLogic;
         }
@@ -113,10 +114,11 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="name">String</param>
     /// <returns>MSecurityEntityProfile</returns>
-    public static MSecurityEntity GetProfile(string name)
+    public static async Task<MSecurityEntity> GetProfile(string name)
     {
+        Collection<MSecurityEntity> mProfiles = await Profiles();
         MSecurityEntity mRetVal = null;
-        var mResult = from mProfile in Profiles()
+        var mResult = from mProfile in mProfiles
                       where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                       select mProfile;
         if(mResult.Any()) 
@@ -131,10 +133,11 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="securityEntitySeqId">int or Integer</param>
     /// <returns>MSecurityEntityProfile</returns>
-    public static MSecurityEntity GetProfile(int securityEntitySeqId)
+    public static async Task<MSecurityEntity> GetProfile(int securityEntitySeqId)
     {
         MSecurityEntity mRetVal = null;
-        var mResult = from mProfile in Profiles()
+        Collection<MSecurityEntity> mProfiles = await Profiles();
+        var mResult = from mProfile in mProfiles
                       where mProfile.Id == securityEntitySeqId
                       select mProfile;
         if(mResult.Any()) 
@@ -149,10 +152,11 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="url">partial URL</param>
     /// <returns>MSecurityEntity or null</returns>
-    public static MSecurityEntity GetProfileByUrl(string url)
+    public static async Task<MSecurityEntity> GetProfileByUrl(string url)
     {
         MSecurityEntity mRetVal = null;
-        var mResult = Profiles()
+        Collection<MSecurityEntity> mProfiles = await Profiles();
+        var mResult = mProfiles
             .Where(mProfile => !mProfile.Name.Equals("no url", StringComparison.CurrentCultureIgnoreCase))
             .Where(mProfile => mProfile.Url.Replace("http:", "https:").Contains(url.Replace("http:", "https:"), StringComparison.CurrentCultureIgnoreCase))
             .OrderBy(mProfile => mProfile.Id)
@@ -169,10 +173,11 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="securityEntityId"></param>
     /// <returns>MRegistrationInformation or null</returns>
-    public static MRegistrationInformation GetRegistrationInformation(int securityEntityId)
+    public static async Task<MRegistrationInformation> GetRegistrationInformation(int securityEntityId)
     {
         MRegistrationInformation mRetVal = null;
-        var mResult = RegistrationInformation()
+        Collection<MRegistrationInformation> mRegistrationInformations = await RegistrationInformation();
+        var mResult = mRegistrationInformations
             .Where(mProfile => mProfile.Id == securityEntityId)
             .OrderBy(mProfile => mProfile.Id)
             .Select(mProfile => mProfile);
@@ -190,18 +195,19 @@ public static class SecurityEntityUtility
     /// <param name="securityEntityId">The security entity id.</param>
     /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
     /// <returns>DataView.</returns>
-    public static DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
+    public static async Task<DataTable> GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
-        return getBusinessLogic().GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+        BSecurityEntities mBusinessLogic = await getBusinessLogic();
+        return mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
-    public static int SaveProfile(MSecurityEntity profile)
+    public static async Task<int> SaveProfile(MSecurityEntity profile)
     {
         string mEcryptedValue = string.Empty;
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
-
-        int mRetVal = getBusinessLogic().Save(profile);
+        BSecurityEntities mBusinessLogic = await getBusinessLogic();
+        int mRetVal = mBusinessLogic.Save(profile);
         m_CacheHelper.RemoveFromCache(s_CacheName);
         return mRetVal;
     }
@@ -211,9 +217,10 @@ public static class SecurityEntityUtility
     /// </summary>
     /// <param name="profile"></param>
     /// <returns></returns>
-    public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    public static async Task<MRegistrationInformation> SaveRegistrationInformation(MRegistrationInformation profile)
     {
-        MRegistrationInformation mRetVal = getBusinessLogic().SaveRegistrationInformation(profile);
+        BSecurityEntities mBusinessLogic = await getBusinessLogic();
+        MRegistrationInformation mRetVal = mBusinessLogic.SaveRegistrationInformation(profile);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
         return mRetVal;
     }
@@ -235,13 +242,14 @@ public static class SecurityEntityUtility
     /// <remarks>
     /// The collection is cached. The cache is cleared when the SaveRegistrationInformation method is called.
     /// </remarks>
-    public static Collection<MRegistrationInformation> RegistrationInformation()
+    public static async Task<Collection<MRegistrationInformation>> RegistrationInformation()
     {
         Collection<MRegistrationInformation> mRegistrationInformations = m_CacheHelper.GetFromCache<Collection<MRegistrationInformation>>(s_CacheRegistrationsName);
         if (mRegistrationInformations == null)
         {
             mRegistrationInformations = new Collection<MRegistrationInformation>();
-            foreach (MRegistrationInformation mRegistrationInformation in getBusinessLogic(true).GetRegistrationInformation())
+            BSecurityEntities mBusinessLogic = await getBusinessLogic(true);
+            foreach (MRegistrationInformation mRegistrationInformation in mBusinessLogic.GetRegistrationInformation())
             {
                 mRegistrationInformations.Add(mRegistrationInformation);
             }
@@ -257,13 +265,14 @@ public static class SecurityEntityUtility
     /// <remarks>
     /// The returned collection contains the decrypted connection string.
     /// </remarks>
-    public static Collection<MSecurityEntity> Profiles()
+    public static async Task<Collection<MSecurityEntity>> Profiles()
     {
         Collection<MSecurityEntity> mSecurityEntities = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
         if (mSecurityEntities == null)
         {
             mSecurityEntities = new Collection<MSecurityEntity>();
-            foreach (MSecurityEntity mSecurityEntity in getBusinessLogic(true).SecurityEntities())
+            BSecurityEntities mBusinessLogic = await getBusinessLogic(true);
+            foreach (MSecurityEntity mSecurityEntity in mBusinessLogic.SecurityEntities())
             {
                 // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
                 string mDecryptedPassword;

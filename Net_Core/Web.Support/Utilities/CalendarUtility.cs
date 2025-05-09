@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
@@ -16,8 +17,7 @@ public static class CalendarUtility
     public static async Task<List<MCalendarEvent>> GetEvents(MSecurityEntity securityEntityProfile, int functionSeqId, DateTime startDate, DateTime endDate) 
     {
         List<MCalendarEvent> mRetVal = [];
-        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
-        DataTable mDataTable = await mCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
+        DataTable mDataTable = await (await getBusinessLogic()).GetEvents(functionSeqId, startDate, endDate);
         foreach (DataRow item in mDataTable.Rows)
         {
             MCalendarEvent mCalendarEvent = new MCalendarEvent(item);
@@ -28,32 +28,29 @@ public static class CalendarUtility
 
     public static async Task<bool> DeleteEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId)
     {
-        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
-        return await mCommunityCalendar.DeleteEvent(calendarEventSeqId);
+        return await (await getBusinessLogic()).DeleteEvent(calendarEventSeqId);
     }
 
     /// <summary>
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BCommunityCalendar getBusinessLogic()
+    private static async Task<BCommunityCalendar> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile());
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
 
     public static async Task<MCalendarEvent> GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
     {
-        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
-        return await mCommunityCalendar.GetEvent(calendarEventSeqId);
+        return await (await getBusinessLogic()).GetEvent(calendarEventSeqId);
     }
 
     public static async Task<MCalendarEvent> SaveCalendarEvent(MSecurityEntity securityEntityProfile, int functionSeqId, MCalendarEvent calendarEvent)
     {
-        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
-        return await mCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent);
+        return await (await getBusinessLogic()).SaveCalendarEvent(functionSeqId, calendarEvent);
     }
 }
