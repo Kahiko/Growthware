@@ -79,7 +79,7 @@ public static class GroupUtility
         // Populate mRetVal with the roles associated with the group if a groupSeqId is provided
         if(groupSeqId != -1)
         {
-            mRetVal.RolesInGroup = await GroupUtility.GetSelectedRoles(mGroupRoles);    
+            mRetVal.RolesInGroup = await GetSelectedRoles(mGroupRoles);    
         }
         // Populate mRetVal with the roles not associated with the group
         ArrayList mRolesForSecurityEntity = await RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
