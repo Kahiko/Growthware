@@ -86,7 +86,7 @@ public static class SessionHelper
             mLoggingProfile.LogDate = DateTime.Now;
             mLoggingProfile.MethodName = "GetFromSession";
             mLoggingProfile.Msg = "sessionName: " + sessionName + " ex: " + ex.Message;
-            LoggingUtility.Save(mLoggingProfile);
+            m_Logger.Error(mLoggingProfile);
             return default(T);
         }
     }
