@@ -179,12 +179,12 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpPost("Log")]
-    public bool Log(MLoggingProfile profile)
+    public async Task<bool> Log(MLoggingProfile profile)
     {
         if (profile.Destination != null) {
             if (profile.Destination.Contains(LogDestination.DB)) 
             {
-                LoggingUtility.Save(profile);
+                await LoggingUtility.Save(profile);
             }
             if (profile.Destination.Contains(LogDestination.File)) 
             {

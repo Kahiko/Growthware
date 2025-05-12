@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -53,11 +54,11 @@ public class BLogger : AbstractBusinessLogic
     /// </summary>
     /// <param name="logSeqId">The log sequence ID.</param>
     /// <returns>The logging profile if the database is online, otherwise null.</returns>
-    public MLoggingProfile GetLoggingProfile(int logSeqId)
+    public async Task<MLoggingProfile> GetLoggingProfile(int logSeqId)
     {
         if (DatabaseIsOnline())
         {
-            return this.m_Logging.GetLog(logSeqId);
+            return await this.m_Logging.GetLog(logSeqId);
         }
         return null;
     }
@@ -67,12 +68,12 @@ public class BLogger : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void Save(MLoggingProfile profile)
+    public async Task Save(MLoggingProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (DatabaseIsOnline())
         {
-            m_Logging.Save(profile);
+            await m_Logging.Save(profile);
         }
     }
 }

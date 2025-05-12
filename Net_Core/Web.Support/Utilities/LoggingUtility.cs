@@ -106,14 +106,14 @@ public static class LoggingUtility
         }
     }
 
-    public static MLoggingProfile GetProfile(int logSeqId)
+    public static async Task<MLoggingProfile> GetProfile(int logSeqId)
     {
         BLogger mBLogger = getBusinessLogic();
-        return mBLogger.GetLoggingProfile(logSeqId);
+        return await mBLogger.GetLoggingProfile(logSeqId);
     }
-    public static void Save(MLoggingProfile profile)
+    public static async Task Save(MLoggingProfile profile)
     {
         BLogger mBLogger = getBusinessLogic();
-        mBLogger.Save(profile);
+        await mBLogger.Save(profile);
     }
 }

@@ -3,6 +3,7 @@ using GrowthWare.DataAccess.Interfaces.Base;
 using System.Data;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -17,7 +18,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="logSeqId">int</param>
         /// <returns>MLoggingProfile</returns>
-        MLoggingProfile GetLog(int logSeqId);
+        Task<MLoggingProfile> GetLog(int logSeqId);
 
         /// <summary>
         /// Returns data from the Logging table
@@ -29,7 +30,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        void Save(MLoggingProfile profile);
+        Task Save(MLoggingProfile profile);
     }
 
 }
