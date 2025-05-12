@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Utilities;
+using GrowthWare.Framework;
 
 namespace GrowthWare.Web.Support.Helpers;
 /// <summary>
@@ -18,6 +19,7 @@ namespace GrowthWare.Web.Support.Helpers;
 public static class SessionHelper
 {
     private static IHttpContextAccessor m_HttpContextAccessor;
+    private static Logger m_Logger = Logger.Instance(); 
 
     /// <summary>
     /// Adds a value to the session with the specified session name.
@@ -43,7 +45,7 @@ public static class SessionHelper
                 mLoggingProfile.LogDate = DateTime.Now;
                 mLoggingProfile.MethodName = "AddToSession";
                 mLoggingProfile.Msg = ex.Message;
-                LoggingUtility.Save(mLoggingProfile);
+                m_Logger.Error(mLoggingProfile);
                 throw;
             }
         }
