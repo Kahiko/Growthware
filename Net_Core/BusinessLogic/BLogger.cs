@@ -18,13 +18,12 @@ public class BLogger : AbstractBusinessLogic
 #endregion
 
 #region Constructors
-    public BLogger(string dataAccessLayerAssemblyName, string dataAccessLayerNamespace, string connectionString)
+    public BLogger(MSecurityEntity securityEntityProfile)
     {
-        if (dataAccessLayerAssemblyName == null || string.IsNullOrWhiteSpace(dataAccessLayerAssemblyName)) throw new ArgumentNullException(nameof(dataAccessLayerAssemblyName), "dataAccessLayerAssemblyName cannot be a null reference (Nothing in Visual Basic)!");
-        if (dataAccessLayerNamespace == null || string.IsNullOrWhiteSpace(dataAccessLayerNamespace)) throw new ArgumentNullException(nameof(dataAccessLayerNamespace), "dataAccessLayerNamespace cannot be a null reference (Nothing in Visual Basic)!");
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
         if(m_Logging == null || ConfigSettings.CentralManagement)
         {
-            this.m_Logging = (ILogging)ObjectFactory.Create(dataAccessLayerAssemblyName, dataAccessLayerNamespace, "DLogging", connectionString);
+            this.m_Logging = (ILogging)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DLogging", securityEntityProfile.ConnectionString);
             if (this.m_Logging == null) 
             {
                 throw new InvalidOperationException("Failed to create an instance of DLogging.");

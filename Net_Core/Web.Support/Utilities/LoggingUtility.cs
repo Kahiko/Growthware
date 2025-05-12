@@ -88,18 +88,18 @@ public static class LoggingUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BLogger getBusinessLogic()
+    private static async Task<BLogger> getBusinessLogic()
     {
         if (m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(ConfigSettings.DataAccessLayerAssemblyName, ConfigSettings.DataAccessLayerNamespace, ConfigSettings.ConnectionString);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
 
     public static async IAsyncEnumerable<IDataRecord> GetDBLogRecordsForExportAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        BLogger mBusinessLogic = getBusinessLogic();
+        BLogger mBusinessLogic = await getBusinessLogic();
         await foreach (var record in mBusinessLogic.GetDBLogRecordsForExportAsync(cancellationToken))
         {
             yield return record;
@@ -108,12 +108,13 @@ public static class LoggingUtility
 
     public static async Task<MLoggingProfile> GetProfile(int logSeqId)
     {
-        BLogger mBLogger = getBusinessLogic();
-        return await mBLogger.GetLoggingProfile(logSeqId);
+        BLogger mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.GetLoggingProfile(logSeqId);
     }
+    
     public static async Task Save(MLoggingProfile profile)
     {
-        BLogger mBLogger = getBusinessLogic();
-        await mBLogger.Save(profile);
+        BLogger mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.Save(profile);
     }
 }
