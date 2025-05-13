@@ -20,6 +20,9 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class MessageUtility
 {
     private static BMessages m_BusinessLogic = null;
+
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
+
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
     private static string s_MessagesUnitCachedCollectionName = "_MessagesCollection";
@@ -181,20 +184,20 @@ public static class MessageUtility
     /// <summary>
     /// Removes the cached messages DV.
     /// </summary>
-    public static void RemoveCachedMessagesDV()
+    public static async Task RemoveCachedMessagesDV()
     {
-        // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
-        // CacheHelper.RemoveFromCache(MessagesUnitCachedDVName(mySecurityEntity));
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        m_CacheHelper.RemoveFromCache(MessagesUnitCachedDVName(mCurrentSecurityEntity.Id));
     }
 
     /// <summary>
     /// Removes the cached messages collection.
     /// </summary>
-    public static void RemoveCachedMessagesCollection()
+    public static async Task RemoveCachedMessagesCollection()
     {
         // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
         // CacheHelper.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity));
-        RemoveCachedMessagesDV();
+        await RemoveCachedMessagesDV();
     }
 
     /// <summary>
@@ -206,7 +209,7 @@ public static class MessageUtility
         BMessages mBusinessLogic = await getBusinessLogic();
         int mRetVal = -1;
         mRetVal = mBusinessLogic.Save(profile);
-        RemoveCachedMessagesCollection();
+        await RemoveCachedMessagesCollection();
         return mRetVal;
     }
 
