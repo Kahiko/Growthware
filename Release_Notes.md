@@ -37,6 +37,7 @@
 - BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
 - GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
 - When editting a role the members are not being always being populated
+- Caching is not implemented correctly in the Message Utility
 
 ### Bug Fixes
 - Fixed warning "Cannot convert null literal to non-nullable reference type." in DAccounts.cs
