@@ -165,10 +165,14 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">MSecurityEntity</param>
     /// <returns>Integer</returns>
-    public int Save(MSecurityEntity profile)
+    public async Task<int> Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) profile.Id = m_DSecurityEntities.Save(profile);
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) 
+        {
+            profile.Id = await m_DSecurityEntities.Save(profile);
+        }
+        
         return profile.Id;
     }
 

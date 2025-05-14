@@ -50,7 +50,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="profile">MSecurityEntity</param>
         /// <remarks></remarks>
-        int Save(MSecurityEntity profile);
+        Task<int> Save(MSecurityEntity profile);
 
         /// <summary>
         /// Saves the registration information to [ZGWSecurity].[Registration_Information].

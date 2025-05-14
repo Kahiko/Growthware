@@ -26,7 +26,7 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     {
         string mStoredProcedure = "[ZGWSecurity].[Delete_Registration_Information]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_SecurityEntitySeqId", securityEntitySeqId)
+            new("@P_SecurityEntitySeqId", securityEntitySeqId)
         ];
         await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
@@ -35,7 +35,7 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     {
         string mStoredProcedure = "[ZGWSecurity].[Get_Registration_Information]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_SecurityEntitySeqId", -1)
+            new("@P_SecurityEntitySeqId", -1)
         ];
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
@@ -44,7 +44,7 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     {
         string mStoredProcedure = "[ZGWSecurity].[Get_Security_Entity]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_SecurityEntitySeqId", -1)
+            new("@P_SecurityEntitySeqId", -1)
         ];
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
@@ -55,9 +55,9 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         if (SecurityEntityID == -1) { throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
         string mStoredProcedure = "[ZGWSecurity].[Get_Valid_Security_Entity]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_ACCT", account),
-            new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-            new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
+            new("@P_ACCT", account),
+            new("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
+            new("@P_SecurityEntityID", SecurityEntityID),
             GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
         ];
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
@@ -70,38 +70,37 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
 
         string mStoreProcedure = "[ZGWSecurity].[Get_Valid_Security_Entity]";
         SqlParameter[] myParameters = [
-            new SqlParameter("@P_Account", account),
-            new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin),
-            new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID)
+            new("@P_Account", account),
+            new("@P_IS_SE_ADMIN", isSystemAdmin),
+            new("@P_SecurityEntitySeqId", SecurityEntityID)
         ];
         return await base.GetDataTableAsync(mStoreProcedure, myParameters);
     }
 
-    int ISecurityEntities.Save(MSecurityEntity profile)
+    async Task<int> ISecurityEntities.Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be nothing");
         SqlParameter mPrimaryKey = GetSqlParameter("@P_PRIMARY_KEY", null, ParameterDirection.Output);
         mPrimaryKey.Size = 10;
-        string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";
-        SqlParameter[] mParameters =
-            {
-            new SqlParameter("@P_SecurityEntitySeqId", profile.Id),
-            new SqlParameter("@P_NAME", profile.Name),
-            new SqlParameter("@P_DESCRIPTION", profile.Description ?? ""),
-            new SqlParameter("@P_URL", profile.Url ?? ""),
-            new SqlParameter("@P_StatusSeqId", profile.StatusSeqId),
-            new SqlParameter("@P_DAL", profile.DataAccessLayer),
-            new SqlParameter("@P_DAL_Name", profile.DataAccessLayerAssemblyName),
-            new SqlParameter("@P_DAL_NAME_SPACE", profile.DataAccessLayerNamespace),
-            new SqlParameter("@P_DAL_STRING", profile.ConnectionString),
-            new SqlParameter("@P_SKIN", profile.Skin),
-            new SqlParameter("@P_STYLE", profile.Style ?? ""),
-            new SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
-            new SqlParameter("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
+        string mStoredProcedure = "[ZGWSecurity].[Set_Security_Entity]";
+        SqlParameter[] mParameters = [
+            new("@P_SecurityEntitySeqId", profile.Id),
+            new("@P_NAME", profile.Name),
+            new("@P_DESCRIPTION", profile.Description ?? ""),
+            new("@P_URL", profile.Url ?? ""),
+            new("@P_StatusSeqId", profile.StatusSeqId),
+            new("@P_DAL", profile.DataAccessLayer),
+            new("@P_DAL_Name", profile.DataAccessLayerAssemblyName),
+            new("@P_DAL_NAME_SPACE", profile.DataAccessLayerNamespace),
+            new("@P_DAL_STRING", profile.ConnectionString),
+            new("@P_SKIN", profile.Skin),
+            new("@P_STYLE", profile.Style ?? ""),
+            new("@P_ENCRYPTION_TYPE", profile.EncryptionType),
+            new("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
             mPrimaryKey
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         profile.Id = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture);
         return profile.Id;
     }

@@ -207,7 +207,7 @@ public static class SecurityEntityUtility
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
         BSecurityEntities mBusinessLogic = await getBusinessLogic();
-        int mRetVal = mBusinessLogic.Save(profile);
+        int mRetVal = await mBusinessLogic.Save(profile);
         m_CacheHelper.RemoveFromCache(s_CacheName);
         return mRetVal;
     }

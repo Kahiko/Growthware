@@ -29,6 +29,7 @@
         - Task<DataTable> GetSecurityEntities()
         - Task<DataTable> GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator)
         - Task<DataTable> GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
+        - Task<int> Save(MSecurityEntity profile)
     - DLogging
 
 ### Known Bugs
