@@ -24,7 +24,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <returns>DataTable</returns>
         /// <remarks></remarks>
-        DataTable GetSecurityEntities();
+        Task<DataTable> GetSecurityEntities();
 
         /// <summary>
         /// Retrieves security entities for a given account.

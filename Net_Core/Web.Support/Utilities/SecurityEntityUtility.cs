@@ -267,21 +267,22 @@ public static class SecurityEntityUtility
     /// </remarks>
     public static async Task<Collection<MSecurityEntity>> Profiles()
     {
-        Collection<MSecurityEntity> mSecurityEntities = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
-        if (mSecurityEntities == null)
+        Collection<MSecurityEntity> mRetVal = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
+        if (mRetVal == null)
         {
-            mSecurityEntities = new Collection<MSecurityEntity>();
+            mRetVal = [];
             BSecurityEntities mBusinessLogic = await getBusinessLogic(true);
-            foreach (MSecurityEntity mSecurityEntity in mBusinessLogic.SecurityEntities())
+            Collection<MSecurityEntity> mSecurityEntities = await mBusinessLogic.SecurityEntities();
+            foreach (MSecurityEntity mSecurityEntity in mSecurityEntities)
             {
                 // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
                 string mDecryptedPassword;
                 CryptoUtility.TryDecrypt(mSecurityEntity.ConnectionString, out mDecryptedPassword, ConfigSettings.EncryptionType);
                 mSecurityEntity.ConnectionString = mDecryptedPassword;
-                mSecurityEntities.Add(mSecurityEntity);
+                mRetVal.Add(mSecurityEntity);
             }
-            m_CacheHelper.AddToCache(s_CacheName, mSecurityEntities);
+            m_CacheHelper.AddToCache(s_CacheName, mRetVal);
         }
-        return mSecurityEntities;
+        return mRetVal;
     }
 }

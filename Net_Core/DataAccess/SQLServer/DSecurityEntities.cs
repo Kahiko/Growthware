@@ -40,14 +40,13 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetSecurityEntities()
+    async Task<DataTable> ISecurityEntities.GetSecurityEntities()
     {
-        string mStoredProcedure = "ZGWSecurity.Get_Security_Entity";
-        SqlParameter[] mParameters =
-        {
+        string mStoredProcedure = "[ZGWSecurity].[Get_Security_Entity]";
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_SecurityEntitySeqId", -1)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     DataTable ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)

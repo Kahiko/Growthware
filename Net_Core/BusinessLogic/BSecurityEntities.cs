@@ -193,7 +193,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     ///		Collection of MSecurityEntity
     ///	</returns>
     /// <remarks></remarks>
-    public Collection<MSecurityEntity> SecurityEntities()
+    public async Task<Collection<MSecurityEntity>> SecurityEntities()
     {
         Collection<MSecurityEntity> mRetVal = new Collection<MSecurityEntity>();
         DataTable mDataTable = null;
@@ -201,7 +201,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         {
             if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
             {
-                mDataTable = m_DSecurityEntities.GetSecurityEntities();
+                mDataTable = await m_DSecurityEntities.GetSecurityEntities();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     MSecurityEntity mProfile = new MSecurityEntity(item);
@@ -215,10 +215,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         }
         finally
         {
-            if (mDataTable != null)
-            {
-                mDataTable.Dispose();
-            }
+            mDataTable?.Dispose();
         }
         return mRetVal;
     }

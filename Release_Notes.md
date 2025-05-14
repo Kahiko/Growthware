@@ -26,6 +26,7 @@
     - DSecurityEntities
         - Task DeleteRegistrationInformation(int securityEntitySeqId)
         - Task<DataTable> GetRegistrationInformation()
+        - Task<DataTable> GetSecurityEntities()
     - DLogging
 
 ### Known Bugs
