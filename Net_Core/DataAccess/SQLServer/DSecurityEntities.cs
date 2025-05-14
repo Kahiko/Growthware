@@ -49,19 +49,18 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)
+    async Task<DataTable> ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)
     {
         if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!"); };
         if (SecurityEntityID == -1) { throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
-        string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
-        SqlParameter[] mParameters =
-        {
-        new SqlParameter("@P_ACCT", account),
-        new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-        new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
-        GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
-        };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        string mStoredProcedure = "[ZGWSecurity].[Get_Valid_Security_Entity]";
+        SqlParameter[] mParameters = [
+            new SqlParameter("@P_ACCT", account),
+            new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
+            new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
+            GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
     DataTable ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)

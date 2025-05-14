@@ -27,6 +27,7 @@
         - Task DeleteRegistrationInformation(int securityEntitySeqId)
         - Task<DataTable> GetRegistrationInformation()
         - Task<DataTable> GetSecurityEntities()
+        - Task<DataTable> GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator)
     - DLogging
 
 ### Known Bugs

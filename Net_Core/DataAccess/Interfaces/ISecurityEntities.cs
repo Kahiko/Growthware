@@ -34,7 +34,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="isSecurityEntityAdministrator">Boolean or bool</param>
         /// <returns>Datatable</returns>
         /// <remarks></remarks>
-        DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
+        Task<DataTable> GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
 
         /// <summary>
         /// Gets the valid security entities.
