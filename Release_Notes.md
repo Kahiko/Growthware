@@ -11,26 +11,6 @@
 
 ### Improvements
 - Converted database calls to async/await
-    - DCommunityCalendar
-    - DDBInformation
-    - DDirectories
-    - DFeedbacks
-    - DGroups
-    - DNameValuePairs
-    - DRoles
-    - DSearch
-    - DState
-    - DFunctions
-    - DClientChoices
-    - DAccounts
-    - DSecurityEntities
-        - Task DeleteRegistrationInformation(int securityEntitySeqId)
-        - Task<DataTable> GetRegistrationInformation()
-        - Task<DataTable> GetSecurityEntities()
-        - Task<DataTable> GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator)
-        - Task<DataTable> GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
-        - Task<int> Save(MSecurityEntity profile)
-    - DLogging
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure

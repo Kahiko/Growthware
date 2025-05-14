@@ -105,11 +105,10 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return profile.Id;
     }
 
-    DataRow ISecurityEntities.SaveRegistrationInformation(MRegistrationInformation profile)
+    async Task<DataRow> ISecurityEntities.SaveRegistrationInformation(MRegistrationInformation profile)
     {
-        string mStoredProcedure = "ZGWSecurity.Set_Registration_Information";
-        SqlParameter[] mParameters =
-            {
+        string mStoredProcedure = "[ZGWSecurity].[Set_Registration_Information]";
+        SqlParameter[] mParameters = [
             new ("@P_SecurityEntitySeqId", profile.Id),
             new ("@P_SecurityEntitySeqId_Owner", profile.SecurityEntitySeqIdOwner),
             new ("@P_AccountChoices", profile.AccountChoices),
@@ -117,10 +116,10 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
             new ("@P_Groups", profile.Groups),
             new ("@P_Roles", profile.Roles),
             new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id))
-            };
+        ];
         try
         {
-            return base.GetDataRow(mStoredProcedure, mParameters);
+            return await base.GetDataRowAsync(mStoredProcedure, mParameters);
         }
         catch (System.Exception)
         {

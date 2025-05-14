@@ -220,7 +220,7 @@ public static class SecurityEntityUtility
     public static async Task<MRegistrationInformation> SaveRegistrationInformation(MRegistrationInformation profile)
     {
         BSecurityEntities mBusinessLogic = await getBusinessLogic();
-        MRegistrationInformation mRetVal = mBusinessLogic.SaveRegistrationInformation(profile);
+        MRegistrationInformation mRetVal = await mBusinessLogic.SaveRegistrationInformation(profile);
         m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
         return mRetVal;
     }

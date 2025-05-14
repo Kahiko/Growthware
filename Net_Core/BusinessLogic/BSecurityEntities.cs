@@ -182,11 +182,14 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <param name="profile">MRegistrationInformation</param>
     /// <returns>MRegistrationInformation</returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    public async Task<MRegistrationInformation> SaveRegistrationInformation(MRegistrationInformation profile)
     {
         MRegistrationInformation mRetVal = profile;
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) mRetVal = new(m_DSecurityEntities.SaveRegistrationInformation(profile));
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
+        {
+            mRetVal = new(await m_DSecurityEntities.SaveRegistrationInformation(profile));
+        }
         return mRetVal;
     }
 

@@ -57,6 +57,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="profile"></param>
         /// <returns>DataRow</returns>
-        DataRow SaveRegistrationInformation(MRegistrationInformation profile);
+        Task<DataRow> SaveRegistrationInformation(MRegistrationInformation profile);
     }
 }
