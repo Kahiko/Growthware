@@ -150,12 +150,12 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <param name="SecurityEntityID">The security entity id.</param>
     /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
+    public async Task<DataTable> GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
     {
         DataTable mRetVal = null;
         if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
         {
-            mRetVal = m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
+            mRetVal = await m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
         }
         return mRetVal;
     }

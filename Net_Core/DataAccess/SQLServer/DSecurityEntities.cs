@@ -63,19 +63,18 @@ public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
+    async Task<DataTable> ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException(nameof(account), "account cannot be a null reference (Nothing in Visual Basic)!");
         if (SecurityEntityID == -1) throw new ArgumentNullException(nameof(SecurityEntityID), "SecurityEntityID must be greater than -1");
 
-        string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
-        SqlParameter[] myParameters =
-        {
+        string mStoreProcedure = "[ZGWSecurity].[Get_Valid_Security_Entity]";
+        SqlParameter[] myParameters = [
             new SqlParameter("@P_Account", account),
             new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin),
             new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID)
-        };
-        return base.GetDataTable(mStoreProcedure, myParameters);
+        ];
+        return await base.GetDataTableAsync(mStoreProcedure, myParameters);
     }
 
     int ISecurityEntities.Save(MSecurityEntity profile)

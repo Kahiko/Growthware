@@ -28,6 +28,7 @@
         - Task<DataTable> GetRegistrationInformation()
         - Task<DataTable> GetSecurityEntities()
         - Task<DataTable> GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator)
+        - Task<DataTable> GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
     - DLogging
 
 ### Known Bugs

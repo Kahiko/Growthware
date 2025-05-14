@@ -198,7 +198,7 @@ public static class SecurityEntityUtility
     public static async Task<DataTable> GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
         BSecurityEntities mBusinessLogic = await getBusinessLogic();
-        return mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+        return await mBusinessLogic.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
     public static async Task<int> SaveProfile(MSecurityEntity profile)
