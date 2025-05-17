@@ -126,7 +126,7 @@ public class JwtUtility : IJwtUtility
         { 
             return await GenerateRefreshToken(ipAddress, accountSeqId);
         }
-        
+
         return refreshToken;
     }
 
@@ -137,7 +137,8 @@ public class JwtUtility : IJwtUtility
     public static async Task<string> GenerateResetToken()
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        bool mTokenIsUnique = (await BusinessLogic()).ResetTokenExists(mRetVal);
+        BAccounts mBusinessLogic = await BusinessLogic();
+        bool mTokenIsUnique = await mBusinessLogic.ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {

@@ -25,7 +25,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// </summary>
 		/// <param name="resetToken">string to check for</param>
 		/// <returns>bool</returns>
-		bool ResetTokenExists(string resetToken);
+		Task<bool> ResetTokenExists(string resetToken);
 
 		/// <summary>
 		/// Used by all methods and must be set to send parameters to the datastore

@@ -134,16 +134,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return await base.GetDataTableAsync(mCommandText, mParameters, true);
     }
 
-    bool IAccount.ResetTokenExists(string resetToken)
+    async Task<bool> IAccount.ResetTokenExists(string resetToken)
     {
         bool mRetVal = false;
         Int32 mCount = 0;
         string mCleanedValue = this.Cleanup(resetToken);
         string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[Accounts] WHERE [ResetToken] = @P_ResetToken";
-        SqlParameter[] mParameters = {
-                new("@P_ResetToken", mCleanedValue),
-            };
-        var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_ResetToken", mCleanedValue),
+        ];
+        var mDbValue = await base.ExecuteScalarAsync(mCommandText, mParameters, true);
         if (mDbValue != null)
         {
             mCount = (Int32)mDbValue;

@@ -323,9 +323,9 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="resetToken"></param>
     /// <returns></returns>
-    public bool ResetTokenExists(string resetToken)
+    public async Task<bool> ResetTokenExists(string resetToken)
     {
-        return m_DAccounts.ResetTokenExists(resetToken);
+        return await m_DAccounts.ResetTokenExists(resetToken);
     }
 
     /// <summary>
