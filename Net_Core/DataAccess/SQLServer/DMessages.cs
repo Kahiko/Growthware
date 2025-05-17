@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -55,14 +56,14 @@ public class DMessages : AbstractDBInteraction, IMessages
 
     int IMessages.SecurityEntitySeqId { get; set; }
 
-    DataTable IMessages.Messages()
+    async Task<DataTable> IMessages.Messages()
     {
         String storeProc = "[ZGWCoreWeb].[Get_Messages]";
         SqlParameter[] mParamaters = {
                 new("@P_MessageSeqId", -1),
                 new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
             };
-        return GetDataTable(storeProc, mParamaters);
+        return await base.GetDataTableAsync(storeProc, mParamaters);
     }
 
     DataRow IMessages.Message(int messageSeqId)

@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -95,7 +96,7 @@ public class BMessages : AbstractBusinessLogic
     /// </summary>
     /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>Collection{MMessage}.</returns>
-    public Collection<MMessage> GetMessages(int securityEntitySeqId)
+    public async Task<Collection<MMessage>> GetMessages(int securityEntitySeqId)
     {
         Collection<MMessage> mRetList = new Collection<MMessage>();
         DataTable mDataTable = null;
@@ -111,7 +112,7 @@ public class BMessages : AbstractBusinessLogic
                   * does not exist in the database.  There is a bigger problem if the securityEntitySeqId
                   * is not valid.
                   */
-                mDataTable = m_DMessages.Messages();
+                mDataTable = await m_DMessages.Messages();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     mRetList.Add(new MMessage(item));

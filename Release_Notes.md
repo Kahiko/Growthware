@@ -23,6 +23,7 @@
 ### Bug Fixes
 - Converted the class methods to async/await that were missed in the previous release
     - DataAccess.SQLServer\DDirectories.Save
+    - DataAccess.SQLServer\DMessages.Messages
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

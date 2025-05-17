@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces;
 /// <summary>
@@ -30,7 +31,7 @@ public interface IMessages : IDBInteraction
     /// Calls stored procedure "Get_Messages".
     /// If messages do not exists for the given security entity and the security entity is valid, then new messages are created for the requested security entity.
     /// </remarks>
-    DataTable Messages();
+    Task<DataTable> Messages();
 
     /// <summary>
     /// Gets the message.
