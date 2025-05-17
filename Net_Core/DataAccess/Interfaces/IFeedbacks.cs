@@ -11,19 +11,19 @@ namespace GrowthWare.DataAccess.Interfaces;
 /// </summary>
 public interface IFeedbacks : IDBInteraction
 {
-		/// <summary>
-		/// Used by all methods and must be set to send parameters to the datastore
-		/// </summary>
-		MFeedback Profile {get; set;}
+	/// <summary>
+	/// Used by all methods and must be set to send parameters to the datastore
+	/// </summary>
+	MFeedback Profile { get; set; }
 
-		/// <summary>
-		/// Retrieves the current feedback using the information provided in the Profile property.
-		/// </summary>
-		/// <returns>DataRow</returns>
-		Task<DataRow> GetFeedback();
+	/// <summary>
+	/// Retrieves the current feedback using the information provided in the Profile property.
+	/// </summary>
+	/// <returns>DataRow</returns>
+	Task<DataRow> GetFeedback();
 
-		/// <summary>
-		/// Saves the current feedback using the information provided in the Profile property.
-		/// </summary>
-		Task<DataRow> SaveFeedback();
+	/// <summary>
+	/// Saves the current feedback using the information provided in the Profile property.
+	/// </summary>
+	Task<DataRow> SaveFeedback();
 }
