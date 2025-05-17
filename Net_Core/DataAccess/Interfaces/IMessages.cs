@@ -42,5 +42,5 @@ public interface IMessages : IDBInteraction
     /// <summary>
     /// Saves this instance.
     /// </summary>
-    int Save();
+    Task<int> Save();
 }

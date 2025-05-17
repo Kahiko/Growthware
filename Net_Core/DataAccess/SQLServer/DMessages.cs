@@ -68,7 +68,7 @@ public class DMessages : AbstractDBInteraction, IMessages
 
     DataRow IMessages.Message(int messageSeqId)
     {
-        String storeProc = "ZGWCoreWeb.Get_Messages";
+        String storeProc = "[ZGWCoreWeb].[Get_Messages]";
         SqlParameter[] mParamaters = {
                 new("@P_MessageSeqId", messageSeqId),
                 new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
@@ -76,11 +76,11 @@ public class DMessages : AbstractDBInteraction, IMessages
         return GetDataRow(storeProc, mParamaters);
     }
 
-    int IMessages.Save()
+    async Task<int> IMessages.Save()
     {
-        String storeProc = "ZGWCoreWeb.Set_Message";
+        String storeProc = "[ZGWCoreWeb].[Set_Message]";
         SqlParameter[] mParameters = getInsertUpdateParameters();
-        ExecuteNonQuery(storeProc, mParameters);
+        await base.ExecuteNonQueryAsync(storeProc, mParameters);
         return int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
     }
 }

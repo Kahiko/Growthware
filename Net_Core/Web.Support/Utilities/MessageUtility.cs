@@ -208,7 +208,7 @@ public static class MessageUtility
     {
         BMessages mBusinessLogic = await getBusinessLogic();
         int mRetVal = -1;
-        mRetVal = mBusinessLogic.Save(profile);
+        mRetVal = await mBusinessLogic.Save(profile);
         await RemoveCachedMessagesCollection();
         return mRetVal;
     }
