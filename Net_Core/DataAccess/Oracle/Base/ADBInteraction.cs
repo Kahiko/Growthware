@@ -46,8 +46,27 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     {
         if (bulkInsertParameters.ListOfProfiles != null && bulkInsertParameters.ListOfProfiles.Any())
         {
-            DataTable mDataTable = bulkInsertParameters.EmptyTable.Clone();
             string mCommandText = string.Empty;
+
+            // Retrieve ordered column names from the temporary table
+            string[] mOrderedColumns;
+            mCommandText = string.Format("SELECT TOP(1) * FROM {0}", bulkInsertParameters.TempTableName);
+            using (OracleCommand mOracleCommand = new OracleCommand(mCommandText))
+            {
+                mOracleCommand.CommandType = CommandType.Text;
+                using (OracleDataReader mOracleDataReader = mOracleCommand.ExecuteReader())
+                { 
+                    mOrderedColumns = new string[mOracleDataReader.FieldCount]; // Initialize array with the number of columns
+                    for (int i = 0; i < mOracleDataReader.FieldCount; i++)
+                    {
+                        mOrderedColumns[i] = mOracleDataReader.GetName(i); // Get column names in order
+                    }
+                }
+            }
+
+            // Create DataTable with the columns in the same order as the temporary table
+            IDatabaseTable mFirstObj = (IDatabaseTable)bulkInsertParameters.ListOfProfiles.First();
+            DataTable mDataTable = mFirstObj.GetEmptyTable(bulkInsertParameters.TempTableName, bulkInsertParameters.IncludePrimaryKey, mOrderedColumns);
 
             // Populate mDataTable with the data from the listOfIDatabaseFunctions
             foreach (var item in bulkInsertParameters.ListOfProfiles)
