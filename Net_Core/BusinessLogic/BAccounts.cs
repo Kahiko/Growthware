@@ -313,9 +313,9 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="refreshToken"></param>
     /// <returns>bool</returns>
-    public bool RefreshTokenExists(string refreshToken)
+    public async Task<bool> RefreshTokenExists(string refreshToken)
     {
-        return m_DAccounts.RefreshTokenExists(refreshToken);
+        return await m_DAccounts.RefreshTokenExists(refreshToken);
     }
 
     /// <summary>

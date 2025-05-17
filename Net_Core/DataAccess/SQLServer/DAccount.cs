@@ -101,16 +101,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
 #endregion
 
 #region Public Methods
-    bool IAccount.RefreshTokenExists(string refreshToken)
+    async Task<bool> IAccount.RefreshTokenExists(string refreshToken)
     {
         bool mRetVal = false;
         Int32 mCount = 0;
         string mCleanedValue = this.Cleanup(refreshToken);
         string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @P_Token";
-        SqlParameter[] mParameters = {
-                new("@P_Token", mCleanedValue),
-            };
-        var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_Token", mCleanedValue),
+        ];
+        var mDbValue = await base.ExecuteScalarAsync(mCommandText, mParameters, true);
         if (mDbValue != null)
         {
             mCount = (Int32)mDbValue;

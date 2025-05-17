@@ -119,11 +119,14 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        var tokenIsUnique = (await BusinessLogic()).RefreshTokenExists(refreshToken.Token);
+        BAccounts mBusinessLogic = await BusinessLogic();
+        var tokenIsUnique = await mBusinessLogic.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
+        { 
             return await GenerateRefreshToken(ipAddress, accountSeqId);
-
+        }
+        
         return refreshToken;
     }
 

@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// </summary>
 		/// <param name="refreshToken"></param>
 		/// <returns>bool</returns>
-		bool RefreshTokenExists(string refreshToken);
+		Task<bool> RefreshTokenExists(string refreshToken);
 
 		/// <summary>
 		/// Check the DB to see if the resetToken is already in use (exists)
