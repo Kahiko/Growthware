@@ -32,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BMessages : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IMessages m_DMessages;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BMessages() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -80,16 +80,16 @@ public class BMessages : AbstractBusinessLogic
     public BMessages(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DMessages == null || ConfigSettings.CentralManagement)
+        if (m_DMessages == null || ConfigSettings.CentralManagement)
         {
             this.m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages", securityEntityProfile.ConnectionString);
-            if (this.m_DMessages == null) 
+            if (this.m_DMessages == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DMessages.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Gets all messages for the requested security entity (securityEntitySeqId).
@@ -139,10 +139,10 @@ public class BMessages : AbstractBusinessLogic
     /// <param name="messageSeqId">int of the desired message profile object</param>
     /// <returns>DataRow</returns>
     /// <remarks></remarks>
-    public DataRow GetMessage(int messageSeqId)
+    public async Task<DataRow> GetMessage(int messageSeqId)
     {
         DataRow mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DMessages.Message(messageSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DMessages.Message(messageSeqId);
         return mRetVal;
     }
 

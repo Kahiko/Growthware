@@ -15,16 +15,16 @@ namespace GrowthWare.DataAccess.SQLServer;
 public class DMessages : AbstractDBInteraction, IMessages
 {
 
-#region Member Fields
+    #region Member Fields
     private MMessage m_Profile = new MMessage();
-#endregion
+    #endregion
 
-#region Constructors
-    public DMessages(string connectionString) : base() 
-    { 
+    #region Constructors
+    public DMessages(string connectionString) : base()
+    {
         this.ConnectionString = connectionString;
     }
-#endregion
+    #endregion
 
     private SqlParameter[] getInsertUpdateParameters()
     {
@@ -66,14 +66,14 @@ public class DMessages : AbstractDBInteraction, IMessages
         return await base.GetDataTableAsync(storeProc, mParamaters);
     }
 
-    DataRow IMessages.Message(int messageSeqId)
+    async Task<DataRow> IMessages.Message(int messageSeqId)
     {
         String storeProc = "[ZGWCoreWeb].[Get_Messages]";
-        SqlParameter[] mParamaters = {
-                new("@P_MessageSeqId", messageSeqId),
-                new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
-            };
-        return GetDataRow(storeProc, mParamaters);
+        SqlParameter[] mParamaters = [
+            new("@P_MessageSeqId", messageSeqId),
+            new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
+        ];
+        return await base.GetDataRowAsync(storeProc, mParamaters);
     }
 
     async Task<int> IMessages.Save()

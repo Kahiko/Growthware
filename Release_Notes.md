@@ -29,6 +29,7 @@
     - DataAccess.SQLServer\DAccounts.RefreshTokenExists
     - DataAccess.SQLServer\DAccounts.ResetTokenExists
     - DataAccess.SQLServer\DAccounts.Delete
+    - DataAccess.SQLServer\DMessages.Message
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

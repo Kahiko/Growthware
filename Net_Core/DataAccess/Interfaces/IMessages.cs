@@ -37,7 +37,7 @@ public interface IMessages : IDBInteraction
     /// Gets the message.
     /// </summary>
     /// <returns>DataRow.</returns>
-    DataRow Message(int messageSeqId);
+    Task<DataRow> Message(int messageSeqId);
 
     /// <summary>
     /// Saves this instance.
