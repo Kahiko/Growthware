@@ -28,6 +28,7 @@
     - DataAccess.SQLServer\DNameValuePairs.DeleteNVPDetail
     - DataAccess.SQLServer\DAccounts.RefreshTokenExists
     - DataAccess.SQLServer\DAccounts.ResetTokenExists
+    - DataAccess.SQLServer\DAccounts.Delete
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

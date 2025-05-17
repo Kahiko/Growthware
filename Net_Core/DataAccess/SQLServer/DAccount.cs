@@ -289,11 +289,11 @@ public class DAccounts : AbstractDBInteraction, IAccount
         await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
-    void IAccount.Delete()
+    async Task IAccount.Delete()
     {
-        string myStoreProcedure = "ZGWSecurity.Delete_Account";
-        SqlParameter[] myParameters = { new("@P_AccountSeqId", m_Profile.Id) };
-        base.ExecuteNonQuery(myStoreProcedure, myParameters);
+        string myStoreProcedure = "[ZGWSecurity].[Delete_Account]";
+        SqlParameter[] myParameters = [ new("@P_AccountSeqId", m_Profile.Id) ];
+        await base.ExecuteNonQueryAsync(myStoreProcedure, myParameters);
     }
 
     async Task<bool> IAccount.VerificationTokenExists(string token)

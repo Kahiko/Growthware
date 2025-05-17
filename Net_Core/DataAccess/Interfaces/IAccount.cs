@@ -35,7 +35,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <summary>
 		/// Deletes an account
 		/// </summary>
-		void Delete();
+		Task Delete();
 
 		/// <summary>
 		/// Retrieves Account information
