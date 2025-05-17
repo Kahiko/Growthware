@@ -1,6 +1,7 @@
 ﻿using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -17,12 +18,12 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Returns all states associated with a given SecurityEntitySeqID.
         /// </summary>
         /// <returns>DataTable</returns>
-        DataTable GetStates {get;}
+        Task<DataTable> GetStates();
 
         /// <summary>
         /// Inserts or updates account information
         /// </summary>
-        void Save();
+        Task Save();
 
     }
 

@@ -11,7 +11,7 @@ public class MSecurityInfoTests : MSecurityInfo
     public void Constructor_DefaultValues_False()
     {
         // Arrange
-        MSecurityInfo securityInfo = new MSecurityInfo();
+        MSecurityInfo securityInfo = new();
 
         // Assert
         Assert.That(securityInfo.MayView, Is.False);
@@ -28,7 +28,7 @@ public class MSecurityInfoTests : MSecurityInfo
         IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity();
 
         // Act
-        MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
+        MSecurityInfo securityInfo = new(groupRolePermissionSecurity, groupRoleSecurity);
 
         // Assert
         Assert.That(securityInfo.MayView, Is.True);
@@ -42,7 +42,7 @@ public class MSecurityInfoTests : MSecurityInfo
         IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role2" });
 
         // Act
-        MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
+        MSecurityInfo securityInfo = new(groupRolePermissionSecurity, groupRoleSecurity);
         // Assert
         Assert.That(securityInfo.MayAdd, Is.True);
     }
@@ -55,7 +55,7 @@ public class MSecurityInfoTests : MSecurityInfo
         IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role3" });
 
         // Act
-        MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
+        MSecurityInfo securityInfo = new(groupRolePermissionSecurity, groupRoleSecurity);
 
         // Assert
         Assert.That(securityInfo.MayEdit, Is.True);
@@ -69,7 +69,7 @@ public class MSecurityInfoTests : MSecurityInfo
         IGroupRoleSecurity groupRoleSecurity = new MockGroupRoleSecurity(new Collection<string>(), new Collection<string> { "Role4" });
 
         // Act
-        MSecurityInfo securityInfo = new MSecurityInfo(groupRolePermissionSecurity, groupRoleSecurity);
+        MSecurityInfo securityInfo = new(groupRolePermissionSecurity, groupRoleSecurity);
 
         // Assert
         Assert.That(securityInfo.MayDelete, Is.True);

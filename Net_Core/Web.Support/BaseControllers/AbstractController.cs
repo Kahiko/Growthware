@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Framework.Enumerations;
 using System.Linq;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -23,6 +25,64 @@ public abstract class AbstractController : ControllerBase
     private string m_LogPriority = string.Empty;
     private string m_SecurityEntityTranslation = string.Empty;
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
+    private string m_TempDownloadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpGet("CreateSystemLogs")]
+    public async Task<ActionResult<string>> CreateSystemLogs()
+    {
+        try
+        {
+            // Generate unique ID for the zip file
+            var mFileId = Guid.NewGuid().ToString();
+
+            // Ensure temp directory exists
+            if (!Directory.Exists(m_TempDownloadDirectory))
+            {
+                Directory.CreateDirectory(m_TempDownloadDirectory);
+            }
+            FileUtility.DeleteOlderFiles(m_TempDownloadDirectory, 1);
+
+            var mZipFilePath = Path.Combine(m_TempDownloadDirectory, $"{mFileId}.zip");
+
+            // Create the zip file with database logs and example text file
+            await LoggingUtility.CreateSystemLogsZipAsync(mZipFilePath);
+
+            // Return the file ID so the client can download it
+            return Ok(mFileId);
+        }
+        catch (Exception ex)
+        {
+            Exception mException = new("Error creating log zip file", ex);
+            m_Logger.Error(mException);
+            return StatusCode(500, "Error creating log zip file");
+        }
+    }
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpDelete("CleanupSystemLogs")]
+    public ActionResult CleanupSystemLogs(string fileId)
+    {
+        var mFilePath = Path.Combine(m_TempDownloadDirectory, $"{fileId}.zip");
+        if (!System.IO.File.Exists(mFilePath))
+        {
+            return NotFound();
+        }
+        System.IO.File.Delete(mFilePath);
+        return Ok();
+    }
+
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpGet("DownloadSystemLogs")]
+    public ActionResult DownloadSystemLogs(string fileId)
+    {
+        var mFilePath = Path.Combine(m_TempDownloadDirectory, $"{fileId}.zip");
+        if (!System.IO.File.Exists(mFilePath))
+        {
+            return NotFound();
+        }
+        return File(System.IO.File.ReadAllBytes(mFilePath), "application/zip", "SystemLogs.zip");
+    }
 
     [HttpGet("GetAppSettings")]
     public UIAppSettings GetAppSettings()
@@ -63,9 +123,9 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpGet("GetDBInformation")]
-    public MDBInformation GetDBInformation()
+    public async Task<MDBInformation> GetDBInformation()
     {
-        MDBInformation mRetVal = DBInformationUtility.DBInformation();
+        MDBInformation mRetVal = await DBInformationUtility.DBInformation();
         return mRetVal;
     }
 
@@ -95,15 +155,15 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpGet("GetSecurityInfo")]
-    public ActionResult<MSecurityInfo> GetSecurityInfo(string action)
+    public async Task<ActionResult<MSecurityInfo>> GetSecurityInfo(string action)
     {
-        MSecurityInfo mSecurityInfo = new MSecurityInfo();
+        MSecurityInfo mSecurityInfo = new();
         if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException(nameof(action), " can not be null or blank!");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {
-            mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+            mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         }
         return Ok(mSecurityInfo);
     }
@@ -119,12 +179,12 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpPost("Log")]
-    public bool Log(MLoggingProfile profile)
+    public async Task<bool> Log(MLoggingProfile profile)
     {
         if (profile.Destination != null) {
             if (profile.Destination.Contains(LogDestination.DB)) 
             {
-                LoggingUtility.Save(profile);
+                await LoggingUtility.Save(profile);
             }
             if (profile.Destination.Contains(LogDestination.File)) 
             {
@@ -138,13 +198,44 @@ public abstract class AbstractController : ControllerBase
         return true;
     }
 
+    /// <summary>
+    /// Performs a search for the [ZGWSystem].[Logging] based on the provided search criteria.
+    /// </summary>
+    /// <param name="searchCriteria">The criteria used to filter the search</param>
+    /// <returns></returns>
+    [Authorize("/sys_admin/searchDBLogs")]
+    [HttpPost("SearchDBLogs")]
+    public async Task<String> SearchDBLogs(UISearchCriteria searchCriteria)
+    {
+        String mRetVal = string.Empty;
+        string mColumns = "[Account], [Component], [ClassName], [Level], [LogDate], [LogSeqId], [MethodName], [Msg]";
+        if (searchCriteria.sortColumns.Length > 0)
+        {
+            Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
+            string mOrderByClause = mOrderByAndWhere.Item1;
+            string mWhereClause = mOrderByAndWhere.Item2;
+            MSearchCriteria mSearchCriteria = new()
+            {
+                Columns = mColumns,
+                OrderByClause = mOrderByClause,
+                PageSize = searchCriteria.pageSize,
+                SelectedPage = searchCriteria.selectedPage,
+                TableOrView = "[ZGWSystem].[Logging]",
+                WhereClause = mWhereClause
+            };
+
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
+        }
+        return mRetVal;
+    }
+
     [HttpPost("UpdateProfile")]
-    public ActionResult<bool> UpdateProfile(int enableInheritance)
+    public async Task<ActionResult<bool>> UpdateProfile(int enableInheritance)
     {
         bool mRetVal = false;
-        MDBInformation mProfile = DBInformationUtility.DBInformation();
+        MDBInformation mProfile = await DBInformationUtility.DBInformation();
         mProfile.EnableInheritance = enableInheritance;
-        mRetVal = DBInformationUtility.UpdateProfile(mProfile);
+        mRetVal = await DBInformationUtility.UpdateProfile(mProfile);
         return Ok(mRetVal);
     }
 }

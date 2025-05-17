@@ -1,0 +1,118 @@
+// From (SearchDBLogsComponent._TheWindowSize)
+$height: '565px';
+$width: '950px';
+
+.formSize {
+    max-height: calc(#{$height} - 35px);
+    min-height: calc(#{$height} - 35px);
+    max-width: calc(#{$width} - 10px);
+    min-width: calc(#{$width} - 10px);
+}
+
+.mat-tab__group {
+    // height 5px more from fromSzie
+    padding-bottom: 0px;
+    max-height: calc(#{$height} - 40px);
+    min-height: calc(#{$height} - 40px);
+}
+
+.mat-tab__tab {
+    // same as mat-tab__group
+    max-height: calc(#{$height} - 40px);
+    min-height: calc(#{$height} - 40px);
+}
+
+.div__tab-container {
+    // height of mat-tab__tab + 50px
+    border: 1px solid;
+    max-height: calc(#{$height} - 90px);
+    min-height: calc(#{$height} - 90px);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.log-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 5px;
+
+    .log-row {
+        display: flex;
+        gap: 1rem;
+
+        &.level-row {
+            .mat-form-field {
+                width: 100%;
+            }
+
+            &.debug input {
+                background-color: #e0f7fa;
+                color: #006064;
+            }
+
+            &.error input {
+                background-color: #ffebee;
+                color: #c62828;
+            }
+
+            &.fatal input {
+                background-color: #ffebee;
+                color: #b71c1c;
+            }
+
+            &.info input {
+                background-color: #e3f2fd;
+                color: #1565c0;
+            }
+
+            &.warn input {
+                background-color: #fff3e0;
+                color: #ef6c00;
+            }
+
+            &.success input {
+                background-color: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            &.trace input {
+                background-color: #f3e5f5;
+                color: #6a1b9a;
+            }
+        }
+
+        &.row-two {
+            .half-width {
+                width: 50%;
+            }
+        }
+
+        &.msg-row {
+            flex-grow: 1; // take up remaining vertical space
+            display: flex;
+            flex-direction: column;
+
+            .mat-form-field {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+
+                textarea {
+                    flex-grow: 1;
+                    resize: none;
+                }
+            }
+        }
+    }
+}
+
+.mat-form-field_Msg {
+    height: 270px !important;
+}

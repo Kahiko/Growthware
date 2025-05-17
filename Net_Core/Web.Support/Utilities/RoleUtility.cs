@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -21,10 +22,11 @@ public static class RoleUtility
     /// </summary>
     /// <param name="profile">The role profile to retrieve accounts from.</param>
     /// <returns>An array of strings representing the accounts in the specified role.</returns>
-    private static string[] getAccountsInRole(MRole profile)
+    private static async Task<string[]> getAccountsInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        DataTable mDataTable = getBusinessLogic().GetAccountsInRole(profile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetAccountsInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
@@ -34,10 +36,11 @@ public static class RoleUtility
     /// </summary>
     /// <param name="profile">The role to check against.</param>
     /// <returns>An array of strings representing the accounts not in the specified role.</returns>
-    private static string[] getAccountsNotInRole(MRole profile)
+    private static async Task<string[]> getAccountsNotInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        DataTable mDataTable = getBusinessLogic().GetAccountsNotInRole(profile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        DataTable mDataTable = await mBusinessLogic.GetAccountsNotInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
@@ -70,12 +73,13 @@ public static class RoleUtility
     /// </summary>
     /// <param name="securityEntityId">The ID of the security entity.</param>
     /// <returns>A DataTable containing the roles.</returns>
-    static DataTable GetAllRolesBySecurityEntity(int securityEntityId)
+    static async Task<DataTable> GetAllRolesBySecurityEntity(int securityEntityId)
     {
         DataTable mRoles = m_CacheHelper.GetFromCache<DataTable>(securityEntityId.ToString() + "_Roles");
         if (mRoles == null)
         {
-            mRoles = getBusinessLogic().GetRolesBySecurityEntity(securityEntityId);
+            BRoles mBusinessLogic = await getBusinessLogic();
+            mRoles = await mBusinessLogic.GetRolesBySecurityEntity(securityEntityId);
             m_CacheHelper.AddToCache(securityEntityId.ToString() + "_Roles", mRoles);
         }
         return mRoles;
@@ -85,11 +89,11 @@ public static class RoleUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BRoles getBusinessLogic()
+    private static async Task<BRoles> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -100,13 +104,14 @@ public static class RoleUtility
     /// <param name="roleSeqId">The sequence ID of the role to delete.</param>
     /// <param name="securityEntitySeqId">The sequence ID of the security entity.</param>
     /// <returns>A boolean indicating whether the role was successfully deleted.</returns>
-    public static bool DeleteRole(int roleSeqId, int securityEntitySeqId)
+    public static async Task<bool> DeleteRole(int roleSeqId, int securityEntitySeqId)
     {
-        UIRole mRoleFromDB = GetUIProfile(roleSeqId, securityEntitySeqId);
-        MRole mRoleToDelete = new MRole(mRoleFromDB);
+        UIRole mRoleFromDB = await GetUIProfile(roleSeqId, securityEntitySeqId);
+        MRole mRoleToDelete = new(mRoleFromDB);
         mRoleToDelete.Id = roleSeqId;
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
-        getBusinessLogic().DeleteRole(mRoleToDelete);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.DeleteRole(mRoleToDelete);
         m_CacheHelper.RemoveFromCache(securityEntitySeqId.ToString() + "_Roles");
         return true;
     }
@@ -116,9 +121,9 @@ public static class RoleUtility
     /// </summary>
     /// <param name="securityEntityId">The ID of the security entity.</param>
     /// <returns>An ArrayList of role names.</returns>
-    public static ArrayList GetRolesArrayListBySecurityEntity(int securityEntityId)
+    public static async Task<ArrayList> GetRolesArrayListBySecurityEntity(int securityEntityId)
     {
-        DataTable mGroupsTable = GetAllRolesBySecurityEntity(securityEntityId);
+        DataTable mGroupsTable = await GetAllRolesBySecurityEntity(securityEntityId);
         ArrayList mRetVal = new ArrayList();
         foreach (DataRow item in mGroupsTable.Rows)
         {
@@ -127,13 +132,13 @@ public static class RoleUtility
         return mRetVal;
     }
 
-    public static List<MRole> GetRolesBySecurityEntity(int securityEntityId)
+    public static async Task<List<MRole>> GetRolesBySecurityEntity(int securityEntityId)
     {
          List<MRole> mReturn = new List<MRole>();
-         DataTable mRolesTable = GetAllRolesBySecurityEntity(securityEntityId);
+         DataTable mRolesTable = await GetAllRolesBySecurityEntity(securityEntityId);
          foreach (DataRow item in mRolesTable.Rows)
          {
-             mReturn.Add(new MRole(item));
+             mReturn.Add(new(item));
          }
          return mReturn;        
     }
@@ -144,15 +149,16 @@ public static class RoleUtility
     /// <param name="roleSeqId">The sequence ID of the role.</param>
     /// <param name="securityEntitySeqId">The sequence ID of the security entity.</param>
     /// <returns>A UIRole object containing the role profile, accounts in role, and accounts not in role.</returns>
-    public static UIRole GetUIProfile(int roleSeqId, int securityEntitySeqId)
+    public static async Task<UIRole> GetUIProfile(int roleSeqId, int securityEntitySeqId)
     {
-        MRole mRoleProfile = new MRole();
+        MRole mRoleProfile = new();
         mRoleProfile.Id = roleSeqId;
         mRoleProfile.SecurityEntityID = securityEntitySeqId;
-        mRoleProfile = getBusinessLogic().GetProfile(mRoleProfile);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        mRoleProfile = await mBusinessLogic.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
-        mRetVal.AccountsInRole = getAccountsInRole(mRoleProfile);
-        mRetVal.AccountsNotInRole = getAccountsNotInRole(mRoleProfile);
+        mRetVal.AccountsInRole = await getAccountsInRole(mRoleProfile);
+        mRetVal.AccountsNotInRole = await getAccountsNotInRole(mRoleProfile);
         return mRetVal;
     }
 
@@ -162,18 +168,18 @@ public static class RoleUtility
     /// <param name="roleProfile">The role profile to save.</param>
     /// <param name="accountsInRole">The accounts in the role.</param>
     /// <returns>The saved UIRole object.</returns>
-    public static UIRole Save(MRole roleProfile, string[] accountsInRole)
+    public static async Task<UIRole> Save(MRole roleProfile, string[] accountsInRole)
     {
-        MRole mRoleToSave = new MRole(roleProfile);
-        BRoles mBRoles = getBusinessLogic();
+        MRole mRoleToSave = new(roleProfile);
+        BRoles mBusinessLogic = await getBusinessLogic();
         if (roleProfile.Id > -1)
         {
-            MRole mProfileFromDB = mBRoles.GetProfile(mRoleToSave);
+            MRole mProfileFromDB = await mBusinessLogic.GetProfile(mRoleToSave);
             mRoleToSave.AddedBy = mProfileFromDB.AddedBy;
             mRoleToSave.AddedDate = mProfileFromDB.AddedDate;
         }
-        mRoleToSave.Id = getBusinessLogic().Save(mRoleToSave);
-        UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
+        mRoleToSave.Id = await mBusinessLogic.Save(mRoleToSave);
+        await UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
         m_CacheHelper.RemoveFromCache(mRoleToSave.SecurityEntityID.ToString() + "_Roles");
         return new UIRole(mRoleToSave);
     }
@@ -186,8 +192,9 @@ public static class RoleUtility
     /// <param name="accounts">An array of accounts.</param>
     /// <param name="accountId">The account ID.</param>
     /// <returns>True if the update was successful, false otherwise.</returns>
-    public static bool UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
+    public static async Task<bool> UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
     {
-        return getBusinessLogic().UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
+        BRoles mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
     }
 }

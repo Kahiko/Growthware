@@ -8,6 +8,7 @@ using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -18,15 +19,15 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("CopyFunctionSecurity")]
-    public ActionResult<bool> CopyFunctionSecurity(int source, int target)
+    public async Task<ActionResult<bool>> CopyFunctionSecurity(int source, int target)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         // Special case where you must be an account with IsSystemAdmin = true
         // Copying the function security is risky b/c the process will delete all existing security for the target
         if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
         {
             if(source != target && target != 1) {
-                FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
+                await FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
                 return Ok(true);
             }
             return StatusCode(StatusCodes.Status400BadRequest, "The function cannot be copied to itself or the target can not be 'System'");
@@ -36,16 +37,16 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpDelete("DeleteFunction")]
-    public ActionResult<bool> Delete(int functionSeqId)
+    public async Task<ActionResult<bool>> Delete(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         if(mSecurityInfo.MayDelete)
         {
             var mEditId =  HttpContext.Session.GetInt32("EditId");
             if(mEditId != null && mEditId == functionSeqId)
             {
-                FunctionUtility.Delete(functionSeqId);
+                await FunctionUtility.Delete(functionSeqId);
                 return Ok(true);
             }
             this.m_Logger.Error(String.Format("'{0}' attempted to delete a function without having the editid set properly, possible attempt to breach security.", mRequestingProfile.Account));
@@ -56,36 +57,39 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetAvalibleParents")]
-    public ActionResult GetAvalibleParents()
+    public async Task<ActionResult> GetAvalibleParents()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
-            return Ok(FunctionUtility.GetAvalibleParents());
+            List<UIKeyValuePair> mRetVal = await FunctionUtility.GetAvalibleParents();
+            return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
     [AllowAnonymous]
     [HttpGet("GetFunction")]
-    public ActionResult<UIFunctionProfile> GetFunctionForEdit(int functionSeqId)
+    public async Task<ActionResult<UIFunctionProfile>> GetFunctionForEdit(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo != null && mSecurityInfo.MayView)
         {
             MFunctionProfile mFunctionProfile = new MFunctionProfile();
-            mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+            mFunctionProfile = await FunctionUtility.GetProfile(functionSeqId);
             if(mFunctionProfile == null)
             {
                 mFunctionProfile = new MFunctionProfile();
             }
             HttpContext.Session.SetInt32("EditId", mFunctionProfile.Id);
             UIFunctionProfile mRetVal = new UIFunctionProfile(mFunctionProfile);
-            mRetVal.CanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
-            mRetVal.CanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
-            mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            MSecurityInfo mView_Function_Group_Tab = await this.getSecurityInfo("View_Function_Group_Tab");
+            MSecurityInfo mView_Function_Role_Tab = await this.getSecurityInfo("View_Function_Role_Tab");
+            mRetVal.CanSaveGroups = mView_Function_Group_Tab.MayView;
+            mRetVal.CanSaveRoles = mView_Function_Role_Tab.MayView;
+            mRetVal.DirectoryData = await DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             mRetVal.DirectoryData.ImpersonatePassword = string.Empty; // We don't want the password to show
-            mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
+            mRetVal.FunctionMenuOrders = await FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");        
@@ -93,12 +97,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunctionTypes")]
-    public ActionResult<List<UIKeyValuePair>> GetFunctionTypes()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetFunctionTypes()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = FunctionUtility.GetFunctionTypes();
+            List<UIKeyValuePair> mRetVal = await FunctionUtility.GetFunctionTypes();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -106,12 +110,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetLinkBehaviors")]
-    public ActionResult<List<UIKeyValuePair>> GetLinkBehaviors()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetLinkBehaviors()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.LinkBehaviors;
+            List<UIKeyValuePair> mRetVal = await NameValuePairUtility.LinkBehaviors();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -119,12 +123,12 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetNavigationTypes")]
-    public ActionResult<List<UIKeyValuePair>> GetNavigationTypes()
+    public async Task<ActionResult<List<UIKeyValuePair>>> GetNavigationTypes()
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            List<UIKeyValuePair> mRetVal = NameValuePairUtility.NavigationTypes;
+            List<UIKeyValuePair> mRetVal = await NameValuePairUtility.NavigationTypes();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -132,38 +136,38 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunctionOrder")]
-    public ActionResult<List<UIFunctionMenuOrder>> GetFunctionOrder(int functionSeqId)
+    public async Task<ActionResult<List<UIFunctionMenuOrder>>> GetFunctionOrder(int functionSeqId)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo.MayView)
         {
-            return Ok(FunctionUtility.GetFunctionOrder(functionSeqId));
+            return Ok(await FunctionUtility.GetFunctionOrder(functionSeqId));
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
-    private MSecurityInfo getSecurityInfo(string action)
+    private async Task<MSecurityInfo> getSecurityInfo(string action)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
     }
 
     [AllowAnonymous]
     [HttpPost("Save")]
-    public ActionResult<bool> Save(UIFunctionProfile functionProfile)
+    public async Task<ActionResult<bool>> Save(UIFunctionProfile functionProfile)
     {
-        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
-        MSecurityInfo mViewRoleTabSecurityInfo = this.getSecurityInfo("View_Function_Role_Tab");
-        MSecurityInfo mViewGroupTabSecurityInfo = this.getSecurityInfo("View_Function_Group_Tab");
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
+        MSecurityInfo mViewRoleTabSecurityInfo = await this.getSecurityInfo("View_Function_Role_Tab");
+        MSecurityInfo mViewGroupTabSecurityInfo = await this.getSecurityInfo("View_Function_Group_Tab");
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         var mEditId =  HttpContext.Session.GetInt32("EditId");
         string mReturnMsg = string.Empty; // to be used for other security checks so we can pass it back to the client
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MFunctionProfile mExistingProfile = FunctionUtility.GetProfile(functionProfile.Id);
+            MFunctionProfile mExistingProfile = await FunctionUtility.GetProfile(functionProfile.Id);
             if(mExistingProfile == null)
             {
                 mExistingProfile = new MFunctionProfile();
@@ -197,8 +201,10 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                 }
             }
-            bool mSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
-            bool mSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
+            MSecurityInfo mView_Function_Group_Tab = await this.getSecurityInfo("View_Function_Group_Tab");
+            MSecurityInfo mView_Function_Role_Tab = await this.getSecurityInfo("View_Function_Role_Tab");
+            bool mSaveGroups = mView_Function_Group_Tab.MayView;
+            bool mSaveRoles = mView_Function_Role_Tab.MayView;
 
             string ViewRoles = String.Join(",", mProfileToSave.AssignedViewRoles);
             string AddRoles = String.Join(",", mProfileToSave.AssignedAddRoles);
@@ -243,11 +249,11 @@ public abstract class AbstractFunctionController : ControllerBase
 
             try
             {
-                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
+                int mFunctionSeqId = await FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
                 mProfileToSave.Id = mFunctionSeqId;
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
-                    MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
+                    MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
                     if(mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
@@ -265,10 +271,10 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
-                    DirectoryUtility.Save(mDirectoryProfile);
+                    await DirectoryUtility.Save(mDirectoryProfile);
                 }
                 string mCommaSeporatedIds = String.Join(",", functionProfile.FunctionMenuOrders.Select(item => item.Function_Seq_Id.ToString()));
-                FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);
+                await FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);
             }
             catch (System.Exception ex)
             {
@@ -288,7 +294,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [Authorize("Functions")]
     [HttpPost("SearchFunctions")]
-    public String SearchFunctions(UISearchCriteria searchCriteria)
+    public async Task<String> SearchFunctions(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
@@ -297,7 +303,7 @@ public abstract class AbstractFunctionController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -306,7 +312,7 @@ public abstract class AbstractFunctionController : ControllerBase
                 TableOrView = "[ZGWSystem].[vwSearchFunctions]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

@@ -3,12 +3,13 @@ using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IFunction : IDBInteraction
     {
-        DataTable MenuTypes();
+        Task<DataTable> MenuTypes();
 
         /// <summary>
         /// Used by all methods and must be set to send parameters to the data store
@@ -25,51 +26,51 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
-        void CopyFunctionSecurity(int source, int target, int added_Updated_By);
+        Task CopyFunctionSecurity(int source, int target, int added_Updated_By);
 
         /// <summary>
         /// Deletes a funciton
         /// </summary>
-        void Delete(int functionSeqId);
+        Task Delete(int functionSeqId);
 
         /// <summary>
         /// Retrieves Function information
         /// </summary>
         /// <returns>DataRow</returns>
-        DataRow GetFunction { get; }
+        Task<DataRow> GetFunction();
 
         /// <summary>
         /// Returns all functions associated with a given SecurityEntitySeqID.
         /// </summary>
         /// <returns>DataSet</returns>
         /// <remarks>Does not caculate security for accounts.</remarks>
-        DataSet GetFunctions { get; }
+        Task<DataSet> GetFunctions();
 
-        DataTable FunctionTypes();
+        Task<DataTable> FunctionTypes();
 
-        DataTable GetMenuOrder(MFunctionProfile Profile);
+        Task<DataTable> GetMenuOrder(MFunctionProfile Profile);
 
         /// <summary>
         /// Inserts or updates account information
         /// </summary>
         /// <returns>int</returns>
-        int Save();
+        Task<int> Save();
 
         /// <summary>
         /// Save groups by passing a string or comma seporated groups to the database.
         /// </summary>
-        void SaveGroups(PermissionType permission);
+        Task SaveGroups(PermissionType permission);
 
         /// <summary>
         /// Save roles by passing a string or comma seporated roles to the database.
         /// </summary>
-        void SaveRoles(PermissionType permission);
+        Task SaveRoles(PermissionType permission);
 
         /// <summary>
         /// Updates the menu order.
         /// </summary>
         /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
         /// <param name="profile">The profile.</param>
-        void UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile);
+        Task UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile);
     }
 }

@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -94,10 +95,10 @@ public class BFunctions : AbstractBusinessLogic
     /// Gets the function types.
     /// </summary>
     /// <returns>DataTable.</returns>
-    public Collection<MFunctionTypeProfile> FunctionTypes()
+    public async Task<Collection<MFunctionTypeProfile>> FunctionTypes()
     {
         Collection<MFunctionTypeProfile> mRetVal = [];
-        DataTable mDTFunctionTypes = m_DFunctions.FunctionTypes();
+        DataTable mDTFunctionTypes = await m_DFunctions.FunctionTypes();
         foreach (DataRow item in mDTFunctionTypes.Rows)
         {
             mRetVal.Add(new MFunctionTypeProfile(item));
@@ -112,7 +113,7 @@ public class BFunctions : AbstractBusinessLogic
     /// <param name="securityEntitySeqId">Integer</param>
     /// <returns>Collection(of MFunctionProfile)</returns>
     /// <remarks></remarks>
-    public Collection<MFunctionProfile> GetFunctions(int securityEntitySeqId)
+    public async Task<Collection<MFunctionProfile>> GetFunctions(int securityEntitySeqId)
     {
         Collection<MFunctionProfile> mRetVal = new Collection<MFunctionProfile>();
         DataSet mDSFunctions = null;
@@ -122,7 +123,7 @@ public class BFunctions : AbstractBusinessLogic
             {
                 m_DFunctions.Profile = new MFunctionProfile();
                 m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
-                mDSFunctions = m_DFunctions.GetFunctions;
+                mDSFunctions = await m_DFunctions.GetFunctions();
                 bool mHasAssignedRoles = false;
                 bool mHasGroups = false;
                 if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssignedRoles = true;
@@ -156,10 +157,10 @@ public class BFunctions : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetMenuOrder(MFunctionProfile profile)
+    public async Task<DataTable> GetMenuOrder(MFunctionProfile profile)
     {
         DataTable mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DFunctions.GetMenuOrder(profile);
+        if (DatabaseIsOnline()) mRetVal = await m_DFunctions.GetMenuOrder(profile);
         return mRetVal;
     }
 
@@ -170,50 +171,50 @@ public class BFunctions : AbstractBusinessLogic
     /// <param name="saveGroups">if set to <c>true</c> [save groups].</param>
     /// <param name="saveRoles">if set to <c>true</c> [save roles].</param>
     /// <returns>System.Int32.</returns>
-    public int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
+    public async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         if (DatabaseIsOnline()) 
         {
             m_DFunctions.Profile = profile;
-            profile.Id = m_DFunctions.Save();
+            profile.Id = await m_DFunctions.Save();
             m_DFunctions.Profile = profile;
             if (saveGroups)
             {
-                m_DFunctions.SaveGroups(PermissionType.Add);
-                m_DFunctions.SaveGroups(PermissionType.Delete);
-                m_DFunctions.SaveGroups(PermissionType.Edit);
-                m_DFunctions.SaveGroups(PermissionType.View);
+                await m_DFunctions.SaveGroups(PermissionType.Add);
+                await m_DFunctions.SaveGroups(PermissionType.Delete);
+                await m_DFunctions.SaveGroups(PermissionType.Edit);
+                await m_DFunctions.SaveGroups(PermissionType.View);
             }
             if (saveRoles)
             {
-                m_DFunctions.SaveRoles(PermissionType.Add);
-                m_DFunctions.SaveRoles(PermissionType.Delete);
-                m_DFunctions.SaveRoles(PermissionType.Edit);
-                m_DFunctions.SaveRoles(PermissionType.View);
+                await m_DFunctions.SaveRoles(PermissionType.Add);
+                await m_DFunctions.SaveRoles(PermissionType.Delete);
+                await m_DFunctions.SaveRoles(PermissionType.Edit);
+                await m_DFunctions.SaveRoles(PermissionType.View);
             }            
         }
         return profile.Id;
 
     }
 
-    public void CopyFunctionSecurity(int source, int target, int added_Updated_By)
+    public async Task CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
-        if (DatabaseIsOnline()) m_DFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
+        if (DatabaseIsOnline()) await m_DFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
     }
 
     /// <summary>
     /// Deletes the specified function seq id.
     /// </summary>
     /// <param name="functionSeqId">The function seq id.</param>
-    public void Delete(int functionSeqId)
+    public async Task Delete(int functionSeqId)
     {
-        if (DatabaseIsOnline()) m_DFunctions.Delete(functionSeqId);
+        if (DatabaseIsOnline()) await m_DFunctions.Delete(functionSeqId);
     }
     
-    public DataTable MenuTypes()
+    public async Task<DataTable> MenuTypes()
     {
-        return m_DFunctions.MenuTypes();
+        return await m_DFunctions.MenuTypes();
     }
 
     /// <summary>
@@ -221,8 +222,8 @@ public class BFunctions : AbstractBusinessLogic
     /// </summary>
     /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
     /// <param name="profile">The profile.</param>
-    public void UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
+    public async Task UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
     {
-        if (DatabaseIsOnline()) m_DFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
+        if (DatabaseIsOnline()) await m_DFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
     }
 }

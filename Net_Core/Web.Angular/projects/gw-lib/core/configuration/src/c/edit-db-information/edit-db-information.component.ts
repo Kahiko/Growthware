@@ -7,9 +7,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { IKeyValuePair } from '@growthware/common/interfaces';
+import { LoggingService, LogLevel } from '@growthware/core/logging';
 // Feature
 import { ConfigurationService } from '../../configuration.service';
 import { DBInformation, IDBInformation } from '../../db-information.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'gw-core-edit-db-information',
@@ -41,6 +43,7 @@ export class EditDbInformationComponent extends BaseDetailComponent implements I
 	constructor(
 		private configurationService: ConfigurationService,
 		private _FormBuilder: FormBuilder,
+		LoggingSvc: LoggingService,
 	) {
 		/** 
 		 * The component is usefull when your a testing security aspects of the system.
@@ -49,6 +52,7 @@ export class EditDbInformationComponent extends BaseDetailComponent implements I
 		*/
 		super();
 		this._ProfileSvc = configurationService;
+		this._LoggingSvc = LoggingSvc;
 	}
 
 	ngOnInit(): void {
@@ -92,7 +96,11 @@ export class EditDbInformationComponent extends BaseDetailComponent implements I
 	 */
 	override save(): void {
 		// console.log('EditDbInformationComponent.save', this._Profile);
-		this._ProfileSvc.save(this._Profile.enableInheritance);
+		this._ProfileSvc.save(this._Profile.enableInheritance).then(() => {
+			this._LoggingSvc.toast('The Database information has been saved', 'Edit DB Information', LogLevel.Success);
+		}).catch((error: string | HttpErrorResponse) => {
+			console.error('EditDbInformationComponent.save', error);
+		});
 	}
 
 }

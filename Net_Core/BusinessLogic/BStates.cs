@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework;
@@ -68,13 +69,13 @@ public class BStates: AbstractBusinessLogic
     }
 #endregion
 
-    public Collection<MState> GetStates()
+    public async Task<Collection<MState>> GetStates()
     {
         Collection<MState> mRetVal = new Collection<MState>();
         MState mState = new MState();
         mState.State = "-1";
         m_DStates.Profile = mState;
-        DataTable mDataTable = m_DStates.GetStates;
+        DataTable mDataTable = await m_DStates.GetStates();
         foreach (DataRow item in mDataTable.Rows)
         {
             mRetVal.Add(new MState(item));
@@ -82,9 +83,9 @@ public class BStates: AbstractBusinessLogic
         return mRetVal;
     }
 
-    public void Save(MState state)
+    public async Task Save(MState state)
     {
         m_DStates.Profile = state;
-        m_DStates.Save();
+        await m_DStates.Save();
     }
 }

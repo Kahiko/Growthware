@@ -1,7 +1,9 @@
 using GrowthWare.Framework.Models;
 using GrowthWare.DataAccess.Interfaces.Base;
-using System;
 using System.Data;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -16,12 +18,19 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="logSeqId">int</param>
         /// <returns>MLoggingProfile</returns>
-        MLoggingProfile GetLog(int logSeqId);
+        Task<MLoggingProfile> GetLog(int logSeqId);
+
+        /// <summary>
+        /// Returns data from the Logging table
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>IAsyncEnumerable<IDataRecord></returns>
+        IAsyncEnumerable<IDataRecord> GetLogs(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        void Save(MLoggingProfile profile);
+        Task Save(MLoggingProfile profile);
     }
 
 }

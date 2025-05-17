@@ -632,4 +632,36 @@ export class GWCommon {
     // Format the UTC offset as ±HH:MM
     return `${sign}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
+
+
+  /**
+   * Waits for a download to complete by attaching a click event listener to the specified link and resolving the promise when the download is detected as complete.
+   *
+   * @param {HTMLAnchorElement} link - The anchor element that initiates the download.
+   * @param {number} [delay=500] - The delay in milliseconds for checking the download status and timeout duration.
+   * @return {Promise<void>} A promise that resolves when the download is detected as complete or after a timeout.
+   */
+  public waitForDownload(link: HTMLAnchorElement, delay: number = 500): Promise<void> {
+    return new Promise((resolve) => {
+      const mDelay = delay;
+      // Create a timeout to prevent infinite waiting
+      const mTimeout = setTimeout(() => {
+        resolve();
+      }, mDelay); // 5 seconds
+
+      // Listen for click event to detect download start
+      link.addEventListener('click', () => {
+        // Create a timer to check if download is complete
+        const checkDownload = setInterval(() => {
+          // Check if download is complete
+          if (('webkitHidden' in document && document.webkitHidden) || ('msHidden' in document && document.msHidden) || document.hidden) {
+            // Download is complete
+            clearTimeout(mTimeout);
+            clearInterval(checkDownload);
+            resolve();
+          }
+        }, mDelay); // Check every second
+      });
+    });
+  }
 }

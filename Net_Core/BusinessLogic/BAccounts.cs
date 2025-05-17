@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -136,7 +137,7 @@ public class BAccounts : AbstractBusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public MAccountProfile GetProfile(string account)
+    public async Task<MAccountProfile> GetProfile(string account)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
@@ -145,11 +146,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                DataRow mAccountRow = await m_DAccounts.GetAccount();
+                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+                DataTable mAssignedRoles = await m_DAccounts.Roles();
+                DataTable mAssignedGroups = await m_DAccounts.Groups();
+                DataTable mDerivedRoles = await m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else 
             {
@@ -159,7 +161,7 @@ public class BAccounts : AbstractBusinessLogic
         return mRetVal;
     }
 
-    public MAccountProfile GetProfileByRefreshToken(string token)
+    public async Task<MAccountProfile> GetProfileByRefreshToken(string token)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
@@ -168,17 +170,17 @@ public class BAccounts : AbstractBusinessLogic
             string mColumnName = "ACCT";
             m_DAccounts.Profile = new MAccountProfile();
             m_DAccounts.Profile.Token = token;
-            DataRow mDataRow = m_DAccounts.GetAccountByRefreshToken;
+            DataRow mDataRow = await m_DAccounts.GetAccountByRefreshToken();
             // we will need the "Account" in order to get the correct roles and groups
             if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
             {
                 mAccount = mDataRow[mColumnName].ToString().Trim();
                 m_DAccounts.Profile.Account = mAccount;
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+                DataTable mAssignedRoles = await m_DAccounts.Roles();
+                DataTable mAssignedGroups = await m_DAccounts.Groups();
+                DataTable mDerivedRoles = await m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             } 
             else 
             {
@@ -188,7 +190,7 @@ public class BAccounts : AbstractBusinessLogic
         return mRetVal;
     }
 
-    public MAccountProfile GetProfileByResetToken(string token)
+    public async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
@@ -197,22 +199,22 @@ public class BAccounts : AbstractBusinessLogic
             string mColumnName = "ACCT";
             m_DAccounts.Profile = new MAccountProfile();
             m_DAccounts.Profile.ResetToken = token;
-            DataRow mDataRow = m_DAccounts.GetAccountByResetToken;
+            DataRow mAccountRow = await m_DAccounts.GetAccountByResetToken();
             // we will need the "Account" in order to get the correct roles and groups
-            if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
+            if (mAccountRow != null && mAccountRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mAccountRow[mColumnName])))
             {
-                mAccount = mDataRow[mColumnName].ToString().Trim();
+                mAccount = mAccountRow[mColumnName].ToString().Trim();
             } 
             else 
             {
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = m_DAccounts.Roles();
-            DataTable mAssignedGroups = m_DAccounts.Groups();
-            DataTable mRoles = m_DAccounts.Security();
-            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
+            mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
     }
@@ -222,16 +224,18 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public MAccountProfile GetProfileByVerificationToken(string token)
+    public async Task<MAccountProfile> GetProfileByVerificationToken(string token)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline()) 
         {
             string mAccount = string.Empty;
             string mColumnName = "ACCT";
-            m_DAccounts.Profile = new MAccountProfile();
-            m_DAccounts.Profile.VerificationToken = token;
-            DataRow mDataRow = m_DAccounts.GetAccountByVerificationToken;
+            m_DAccounts.Profile = new MAccountProfile
+            {
+                VerificationToken = token
+            };
+            DataRow mDataRow = await m_DAccounts.GetAccountByVerificationToken();
             // we will need the "Account" in order to get the correct roles and groups
             if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
             {
@@ -242,11 +246,11 @@ public class BAccounts : AbstractBusinessLogic
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = m_DAccounts.Roles();
-            DataTable mAssignedGroups = m_DAccounts.Groups();
-            DataTable mRoles = m_DAccounts.Security();
-            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
+            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
     }
@@ -256,14 +260,14 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">An instance of MAccountProfile</param>
     /// <returns></returns>
-    public Collection<MAccountProfile> GetAccounts(MAccountProfile profile)
+    public async Task<Collection<MAccountProfile>> GetAccounts(MAccountProfile profile)
     {
-        Collection<MAccountProfile> mRetList = new Collection<MAccountProfile>();
+        Collection<MAccountProfile> mRetList = [];
         DataTable mDataTable = null;
         try
         {
             m_DAccounts.Profile = profile;
-            if (DatabaseIsOnline()) mDataTable = m_DAccounts.GetAccounts;
+            if (DatabaseIsOnline()) mDataTable = await m_DAccounts.GetAccounts();
             if (mDataTable != null) 
             {
                 foreach (DataRow item in mDataTable.Rows)
@@ -293,12 +297,12 @@ public class BAccounts : AbstractBusinessLogic
     /// <param name="menuType">MenuType</param>
     /// <returns>DataTable</returns>
     /// <remarks></remarks>
-    public DataTable GetMenu(String account, MenuType menuType)
+    public async Task<DataTable> GetMenu(String account, MenuType menuType)
     {
         DataTable mRetVal = null;
         if (DatabaseIsOnline()) 
         {
-            mRetVal = m_DAccounts.GetMenu(account, menuType);
+            mRetVal = await m_DAccounts.GetMenu(account, menuType);
         }
         return mRetVal;
     }
@@ -362,26 +366,30 @@ public class BAccounts : AbstractBusinessLogic
     /// mMAccountProfile = mBill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
     /// </code>
     /// </example>
-    public void Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
+    public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
-        if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        m_DAccounts.Profile = profile;
+        m_DAccounts.Profile = profile ?? throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (DatabaseIsOnline()) 
         {
-            profile.Id = m_DAccounts.Save();
+            profile.Id = await m_DAccounts.Save();
             if (saveGroups)
             {
-                m_DAccounts.SaveGroups();
+                await m_DAccounts.SaveGroups();
             }
             if(saveRefreshTokens)
             {
-                m_DAccounts.SaveRefreshTokens();
+                await m_DAccounts.SaveRefreshTokens();
             }
             if (saveRoles)
             {
-                m_DAccounts.SaveRoles();
+                await m_DAccounts.SaveRoles();
             }
-            profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
+            DataRow mAccountRow = await m_DAccounts.GetAccount();
+            DataTable mAssignedGroups = await m_DAccounts.Groups();
+            DataTable mAssignedRoles = await m_DAccounts.Roles();
+            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+            DataTable mDerivedRoles = await m_DAccounts.Security();
+            profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }
 
@@ -390,8 +398,8 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public bool VerificationTokenExists(string token)
+    public async Task<bool> VerificationTokenExists(string token)
     {
-        return m_DAccounts.VerificationTokenExists(token);
+        return await m_DAccounts.VerificationTokenExists(token);
     }
 }

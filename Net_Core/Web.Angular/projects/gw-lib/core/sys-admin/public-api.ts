@@ -2,6 +2,7 @@
  * Public API Surface of @growthware/logging/sys-admin
  */
 
+export * from './src/c/search-db-logs/search-db-logs.component';
 export * from './src/c/line-count/line-count.component';
 export * from './src/c/natural-sort/natural-sort.component';
 // export * from './src/c/update-session/update-session.component';

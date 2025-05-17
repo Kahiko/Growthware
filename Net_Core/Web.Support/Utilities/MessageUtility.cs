@@ -13,15 +13,19 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Interfaces;
 using GrowthWare.Web.Support.Helpers;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 
 public static class MessageUtility
 {
     private static BMessages m_BusinessLogic = null;
+
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
+
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
-    private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
+    private static string s_MessagesUnitCachedCollectionName = "_MessagesCollection";
 
     private static Logger m_Logger = Logger.Instance();
 
@@ -67,11 +71,11 @@ public static class MessageUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BMessages getBusinessLogic()
+    private static async Task<BMessages> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -81,9 +85,10 @@ public static class MessageUtility
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>MMessage.</returns>
-    public static MMessage GetProfile(string name)
+    public static async Task<MMessage> GetProfile(string name)
     {
-        var mResult = from mProfile in Messages()
+        Collection<MMessage> mAllMessages = await Messages();
+        var mResult = from mProfile in mAllMessages
                       where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                       select mProfile;
         MMessage mRetVal = new MMessage();
@@ -134,9 +139,10 @@ public static class MessageUtility
     /// </summary>
     /// <param name="messageSeqId">The Message Sequence ID.</param>
     /// <returns>MMessage.</returns>
-    public static MMessage GetProfile(int messageSeqId)
+    public static async Task<MMessage> GetProfile(int messageSeqId)
     {
-        var mResult = from mProfile in Messages()
+        Collection<MMessage> mAllMessages = await Messages();
+        var mResult = from mProfile in mAllMessages
                       where mProfile.Id == messageSeqId
                       select mProfile;
         MMessage mRetVal = null;
@@ -154,19 +160,22 @@ public static class MessageUtility
     }
 
     /// <summary>
-    /// Gets the messages.
+    /// Gets the messages for the current security entity from cache.
     /// </summary>
     /// <returns>Collection{MMessage}.</returns>
-    public static Collection<MMessage> Messages()
+    /// <remarks>
+    /// If the messages are not in the cache, they are retrieved from the database and added to the cache.
+    /// </remarks>
+    public static async Task<Collection<MMessage>> Messages()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
-        string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        int mSecurityEntityId = mSecurityEntity.Id;
+        string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityId);
         Collection<MMessage> mMessageCollection = null;
-        // mMessageCollection = (Collection<MMessage>)HttpContext.Current.Cache[mCacheName];
         if (mMessageCollection == null)
         {
-            BMessages mBMessages = getBusinessLogic();
-            mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
+            BMessages mBusinessLogic = await getBusinessLogic();
+            mMessageCollection = mBusinessLogic.GetMessages(mSecurityEntityId);
             CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;
@@ -175,32 +184,32 @@ public static class MessageUtility
     /// <summary>
     /// Removes the cached messages DV.
     /// </summary>
-    public static void RemoveCachedMessagesDV()
+    public static async Task RemoveCachedMessagesDV()
     {
-        // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
-        // CacheHelper.RemoveFromCache(MessagesUnitCachedDVName(mySecurityEntity));
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        m_CacheHelper.RemoveFromCache(MessagesUnitCachedDVName(mCurrentSecurityEntity.Id));
     }
 
     /// <summary>
     /// Removes the cached messages collection.
     /// </summary>
-    public static void RemoveCachedMessagesCollection()
+    public static async Task RemoveCachedMessagesCollection()
     {
         // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
         // CacheHelper.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity));
-        RemoveCachedMessagesDV();
+        await RemoveCachedMessagesDV();
     }
 
     /// <summary>
     /// Saves the specified profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public static int Save(MMessage profile)
+    public static async Task<int> Save(MMessage profile)
     {
-        BMessages mBMessages = getBusinessLogic();
+        BMessages mBusinessLogic = await getBusinessLogic();
         int mRetVal = -1;
-        mRetVal = mBMessages.Save(profile);
-        RemoveCachedMessagesCollection();
+        mRetVal = mBusinessLogic.Save(profile);
+        await RemoveCachedMessagesCollection();
         return mRetVal;
     }
 

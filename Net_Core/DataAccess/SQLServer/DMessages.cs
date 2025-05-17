@@ -28,14 +28,14 @@ public class DMessages : AbstractDBInteraction, IMessages
     private SqlParameter[] getInsertUpdateParameters()
     {
         SqlParameter[] myParameters = {
-                new SqlParameter("@P_MessageSeqId", m_Profile.Id),
-                new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId),
-                new SqlParameter("@P_Name", m_Profile.Name),
-                new SqlParameter("@P_Title", m_Profile.Title),
-                new SqlParameter("@P_Description", m_Profile.Description),
-                new SqlParameter("@P_BODY", m_Profile.Body),
-                new SqlParameter("@P_Format_As_HTML", m_Profile.FormatAsHtml),
-                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)),
+                new("@P_MessageSeqId", m_Profile.Id),
+                new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId),
+                new("@P_Name", m_Profile.Name),
+                new("@P_Title", m_Profile.Title),
+                new("@P_Description", m_Profile.Description),
+                new("@P_BODY", m_Profile.Body),
+                new("@P_Format_As_HTML", m_Profile.FormatAsHtml),
+                new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)),
                 GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)
             };
         return myParameters;
@@ -57,10 +57,10 @@ public class DMessages : AbstractDBInteraction, IMessages
 
     DataTable IMessages.Messages()
     {
-        String storeProc = "ZGWCoreWeb.Get_Messages";
+        String storeProc = "[ZGWCoreWeb].[Get_Messages]";
         SqlParameter[] mParamaters = {
-                new SqlParameter("@P_MessageSeqId", -1),
-                new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
+                new("@P_MessageSeqId", -1),
+                new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
             };
         return GetDataTable(storeProc, mParamaters);
     }
@@ -69,8 +69,8 @@ public class DMessages : AbstractDBInteraction, IMessages
     {
         String storeProc = "ZGWCoreWeb.Get_Messages";
         SqlParameter[] mParamaters = {
-                new SqlParameter("@P_MessageSeqId", messageSeqId),
-                new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
+                new("@P_MessageSeqId", messageSeqId),
+                new("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
             };
         return GetDataRow(storeProc, mParamaters);
     }

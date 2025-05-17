@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -18,33 +19,35 @@ public static class StateUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BStates getBusinessLogic()
+    private static async Task<BStates> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
 
-    private static Collection<MState> States()
+    private static async Task<Collection<MState>> States()
     {
         Collection<MState> mRetVal = m_CacheHelper.GetFromCache<Collection<MState>>(m_CacheName);
         if(mRetVal == null)
         {
-            mRetVal = getBusinessLogic().GetStates();
+            BStates mBusinessLogic = await getBusinessLogic();
+            mRetVal = await mBusinessLogic.GetStates();
             m_CacheHelper.AddToCache(m_CacheName, mRetVal);
         }
         
         return mRetVal;
     }
 
-    public static MState GetState(string state)
+    public static async Task<MState> GetState(string state)
     {
         MState mRetVal = null;
         if (!string.IsNullOrEmpty(state))
         {
-            var mResult = from mProfile in States()
+            Collection<MState> mStates = await States();
+            var mResult = from mProfile in mStates
                           where mProfile.State.ToLower(CultureInfo.CurrentCulture) == state.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             mRetVal = new MState();
@@ -60,9 +63,10 @@ public static class StateUtility
         return mRetVal;
     }
 
-    public static void Save(MState state)
+    public static async Task Save(MState state)
     {
-        getBusinessLogic().Save(state);
+        BStates mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.Save(state);
         m_CacheHelper.RemoveFromCache(m_CacheName);
     }
 }

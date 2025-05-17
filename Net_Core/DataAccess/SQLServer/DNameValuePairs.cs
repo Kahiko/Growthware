@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -60,89 +61,89 @@ public class DNameValuePairs : AbstractDBInteraction, INameValuePairs
         set { m_Detail_Profile = value; }
     }
 
-    DataTable INameValuePairs.GetAllNVP()
+    async Task<DataTable> INameValuePairs.GetAllNVP()
     {
-        String storeProc = "ZGWSystem.Get_Name_Value_Pair";
+        String storeProc = "[ZGWSystem].[Get_Name_Value_Pair]";
         SqlParameter[] mParameters = getSelectParameters();
-        return base.GetDataTable(storeProc, mParameters);
+        return await base.GetDataTableAsync(storeProc, mParameters);
     }
 
-    DataRow INameValuePairs.NameValuePair()
+    async Task<DataRow> INameValuePairs.NameValuePair()
     {
-        String storeProc = "ZGWSystem.Get_Name_Value_Pair";
+        String storeProc = "[ZGWSystem].[Get_Name_Value_Pair]";
         SqlParameter[] mParameters = getSelectParameters();
-        return base.GetDataRow(storeProc, mParameters);
+        return await base.GetDataRowAsync(storeProc, mParameters);
     }
 
-    DataRow INameValuePairs.Save()
+    async Task<DataRow> INameValuePairs.Save()
     {
-        String storeProc = "ZGWSystem.Set_Name_Value_Pair";
+        String storeProc = "[ZGWSystem].[Set_Name_Value_Pair]";
         SqlParameter[] mParameters = getInsertUpdateParameters();
-        return base.GetDataRow(storeProc, mParameters);
+        return await base.GetDataRowAsync(storeProc, mParameters);
     }
 
-    DataTable INameValuePairs.GetRoles(int NameValuePairSeqID)
+    async Task<DataTable> INameValuePairs.GetRoles(int NameValuePairSeqID)
     {
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NameValuePairSeqID), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
-        string myStoreProcedure = "ZGWSecurity.Get_Name_Value_Pair_Roles";
-        return base.GetDataTable(myStoreProcedure, mParameters);
+        SqlParameter[] mParameters = [ new("@P_NVPSeqId", NameValuePairSeqID), new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) ];
+        string myStoreProcedure = "[ZGWSecurity].[Get_Name_Value_Pair_Roles]";
+        return await base.GetDataTableAsync(myStoreProcedure, mParameters);
     }
 
-    DataTable INameValuePairs.GetGroups(int NameValuePairSeqID)
+    async Task<DataTable> INameValuePairs.GetGroups(int NameValuePairSeqID)
     {
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NameValuePairSeqID), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
-        string myStoreProcedure = "ZGWSecurity.Get_Name_Value_Pair_Groups";
-        return base.GetDataTable(myStoreProcedure, mParameters);
+        SqlParameter[] mParameters = [ new("@P_NVPSeqId", NameValuePairSeqID), new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) ];
+        string myStoreProcedure = "[ZGWSecurity].[Get_Name_Value_Pair_Groups]";
+        return await base.GetDataTableAsync(myStoreProcedure, mParameters);
     }
 
-    void INameValuePairs.UpdateGroups(int NVP_ID, int SecurityEntityID, string CommaSeparatedGroups, MNameValuePair nvpProfile)
+    async Task INameValuePairs.UpdateGroups(int NVP_ID, int SecurityEntityID, string CommaSeparatedGroups, MNameValuePair nvpProfile)
     {
-        string myStoreProcedure = "ZGWSecurity.Set_Name_Value_Pair_Groups";
+        string myStoreProcedure = "[ZGWSecurity].[Set_Name_Value_Pair_Groups]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_NVPSeqId", NVP_ID), 
-            new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
-            new SqlParameter("@P_Groups", CommaSeparatedGroups), 
-            new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+            new("@P_NVPSeqId", NVP_ID), 
+            new("@P_SecurityEntitySeqId", SecurityEntityID), 
+            new("@P_Groups", CommaSeparatedGroups), 
+            new("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
         ];
-        base.ExecuteNonQuery(myStoreProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(myStoreProcedure, mParameters);
     }
 
-    void INameValuePairs.UpdateRoles(int NVP_ID, int SecurityEntityID, string CommaSeparatedRoles, MNameValuePair nvpProfile)
+    async Task INameValuePairs.UpdateRoles(int NVP_ID, int SecurityEntityID, string CommaSeparatedRoles, MNameValuePair nvpProfile)
     {
-        string myStoreProcdure = "ZGWSecurity.Set_Name_Value_Pair_Roles";
+        string myStoreProcdure = "[ZGWSecurity].[Set_Name_Value_Pair_Roles]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_NVPSeqId", NVP_ID), 
-            new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID), 
-            new SqlParameter("@P_Role", CommaSeparatedRoles), 
-            new SqlParameter("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
+            new("@P_NVPSeqId", NVP_ID), 
+            new("@P_SecurityEntitySeqId", SecurityEntityID), 
+            new("@P_Role", CommaSeparatedRoles), 
+            new("@P_PermissionsNVPDetailSeqId", m_PermissionSeqId), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile, nvpProfile.Id)) 
         ];
-        base.ExecuteNonQuery(myStoreProcdure, mParameters);
+        await base.ExecuteNonQueryAsync(myStoreProcdure, mParameters);
     }
 
-    DataRow INameValuePairs.NameValuePairDetail()
+    async Task<DataRow> INameValuePairs.NameValuePairDetail()
     {
-        string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Detail";
+        string myStoreProcedure = "[ZGWSystem].[Get_Name_Value_Pair_Detail]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_NVPSeqId", m_Detail_Profile.NameValuePairSeqId),
-            new SqlParameter("@P_NVP_DetailSeqId", m_Detail_Profile.Id)
+            new("@P_NVPSeqId", m_Detail_Profile.NameValuePairSeqId),
+            new("@P_NVP_DetailSeqId", m_Detail_Profile.Id)
         ];
-        return base.GetDataRow(myStoreProcedure, mParameters);
+        return await base.GetDataRowAsync(myStoreProcedure, mParameters);
     }
 
-    DataRow INameValuePairs.NameValuePairDetails(int NVPSeqDetID, int NVPSeqID)
+    async Task<DataRow> INameValuePairs.NameValuePairDetails(int NVPSeqDetID, int NVPSeqID)
     {
-        string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Details";
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NVPSeqID) };
-        return base.GetDataRow(myStoreProcedure, mParameters);
+        string myStoreProcedure = "[ZGWSystem].[Get_Name_Value_Pair_Details]";
+        SqlParameter[] mParameters = { new("@P_NVPSeqId", NVPSeqID) };
+        return await base.GetDataRowAsync(myStoreProcedure, mParameters);
     }
 
     bool INameValuePairs.DeleteNVPDetail(MNameValuePairDetail profile)
     {
-        string myStoreProcedure = "ZGWSystem.Delete_Name_Value_Pair_Detail";
+        string myStoreProcedure = "[ZGWSystem].[Delete_Name_Value_Pair_Detail]";
         Boolean mRetVal = false;
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", profile.NameValuePairSeqId), new SqlParameter("@P_NVP_DetailSeqId", profile.Id) };
+        SqlParameter[] mParameters = { new("@P_NVPSeqId", profile.NameValuePairSeqId), new("@P_NVP_DetailSeqId", profile.Id) };
         try
         {
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
@@ -155,46 +156,46 @@ public class DNameValuePairs : AbstractDBInteraction, INameValuePairs
         return mRetVal;
     }
 
-    DataTable INameValuePairs.AllNameValuePairDetail()
+    async Task<DataTable> INameValuePairs.AllNameValuePairDetail()
     {
-        string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Details";
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", -1) };
-        return base.GetDataTable(myStoreProcedure, mParameters);
+        string myStoreProcedure = "[ZGWSystem].[Get_Name_Value_Pair_Details]";
+        SqlParameter[] mParameters = { new("@P_NVPSeqId", -1) };
+        return await base.GetDataTableAsync(myStoreProcedure, mParameters);
     }
 
-    DataTable INameValuePairs.GetAllNVPDetail(int NVPSeqID)
+    async Task<DataTable> INameValuePairs.GetAllNVPDetail(int NVPSeqID)
     {
-        string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Details";
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", NVPSeqID) };
-        return base.GetDataTable(myStoreProcedure, mParameters);
+        string myStoreProcedure = "[ZGWSystem].[Get_Name_Value_Pair_Details]";
+        SqlParameter[] mParameters = [ new("@P_NVPSeqId", NVPSeqID) ];
+        return await base.GetDataTableAsync(myStoreProcedure, mParameters);
     }
 
-    DataRow INameValuePairs.SaveNVPDetail(MNameValuePairDetail profile)
+    async Task<DataRow> INameValuePairs.SaveNVPDetail(MNameValuePairDetail profile)
     {
-        string myStoreProcedure = "ZGWSystem.Set_Name_Value_Pair_Detail";
+        string myStoreProcedure = "[ZGWSystem].[Set_Name_Value_Pair_Detail]";
         SqlParameter[] mParameters = [ 
-                new SqlParameter("@P_NVP_DetailSeqId", profile.Id)
-            , new SqlParameter("@P_NVPSeqId", profile.NameValuePairSeqId)
-            , new SqlParameter("@P_NVP_Detail_Name", profile.Text)
-            , new SqlParameter("@P_NVP_Detail_Value", profile.Value)
-            , new SqlParameter("@P_StatusSeqId", profile.Status)
-            , new SqlParameter("@P_Sort_Order", profile.SortOrder)
-            , new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(profile, profile.Id))
+              new("@P_NVP_DetailSeqId", profile.Id)
+            , new("@P_NVPSeqId", profile.NameValuePairSeqId)
+            , new("@P_NVP_Detail_Name", profile.Text)
+            , new("@P_NVP_Detail_Value", profile.Value)
+            , new("@P_StatusSeqId", profile.Status)
+            , new("@P_Sort_Order", profile.SortOrder)
+            , new("@P_Added_Updated_BY", GetAddedUpdatedBy(profile, profile.Id))
             , GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) ];
-        DataRow mRetVal = base.GetDataRow(myStoreProcedure, mParameters);
+        DataRow mRetVal = await base.GetDataRowAsync(myStoreProcedure, mParameters);
         return mRetVal;
     }
 
     private SqlParameter[] getInsertUpdateParameters()
     {
         SqlParameter[] mParameters = [ 
-            new SqlParameter("@P_NVPSeqId", m_Profile.Id), 
-            new SqlParameter("@P_Schema_Name", m_Profile.SchemaName), 
-            new SqlParameter("@P_Static_Name", m_Profile.StaticName), 
-            new SqlParameter("@P_Display", m_Profile.Display), 
-            new SqlParameter("@P_Description", m_Profile.Description), 
-            new SqlParameter("@P_StatusSeqId", m_Profile.Status), 
-            new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
+            new("@P_NVPSeqId", m_Profile.Id), 
+            new("@P_Schema_Name", m_Profile.SchemaName), 
+            new("@P_Static_Name", m_Profile.StaticName), 
+            new("@P_Display", m_Profile.Display), 
+            new("@P_Description", m_Profile.Description), 
+            new("@P_StatusSeqId", m_Profile.Status), 
+            new("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile, m_Profile.Id)), 
             GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) 
         ];
         return mParameters;
@@ -202,7 +203,7 @@ public class DNameValuePairs : AbstractDBInteraction, INameValuePairs
 
     private SqlParameter[] getSelectParameters()
     {
-        SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", m_Profile.Id), new SqlParameter("@P_AccountSeqId", m_AccountId), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
+        SqlParameter[] mParameters = { new("@P_NVPSeqId", m_Profile.Id), new("@P_AccountSeqId", m_AccountId), new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
         return mParameters;
     }
 }

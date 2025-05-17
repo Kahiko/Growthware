@@ -2,6 +2,7 @@
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -14,7 +15,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Gets the directories.
 		/// </summary>
 		/// <returns>DataTable.</returns>
-		DataTable Directories();
+		Task<DataTable> Directories();
 
 		/// <summary>
 		/// Saves the specified profile.

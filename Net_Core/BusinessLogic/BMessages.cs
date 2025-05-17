@@ -91,7 +91,7 @@ public class BMessages : AbstractBusinessLogic
 #endregion
 
     /// <summary>
-    /// Gets all messages.
+    /// Gets all messages for the requested security entity (securityEntitySeqId).
     /// </summary>
     /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>Collection{MMessage}.</returns>
@@ -104,16 +104,14 @@ public class BMessages : AbstractBusinessLogic
             try
             {
                 m_DMessages.Profile.SecurityEntitySeqId = securityEntitySeqId;
+                /**
+                  * m_DMessages.Messages() will create new entries for the message if they does not exist
+                  * for the given securityEntitySeqId.  So it should always return data.
+                  * There is a way that no data can be returned and that is if the securityEntitySeqId
+                  * does not exist in the database.  There is a bigger problem if the securityEntitySeqId
+                  * is not valid.
+                  */
                 mDataTable = m_DMessages.Messages();
-                // the DB code is set to create entries for
-                // the given security entity however the insert into the table
-                // may not have commited before this code has finished executing
-                // so an extra check is made here to ensure that
-                // messages have been retruned... this is not necessary in the VB
-                // code.
-                // Basic assumption ... that has to be at least one message
-                // because at DB design time messages were created!!!
-                if (mDataTable == null || mDataTable.Rows.Count == 0) mDataTable = m_DMessages.Messages();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     mRetList.Add(new MMessage(item));

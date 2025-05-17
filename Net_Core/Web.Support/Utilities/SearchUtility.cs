@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class SearchUtility
@@ -14,11 +15,11 @@ public static class SearchUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BSearch getBusinessLogic()
+    private static async Task<BSearch> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -66,12 +67,16 @@ public static class SearchUtility
         return new Tuple<string, string>(mOrderByClause, mWhereClause);
     }
 
-    public static string GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1")
+    public static async Task<string> GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1")
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
+        // we do not want to change the original where clause
+        string mOriginalWhereClause = searchCriteria.WhereClause;
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
-        mDataTable = getBusinessLogic().GetSearchResults(searchCriteria);
+        BSearch mBusinessLogic = await getBusinessLogic();
+        mDataTable = await mBusinessLogic.GetSearchResults(searchCriteria);
+        searchCriteria.WhereClause = mOriginalWhereClause;
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }

@@ -1,0 +1,45 @@
+<form [formGroup]="theForm" (ngSubmit)="onSubmit()" class="formSize">
+    <mat-tab-group mat-align-tabs="center" class="mat-tab__group">
+        <mat-tab label="Details" class="mat-tab__tab">
+            <div class="div__tab-container formSection">
+                <div class="formSectionContents">
+                    <div class="log-details-container">
+                        <!-- Row 1 - Level -->
+                        <div class="log-row level-row" [ngClass]="theForm.get('level')?.value.toLowerCase()">
+                          <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Level</mat-label>
+                            <input matInput formControlName="level" readonly />
+                          </mat-form-field>
+                        </div>
+                      
+                        <!-- Row 2 - Account and Location -->
+                        <div class="log-row row-two">
+                          <mat-form-field appearance="fill" class="half-width">
+                            <mat-label>Account</mat-label>
+                            <input matInput formControlName="account" readonly />
+                          </mat-form-field>
+                      
+                          <mat-form-field appearance="fill" class="half-width">
+                            <mat-label>Location</mat-label>
+                            <input matInput [value]="getLocation()" readonly />
+                          </mat-form-field>
+                        </div>
+                      
+                        <!-- Row 3 - Msg -->
+                        <div class="log-row msg-row">
+                          <mat-form-field appearance="fill" class="full-height full-width mat-form-field_Msg">
+                            <mat-label>Message</mat-label>
+                            <textarea matInput formControlName="msg" readonly class="mat-form-field_Msg"></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>                      
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+            <i style="padding-right: 3px" class="Form_Button_Icon material-icons">cancel</i>Cancel
+        </button>
+    </div>
+</form>

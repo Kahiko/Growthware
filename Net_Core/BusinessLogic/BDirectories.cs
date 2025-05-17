@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -86,12 +87,12 @@ public class BDirectories : AbstractBusinessLogic
     /// Gets the directories.
     /// </summary>
     /// <returns>Collection{MDirectoryProfile}.</returns>
-    public Collection<MDirectoryProfile> Directories()
+    public async Task<Collection<MDirectoryProfile>> Directories()
     {
         Collection<MDirectoryProfile> mRetVal = new Collection<MDirectoryProfile>();
         if (DatabaseIsOnline()) 
         {
-            DataTable mDataTable = m_DDirectories.Directories();
+            DataTable mDataTable = await m_DDirectories.Directories();
             foreach (DataRow mDataRow in mDataTable.Rows)
             {
                 MDirectoryProfile mProfile = new MDirectoryProfile(mDataRow);

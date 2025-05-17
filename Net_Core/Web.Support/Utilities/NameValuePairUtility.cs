@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -21,12 +22,11 @@ public static class NameValuePairUtility
     /// </summary>
     /// <param name="nameValuePairSeqId"></param>
     /// <returns>List<UIKeyValuePair></returns>
-    private static List<UIKeyValuePair> getNameValuePairs(int nameValuePairSeqId)
+    private static async Task<List<UIKeyValuePair>> getNameValuePairs(int nameValuePairSeqId)
     {
         if (!m_NameValuePairCache.ContainsKey(nameValuePairSeqId))
         {
-            DataTable mDataTable = new DataTable();
-            getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
+            DataTable mDataTable = await getNameValuePairDetails(nameValuePairSeqId);
             List<UIKeyValuePair> mPairs = null;
             mPairs = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair
             {
@@ -44,10 +44,9 @@ public static class NameValuePairUtility
     /// </summary>
     /// <param name="nameValuePairSeqId"></param>
     /// <returns></returns>
-    public static string GetAllChildrenForParent(int nameValuePairSeqId)
+    public static async Task<string> GetAllChildrenForParent(int nameValuePairSeqId)
     {
-        DataTable mDataTable = new DataTable();
-        getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
+        DataTable mDataTable = await getNameValuePairDetails(nameValuePairSeqId);
         DataHelper.AddTotalRowsField(ref mDataTable);
         DataHelper.SortTable(ref mDataTable, "NVP_DET_TEXT", "ASC");
         string mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
@@ -58,11 +57,11 @@ public static class NameValuePairUtility
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
-    private static BNameValuePairs getBusinessLogic()
+    private static async Task<BNameValuePairs> getBusinessLogic()
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
+            m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
         return m_BusinessLogic;
     }
@@ -71,75 +70,73 @@ public static class NameValuePairUtility
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behaviors
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> LinkBehaviors
+    public static async Task<List<UIKeyValuePair>> LinkBehaviors()
     {
-        get
-        {
-            int mNVPSeqId = 3; // From .[ZGWSystem].[Name_Value_Pairs]
-            List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
-            return mLinkBehaviorTypes;
-        }
+        int mNVPSeqId = 3; // From .[ZGWSystem].[Name_Value_Pairs]
+        List<UIKeyValuePair> mLinkBehaviorTypes = await getNameValuePairs(mNVPSeqId);
+        return mLinkBehaviorTypes;
     }
 
     /// <summary>
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing navigation types
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>
-    public static List<UIKeyValuePair> NavigationTypes
+    public static async Task<List<UIKeyValuePair>> NavigationTypes()
     {
-        get 
-        {
-            int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
-            List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
-            return mLinkBehaviorTypes;
-        }
+        int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
+        List<UIKeyValuePair> mLinkBehaviorTypes = await getNameValuePairs(mNVPSeqId);
+        return mLinkBehaviorTypes;
     }
 
-    public static MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
+    public static async Task<MNameValuePairDetail> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
     {
-        MNameValuePairDetail mRetVal = getBusinessLogic().SaveNameValuePairDetail(nameValuePairDetail);        
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        MNameValuePairDetail mRetVal = await mBusinessLogic.SaveNameValuePairDetail(nameValuePairDetail);        
         return mRetVal;
     }
 
-    public static MNameValuePair SaveNameValuePairParent(MNameValuePair nameValuePair)
+    public static async Task<MNameValuePair> SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
-        getBusinessLogic().Save(nameValuePair);
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        await mBusinessLogic.Save(nameValuePair);
         return nameValuePair;
     }
 
-    public static List<MNameValuePair> GetNameValuePairs()
+    public static async Task<List<MNameValuePair>> GetNameValuePairs()
     {
         List<MNameValuePair> mRetVal = new List<MNameValuePair>();
-        DataTable mDataTable = new DataTable();
-        getNameValuePairs(ref mDataTable);
+        DataTable mDataTable = await getNameValuePairs();
         mRetVal = mDataTable.AsEnumerable().Select(item => new MNameValuePair(item)).ToList();
         return mRetVal;
     }
 
-    public static MNameValuePairDetail GetNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
+    public static async Task<MNameValuePairDetail> GetNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
     {
-        MNameValuePairDetail mRetVal = getBusinessLogic().GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        MNameValuePairDetail mRetVal = await mBusinessLogic.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
         return mRetVal;
     }
 
-    private static void getNameValuePairs(ref DataTable yourDataTable)
+    private static async Task<DataTable> getNameValuePairs()
     {
-        yourDataTable = getBusinessLogic().GetAllNameValuePair();
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.GetAllNameValuePair();
     }
 
-    private static void getNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)
+    private static async Task<DataTable> getNameValuePairDetails(int nameValuePairSeqId)
     {
         DataView mDataView = null;
         DataTable mDataTable = null;
+        DataTable mRetVal = null;
         try
         {
-            getNameValuePairDetails(ref mDataTable);
+            mDataTable = await getNameValuePairDetails();
             mDataTable.Locale = CultureInfo.InvariantCulture;
             mDataTable.DefaultView.RowFilter = string.Empty;
             mDataView = new DataView(mDataTable);
-            yourDataTable = mDataView.Table.Clone();
+            mRetVal = mDataView.Table.Clone();
             mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
-            yourDataTable = mDataView.ToTable();
+            mRetVal = mDataView.ToTable();
         }
         finally
         {
@@ -152,10 +149,12 @@ public static class NameValuePairUtility
                 mDataTable.Dispose();
             }
         }
+        return mRetVal;
     }
 
-    private static void getNameValuePairDetails(ref DataTable yourDataTable)
+    private static async Task<DataTable> getNameValuePairDetails()
     {
-        yourDataTable = getBusinessLogic().GetAllNameValuePairDetail();
+        BNameValuePairs mBusinessLogic = await getBusinessLogic();
+        return await mBusinessLogic.GetAllNameValuePairDetail();
     }
 }

@@ -3,6 +3,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -83,9 +84,9 @@ public class BSearch : AbstractBusinessLogic
             }
         }
     }
-    public DataTable GetSearchResults(MSearchCriteria searchCriteria)
+    public async Task<DataTable> GetSearchResults(MSearchCriteria searchCriteria)
     {
         if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
-        return m_DSearch.GetSearchResults(searchCriteria);
+        return await m_DSearch.GetSearchResults(searchCriteria);
     }
 }

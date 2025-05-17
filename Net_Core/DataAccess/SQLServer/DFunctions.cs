@@ -6,6 +6,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 
@@ -27,74 +28,67 @@ public class DFunctions : AbstractDBInteraction, IFunction
 #endregion
 
 #region Public Properties
-    DataRow IFunction.GetFunction
+    async Task<DataRow> IFunction.GetFunction()
     {
-        get
-        {
-            checkValid();
-            SqlParameter[] mParameters = 
-            { 
-                new SqlParameter("@P_FunctionSeqId", m_Profile.Id)
-            };
-            String mStoreProcedure = "ZGWSecurity.Get_Function";
-            return base.GetDataRow(mStoreProcedure, mParameters);
-        }
+        checkValid();
+        SqlParameter[] mParameters = [
+            new("@P_FunctionSeqId", m_Profile.Id)
+        ];
+        String mStoreProcedure = "[ZGWSecurity].[Get_Function]";
+        return await base.GetDataRowAsync(mStoreProcedure, mParameters);
     }
 
-    DataSet IFunction.GetFunctions
+    async Task<DataSet> IFunction.GetFunctions()
     {
-        get
+        DataSet mDSFunctions = null;
+        checkValid();
+        SqlParameter[] mParameters = [
+            new("@P_FunctionSeqId", m_Profile.Id)
+        ];
+        try
         {
-            DataSet mDSFunctions = null;
-            checkValid();
-            SqlParameter[] mParameters = [
-                new SqlParameter("@P_FunctionSeqId", m_Profile.Id)
-            ];
-            try
+            string mStoredProcedure = "[ZGWSecurity].[Get_Function]";
+            DataTable mFunctions = await base.GetDataTableAsync(mStoredProcedure, mParameters);
+            mDSFunctions = await this.getSecurity();
+            mDSFunctions.Tables[0].TableName = "DerivedRoles";
+            mDSFunctions.Tables[1].TableName = "AssignedRoles";
+            mDSFunctions.Tables[2].TableName = "Groups";
+
+
+            bool mHasAssingedRoles = false;
+            bool mHasGroups = false;
+            mFunctions.TableName = "Functions";
+            if (mDSFunctions.Tables["AssignedRoles"].Rows.Count > 0) mHasAssingedRoles = true;
+            if (mDSFunctions.Tables["Groups"].Rows.Count > 0) mHasGroups = true;
+            mDSFunctions.Tables.Add(mFunctions);
+
+            DataRelation mRelation = new DataRelation("DerivedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["DerivedRoles"].Columns["Function_Seq_ID"]);
+            mDSFunctions.Relations.Add(mRelation);
+            if (mHasAssingedRoles)
             {
-                string mStoredProcedure = "ZGWSecurity.Get_Function";
-                DataTable mFunctions = base.GetDataTable(mStoredProcedure, mParameters);
-                mDSFunctions = this.getSecurity();
-                mDSFunctions.Tables[0].TableName = "DerivedRoles";
-                mDSFunctions.Tables[1].TableName = "AssignedRoles";
-                mDSFunctions.Tables[2].TableName = "Groups";
-
-
-                bool mHasAssingedRoles = false;
-                bool mHasGroups = false;
-                mFunctions.TableName = "Functions";
-                if (mDSFunctions.Tables["AssignedRoles"].Rows.Count > 0) mHasAssingedRoles = true;
-                if (mDSFunctions.Tables["Groups"].Rows.Count > 0) mHasGroups = true;
-                mDSFunctions.Tables.Add(mFunctions);
-
-                DataRelation mRelation = new DataRelation("DerivedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["DerivedRoles"].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation("AssignedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["AssignedRoles"].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
-                if (mHasAssingedRoles)
-                {
-                    mRelation = new DataRelation("AssignedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["AssignedRoles"].Columns["Function_Seq_ID"]);
-                    mDSFunctions.Relations.Add(mRelation);
-                }
-                if (mHasGroups)
-                {
-                    mRelation = new DataRelation("Groups", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["Groups"].Columns["Function_Seq_ID"]);
-                    mDSFunctions.Relations.Add(mRelation);
-                }
-
             }
-            catch (Exception)
+            if (mHasGroups)
             {
-
-                throw;
+                mRelation = new DataRelation("Groups", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["Groups"].Columns["Function_Seq_ID"]);
+                mDSFunctions.Relations.Add(mRelation);
             }
-            return mDSFunctions;
+
         }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        return mDSFunctions;
     }
 
-    DataTable IFunction.MenuTypes()
+    async Task<DataTable> IFunction.MenuTypes()
     {
-        string mStoreProcedure = "ZGWSecurity.Get_Menu_Types";
-        SqlParameter[] mParameters = { new SqlParameter("@P_FunctionTypeSeqId", -1) };
-        return base.GetDataTable(mStoreProcedure, mParameters);
+        string mStoreProcedure = "[ZGWSecurity].[Get_Menu_Types]";
+        SqlParameter[] mParameters = [ new("@P_FunctionTypeSeqId", -1) ];
+        return await base.GetDataTableAsync(mStoreProcedure, mParameters);
     }
 
     MFunctionProfile IFunction.Profile
@@ -130,108 +124,106 @@ public class DFunctions : AbstractDBInteraction, IFunction
     }
 #endregion
 
-    void IFunction.CopyFunctionSecurity(int source, int target, int added_Updated_By)
+    async Task IFunction.CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
-        SqlParameter[] mParameters = 
-        {
-            new SqlParameter("@P_Source", source),
-            new SqlParameter("@P_Target", target),
-            new SqlParameter("@P_Added_Updated_By", added_Updated_By)
-        };
-        String mStoreProcedure = "ZGWSecurity.Copy_Function_Security";
-        base.ExecuteNonQuery(mStoreProcedure, mParameters);            
+        SqlParameter[] mParameters = [
+            new("@P_Source", source),
+            new("@P_Target", target),
+            new("@P_Added_Updated_By", added_Updated_By)
+        ];
+        String mStoreProcedure = "[ZGWSecurity].[Copy_Function_Security]";
+        await base.ExecuteNonQueryAsync(mStoreProcedure, mParameters);            
     }
-    void IFunction.Delete(int functionSeqId)
+    async Task IFunction.Delete(int functionSeqId)
     {
-        SqlParameter[] mParameters = 
-        {
-            new SqlParameter("@P_FunctionSeqId", functionSeqId),
+        SqlParameter[] mParameters = [
+            new("@P_FunctionSeqId", functionSeqId),
             GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
-        };
-        String mStoreProcedure = "ZGWSecurity.Delete_Function";
-        base.ExecuteNonQuery(mStoreProcedure, mParameters);
+        ];
+        String mStoreProcedure = "[ZGWSecurity].[Delete_Function]";
+        await base.ExecuteNonQueryAsync(mStoreProcedure, mParameters);
     }
 
-    DataTable IFunction.FunctionTypes()
+    async Task<DataTable> IFunction.FunctionTypes()
     {
-        string mStoreProcedure = "ZGWSecurity.Get_Function_Types";
-        SqlParameter[] mParameters = { new SqlParameter("@P_FunctionTypeSeqId", -1) };
-        return base.GetDataTable(mStoreProcedure, mParameters);
+        string mStoreProcedure = "[ZGWSecurity].[Get_Function_Types]";
+        SqlParameter[] mParameters = [ new("@P_FunctionTypeSeqId", -1) ];
+        return await base.GetDataTableAsync(mStoreProcedure, mParameters);
     }
 
-    DataTable IFunction.GetMenuOrder(MFunctionProfile Profile)
+    async Task<DataTable> IFunction.GetMenuOrder(MFunctionProfile Profile)
     {
-        string mStoreProcedure = "ZGWSecurity.Get_Function_Sort";
-        SqlParameter[] mParameters = { new SqlParameter("@P_FunctionSeqId", Profile.Id) };
-        return base.GetDataTable(mStoreProcedure, mParameters);
+        string mStoreProcedure = "[ZGWSecurity].[Get_Function_Sort]";
+        SqlParameter[] mParameters = [ new("@P_FunctionSeqId", Profile.Id) ];
+        return await base.GetDataTableAsync(mStoreProcedure, mParameters);
     }
 
-    int IFunction.Save()
+    async Task<int> IFunction.Save()
     {
         SqlParameter[] mParameters = [ 
             GetSqlParameter("@P_FunctionSeqId", m_Profile.Id, ParameterDirection.InputOutput), 
-            new SqlParameter("@P_Name", m_Profile.Name), 
-            new SqlParameter("@P_Description", m_Profile.Description ?? ""), 
-            new SqlParameter("@P_FunctionTypeSeqId", m_Profile.FunctionTypeSeqId), 
-            new SqlParameter("@P_Source", m_Profile.Source ?? ""), 
-            new SqlParameter("@P_Controller", m_Profile.Controller ?? ""), 
-            new SqlParameter("@P_Enable_View_State", m_Profile.EnableViewState), 
-            new SqlParameter("@P_Enable_Notifications", m_Profile.EnableNotifications), 
-            new SqlParameter("@P_Redirect_On_Timeout", m_Profile.RedirectOnTimeout), 
-            new SqlParameter("@P_IS_NAV", m_Profile.IsNavigable), 
-            new SqlParameter("@P_Link_Behavior", m_Profile.LinkBehavior), 
-            new SqlParameter("@P_NO_UI", m_Profile.NoUI), 
-            new SqlParameter("@P_NAV_TYPE_ID", m_Profile.NavigationTypeSeqId), 
-            new SqlParameter("@P_Action", m_Profile.Action), 
-            new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords ?? ""), 
-            new SqlParameter("@P_ParentSeqId", m_Profile.ParentId), 
-            new SqlParameter("@P_Notes", m_Profile.Notes ?? ""), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+            new("@P_Name", m_Profile.Name), 
+            new("@P_Description", m_Profile.Description ?? ""), 
+            new("@P_FunctionTypeSeqId", m_Profile.FunctionTypeSeqId), 
+            new("@P_Source", m_Profile.Source ?? ""), 
+            new("@P_Controller", m_Profile.Controller ?? ""), 
+            new("@P_Enable_View_State", m_Profile.EnableViewState), 
+            new("@P_Enable_Notifications", m_Profile.EnableNotifications), 
+            new("@P_Redirect_On_Timeout", m_Profile.RedirectOnTimeout), 
+            new("@P_IS_NAV", m_Profile.IsNavigable), 
+            new("@P_Link_Behavior", m_Profile.LinkBehavior), 
+            new("@P_NO_UI", m_Profile.NoUI), 
+            new("@P_NAV_TYPE_ID", m_Profile.NavigationTypeSeqId), 
+            new("@P_Action", m_Profile.Action), 
+            new("@P_Meta_Key_Words", m_Profile.MetaKeywords ?? ""), 
+            new("@P_ParentSeqId", m_Profile.ParentId), 
+            new("@P_Notes", m_Profile.Notes ?? ""), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
         ];
-        String mStoreProc = "ZGWSecurity.Set_Function";
-        base.ExecuteNonQuery(mStoreProc, mParameters);
+        String mStoreProc = "[ZGWSecurity].[Set_Function]";
+        await base.ExecuteNonQueryAsync(mStoreProc, mParameters);
         return int.Parse(GetParameterValue("@P_FunctionSeqId", mParameters), CultureInfo.InvariantCulture);
     }
 
-    void IFunction.SaveGroups(PermissionType permission)
+    async Task IFunction.SaveGroups(PermissionType permission)
     {
         checkValid();
         String mCommaSeporatedString = m_Profile.GetCommaSeparatedGroups(permission);
-        string mStoreProcedure = "ZGWSecurity.Set_Function_Groups";
+        string mStoreProcedure = "[ZGWSecurity].[Set_Function_Groups]";
         SqlParameter[] mParameters = [
-            new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-            new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
-            new SqlParameter("@P_Groups", mCommaSeporatedString), 
-            new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+            new("@P_FunctionSeqId", m_Profile.Id), 
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
+            new("@P_Groups", mCommaSeporatedString), 
+            new("@P_PermissionsNVPDetailSeqId", permission), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
         ];
-        base.ExecuteNonQuery(mStoreProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoreProcedure, mParameters);
     }
 
-    void IFunction.SaveRoles(PermissionType permission)
+    async Task IFunction.SaveRoles(PermissionType permission)
     {
         checkValid();
         String mCommaSeporatedString = m_Profile.GetCommaSeparatedAssignedRoles(permission);
-        string mStoreProcedure = "ZGWSecurity.Set_Function_Roles";
+        string mStoreProcedure = "[ZGWSecurity].[Set_Function_Roles]";
         SqlParameter[] mParameters = [ 
-            new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-            new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
-            new SqlParameter("@P_Roles", mCommaSeporatedString), 
-            new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
+            new("@P_FunctionSeqId", m_Profile.Id), 
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
+            new("@P_Roles", mCommaSeporatedString), 
+            new("@P_PermissionsNVPDetailSeqId", permission), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
         ];
-        base.ExecuteNonQuery(mStoreProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoreProcedure, mParameters);
     }
 
-    void IFunction.UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile)
+    async Task IFunction.UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile)
     {
-        string mStoreProcedure = "ZGWSecurity.Set_Function_Sort";
+        string mStoreProcedure = "[ZGWSecurity].[Set_Function_Sort]";
         SqlParameter[] mParameters = [ 
-            new SqlParameter("@P_Commaseparated_Ids", commaSeparated_Ids), 
-            new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile, m_Profile.Id)),
+            new("@P_Commaseparated_Ids", commaSeparated_Ids), 
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(profile, m_Profile.Id)),
             GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
         ];
-        base.ExecuteNonQuery(mStoreProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoreProcedure, mParameters);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SecurityEntitySeqId")]
@@ -248,10 +240,10 @@ public class DFunctions : AbstractDBInteraction, IFunction
         }
     }
 
-    private DataSet getSecurity()
+    private async Task<DataSet> getSecurity()
     {
-        string mStoreProcedure = "ZGWSecurity.Get_Function_Security";
-        SqlParameter[] mParameters = { new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
-        return base.GetDataSet(mStoreProcedure, mParameters);
+        string mStoreProcedure = "[ZGWSecurity].[Get_Function_Security]";
+        SqlParameter[] mParameters = [ new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) ];
+        return await base.GetDataSetAsync(mStoreProcedure, mParameters);
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 /// <summary>
@@ -110,12 +111,12 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// Deletes the registration information.
     /// </summary>
     /// <param name="securityEntitySeqId">int</param>
-    public void DeleteRegistrationInformation(int securityEntitySeqId)
+    public async Task DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
+        await m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
     }
 
-    public Collection<MRegistrationInformation> GetRegistrationInformation()
+    public async Task<Collection<MRegistrationInformation>> GetRegistrationInformation()
     {
         Collection<MRegistrationInformation> mRetVal = new Collection<MRegistrationInformation>();
         DataTable mDataTable = null;
@@ -123,7 +124,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         {
             if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
             {
-                mDataTable = m_DSecurityEntities.GetRegistrationInformation();
+                mDataTable = await m_DSecurityEntities.GetRegistrationInformation();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     MRegistrationInformation mProfile = new(item);
@@ -149,12 +150,12 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <param name="SecurityEntityID">The security entity id.</param>
     /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
+    public async Task<DataTable> GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
     {
         DataTable mRetVal = null;
         if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
         {
-            mRetVal = m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
+            mRetVal = await m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
         }
         return mRetVal;
     }
@@ -164,10 +165,14 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">MSecurityEntity</param>
     /// <returns>Integer</returns>
-    public int Save(MSecurityEntity profile)
+    public async Task<int> Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) profile.Id = m_DSecurityEntities.Save(profile);
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) 
+        {
+            profile.Id = await m_DSecurityEntities.Save(profile);
+        }
+        
         return profile.Id;
     }
 
@@ -177,11 +182,14 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <param name="profile">MRegistrationInformation</param>
     /// <returns>MRegistrationInformation</returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    public async Task<MRegistrationInformation> SaveRegistrationInformation(MRegistrationInformation profile)
     {
         MRegistrationInformation mRetVal = profile;
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) mRetVal = new(m_DSecurityEntities.SaveRegistrationInformation(profile));
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
+        {
+            mRetVal = new(await m_DSecurityEntities.SaveRegistrationInformation(profile));
+        }
         return mRetVal;
     }
 
@@ -192,7 +200,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     ///		Collection of MSecurityEntity
     ///	</returns>
     /// <remarks></remarks>
-    public Collection<MSecurityEntity> SecurityEntities()
+    public async Task<Collection<MSecurityEntity>> SecurityEntities()
     {
         Collection<MSecurityEntity> mRetVal = new Collection<MSecurityEntity>();
         DataTable mDataTable = null;
@@ -200,7 +208,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         {
             if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
             {
-                mDataTable = m_DSecurityEntities.GetSecurityEntities();
+                mDataTable = await m_DSecurityEntities.GetSecurityEntities();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     MSecurityEntity mProfile = new MSecurityEntity(item);
@@ -214,10 +222,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         }
         finally
         {
-            if (mDataTable != null)
-            {
-                mDataTable.Dispose();
-            }
+            mDataTable?.Dispose();
         }
         return mRetVal;
     }

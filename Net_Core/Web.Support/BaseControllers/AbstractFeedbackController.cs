@@ -8,6 +8,7 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -21,14 +22,17 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// </summary>
     [AllowAnonymous]
     [HttpGet("GetFeedbackAccounts")]
-    public ActionResult<Tuple<string[], string[]>> GetFeedbackAccounts()
+    public async Task<ActionResult<Tuple<string[], string[]>>> GetFeedbackAccounts()
     {
-        MSecurityInfo mSecurityInfo = new(FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback), AccountUtility.CurrentProfile);
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
+        MAccountProfile mAccountProfile = await AccountUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         if (mSecurityInfo.MayEdit)
         {
-            int mSecurityId = SecurityEntityUtility.CurrentProfile.Id;
+            int mSecurityId = mSecurityEntity.Id;
             // Get all of the roles for the security entity
-            List<MRole> mRoles = RoleUtility.GetRolesBySecurityEntity(mSecurityId);
+            List<MRole> mRoles = await RoleUtility.GetRolesBySecurityEntity(mSecurityId);
             // Get the Developer and QA roles
             MRole mDeveloper = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("Developer", StringComparison.InvariantCultureIgnoreCase));
             MRole mQA = mRoles.FirstOrDefault<MRole>(x => x.Name.Equals("QA", StringComparison.InvariantCultureIgnoreCase));
@@ -38,11 +42,13 @@ public abstract class AbstractFeedbackController : ControllerBase
             if (mDeveloper != null)
             {
                 // Get the AccountsInRole from the UIProfile
-                mAccountsInRole_Developers = RoleUtility.GetUIProfile(mDeveloper.Id, mSecurityId).AccountsInRole;
+                UIRole mDeveloperProfile = await RoleUtility.GetUIProfile(mDeveloper.Id, mSecurityId);
+                mAccountsInRole_Developers = mDeveloperProfile.AccountsInRole;
             }
             if (mQA != null)
             {
-                mAccountsInRole_QA = RoleUtility.GetUIProfile(mQA.Id, mSecurityId).AccountsInRole;
+                UIRole mQAProfile = await RoleUtility.GetUIProfile(mQA.Id, mSecurityId);
+                mAccountsInRole_QA = mQAProfile.AccountsInRole;
             }
             // Add the Anonymous account to the feedback accounts
             List<string> mAccountsList_Developers = new List<string>(mAccountsInRole_Developers);
@@ -63,7 +69,7 @@ public abstract class AbstractFeedbackController : ControllerBase
 
     [Authorize("feedbacks")]
     [HttpGet("GetFeedbackForEdit")]
-    public UIFeedback GetFeedbackForEdit(int feedbackId)
+    public async Task<UIFeedback> GetFeedbackForEdit(int feedbackId)
     {
         UIFeedback mRetVal = new();
         // Remove the EditId from the session
@@ -71,18 +77,18 @@ public abstract class AbstractFeedbackController : ControllerBase
         // Set the EditId in the session
         HttpContext.Session.SetInt32("EditId", mRetVal.FeedbackId);
         // Get the feedback from the data store
-        mRetVal = FeedbackUtility.GetFeedback(feedbackId);
+        mRetVal = await FeedbackUtility.GetFeedback(feedbackId);
         return mRetVal;
     }
 
     [Authorize("feedbacks")]
     [HttpPost("SaveFeedback")]
-    public ActionResult<bool> SaveFeedback(UIFeedback feedback)
+    public async Task<ActionResult<bool>> SaveFeedback(UIFeedback feedback)
     {
         bool mRetVal = false;
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditFeedback);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
         if (mEditId != null)
         {
@@ -91,13 +97,16 @@ public abstract class AbstractFeedbackController : ControllerBase
                 // Populate a MFeedback object with the UI Feedback
                 MFeedback mFeedbackToSave = new(feedback);
                 // Get the Ids for the Assignee, VerifiedBy and FunctionSeq
-                int mAnonymousId = AccountUtility.GetAccount("Anonymous").Id;
-                int mAssigneeId = AccountUtility.GetAccount(feedback.Assignee).Id;
+                MAccountProfile mAnonymousAccount = await AccountUtility.GetAccount("Anonymous");
+                MAccountProfile mAssigneeAccount = await AccountUtility.GetAccount(feedback.Assignee);
+                int mAnonymousId = mAnonymousAccount.Id;
+                int mAssigneeId = mAssigneeAccount.Id;
                 int mFunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
                 int mVerifiedById = -1;
                 if (!string.IsNullOrEmpty(feedback.VerifiedBy))
                 {
-                    mVerifiedById = AccountUtility.GetAccount(feedback.VerifiedBy).Id;
+                    MAccountProfile mVerifiedByAccount = await AccountUtility.GetAccount(feedback.VerifiedBy);
+                    mVerifiedById = mVerifiedByAccount.Id;
                 }
                 if (mAssigneeId == 0)
                 {
@@ -125,7 +134,8 @@ public abstract class AbstractFeedbackController : ControllerBase
                 if(feedback.FeedbackId == -1)
                 {
                     // The default values for a new feedback
-                    mFeedbackToSave.FunctionSeqId = FunctionUtility.GetProfile(feedback.Action).Id;
+                    MFunctionProfile mActionFunctionProfile = await FunctionUtility.GetProfile(feedback.Action);
+                    mFeedbackToSave.FunctionSeqId = mActionFunctionProfile.Id;
                     mFeedbackToSave.DateOpened = DateTime.Now;
                     mFeedbackToSave.DateClosed = mFeedbackToSave.DefaultSystemDateTime;
                     mFeedbackToSave.SubmittedById = mRequestingProfile.Id;
@@ -133,7 +143,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 }
                 try
                 {
-                    UIFeedback mSavedFeedback = FeedbackUtility.SaveFeedback(mFeedbackToSave);
+                    UIFeedback mSavedFeedback = await FeedbackUtility.SaveFeedback(mFeedbackToSave);
                     if (mSavedFeedback != null)
                     {
                         mRetVal = true;
@@ -157,7 +167,7 @@ public abstract class AbstractFeedbackController : ControllerBase
     /// <returns></returns>
     [Authorize("feedbacks")]
     [HttpPost("SearchFeedbacks")]
-    public ActionResult<String> SearchFeedbacks(UISearchCriteria searchCriteria)
+    public async Task<ActionResult<String>> SearchFeedbacks(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FeedbackId], [Assignee], [SubmittedBy], [Details], [Found_In_Version], [Notes], [Severity], [Status], [TargetVersion], [Type], [VerifiedBy]";
@@ -166,7 +176,7 @@ public abstract class AbstractFeedbackController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -176,7 +186,7 @@ public abstract class AbstractFeedbackController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return Ok(mRetVal);
     }

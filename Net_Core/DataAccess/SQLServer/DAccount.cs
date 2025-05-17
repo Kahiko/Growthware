@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 /// <summary>
@@ -40,70 +41,54 @@ public class DAccounts : AbstractDBInteraction, IAccount
         set { m_SecurityEntitySeqID = value; }
     }
 
-    DataRow IAccount.GetAccount
+    async Task<DataRow> IAccount.GetAccount()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
-                    GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
-                    GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
+        SqlParameter[] mParameters = [
+                GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
+                GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
+                GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
+            ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    DataRow IAccount.GetAccountByRefreshToken
+    async Task<DataRow> IAccount.GetAccountByRefreshToken()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account_By_Refresh_Token";
-            SqlParameter[] mParameters = {
-                GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
-            };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_By_Refresh_Token]";
+        SqlParameter[] mParameters = [
+            GetSqlParameter("@P_Token", this.Cleanup(m_Profile.Token), ParameterDirection.Input)
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    DataRow IAccount.GetAccountByResetToken
+    async Task<DataRow> IAccount.GetAccountByResetToken()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account_By_Reset_Token";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_ResetToken", this.Cleanup(m_Profile.ResetToken), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_By_Reset_Token]";
+        SqlParameter[] mParameters = [
+            GetSqlParameter("@P_ResetToken", this.Cleanup(m_Profile.ResetToken), ParameterDirection.Input)
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    DataRow IAccount.GetAccountByVerificationToken
+    async Task<DataRow> IAccount.GetAccountByVerificationToken()
     {
-        get
-        {
-            String mStoredProcedure = "ZGWSecurity.Get_Account_By_Verification_Token";
-            SqlParameter[] mParameters = {
-                    GetSqlParameter("@P_VerificationToken", this.Cleanup(m_Profile.VerificationToken), ParameterDirection.Input)
-                };
-            return base.GetDataRow(mStoredProcedure, mParameters);
-        }
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_By_Verification_Token]";
+        SqlParameter[] mParameters = [
+            GetSqlParameter("@P_VerificationToken", this.Cleanup(m_Profile.VerificationToken), ParameterDirection.Input)
+        ];
+        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable IAccount.GetAccounts
+    async Task<DataTable> IAccount.GetAccounts()
     {
-        get
-        {
-            checkValid();
-            String mStoredProcedure = "ZGWSecurity.Get_Account";
-            SqlParameter[] mParameters =
-            {
-                    new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
-                    new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-                    new("@P_Account", "")
-                };
-            return base.GetDataTable(mStoredProcedure, mParameters);
-        }
+        checkValid();
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
+        SqlParameter[] mParameters = [
+            new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+            new("@P_Account", "")
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 #endregion
 
@@ -137,16 +122,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetVal;
     }
 
-    DataTable IAccount.RefreshTokens()
+    async Task<DataTable> IAccount.RefreshTokens()
     {
-        string mCommandText = "SELECT [RefreshTokenId], RT.[AccountSeqId], [Token], [Expires], [Created], [CreatedByIp], [Revoked], [RevokedByIp], [ReplacedByToken], [ReasonRevoked] ";
+        string mCommandText = "SELECT RT.[RefreshTokenId], RT.[AccountSeqId], RT.[Token], RT.[Expires], RT.[Created], RT.[CreatedByIp], RT.[Revoked], RT.[RevokedByIp], RT.[ReplacedByToken], RT.[ReasonRevoked] ";
         mCommandText += "FROM [ZGWSecurity].[RefreshTokens] RT ";
         mCommandText += "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
         mCommandText += "ORDER BY [Created] ASC;";
-        SqlParameter[] mParameters = {
-                new("@P_Account", m_Profile.Account),
-            };
-        return base.GetDataTable(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_Account", m_Profile.Account),
+        ];
+        return await base.GetDataTableAsync(mCommandText, mParameters, true);
     }
 
     bool IAccount.ResetTokenExists(string resetToken)
@@ -170,51 +155,50 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetVal;
     }
 
-    DataTable IAccount.Roles()
+    async Task<DataTable> IAccount.Roles()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Get_Account_Roles";
-        SqlParameter[] mParameters = {
-                new("@P_Account", this.Cleanup(m_Profile.Account)),
-                new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-            };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Roles]";
+        SqlParameter[] mParameters = [
+            new("@P_Account", this.Cleanup(m_Profile.Account)),
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable IAccount.GetMenu(string account, MenuType menuType)
+    async Task<DataTable> IAccount.GetMenu(string account, MenuType menuType)
     {
-        String mStoredProcedure = "ZGWSecurity.Get_Menu_Data";
-        SqlParameter[] mParameters =
-        {
+        String mStoredProcedure = "[ZGWSecurity].[Get_Menu_Data]";
+        SqlParameter[] mParameters = [
             new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
             new("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
             new("@P_Account", this.Cleanup(account))
-            };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable IAccount.Groups()
+    async Task<DataTable> IAccount.Groups()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Get_Account_Groups";
-        SqlParameter[] mParameters = {
-                new("@P_Account", this.Cleanup(m_Profile.Account)),
-                new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-            };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Groups]";
+        SqlParameter[] mParameters = [
+            new("@P_Account", this.Cleanup(m_Profile.Account)),
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    DataTable IAccount.Security()
+    async Task<DataTable> IAccount.Security()
     {
-        String mStoredProcedure = "ZGWSecurity.Get_Account_Security";
-        SqlParameter[] mParameters = {
-                new("@P_Account", this.Cleanup(m_Profile.Account)),
-                new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-            };
-        return base.GetDataTable(mStoredProcedure, mParameters);
+        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Security]";
+        SqlParameter[] mParameters = [
+            new("@P_Account", this.Cleanup(m_Profile.Account)),
+            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
+        ];
+        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    int IAccount.Save()
+    async Task<int> IAccount.Save()
     {
         checkValid();
         int mRetInt;
@@ -251,25 +235,25 @@ public class DAccounts : AbstractDBInteraction, IAccount
             new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
             new("@P_VerificationToken", !string.IsNullOrWhiteSpace(m_Profile.VerificationToken) ? m_Profile.VerificationToken : DBNull.Value)
         ];
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
         mRetInt = int.Parse(GetParameterValue("@P_AccountSeqId", mParameters), CultureInfo.InvariantCulture);
         return mRetInt;
     }
 
-    void IAccount.SaveGroups()
+    async Task IAccount.SaveGroups()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Set_Account_Groups";
-        SqlParameter[] mParameters = {
+        String mStoredProcedure = "[ZGWSecurity].[Set_Account_Groups]";
+        SqlParameter[] mParameters = [
             new("@P_Account", this.Cleanup(m_Profile.Account)),
             new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
             new("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
             new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
-    void IAccount.SaveRefreshTokens()
+    async Task IAccount.SaveRefreshTokens()
     {
         MRefreshToken[] mRefreshTokens = this.m_Profile.RefreshTokens.ToArray();
         IDatabaseTable mFirstObj = (IDatabaseTable)mRefreshTokens.First();
@@ -289,20 +273,20 @@ public class DAccounts : AbstractDBInteraction, IAccount
             PrimaryKeyName = mPrimaryKeyName
         };
 
-        base.BulkInsert(mBulkInsertParameters);
+        await base.BulkInsertAsync(mBulkInsertParameters);
     }
 
-    void IAccount.SaveRoles()
+    async Task IAccount.SaveRoles()
     {
         checkValid();
-        String mStoredProcedure = "ZGWSecurity.Set_Account_Roles";
-        SqlParameter[] mParameters = {
+        String mStoredProcedure = "[ZGWSecurity].[Set_Account_Roles]";
+        SqlParameter[] mParameters = [
             new("@P_Account", this.Cleanup(m_Profile.Account)),
             new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
             new("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
             new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id))
-            };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 
     void IAccount.Delete()
@@ -312,16 +296,16 @@ public class DAccounts : AbstractDBInteraction, IAccount
         base.ExecuteNonQuery(myStoreProcedure, myParameters);
     }
 
-    bool IAccount.VerificationTokenExists(string token)
+    async Task<bool> IAccount.VerificationTokenExists(string token)
     {
         bool mRetVal = true;
         Int32 mCount = 0;
         string mCleanedValue = this.Cleanup(token);
         string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @P_Token";
-        SqlParameter[] mParameters = {
-                new("@P_Token", mCleanedValue),
-            };
-        var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+        SqlParameter[] mParameters = [
+            new("@P_Token", mCleanedValue),
+        ];
+        var mDbValue = await base.ExecuteScalarAsync(mCommandText, mParameters, true);
         if (mDbValue != null)
         {
             mCount = (Int32)mDbValue;

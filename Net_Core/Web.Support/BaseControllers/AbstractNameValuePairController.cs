@@ -9,6 +9,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -23,10 +24,10 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [HttpGet("GetMNameValuePairDetail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<MNameValuePairDetail> GetMNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
+    public async Task<ActionResult<MNameValuePairDetail>> GetMNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
     {
         HttpContext.Session.SetInt32("EditId", nvpDetailSeqId);
-        MNameValuePairDetail mRetVal = NameValuePairUtility.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
+        MNameValuePairDetail mRetVal = await NameValuePairUtility.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
         if (mRetVal == null)
         {
             mRetVal = new MNameValuePairDetail();
@@ -38,14 +39,14 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [HttpGet("GetMNameValuePair")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<MNameValuePair> GetMNameValuePair(int nameValuePairSeqId)
+    public async Task<ActionResult<MNameValuePair>> GetMNameValuePair(int nameValuePairSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
-            List<MNameValuePair> mNameValuePairs = this.GetMNameValuePairs();
+            List<MNameValuePair> mNameValuePairs = await this.GetMNameValuePairs();
             MNameValuePair mRetVal = mNameValuePairs.FirstOrDefault(x => x.Id == nameValuePairSeqId);
             if (mRetVal == null)
             {
@@ -61,13 +62,13 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [HttpGet("GetMNameValuePairs")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public List<MNameValuePair> GetMNameValuePairs()
+    public async Task<List<MNameValuePair>> GetMNameValuePairs()
     {
         List<MNameValuePair> mRetVal = this.m_CacheHelper.GetFromCache<List<MNameValuePair>>(this.s_ParrentCacheName);
         if (mRetVal == null)
         {
-            // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-            mRetVal = NameValuePairUtility.GetNameValuePairs();
+            // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile());
+            mRetVal = await NameValuePairUtility.GetNameValuePairs();
             this.m_CacheHelper.AddToCache(this.s_ParrentCacheName, mRetVal);
         }
         return mRetVal;
@@ -75,16 +76,16 @@ public abstract class AbstractNameValuePairController : ControllerBase
 
     [Authorize("search_name_value_pairs")]
     [HttpPost("SaveNameValuePairDetail")]
-    public ActionResult<MNameValuePairDetail> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
+    public async Task<ActionResult<MNameValuePairDetail>> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
     {
         if (nameValuePairDetail.Id == -1 || nameValuePairDetail.Id == HttpContext.Session.GetInt32("EditId"))
         {
             MNameValuePairDetail mNameValuePairDetail = nameValuePairDetail;
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             if (mNameValuePairDetail.Id != -1)
             {
-                MNameValuePairDetail mOriginal = NameValuePairUtility.GetNameValuePairDetail(nameValuePairDetail.NameValuePairSeqId, nameValuePairDetail.Id);
+                MNameValuePairDetail mOriginal = await NameValuePairUtility.GetNameValuePairDetail(nameValuePairDetail.NameValuePairSeqId, nameValuePairDetail.Id);
                 mNameValuePairDetail.AddedDate = mOriginal.AddedDate;
                 mNameValuePairDetail.AddedBy = mOriginal.AddedBy;
                 mNameValuePairDetail.UpdatedDate = DateTime.Now;
@@ -97,7 +98,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
             }
             try
             {
-                MNameValuePairDetail mRetVal = NameValuePairUtility.SaveNameValuePairDetail(mNameValuePairDetail);
+                MNameValuePairDetail mRetVal = await NameValuePairUtility.SaveNameValuePairDetail(mNameValuePairDetail);
                 HttpContext.Session.SetInt32("EditId", -1);
                 return Ok(mRetVal);                
             }
@@ -113,13 +114,13 @@ public abstract class AbstractNameValuePairController : ControllerBase
 
     [Authorize("search_name_value_pairs")]
     [HttpPost("SaveNameValuePairParent")]
-    public ActionResult<MNameValuePair> SaveNameValuePairParent(MNameValuePair nameValuePair)
+    public async Task<ActionResult<MNameValuePair>> SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
         if (nameValuePair.Id == -1 || nameValuePair.Id == HttpContext.Session.GetInt32("EditId"))
         {
             MNameValuePair mNameValuePair = nameValuePair;
-            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             if (mNameValuePair.Id == -1)
             {
                 mNameValuePair.AddedDate = DateTime.Now;
@@ -127,14 +128,15 @@ public abstract class AbstractNameValuePairController : ControllerBase
             }
             else
             {
-                MNameValuePair mOriginal = NameValuePairUtility.GetNameValuePairs().FirstOrDefault(x => x.Id == mNameValuePair.Id);
+                List<MNameValuePair> mNameValuePairs = await NameValuePairUtility.GetNameValuePairs();
+                MNameValuePair mOriginal = mNameValuePairs.FirstOrDefault(x => x.Id == mNameValuePair.Id);
                 mNameValuePair.AddedDate = mOriginal.AddedDate;
                 mNameValuePair.AddedBy = mOriginal.AddedBy;
                 mNameValuePair.UpdatedDate = DateTime.Now;
                 mNameValuePair.UpdatedBy = mRequestingProfile.Id;
             }
             HttpContext.Session.SetInt32("EditId", -1);
-            MNameValuePair mRetVal = NameValuePairUtility.SaveNameValuePairParent(mNameValuePair);
+            MNameValuePair mRetVal = await NameValuePairUtility.SaveNameValuePairParent(mNameValuePair);
             this.m_CacheHelper.RemoveFromCache(this.s_ParrentCacheName);
             return Ok(mRetVal);
         }
@@ -143,7 +145,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
 
     [Authorize("search_name_value_pairs")]
     [HttpPost("SearchNameValuePairs")]
-    public String SearchNameValuePairs(UISearchCriteria searchCriteria)
+    public async Task<String> SearchNameValuePairs(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[nvpSeqId] = [NVPSeqId], [schemaName] = [Schema_Name], [staticName] = [Static_Name], [display], [description], [StatusSeqId]";
@@ -152,7 +154,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
             string mWhereClause = mOrderByAndWhere.Item2;
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -162,7 +164,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
                 WhereClause = mWhereClause
             };
 
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;
     }
@@ -174,11 +176,11 @@ public abstract class AbstractNameValuePairController : ControllerBase
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     [HttpPost("SearcNVPDetails")]
-    public String SearcNVPDetails(UISearchCriteria searchCriteria)
+    public async Task<String> SearcNVPDetails(UISearchCriteria searchCriteria)
     {
         if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
         int mNameValuePairSeqId = int.Parse(searchCriteria.searchText);
-        String mRetVal = NameValuePairUtility.GetAllChildrenForParent(mNameValuePairSeqId);
+        String mRetVal = await NameValuePairUtility.GetAllChildrenForParent(mNameValuePairSeqId);
         return mRetVal;
     }
 }

@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.Jwt;
 
 [CLSCompliant(false)]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+public class AuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
 {
     readonly string m_Action = string.Empty;
     public AuthorizeAttribute(string action)
@@ -23,7 +24,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
     public AuthorizeAttribute() { }
 
-    public void OnAuthorization(AuthorizationFilterContext context)
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         // skip authorization if action is decorated with [AllowAnonymous] attribute
         var mAllowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
@@ -33,12 +34,12 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         }
 
         // authorization
-        MAccountProfile mAccount = AccountUtility.CurrentProfile;
+        MAccountProfile mAccount = await AccountUtility.CurrentProfile();
         // var mAccount = (MAccountProfile)context.HttpContext.Items["AccountProfile"];
         if (!String.IsNullOrEmpty(this.m_Action))
         {
-            MFunctionProfile mFunction = FunctionUtility.GetProfile(this.m_Action);
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
+            MFunctionProfile mFunction = await FunctionUtility.GetProfile(this.m_Action);
+            MSecurityInfo mSecurityInfo = new(mFunction, mAccount);
             context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
             context.HttpContext.Items["Function"] = mFunction;
             // if(mAccount.IsSystemAdmin) return;
@@ -48,6 +49,5 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }
         }
-
     }
 }

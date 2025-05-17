@@ -7,6 +7,7 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -15,20 +16,20 @@ public abstract class AbstractRoleController : ControllerBase
 {
 
     [HttpDelete("DeleteRole")]
-    public ActionResult DeleteRole(int roleSeqId)
+    public async Task<ActionResult> DeleteRole(int roleSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleSeqId)
             {
-                UIRole mProfile = RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
+                UIRole mProfile = await RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
                 if(mSecurityInfo.MayDelete && !mProfile.IsSystemOnly)
                 {
-                    RoleUtility.DeleteRole(roleSeqId, mSecurityEntity.Id);
+                    await RoleUtility.DeleteRole(roleSeqId, mSecurityEntity.Id);
                     return Ok(true);
                 }
                 return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -38,15 +39,15 @@ public abstract class AbstractRoleController : ControllerBase
     }
 
     [HttpGet("GetRoleForEdit")]
-    public ActionResult<UIRole> GetRoleForEdit(int roleSeqId)
+    public async Task<ActionResult<UIRole>> GetRoleForEdit(int roleSeqId)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
         {
-            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile.Id);
+            UIRole mRetVal = await RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }
@@ -54,20 +55,21 @@ public abstract class AbstractRoleController : ControllerBase
     }
 
     [HttpGet("GetRoles")]
-    public ActionResult<ArrayList> GetRoles()
+    public async Task<ActionResult<ArrayList>> GetRoles()
     {
-        ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile.Id);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        ArrayList mRetVal = await RoleUtility.GetRolesArrayListBySecurityEntity(mSecurityEntity.Id);
         return Ok(mRetVal);
     }
 
     [HttpPost("SaveRole")]
-    public ActionResult<UIRole> SaveRole(UIRole roleProfile)
+    public async Task<ActionResult<UIRole>> SaveRole(UIRole roleProfile)
     {
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        MRole mProfileToSave = new MRole(roleProfile);
+        MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
+        MRole mProfileToSave = new(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleProfile.Id)
@@ -97,8 +99,8 @@ public abstract class AbstractRoleController : ControllerBase
                     }
                 }
             }
-            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile.Id;
-            UIRole mRetVal = RoleUtility.Save(mProfileToSave, roleProfile.AccountsInRole);
+            mProfileToSave.SecurityEntityID = mSecurityEntity.Id;
+            UIRole mRetVal = await RoleUtility.Save(mProfileToSave, roleProfile.AccountsInRole);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status304NotModified, "Unable to save");
@@ -106,17 +108,17 @@ public abstract class AbstractRoleController : ControllerBase
 
     [Authorize("Search_Roles")]
     [HttpPost("SearchRoles")]
-    public String SearchRoles(UISearchCriteria searchCriteria)
+    public async Task<String> SearchRoles(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[RoleSeqId], [Name], [Description], [Is_System], [Is_System_Only], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
         if(searchCriteria.sortColumns.Length > 0)
         {
+            MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
-            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
-            // mSearchCriteria.WhereClause += " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
-            MSearchCriteria mSearchCriteria = new MSearchCriteria
+            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + mSecurityEntity.Id.ToString();
+            MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
                 OrderByClause = mOrderByClause,
@@ -125,7 +127,7 @@ public abstract class AbstractRoleController : ControllerBase
                 TableOrView = "[ZGWSecurity].[vwSearchRoles]",
                 WhereClause = mWhereClause
             };
-            mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
     }

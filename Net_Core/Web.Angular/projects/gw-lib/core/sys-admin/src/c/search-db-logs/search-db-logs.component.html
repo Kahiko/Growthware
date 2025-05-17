@@ -1,0 +1,4 @@
+<button type="button" (click)="onDownload()" [disabled]="isExporting" title="Download all Logs" mat-button class="Form_Button" color="accent">
+    <i style="padding-right: 3px" class="Form_Button_Icon material-icons">file_download</i>Download all Logs
+</button>
+<gw-core-dynamic-table configurationName={{configurationName}} #dynamicTable />

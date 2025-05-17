@@ -1,9 +1,14 @@
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.DataAccess.SQLServer.Base;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.SQLServer;
 public class DLogging : AbstractDBInteraction, ILogging
@@ -14,16 +19,29 @@ public class DLogging : AbstractDBInteraction, ILogging
     { 
         this.ConnectionString = connectionString;
     }
-#endregion
 
-    MLoggingProfile ILogging.GetLog(int logSeqId)
+    public async IAsyncEnumerable<IDataRecord> GetLogs([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        using SqlConnection mSqlConnection = new SqlConnection(this.ConnectionString);
+        await mSqlConnection.OpenAsync(cancellationToken);
+        string mCommandText = $"SELECT {DBLogColumns.GetCommaSeparatedString()} FROM [ZGWSystem].[Logging] ORDER BY [LogDate] DESC;";
+        using SqlCommand mSqlCommand = new SqlCommand(mCommandText, mSqlConnection);
+        using SqlDataReader mReader = await mSqlCommand.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellationToken);
+
+        while (await mReader.ReadAsync(cancellationToken))
+        {
+            yield return mReader;
+        }
+    }
+    #endregion
+
+    async Task<MLoggingProfile> ILogging.GetLog(int logSeqId)
     {
         String mStoredProcedure = "[ZGWSystem].[Get_Logs]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
            new SqlParameter("@P_LogSeqId", logSeqId)
-        };
-        DataRow mDataRow = base.GetDataRow(mStoredProcedure, mParameters);
+        ];
+        DataRow mDataRow = await base.GetDataRowAsync(mStoredProcedure, mParameters);
         if(mDataRow != null)
         {
             return new MLoggingProfile(mDataRow);
@@ -34,12 +52,11 @@ public class DLogging : AbstractDBInteraction, ILogging
         }
     }
 
-    void ILogging.Save(MLoggingProfile profile)
+    async Task ILogging.Save(MLoggingProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         String mStoredProcedure = "[ZGWSystem].[Set_Log]";
-        SqlParameter[] mParameters =
-        {
+        SqlParameter[] mParameters = [
             new SqlParameter("@P_Account", profile.Account),
             new SqlParameter("@P_ClassName", profile.ClassName),
             new SqlParameter("@P_Component", profile.Component),
@@ -47,7 +64,7 @@ public class DLogging : AbstractDBInteraction, ILogging
             new SqlParameter("@P_MethodName", profile.MethodName),
             new SqlParameter("@P_Msg", profile.Msg),
             base.GetSqlParameter("@P_Primary_Key", 0, ParameterDirection.Output)
-        };
-        base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        ];
+        await base.ExecuteNonQueryAsync(mStoredProcedure, mParameters);
     }
 }

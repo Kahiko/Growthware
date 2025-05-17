@@ -23,9 +23,13 @@ public interface IMessages : IDBInteraction
     int SecurityEntitySeqId { get; set; }
 
     /// <summary>
-    /// Gets all messages.
+    /// Gets all messages for the given security entity.
     /// </summary>
     /// <returns>DataTable.</returns>
+    /// <remarks>
+    /// Calls stored procedure "Get_Messages".
+    /// If messages do not exists for the given security entity and the security entity is valid, then new messages are created for the requested security entity.
+    /// </remarks>
     DataTable Messages();
 
     /// <summary>

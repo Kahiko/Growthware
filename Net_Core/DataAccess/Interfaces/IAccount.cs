@@ -2,6 +2,7 @@ using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.DataAccess.Interfaces
 {
@@ -40,31 +41,31 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Retrieves Account information
 		/// </summary>
 		/// <returns>DataRow</returns>
-		DataRow GetAccount { get; }
+		Task<DataRow> GetAccount();
 
 		/// <summary>
 		/// Retrieves Account information given the reset token
 		/// </summary>
-		DataRow GetAccountByResetToken { get; }
+		Task<DataRow> GetAccountByResetToken();
 
 		/// <summary>
 		/// Retrieves Account information given the verification token
 		/// </summary>
-		DataRow GetAccountByVerificationToken { get; }
+		Task<DataRow> GetAccountByVerificationToken();
 
 		/// <summary>
 		/// Retrieves Account information given the JWT
 		/// </summary>
 		/// <returns>DataRow</returns>
-		DataRow GetAccountByRefreshToken { get; }
+		Task<DataRow> GetAccountByRefreshToken();
 
-		DataTable GetAccounts { get; }
+		Task<DataTable> GetAccounts();
 
 		/// <summary>
 		/// Returns all roles associated with a given SecurityEntitySeqID.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		DataTable Groups();
+		Task<DataTable> Groups();
 
 		/// <summary>
 		/// Retrieves menu data for a given account and MenuType
@@ -73,44 +74,44 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <param name="menuType">MenuType</param>
 		/// <returns>DataTable</returns>
 		/// <remarks></remarks>
-		DataTable GetMenu(string account, MenuType menuType);
+		Task<DataTable> GetMenu(string account, MenuType menuType);
 
-		DataTable RefreshTokens();
+		Task<DataTable> RefreshTokens();
 
 		/// <summary>
 		/// Returns all groups associated with a given SecurityEntitySeqID.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		DataTable Roles();
+		Task<DataTable> Roles();
 
 		/// <summary>
 		/// Returns all roles either direct association or by association via
 		/// groups.
 		/// </summary>
 		/// <returns>DataTable</returns>
-		DataTable Security();
+		Task<DataTable> Security();
 
 		/// <summary>
 		/// Inserts or updates account information
 		/// </summary>
 		/// <returns>int</returns>
-		int Save();
+		Task<int> Save();
 
 		/// <summary>
 		/// Save groups by passing a string or comma separated groups to the database.
 		/// </summary>
-		void SaveGroups();
+		Task SaveGroups();
 
 		/// <summary>
 		/// Save refresh tokens by passing an array of IDatabaseFunctions objects to the database.
 		/// </summary>
-		void SaveRefreshTokens();
+		Task SaveRefreshTokens();
 
 		/// <summary>
 		/// Save roles by passing a string or comma separated roles to the database.
 		/// </summary>
-		void SaveRoles();
+		Task SaveRoles();
 
-		bool VerificationTokenExists(string token);
+		Task<bool> VerificationTokenExists(string token);
     }
 }

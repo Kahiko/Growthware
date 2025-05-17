@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -96,14 +97,14 @@ public class BClientChoices : AbstractBusinessLogic
     /// <param name="account">The desired account in which to base the MClientChoicesState model object</param>
     /// <returns>A populated MClientChoicesState</returns>
     /// <remarks>None.</remarks>
-    public MClientChoicesState GetClientChoicesState(string account)
+    public async Task<MClientChoicesState> GetClientChoicesState(string account)
     {
         MClientChoicesState mRetVal = null;
         try
         {
             if (base.DatabaseIsOnline())
             {
-                mRetVal = new MClientChoicesState(m_DClientChoices.GetChoices(account));
+                mRetVal = new MClientChoicesState(await m_DClientChoices.GetChoices(account));
             }
         }
         catch (Exception ex)
@@ -119,14 +120,14 @@ public class BClientChoices : AbstractBusinessLogic
     /// </summary>
     /// <param name="account">The account to retrieve the DataRow for.</param>
     /// <returns>The DataRow object for the specified account.</returns>
-    public DataRow GetDataRow(string account)
+    public async Task<DataRow> GetDataRow(string account)
     {
         DataRow mRetVal = null;
         try
         {
             if (base.DatabaseIsOnline())
             {
-                mRetVal = m_DClientChoices.GetChoices(account);
+                mRetVal = await m_DClientChoices.GetChoices(account);
             }
         }
         catch (Exception ex)
@@ -141,12 +142,12 @@ public class BClientChoices : AbstractBusinessLogic
     /// </summary>
     /// <param name="clientChoicesState">A populated MClientChoicesState object.</param>
     /// <remarks>MClientChoicesState can be found in the GrowthWare.Framework.Model.Profiles namespace.</remarks>
-    public void Save(MClientChoicesState clientChoicesState)
+    public async Task Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState != null)
         {
             Hashtable mChoices = clientChoicesState.ChoicesHashtable;
-            m_DClientChoices.Save(mChoices);
+            await m_DClientChoices.Save(mChoices);
         }
         else
         {

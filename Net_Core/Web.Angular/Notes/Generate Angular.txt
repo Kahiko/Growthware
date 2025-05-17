@@ -157,7 +157,8 @@ Library: (core) From Web.Angular
 		ng generate interface LogOptions 	 --path=projects/gw-lib/core/logging/src --type model --project gw-lib
 		ng generate interface LoggingProfile --path=projects/gw-lib/core/logging/src --type model --project gw-lib
 		ng generate service   logging 		 --path=projects/gw-lib/core/logging/src --project gw-lib
-		ng generate component                --path=projects/gw-lib/core/logging/src c/TestLogging --standalone --style scss --project gw-lib
+		ng generate component                --path=projects/gw-lib/core/logging/src c/TestLogging    --standalone --style scss --project gw-lib
+
 	Modal:
 			https://garage.sekrab.com/posts/homemade-dialog-service-in-angular
 			https://stackblitz.com/edit/angular-program-component?file=src%2Flib%2FDialog%2Fservice.ts
@@ -320,6 +321,10 @@ Library: (core) From Web.Angular
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/LineCount 		--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/NaturalSort 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/sys-admin/src c/UpdateSession 	--standalone --style scss --project gw-lib
+
+		ng generate interface selectedRow    --path=projects/gw-lib/core/sys-admin/src --type model --project gw-lib
+		ng generate component                --path=projects/gw-lib/core/sys-admin/src c/Search-DB-Logs --standalone --style scss --project gw-lib
+		ng generate component                --path=projects/gw-lib/core/sys-admin/src c/DB-Log-Details --standalone --style scss --project gw-lib
 	Testing:
 		ng generate component --path=projects/gw-lib/core/testing/src c/TestLogging --standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/testing/src c/TestModal --standalone --style scss --project gw-lib

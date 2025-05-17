@@ -5,6 +5,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -94,12 +95,12 @@ public class BRoles : AbstractBusinessLogic
     /// Saves the specified profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public int Save(MRole profile)
+    public async Task<int> Save(MRole profile)
     {
         int mRetVal = -1;
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = m_DRoles.Save();
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.Save();
         return mRetVal;
     }
 
@@ -108,23 +109,23 @@ public class BRoles : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public void DeleteRole(MRole profile)
+    public async Task DeleteRole(MRole profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) m_DRoles.DeleteRole();
+        if (DatabaseIsOnline()) await m_DRoles.DeleteRole();
     }
 
     /// <summary>
     /// Gets the profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public MRole GetProfile(MRole profile)
+    public async Task<MRole> GetProfile(MRole profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        MRole mRetVal = new MRole();
+        MRole mRetVal = new();
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = new MRole(m_DRoles.ProfileData());
+        if (DatabaseIsOnline()) mRetVal = new(await m_DRoles.ProfileData());
         return mRetVal;
     }
 
@@ -133,10 +134,10 @@ public class BRoles : AbstractBusinessLogic
     /// </summary>
     /// <param name="SecurityEntityID">The security entity ID.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetRolesBySecurityEntity(int SecurityEntityID)
+    public async Task<DataTable> GetRolesBySecurityEntity(int SecurityEntityID)
     {
         m_DRoles.SecurityEntitySeqID = SecurityEntityID;
-        return m_DRoles.RolesBySecurityEntity();
+        return await m_DRoles.RolesBySecurityEntity();
     }
 
     /// <summary>
@@ -144,12 +145,12 @@ public class BRoles : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetAccountsInRole(MRole profile)
+    public async Task<DataTable> GetAccountsInRole(MRole profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         DataTable mRetVal = null;
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsInRole();
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.AccountsInRole();
         return mRetVal;
     }
 
@@ -158,12 +159,12 @@ public class BRoles : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns>DataTable.</returns>
-    public DataTable GetAccountsNotInRole(MRole profile)
+    public async Task<DataTable> GetAccountsNotInRole(MRole profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         DataTable mRetVal = null;
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsNotInRole();
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.AccountsNotInRole();
         return mRetVal;
     }
 
@@ -175,11 +176,11 @@ public class BRoles : AbstractBusinessLogic
     /// <param name="accounts">The accounts.</param>
     /// <param name="accountSeqId">The account seq ID.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public bool UpdateAllAccountsForRole(int roleSeqId, int SecurityEntityID, string[] accounts, int accountSeqId)
+    public async Task<bool> UpdateAllAccountsForRole(int roleSeqId, int SecurityEntityID, string[] accounts, int accountSeqId)
     {
         if (accounts == null) throw new ArgumentNullException(nameof(accounts), "accounts cannot be a null reference (Nothing in Visual Basic)!!");
         bool mRetVal = false;
-        if (DatabaseIsOnline()) mRetVal = m_DRoles.UpdateAllAccountsForRole(roleSeqId, SecurityEntityID, accounts, accountSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.UpdateAllAccountsForRole(roleSeqId, SecurityEntityID, accounts, accountSeqId);
         return mRetVal;
     }
 }
