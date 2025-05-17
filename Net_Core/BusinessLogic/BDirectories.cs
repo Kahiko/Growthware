@@ -106,8 +106,8 @@ public class BDirectories : AbstractBusinessLogic
     /// Saves the specified profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public void Save(MDirectoryProfile profile)
+    public async Task Save(MDirectoryProfile profile)
     {
-        if(DatabaseIsOnline()) m_DDirectories.Save(profile);
+        if(DatabaseIsOnline()) await m_DDirectories.Save(profile);
     }
 }

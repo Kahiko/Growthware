@@ -21,7 +21,7 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Saves the specified profile.
 		/// </summary>
 		/// <param name="profile">The profile.</param>
-		void Save(MDirectoryProfile profile);
+		Task Save(MDirectoryProfile profile);
 
 		/// <summary>
 		/// Gets or sets the security entity seq ID.

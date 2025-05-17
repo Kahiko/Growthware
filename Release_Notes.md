@@ -1,4 +1,29 @@
 # Release Notes
+## Net_Core Version 6.0.1.0 (YYYY-MM-DD)
+### Deprecated Classes
+- AbstractDatabaseFunctions
+- AbstractBaseModel
+
+### New Features
+
+
+### Improvements
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
+- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
+- Manage Name/Value Pairs is not updating the search results after saving
+- Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
+- Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
+- BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
+- GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
+- When editting a role the members are not being always being populated
+- Caching is not implemented correctly in the Message Utility
+
+### Bug Fixes
+- Converted the class methods to async/await that were missed in the previous release
+    - DataAccess.SQLServer\DDirectories.Save
+
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes
 - AbstractDatabaseFunctions

@@ -83,7 +83,7 @@ public static class DirectoryUtility
     public static async Task Save(MDirectoryProfile profile)
     {
         BDirectories mBusinessLogic = await getBusinessLogic();
-        mBusinessLogic.Save(profile);
+        await mBusinessLogic.Save(profile);
         MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         String mCacheName = mCurrentSecurityEntity.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheHelper.RemoveFromCache(mCacheName);
