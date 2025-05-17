@@ -9,6 +9,10 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IFunction : IDBInteraction
     {
+        /// <summary>
+        /// Returns a DataTable of menu types
+        /// </summary>
+        /// <returns>DataTable</returns>
         Task<DataTable> MenuTypes();
 
         /// <summary>
@@ -46,8 +50,16 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <remarks>Does not caculate security for accounts.</remarks>
         Task<DataSet> GetFunctions();
 
+        /// <summary>
+        /// Returns a DataTable of function types
+        /// </summary>
+        /// <returns>DataTable</returns>
         Task<DataTable> FunctionTypes();
 
+        /// <summary>
+        /// Returns a DataTable of sorted function information for related functions given the funtionSeqId
+        /// </summary>
+        /// <returns>DataTable</returns>
         Task<DataTable> GetMenuOrder(MFunctionProfile Profile);
 
         /// <summary>
