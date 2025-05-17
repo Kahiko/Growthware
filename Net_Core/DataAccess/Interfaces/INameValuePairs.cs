@@ -42,7 +42,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         /// <param name="profile">The profile.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        bool DeleteNVPDetail(MNameValuePairDetail profile);
+        Task<bool> DeleteNVPDetail(MNameValuePairDetail profile);
 
         /// <summary>
         /// Gets the NVP detail.

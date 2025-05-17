@@ -78,10 +78,10 @@ public class BNameValuePairs : AbstractBusinessLogic
     /// </summary>
     /// <param name="detailProfile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public bool DeleteNameValuePairDetail(MNameValuePairDetail detailProfile)
+    public async Task<bool> DeleteNameValuePairDetail(MNameValuePairDetail detailProfile)
     {
         bool mRetVal = false;
-        if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.DeleteNVPDetail(detailProfile);
+        if (DatabaseIsOnline()) mRetVal = await m_DNameValuePairs.DeleteNVPDetail(detailProfile);
         return mRetVal;
     }
 

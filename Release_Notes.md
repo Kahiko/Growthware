@@ -25,6 +25,7 @@
     - DataAccess.SQLServer\DDirectories.Save
     - DataAccess.SQLServer\DMessages.Messages
     - DataAccess.SQLServer\DMessages.Save
+    - DataAccess.SQLServer\DNameValuePairs.DeleteNVPDetail
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

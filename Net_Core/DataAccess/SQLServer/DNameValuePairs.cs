@@ -139,14 +139,14 @@ public class DNameValuePairs : AbstractDBInteraction, INameValuePairs
         return await base.GetDataRowAsync(myStoreProcedure, mParameters);
     }
 
-    bool INameValuePairs.DeleteNVPDetail(MNameValuePairDetail profile)
+    async Task<bool> INameValuePairs.DeleteNVPDetail(MNameValuePairDetail profile)
     {
         string myStoreProcedure = "[ZGWSystem].[Delete_Name_Value_Pair_Detail]";
         Boolean mRetVal = false;
         SqlParameter[] mParameters = { new("@P_NVPSeqId", profile.NameValuePairSeqId), new("@P_NVP_DetailSeqId", profile.Id) };
         try
         {
-            base.ExecuteNonQuery(myStoreProcedure, mParameters);
+            await base.ExecuteNonQueryAsync(myStoreProcedure, mParameters);
             mRetVal = true;
         }
         catch (Exception)
