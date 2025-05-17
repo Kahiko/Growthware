@@ -7,7 +7,7 @@
   <PropertyGroup>
     <VersionMajor>6</VersionMajor>
     <VersionMinor>0</VersionMinor>
-    <VersionPatch>0</VersionPatch>
+    <VersionPatch>1</VersionPatch>
     <VersionBuild>$([System.DateTime]::UtcNow.ToString(mmff))</VersionBuild>
   </PropertyGroup>
 
