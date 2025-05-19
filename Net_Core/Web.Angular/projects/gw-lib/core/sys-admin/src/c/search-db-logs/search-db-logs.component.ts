@@ -7,7 +7,7 @@ import { BaseSearchComponent } from '@growthware/core/base/components';
 import { DynamicTableService, DynamicTableComponent } from '@growthware/core/dynamic-table';
 import { GWCommon } from '@growthware/common/services';
 import { LoaderService } from '@growthware/core/loader';
-import { LoggingService, LogLevel } from '@growthware/core/logging';
+import { LogLevel } from '@growthware/core/logging';
 import { ModalService, WindowSize } from '@growthware/core/modal';
 import { SearchService } from '@growthware/core/search';
 // Feature
@@ -32,7 +32,7 @@ export class SearchDBLogsComponent extends BaseSearchComponent {
 
   private _GWCommon: GWCommon;
   private _LoaderSvc: LoaderService;
-  private _LoggingSvc: LoggingService;
+  // private _LoggingSvc: LoggingService;
   private _SysAdminService: SysAdminService;
 
   constructor(
@@ -40,7 +40,7 @@ export class SearchDBLogsComponent extends BaseSearchComponent {
     dynamicTableSvc: DynamicTableService,
     gwCommon: GWCommon,
     loaderSvc: LoaderService,
-    loggingService: LoggingService,
+    // loggingService: LoggingService,
     modalSvc: ModalService,
     searchSvc: SearchService,
   ) {
@@ -54,7 +54,7 @@ export class SearchDBLogsComponent extends BaseSearchComponent {
     this._DynamicTableSvc = dynamicTableSvc;
     this._GWCommon = gwCommon;
     this._LoaderSvc = loaderSvc;
-    this._LoggingSvc = loggingService;
+    // this._LoggingSvc = loggingService;
     this._ModalSvc = modalSvc;
     this._SearchSvc = searchSvc;
     this._SysAdminService = theFeatureSvc;
