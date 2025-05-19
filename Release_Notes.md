@@ -32,6 +32,7 @@
     - DataAccess.SQLServer\DAccounts.Delete
     - DataAccess.SQLServer\DMessages.Message
 - Fixed SaveClientChoices not updating the session correctly
+- Framework.DataHelper\GetJsonStringFromTable not properly dealing with double quotes in the data
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes
