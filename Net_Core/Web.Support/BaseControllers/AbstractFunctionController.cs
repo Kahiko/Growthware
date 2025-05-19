@@ -24,9 +24,10 @@ public abstract class AbstractFunctionController : ControllerBase
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         // Special case where you must be an account with IsSystemAdmin = true
         // Copying the function security is risky b/c the process will delete all existing security for the target
-        if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
+        if (mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
         {
-            if(source != target && target != 1) {
+            if (source != target && target != 1)
+            {
                 await FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
                 return Ok(true);
             }
@@ -41,10 +42,10 @@ public abstract class AbstractFunctionController : ControllerBase
     {
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        if(mSecurityInfo.MayDelete)
+        if (mSecurityInfo.MayDelete)
         {
-            var mEditId =  HttpContext.Session.GetInt32("EditId");
-            if(mEditId != null && mEditId == functionSeqId)
+            var mEditId = HttpContext.Session.GetInt32("EditId");
+            if (mEditId != null && mEditId == functionSeqId)
             {
                 await FunctionUtility.Delete(functionSeqId);
                 return Ok(true);
@@ -60,7 +61,7 @@ public abstract class AbstractFunctionController : ControllerBase
     public async Task<ActionResult> GetAvalibleParents()
     {
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
-        if(mSecurityInfo.MayView)
+        if (mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = await FunctionUtility.GetAvalibleParents();
             return Ok(mRetVal);
@@ -73,11 +74,11 @@ public abstract class AbstractFunctionController : ControllerBase
     public async Task<ActionResult<UIFunctionProfile>> GetFunctionForEdit(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
-        if(mSecurityInfo != null && mSecurityInfo.MayView)
+        if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
             MFunctionProfile mFunctionProfile = new MFunctionProfile();
             mFunctionProfile = await FunctionUtility.GetProfile(functionSeqId);
-            if(mFunctionProfile == null)
+            if (mFunctionProfile == null)
             {
                 mFunctionProfile = new MFunctionProfile();
             }
@@ -92,7 +93,7 @@ public abstract class AbstractFunctionController : ControllerBase
             mRetVal.FunctionMenuOrders = await FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
         }
-        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");        
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
     [AllowAnonymous]
@@ -139,7 +140,7 @@ public abstract class AbstractFunctionController : ControllerBase
     public async Task<ActionResult<List<UIFunctionMenuOrder>>> GetFunctionOrder(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = await this.getSecurityInfo("FunctionSecurity");
-        if(mSecurityInfo.MayView)
+        if (mSecurityInfo.MayView)
         {
             return Ok(await FunctionUtility.GetFunctionOrder(functionSeqId));
         }
@@ -162,20 +163,20 @@ public abstract class AbstractFunctionController : ControllerBase
         MSecurityInfo mViewRoleTabSecurityInfo = await this.getSecurityInfo("View_Function_Role_Tab");
         MSecurityInfo mViewGroupTabSecurityInfo = await this.getSecurityInfo("View_Function_Group_Tab");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
-        var mEditId =  HttpContext.Session.GetInt32("EditId");
+        var mEditId = HttpContext.Session.GetInt32("EditId");
         string mReturnMsg = string.Empty; // to be used for other security checks so we can pass it back to the client
-        if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
+        if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MFunctionProfile mExistingProfile = await FunctionUtility.GetProfile(functionProfile.Id);
-            if(mExistingProfile == null)
+            if (mExistingProfile == null)
             {
                 mExistingProfile = new MFunctionProfile();
             }
             MFunctionProfile mProfileToSave = new MFunctionProfile(functionProfile);
             if (mEditId == functionProfile.Id)
             {
-                if (functionProfile.Id > -1) 
+                if (functionProfile.Id > -1)
                 {
                     if (mSecurityInfo.MayEdit)
                     {
@@ -183,7 +184,8 @@ public abstract class AbstractFunctionController : ControllerBase
                         mProfileToSave.AddedDate = mExistingProfile.AddedDate;
                         mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                         mProfileToSave.UpdatedDate = DateTime.Now;
-                    }else
+                    }
+                    else
                     {
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
@@ -203,46 +205,57 @@ public abstract class AbstractFunctionController : ControllerBase
             }
             MSecurityInfo mView_Function_Group_Tab = await this.getSecurityInfo("View_Function_Group_Tab");
             MSecurityInfo mView_Function_Role_Tab = await this.getSecurityInfo("View_Function_Role_Tab");
-            bool mSaveGroups = mView_Function_Group_Tab.MayView;
-            bool mSaveRoles = mView_Function_Role_Tab.MayView;
+            bool mCanSaveGroups = mView_Function_Group_Tab.MayView;
+            bool mCanSaveRoles = mView_Function_Role_Tab.MayView;
+
+            bool mSaveGroups = false;
+            bool mSaveRoles = false;
 
             string ViewRoles = String.Join(",", mProfileToSave.AssignedViewRoles);
             string AddRoles = String.Join(",", mProfileToSave.AssignedAddRoles);
             string EditRoles = String.Join(",", mProfileToSave.AssignedEditRoles);
             string DeleteRoles = String.Join(",", mProfileToSave.AssignedDeleteRoles);
 
-            string ViewGroups =  String.Join(",", mProfileToSave.ViewGroups);
+            string ViewGroups = String.Join(",", mProfileToSave.ViewGroups);
             string AddGroups = String.Join(",", mProfileToSave.AddGroups);
             string EditGroups = String.Join(",", mProfileToSave.EditGroups);
             string DeleteGroups = String.Join(",", mProfileToSave.DeleteGroups);
-            
-            if(mSaveRoles)
+
+            if (mCanSaveRoles)
             {
-                if(String.Join(",", mExistingProfile.AssignedViewRoles) != ViewRoles) {
+                if (String.Join(",", mExistingProfile.AssignedViewRoles) != ViewRoles)
+                {
                     mSaveRoles = true;
                 }
-                if(String.Join(",", mExistingProfile.AssignedAddRoles) != AddRoles) {
+                if (String.Join(",", mExistingProfile.AssignedAddRoles) != AddRoles)
+                {
                     mSaveRoles = true;
                 }
-                if(String.Join(",", mExistingProfile.AssignedEditRoles) != EditRoles) {
+                if (String.Join(",", mExistingProfile.AssignedEditRoles) != EditRoles)
+                {
                     mSaveRoles = true;
                 }
-                if(String.Join(",", mExistingProfile.AssignedDeleteRoles) != DeleteRoles) {
+                if (String.Join(",", mExistingProfile.AssignedDeleteRoles) != DeleteRoles)
+                {
                     mSaveRoles = true;
                 }
             }
-            if(mSaveGroups)
+            if (mCanSaveGroups)
             {
-                if(String.Join(",", mExistingProfile.ViewGroups) != ViewGroups) {
+                if (String.Join(",", mExistingProfile.ViewGroups) != ViewGroups)
+                {
                     mSaveGroups = true;
                 }
-                if(String.Join(",", mExistingProfile.AddGroups) != AddGroups) {
+                if (String.Join(",", mExistingProfile.AddGroups) != AddGroups)
+                {
                     mSaveGroups = true;
                 }
-                if(String.Join(",", mExistingProfile.EditGroups) != EditGroups) {
+                if (String.Join(",", mExistingProfile.EditGroups) != EditGroups)
+                {
                     mSaveGroups = true;
                 }
-                if(String.Join(",", mExistingProfile.DeleteGroups) != DeleteGroups) {
+                if (String.Join(",", mExistingProfile.DeleteGroups) != DeleteGroups)
+                {
                     mSaveGroups = true;
                 }
             }
@@ -251,20 +264,20 @@ public abstract class AbstractFunctionController : ControllerBase
             {
                 int mFunctionSeqId = await FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
                 mProfileToSave.Id = mFunctionSeqId;
-                if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
+                if (!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
                     MDirectoryProfile mDirectoryProfile = await DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
-                    if(mDirectoryProfile == null)
+                    if (mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
                         mDirectoryProfile.Id = mProfileToSave.Id;
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.Impersonate = functionProfile.DirectoryData.Impersonate;
-                    if(functionProfile.DirectoryData.Impersonate)
+                    if (functionProfile.DirectoryData.Impersonate)
                     {
                         mDirectoryProfile.ImpersonateAccount = functionProfile.DirectoryData.ImpersonateAccount;
-                        if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.ImpersonatePassword))
+                        if (!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.ImpersonatePassword))
                         {
                             mDirectoryProfile.ImpersonatePassword = functionProfile.DirectoryData.ImpersonatePassword;
                         }
@@ -283,7 +296,7 @@ public abstract class AbstractFunctionController : ControllerBase
             }
             return Ok(true);
         }
-        if(mEditId!=null) 
+        if (mEditId != null)
         {
             this.m_Logger.Error(String.Format("'{0}' does not have permissions to 'Save' a function. FunctionSeqId: {1}", mRequestingProfile.Account, functionProfile.Id.ToString()));
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -298,7 +311,7 @@ public abstract class AbstractFunctionController : ControllerBase
     {
         String mRetVal = string.Empty;
         string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
-        if(searchCriteria.sortColumns.Length > 0)
+        if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
@@ -314,6 +327,6 @@ public abstract class AbstractFunctionController : ControllerBase
             };
             mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
         }
-        return mRetVal;        
+        return mRetVal;
     }
 }

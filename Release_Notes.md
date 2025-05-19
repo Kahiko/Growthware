@@ -33,6 +33,7 @@
     - DataAccess.SQLServer\DMessages.Message
 - Fixed SaveClientChoices not updating the session correctly
 - Framework.DataHelper\GetJsonStringFromTable not properly dealing with double quotes in the data
+- Web.Support.BaseControllers.AbstractFunctionController\Save Fixed groups/roles not saving correctly
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes
