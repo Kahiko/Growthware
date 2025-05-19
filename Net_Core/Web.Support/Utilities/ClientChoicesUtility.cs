@@ -21,7 +21,7 @@ public static class ClientChoicesUtility
     public static async Task<MClientChoicesState> AnonymousState()
     {
         string mJsonString = m_CacheHelper.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
-        if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
+        if (mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
         {
             DataRow mClientChoicesDataRow = await getFromDB(ConfigSettings.Anonymous);
             mJsonString = JsonSerializer.Serialize(mClientChoicesDataRow.ItemArray);
@@ -44,7 +44,7 @@ public static class ClientChoicesUtility
     public static async Task<MClientChoicesState> CurrentState()
     {
         string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName);
-        if(mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
+        if (mJsonString == null || string.IsNullOrWhiteSpace(mJsonString))
         {
             return await AnonymousState();
         }
@@ -122,14 +122,14 @@ public static class ClientChoicesUtility
     /// Ensures the Session/Cache matches for the given account.
     /// </summary>
     /// <param name="forAccount"></param>
-    public static async Task SynchronizeContext(string forAccount)
+    public static async Task SynchronizeContext(string forAccount, bool forceUpdate = false)
     {
-        MClientChoicesState mCurrentState = await CurrentState();   
-        if(!forAccount.Equals(mCurrentState.Account, StringComparison.InvariantCultureIgnoreCase))
+        MClientChoicesState mCurrentState = await CurrentState();
+        if (!forAccount.Equals(mCurrentState.Account, StringComparison.InvariantCultureIgnoreCase) || forceUpdate)
         {
             DataRow mClientChoicesDataRow = await getFromDB(forAccount);
             string mJsonString = JsonSerializer.Serialize(mClientChoicesDataRow.ItemArray);
             SessionHelper.AddToSession(MClientChoices.SessionName, mJsonString);
         }
-    }    
+    }
 }

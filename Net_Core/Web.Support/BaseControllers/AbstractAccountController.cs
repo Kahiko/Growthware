@@ -107,7 +107,7 @@ public abstract class AbstractAccountController : ControllerBase
         HttpContext.Session.Remove("EditId");
         MAccountProfile mRequestingProfile = await AccountUtility.CurrentProfile();
         MFunctionProfile mFunctionProfile = await FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
-        MSecurityInfo mSecurityInfo = new (mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo = new(mFunctionProfile, mRequestingProfile);
         MAccountProfile mAccountProfile = new(mRequestingProfile.Id);
         if (account != "new") // Populate from the DB
         {
@@ -116,7 +116,7 @@ public abstract class AbstractAccountController : ControllerBase
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
             }
-        } 
+        }
         HttpContext.Session.SetInt32("EditId", mAccountProfile.Id);
         return Ok(mAccountProfile);
     }
@@ -165,9 +165,9 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("ForgotPassword")]
     public async Task<ActionResult<string>> ForgotPassword(string account)
     {
-        if (String.IsNullOrWhiteSpace(account)) 
+        if (String.IsNullOrWhiteSpace(account))
         {
-            ArgumentNullException mArgumentNullException = new (nameof(account), " account can not be null or empty");
+            ArgumentNullException mArgumentNullException = new(nameof(account), " account can not be null or empty");
             m_Logger.Error(mArgumentNullException);
             return StatusCode(StatusCodes.Status400BadRequest, mArgumentNullException.Message);
 
@@ -342,7 +342,7 @@ public abstract class AbstractAccountController : ControllerBase
 
     private string getRemoteHostIpAddressUsingRemoteIpAddress()
     {
-        if(HttpContext.Connection.RemoteIpAddress != null) return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        if (HttpContext.Connection.RemoteIpAddress != null) return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         return string.Empty;
     }
 
@@ -369,7 +369,7 @@ public abstract class AbstractAccountController : ControllerBase
                 }
             }
         }
-        if(remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
+        if (remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
         return string.Empty;
     }
 
@@ -395,7 +395,7 @@ public abstract class AbstractAccountController : ControllerBase
 
             return remoteIpAddress.MapToIPv4().ToString();
         }
-        if(remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
+        if (remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
         return string.Empty;
     }
 
@@ -412,7 +412,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRefreshToken = string.Empty;
         }
-        if (mCurrentAccountProfile != null && !string.IsNullOrWhiteSpace(mCurrentAccountProfile.Account)) 
+        if (mCurrentAccountProfile != null && !string.IsNullOrWhiteSpace(mCurrentAccountProfile.Account))
         {
             await AccountUtility.Logoff(mCurrentAccountProfile.Account, mRefreshToken, ipAddress());
         }
@@ -478,7 +478,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mSavedAccountProfile = await AccountUtility.Register(accountProfile, Request.Headers.Origin);
         string mRetunMsg = "Registration successful, please check your email for verification instructions";
         bool mMailSent = false;
-        if(mSavedAccountProfile != null)
+        if (mSavedAccountProfile != null)
         {
             MMessage mMessage = await MessageUtility.GetProfile("RegistrationSuccess");
             MRegistrationSuccess mRegistrationSuccess = new(mMessage)
@@ -492,7 +492,7 @@ public abstract class AbstractAccountController : ControllerBase
             mRegistrationSuccess.FormatBody();
             // send email
             mMailSent = MessageUtility.SendMail(mRegistrationSuccess, accountProfile);
-            if(!mMailSent)
+            if (!mMailSent)
             {
                 mRetunMsg = "Registration failed, could not send mail to '" + accountProfile.Email + "' the account was not created!";
                 await AccountUtility.Delete(mSavedAccountProfile.Id);
@@ -501,7 +501,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         else
         {
-            if(mSavedAccountProfile != null && mSavedAccountProfile.Id > 0)
+            if (mSavedAccountProfile != null && mSavedAccountProfile.Id > 0)
             {
                 await AccountUtility.Delete(mSavedAccountProfile.Id);
             }
@@ -524,7 +524,8 @@ public abstract class AbstractAccountController : ControllerBase
             // Return Authenticate result (should always work we just saved the new password)
             // changing my mind should return the same as Authenticate
             return await Authenticate(mAccountProfile.Account, newPassword);
-        };
+        }
+        ;
         return StatusCode(StatusCodes.Status406NotAcceptable, "The reset token is no longer invalid");
     }
 
@@ -581,7 +582,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MAccountProfile mExistingAccount = await AccountUtility.GetAccount(accountProfile.Account);
-            if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit || mRequestingProfile.Account == mExistingAccount.Account)
+            if (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit || mRequestingProfile.Account == mExistingAccount.Account)
             {
                 if (mExistingAccount.Account == null)
                 {
@@ -592,7 +593,7 @@ public abstract class AbstractAccountController : ControllerBase
                 mExistingAccount.AssignedRoles = accountProfile.AssignedRoles;
                 mExistingAccount.Email = accountProfile.Email;
                 mExistingAccount.EnableNotifications = accountProfile.EnableNotifications;
-                if (mRequestingProfile.Account != mExistingAccount.Account) 
+                if (mRequestingProfile.Account != mExistingAccount.Account)
                 {
                     mExistingAccount.FailedAttempts = accountProfile.FailedAttempts;
                     mExistingAccount.Status = accountProfile.Status;
@@ -617,7 +618,7 @@ public abstract class AbstractAccountController : ControllerBase
                 mRetVal = true;
             }
         }
-        if (mRetVal == false) 
+        if (mRetVal == false)
         {
             this.m_Logger.Error(mRequestingProfile.Account + " does not have permissions to 'SaveAccount'");
         }
@@ -658,8 +659,9 @@ public abstract class AbstractAccountController : ControllerBase
 
             mClientChoicesState[MClientChoices.Background] = accountChoices.Background ?? mDefaultClientChoicesState[MClientChoices.Background];
             await ClientChoicesUtility.Save(mClientChoicesState);
+            await ClientChoicesUtility.SynchronizeContext(accountChoices.Account, true);
             AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
-            UIAccountChoices mRetVal = new(mClientChoicesState);
+            UIAccountChoices mRetVal = new(await ClientChoicesUtility.CurrentState());
             return Ok(mRetVal);
         }
         return Ok(false);
@@ -734,7 +736,7 @@ public abstract class AbstractAccountController : ControllerBase
         //      return the account and account choices
         // If the account does not exist or the verification token is invalid, throw an exception
         MAccountProfile mAccountProfile = await AccountUtility.VerifyAccount(verificationToken, email);
-        if(mAccountProfile == null)
+        if (mAccountProfile == null)
         {
             return StatusCode(StatusCodes.Status406NotAcceptable, "The verification token is not invalid");
         }
