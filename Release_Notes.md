@@ -20,6 +20,7 @@
     - BGroups
     - BLogger
     - BMessages
+    - BNameValuePairs
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
