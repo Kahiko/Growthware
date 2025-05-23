@@ -34,16 +34,16 @@ public static class AccountUtility
     /// <param name="value"></param>
     private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "useDefault")
     {
-        string mName = s_SessionName;
-        if (sessionName != "useDefault") { mName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionHelper.AddToSession(mName, value);
+            SessionHelper.AddToSession(mSessionOrCacheName, value);
             return;
         }
-        mName = s_CachedName;
-        if (sessionName != "useDefault") { mName = sessionName; }
-        m_CacheHelper.AddToCache(mName, value);
+        mSessionOrCacheName = s_CachedName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = sessionName; }
+        m_CacheHelper.AddToCache(mSessionOrCacheName, value);
     }
 
     /// <summary>
@@ -54,16 +54,16 @@ public static class AccountUtility
     /// <returns></returns>
     private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "useDefault")
     {
-        string mName = s_SessionName;
-        if (sessionName != "useDefault") { mName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            var mRetVal = SessionHelper.GetFromSession<T>(mName);
+            var mRetVal = SessionHelper.GetFromSession<T>(mSessionOrCacheName);
             return mRetVal;
         }
-        mName = s_CachedName;
-        if (sessionName != "useDefault") { mName = sessionName; }
-        return m_CacheHelper.GetFromCache<T>(mName);
+        mSessionOrCacheName = s_CachedName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = sessionName; }
+        return m_CacheHelper.GetFromCache<T>(mSessionOrCacheName);
     }
 
     /// <summary>
@@ -73,16 +73,16 @@ public static class AccountUtility
     /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
     private static void removeFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
-        string mName = s_SessionName;
-        if (sessionName != "useDefault") { mName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionHelper.RemoveFromSession(mName);
+            SessionHelper.RemoveFromSession(mSessionOrCacheName);
             return;
         }
-        mName = s_CachedName;
-        if (sessionName != "useDefault") { mName = s_CachedName; }
-        m_CacheHelper.RemoveFromCache(mName);
+        mSessionOrCacheName = s_CachedName;
+        if (sessionName != "useDefault") { mSessionOrCacheName = s_CachedName; }
+        m_CacheHelper.RemoveFromCache(mSessionOrCacheName);
     }
 
     /// <summary>
