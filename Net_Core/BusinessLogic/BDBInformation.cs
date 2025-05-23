@@ -16,11 +16,11 @@ namespace GrowthWare.BusinessLogic;
 public class BDBInformation : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IDBInformation m_DDBInformation;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BDBInformation() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -62,16 +62,16 @@ public class BDBInformation : AbstractBusinessLogic
     public BDBInformation(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DDBInformation == null || ConfigSettings.CentralManagement)
+        if (m_DDBInformation == null)
         {
             this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation", securityEntityProfile.ConnectionString);
-            if (this.m_DDBInformation == null) 
+            if (this.m_DDBInformation == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DDBInformation.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Return a populated MDBInformation profile.
@@ -94,7 +94,7 @@ public class BDBInformation : AbstractBusinessLogic
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile can not be null (Nothing in Visual Basic)");
         bool mRetVal = false;
         this.m_DDBInformation.Profile = profile;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             mRetVal = await this.m_DDBInformation.UpdateProfile();
         }
