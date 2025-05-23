@@ -12,6 +12,7 @@
 - Removed the CentralManagement in the Business Logic Layer - this should be done in the Web.Support when the business logic is being called:
     - BAccounts
     - BClientChoices
+    - BCommunityCalendar
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure

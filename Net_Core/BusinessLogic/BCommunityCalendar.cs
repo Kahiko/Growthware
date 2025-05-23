@@ -30,11 +30,11 @@ namespace GrowthWare.BusinessLogic;
 public class BCommunityCalendar : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private ICommunityCalendar m_DCommunityCalendar;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BCommunityCalendar() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -81,18 +81,18 @@ public class BCommunityCalendar : AbstractBusinessLogic
         // m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
         // m_DCommunityCalendar.ConnectionString = securityEntityProfile.ConnectionString;
         // m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
-        if(m_DCommunityCalendar == null || ConfigSettings.CentralManagement)
+        if (m_DCommunityCalendar == null)
         {
             this.m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DCommunityCalendar == null) 
+            if (this.m_DCommunityCalendar == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DCommunityCalendar.");
             }
         }
     }
-#endregion
+    #endregion
 
-    public async Task<MCalendarEvent> GetEvent(int calendarEventSeqId) 
+    public async Task<MCalendarEvent> GetEvent(int calendarEventSeqId)
     {
         try
         {
@@ -100,7 +100,7 @@ public class BCommunityCalendar : AbstractBusinessLogic
             return new(await m_DCommunityCalendar.GetEvent(calendarEventSeqId));
         }
         catch (System.Exception)
-        {            
+        {
             throw;
         }
     }
