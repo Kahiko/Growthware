@@ -32,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BRoles : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IRoles m_DRoles;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BRoles() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -80,16 +80,16 @@ public class BRoles : AbstractBusinessLogic
     public BRoles(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DRoles == null || ConfigSettings.CentralManagement)
+        if (m_DRoles == null)
         {
             this.m_DRoles = (IRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DRoles == null) 
+            if (this.m_DRoles == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DRoles.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Saves the specified profile.
