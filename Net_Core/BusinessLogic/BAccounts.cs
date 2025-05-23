@@ -295,6 +295,7 @@ public class BAccounts : AbstractBusinessLogic
     /// </summary>
     /// <param name="account">String</param>
     /// <param name="menuType">MenuType</param>
+    /// <param name="securityEntitySeqId">int</param>
     /// <returns>DataTable</returns>
     /// <remarks></remarks>
     public async Task<DataTable> GetMenu(String account, MenuType menuType, int securityEntitySeqId)
@@ -302,8 +303,7 @@ public class BAccounts : AbstractBusinessLogic
         DataTable mRetVal = null;
         if (DatabaseIsOnline())
         {
-            m_DAccounts.SecurityEntitySeqId = securityEntitySeqId;
-            mRetVal = await m_DAccounts.GetMenu(account, menuType);
+            mRetVal = await m_DAccounts.GetMenu(account, menuType, securityEntitySeqId);
         }
         return mRetVal;
     }

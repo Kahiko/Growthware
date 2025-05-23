@@ -72,9 +72,10 @@ public interface IAccount : IDBInteraction
 	/// </summary>
 	/// <param name="account">String</param>
 	/// <param name="menuType">MenuType</param>
+	/// <param name="securityEntitySeqId">int</param>
 	/// <returns>DataTable</returns>
 	/// <remarks></remarks>
-	Task<DataTable> GetMenu(string account, MenuType menuType);
+	Task<DataTable> GetMenu(string account, MenuType menuType, int securityEntitySeqId);
 
 	Task<DataTable> RefreshTokens();
 

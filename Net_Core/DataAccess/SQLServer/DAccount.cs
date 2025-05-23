@@ -166,11 +166,11 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
 
-    async Task<DataTable> IAccount.GetMenu(string account, MenuType menuType)
+    async Task<DataTable> IAccount.GetMenu(string account, MenuType menuType, int securityEntitySeqId)
     {
         String mStoredProcedure = "[ZGWSecurity].[Get_Menu_Data]";
         SqlParameter[] mParameters = [
-            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+            new("@P_SecurityEntitySeqId", securityEntitySeqId),
             new("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
             new("@P_Account", this.Cleanup(account))
         ];
