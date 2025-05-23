@@ -80,7 +80,7 @@ public class BAccounts : AbstractBusinessLogic
     public BAccounts(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if (m_DAccounts == null || ConfigSettings.CentralManagement)
+        if (m_DAccounts == null)
         {
             this.m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
             if (this.m_DAccounts == null)
