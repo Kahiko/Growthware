@@ -20,7 +20,6 @@
 - GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
 - When editting a role the members are not being always being populated
 - Caching is not implemented correctly in the Message Utility
-- Logging off always get's the Anonymous menu data instead of getting it once and then from cache after that
 
 ### Bug Fixes
 - Converted the class methods to async/await that were missed in the previous release
