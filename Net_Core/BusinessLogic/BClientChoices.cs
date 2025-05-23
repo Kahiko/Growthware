@@ -31,11 +31,11 @@ namespace GrowthWare.BusinessLogic;
 public class BClientChoices : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IClientChoices m_DClientChoices;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BClientChoices() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -79,17 +79,17 @@ public class BClientChoices : AbstractBusinessLogic
     public BClientChoices(MSecurityEntity securityEntityProfile, bool centralManagement)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DClientChoices == null || ConfigSettings.CentralManagement)
+        if (m_DClientChoices == null)
         {
             this.m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices", securityEntityProfile.ConnectionString);
-            if (this.m_DClientChoices == null) 
+            if (this.m_DClientChoices == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DClientChoices.");
             }
         }
         m_DClientChoices.ConnectionString = securityEntityProfile.ConnectionString;
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Retrieves a data row from the data store and populates a MClientChoicesState object.
