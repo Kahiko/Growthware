@@ -50,11 +50,11 @@ namespace GrowthWare.BusinessLogic;
 public class BSecurityEntities : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private ISecurityEntities m_DSecurityEntities;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private constructor to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -96,16 +96,16 @@ public class BSecurityEntities : AbstractBusinessLogic
     public BSecurityEntities(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DSecurityEntities == null || ConfigSettings.CentralManagement)
+        if (m_DSecurityEntities == null)
         {
             this.m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities", securityEntityProfile.ConnectionString);
-            if (this.m_DSecurityEntities == null) 
+            if (this.m_DSecurityEntities == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DSecurityEntities.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Deletes the registration information.
@@ -168,11 +168,11 @@ public class BSecurityEntities : AbstractBusinessLogic
     public async Task<int> Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) 
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
         {
             profile.Id = await m_DSecurityEntities.Save(profile);
         }
-        
+
         return profile.Id;
     }
 
