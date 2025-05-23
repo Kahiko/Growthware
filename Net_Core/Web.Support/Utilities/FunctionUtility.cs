@@ -26,7 +26,7 @@ public static class FunctionUtility
     {
         BFunctions mBusinessLogic = await getBusinessLogic();
         await mBusinessLogic.CopyFunctionSecurity(source, target, added_Updated_By);
-        String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
@@ -39,7 +39,7 @@ public static class FunctionUtility
         BFunctions mBusinessLogic = await getBusinessLogic();
         await mBusinessLogic.Delete(functionSeqId);
         MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
-        String mCacheName = mSecurityEntity.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        String mCacheName = mSecurityEntity.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
@@ -69,21 +69,22 @@ public static class FunctionUtility
     public static async Task<List<UIKeyValuePair>> GetAvalibleParents()
     {
         Collection<MFunctionProfile> mFunctionProfiles = await Functions();
-        List<UIKeyValuePair> mRetVal = mFunctionProfiles.Where(item => item.IsNavigable).Select(item => new UIKeyValuePair {
-            Key = item.Id ,
+        List<UIKeyValuePair> mRetVal = mFunctionProfiles.Where(item => item.IsNavigable).Select(item => new UIKeyValuePair
+        {
+            Key = item.Id,
             Value = item.Name
         }).OrderBy(item => item.Value).ToList();
 
         return mRetVal;
     }
-    
+
     /// <summary>
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
     private static async Task<BFunctions> getBusinessLogic()
     {
-        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        if (m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
             m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
@@ -101,8 +102,9 @@ public static class FunctionUtility
         BFunctions mBusinessLogic = await getBusinessLogic();
         DataTable mDataTable = await mBusinessLogic.GetMenuOrder(mFunctionProfile);
         List<UIFunctionMenuOrder> mRetVal = null;
-        mRetVal = mDataTable.AsEnumerable().Select(item => new UIFunctionMenuOrder {
-            Function_Seq_Id = int.Parse(item["FUNCTION_SEQ_ID"].ToString()) ,
+        mRetVal = mDataTable.AsEnumerable().Select(item => new UIFunctionMenuOrder
+        {
+            Function_Seq_Id = int.Parse(item["FUNCTION_SEQ_ID"].ToString()),
             Action = item["Action"].ToString(),
             Name = item["Name"].ToString()
         }).ToList();
@@ -112,9 +114,10 @@ public static class FunctionUtility
 
     public static async Task<MFunctionTypeProfile> GetFunctionType(int functionTypeId)
     {
-        if(m_FunctionTypeProfiles == null) {
+        if (m_FunctionTypeProfiles == null)
+        {
             BFunctions mBusinessLogic = await getBusinessLogic();
-            m_FunctionTypeProfiles =  await mBusinessLogic.FunctionTypes();
+            m_FunctionTypeProfiles = await mBusinessLogic.FunctionTypes();
         }
         return m_FunctionTypeProfiles.Where(item => item.Id == functionTypeId).FirstOrDefault();
     }
@@ -125,13 +128,14 @@ public static class FunctionUtility
     /// <returns>List<UIKeyValuePair></returns>
     public static async Task<List<UIKeyValuePair>> GetFunctionTypes()
     {
-        if(m_FunctionTypes == null || m_FunctionTypeProfiles == null) 
+        if (m_FunctionTypes == null || m_FunctionTypeProfiles == null)
         {
             await GetFunctionType(1);
-            m_FunctionTypes = m_FunctionTypeProfiles.AsEnumerable().Select(item => new UIKeyValuePair {
+            m_FunctionTypes = m_FunctionTypeProfiles.AsEnumerable().Select(item => new UIKeyValuePair
+            {
                 Key = item.Id,
                 Value = item.Name
-            }).ToList() ;
+            }).ToList();
 
         }
         return m_FunctionTypes;
@@ -175,8 +179,8 @@ public static class FunctionUtility
         MFunctionProfile mRetVal = null;
         Collection<MFunctionProfile> mFunctionProfiles = await Functions();
         var mResult = from mProfile in mFunctionProfiles
-                        where mProfile.Id == functionSeqId
-                        select mProfile;
+                      where mProfile.Id == functionSeqId
+                      select mProfile;
         mRetVal = new MFunctionProfile();
         try
         {
@@ -199,7 +203,8 @@ public static class FunctionUtility
     public static async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
         BFunctions mBusinessLogic = await getBusinessLogic();
-        int mRetVal = await mBusinessLogic.Save(profile, saveGroups, saveRoles);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        int mRetVal = await mBusinessLogic.Save(profile, saveGroups, saveRoles, mCurrentSecurityEntity.Id);
         MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntity.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheHelper.RemoveAll();

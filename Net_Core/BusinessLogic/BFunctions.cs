@@ -171,7 +171,7 @@ public class BFunctions : AbstractBusinessLogic
     /// <param name="saveGroups">if set to <c>true</c> [save groups].</param>
     /// <param name="saveRoles">if set to <c>true</c> [save roles].</param>
     /// <returns>System.Int32.</returns>
-    public async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
+    public async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles, int securityEntitySeqId)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         if (DatabaseIsOnline())
@@ -181,17 +181,17 @@ public class BFunctions : AbstractBusinessLogic
             m_DFunctions.Profile = profile;
             if (saveGroups)
             {
-                await m_DFunctions.SaveGroups(PermissionType.Add);
-                await m_DFunctions.SaveGroups(PermissionType.Delete);
-                await m_DFunctions.SaveGroups(PermissionType.Edit);
-                await m_DFunctions.SaveGroups(PermissionType.View);
+                await m_DFunctions.SaveGroups(PermissionType.Add, securityEntitySeqId);
+                await m_DFunctions.SaveGroups(PermissionType.Delete, securityEntitySeqId);
+                await m_DFunctions.SaveGroups(PermissionType.Edit, securityEntitySeqId);
+                await m_DFunctions.SaveGroups(PermissionType.View, securityEntitySeqId);
             }
             if (saveRoles)
             {
-                await m_DFunctions.SaveRoles(PermissionType.Add);
-                await m_DFunctions.SaveRoles(PermissionType.Delete);
-                await m_DFunctions.SaveRoles(PermissionType.Edit);
-                await m_DFunctions.SaveRoles(PermissionType.View);
+                await m_DFunctions.SaveRoles(PermissionType.Add, securityEntitySeqId);
+                await m_DFunctions.SaveRoles(PermissionType.Delete, securityEntitySeqId);
+                await m_DFunctions.SaveRoles(PermissionType.Edit, securityEntitySeqId);
+                await m_DFunctions.SaveRoles(PermissionType.View, securityEntitySeqId);
             }
         }
         return profile.Id;

@@ -71,12 +71,12 @@ public interface IFunction : IDBInteraction
     /// <summary>
     /// Save groups by passing a string or comma seporated groups to the database.
     /// </summary>
-    Task SaveGroups(PermissionType permission);
+    Task SaveGroups(PermissionType permission, int securityEntitySeqId);
 
     /// <summary>
     /// Save roles by passing a string or comma seporated roles to the database.
     /// </summary>
-    Task SaveRoles(PermissionType permission);
+    Task SaveRoles(PermissionType permission, int securityEntitySeqId);
 
     /// <summary>
     /// Updates the menu order.
