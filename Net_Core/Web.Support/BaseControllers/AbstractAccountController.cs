@@ -414,7 +414,14 @@ public abstract class AbstractAccountController : ControllerBase
         }
         if (mCurrentAccountProfile != null && !string.IsNullOrWhiteSpace(mCurrentAccountProfile.Account))
         {
-            await AccountUtility.Logoff(mCurrentAccountProfile.Account, mRefreshToken, ipAddress());
+            // We do not want to logoff the anonymous account because technically
+            // it is never logged on by anything other than the system and logging it off
+            // will only cause the in in memory items for it to be removed thereby
+            // preventing the caching to work for it's menu itmes and the like
+            if (!mCurrentAccountProfile.Account.Equals(AccountUtility.AnonymousAccount, StringComparison.InvariantCultureIgnoreCase))
+            {
+                await AccountUtility.Logoff(mCurrentAccountProfile.Account, mRefreshToken, ipAddress());
+            }
         }
         MAccountProfile mAnonymousAccountProfile = await AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         await ClientChoicesUtility.SynchronizeContext(mAnonymousAccountProfile.Account);
