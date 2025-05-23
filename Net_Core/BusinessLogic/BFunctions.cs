@@ -32,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BFunctions : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IFunction m_DFunctions;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BFunctions() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -80,16 +80,16 @@ public class BFunctions : AbstractBusinessLogic
     public BFunctions(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DFunctions == null || ConfigSettings.CentralManagement)
+        if (m_DFunctions == null)
         {
             this.m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DFunctions == null) 
+            if (this.m_DFunctions == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DFunctions.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Gets the function types.
@@ -117,7 +117,7 @@ public class BFunctions : AbstractBusinessLogic
     {
         Collection<MFunctionProfile> mRetVal = new Collection<MFunctionProfile>();
         DataSet mDSFunctions = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             try
             {
@@ -174,7 +174,7 @@ public class BFunctions : AbstractBusinessLogic
     public async Task<int> Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             m_DFunctions.Profile = profile;
             profile.Id = await m_DFunctions.Save();
@@ -192,7 +192,7 @@ public class BFunctions : AbstractBusinessLogic
                 await m_DFunctions.SaveRoles(PermissionType.Delete);
                 await m_DFunctions.SaveRoles(PermissionType.Edit);
                 await m_DFunctions.SaveRoles(PermissionType.View);
-            }            
+            }
         }
         return profile.Id;
 
@@ -211,7 +211,7 @@ public class BFunctions : AbstractBusinessLogic
     {
         if (DatabaseIsOnline()) await m_DFunctions.Delete(functionSeqId);
     }
-    
+
     public async Task<DataTable> MenuTypes()
     {
         return await m_DFunctions.MenuTypes();
