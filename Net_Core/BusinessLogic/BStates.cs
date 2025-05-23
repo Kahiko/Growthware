@@ -9,14 +9,14 @@ using GrowthWare.Framework.Models;
 
 namespace GrowthWare.BusinessLogic;
 
-public class BStates: AbstractBusinessLogic
+public class BStates : AbstractBusinessLogic
 {
-    
-#region Member Fields
-    private IState m_DStates;
-#endregion
 
-#region Constructors
+    #region Member Fields
+    private IState m_DStates;
+    #endregion
+
+    #region Constructors
     /// <summary>
     /// Private constructor to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -58,16 +58,16 @@ public class BStates: AbstractBusinessLogic
     public BStates(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DStates == null || ConfigSettings.CentralManagement)
+        if (m_DStates == null)
         {
             m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DStates == null) 
+            if (this.m_DStates == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DState.");
             }
         }
     }
-#endregion
+    #endregion
 
     public async Task<Collection<MState>> GetStates()
     {
