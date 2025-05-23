@@ -24,11 +24,11 @@ namespace GrowthWare.BusinessLogic;
 public class BDirectories : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IDirectories m_DDirectories;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BDirectories() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -72,16 +72,16 @@ public class BDirectories : AbstractBusinessLogic
     public BDirectories(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DDirectories == null || ConfigSettings.CentralManagement)
+        if (m_DDirectories == null)
         {
             this.m_DDirectories = (IDirectories)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDirectories", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DDirectories == null) 
+            if (this.m_DDirectories == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DDirectories.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Gets the directories.
@@ -90,7 +90,7 @@ public class BDirectories : AbstractBusinessLogic
     public async Task<Collection<MDirectoryProfile>> Directories()
     {
         Collection<MDirectoryProfile> mRetVal = new Collection<MDirectoryProfile>();
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             DataTable mDataTable = await m_DDirectories.Directories();
             foreach (DataRow mDataRow in mDataTable.Rows)
@@ -108,6 +108,6 @@ public class BDirectories : AbstractBusinessLogic
     /// <param name="profile">The profile.</param>
     public async Task Save(MDirectoryProfile profile)
     {
-        if(DatabaseIsOnline()) await m_DDirectories.Save(profile);
+        if (DatabaseIsOnline()) await m_DDirectories.Save(profile);
     }
 }
