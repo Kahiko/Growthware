@@ -254,7 +254,8 @@ public static class AccountUtility
             return mRetVal;
         }
         BAccounts mBusinessLogic = await BusinessLogic();
-        DataTable mDataTable = await mBusinessLogic.GetMenu(account, menuType);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        DataTable mDataTable = await mBusinessLogic.GetMenu(account, menuType, mCurrentSecurityEntity.Id);
         if (mDataTable != null)
         {
             mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
@@ -283,7 +284,8 @@ public static class AccountUtility
         mRetVal = new List<MMenuTree>();
         BAccounts mBusinessLogic = await BusinessLogic();
         DataTable mDataTable = null;
-        mDataTable = await mBusinessLogic.GetMenu(account, menuType);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        mDataTable = await mBusinessLogic.GetMenu(account, menuType, mCurrentSecurityEntity.Id);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
         {
             mRetVal = MMenuTree.GetFlatList(mDataTable);

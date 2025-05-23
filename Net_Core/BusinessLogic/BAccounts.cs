@@ -32,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BAccounts : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IAccount m_DAccounts;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BAccounts() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -80,16 +80,16 @@ public class BAccounts : AbstractBusinessLogic
     public BAccounts(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DAccounts == null || ConfigSettings.CentralManagement)
+        if (m_DAccounts == null || ConfigSettings.CentralManagement)
         {
             this.m_DAccounts = (IAccount)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DAccounts", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DAccounts == null) 
+            if (this.m_DAccounts == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DAccounts with or without parameters.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Deletes a record from the database.
@@ -140,9 +140,9 @@ public class BAccounts : AbstractBusinessLogic
     public async Task<MAccountProfile> GetProfile(string account)
     {
         MAccountProfile mRetVal = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
-            if(account != null && !String.IsNullOrWhiteSpace(account)) 
+            if (account != null && !String.IsNullOrWhiteSpace(account))
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
@@ -153,7 +153,7 @@ public class BAccounts : AbstractBusinessLogic
                 DataTable mDerivedRoles = await m_DAccounts.Security();
                 mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
-            else 
+            else
             {
                 throw new ArgumentException("account can not be null or empty", account);
             }
@@ -164,7 +164,7 @@ public class BAccounts : AbstractBusinessLogic
     public async Task<MAccountProfile> GetProfileByRefreshToken(string token)
     {
         MAccountProfile mRetVal = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             string mAccount = string.Empty;
             string mColumnName = "ACCT";
@@ -181,8 +181,8 @@ public class BAccounts : AbstractBusinessLogic
                 DataTable mAssignedGroups = await m_DAccounts.Groups();
                 DataTable mDerivedRoles = await m_DAccounts.Security();
                 mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
-            } 
-            else 
+            }
+            else
             {
                 throw new BusinessLogicLayerException("token does not exist, unable to get account");
             }
@@ -193,7 +193,7 @@ public class BAccounts : AbstractBusinessLogic
     public async Task<MAccountProfile> GetProfileByResetToken(string token)
     {
         MAccountProfile mRetVal = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             string mAccount = string.Empty;
             string mColumnName = "ACCT";
@@ -204,8 +204,8 @@ public class BAccounts : AbstractBusinessLogic
             if (mAccountRow != null && mAccountRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mAccountRow[mColumnName])))
             {
                 mAccount = mAccountRow[mColumnName].ToString().Trim();
-            } 
-            else 
+            }
+            else
             {
                 throw new BusinessLogicLayerException("Invalid token");
             }
@@ -227,7 +227,7 @@ public class BAccounts : AbstractBusinessLogic
     public async Task<MAccountProfile> GetProfileByVerificationToken(string token)
     {
         MAccountProfile mRetVal = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             string mAccount = string.Empty;
             string mColumnName = "ACCT";
@@ -240,8 +240,8 @@ public class BAccounts : AbstractBusinessLogic
             if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
             {
                 mAccount = mDataRow[mColumnName].ToString().Trim();
-            } 
-            else 
+            }
+            else
             {
                 throw new BusinessLogicLayerException("Invalid token");
             }
@@ -268,7 +268,7 @@ public class BAccounts : AbstractBusinessLogic
         {
             m_DAccounts.Profile = profile;
             if (DatabaseIsOnline()) mDataTable = await m_DAccounts.GetAccounts();
-            if (mDataTable != null) 
+            if (mDataTable != null)
             {
                 foreach (DataRow item in mDataTable.Rows)
                 {
@@ -297,11 +297,12 @@ public class BAccounts : AbstractBusinessLogic
     /// <param name="menuType">MenuType</param>
     /// <returns>DataTable</returns>
     /// <remarks></remarks>
-    public async Task<DataTable> GetMenu(String account, MenuType menuType)
+    public async Task<DataTable> GetMenu(String account, MenuType menuType, int securityEntitySeqId)
     {
         DataTable mRetVal = null;
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
+            m_DAccounts.SecurityEntitySeqId = securityEntitySeqId;
             mRetVal = await m_DAccounts.GetMenu(account, menuType);
         }
         return mRetVal;
@@ -369,14 +370,14 @@ public class BAccounts : AbstractBusinessLogic
     public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
         m_DAccounts.Profile = profile ?? throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
-        if (DatabaseIsOnline()) 
+        if (DatabaseIsOnline())
         {
             profile.Id = await m_DAccounts.Save();
             if (saveGroups)
             {
                 await m_DAccounts.SaveGroups();
             }
-            if(saveRefreshTokens)
+            if (saveRefreshTokens)
             {
                 await m_DAccounts.SaveRefreshTokens();
             }
