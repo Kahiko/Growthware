@@ -10,7 +10,10 @@
 ### Improvements
 - Added the logging service to the base-search component - base-search now uses LoggingService.errorHandler
 - Removed the CentralManagement check in the Business Logic Layer - this should be done in the Web.Support when the business logic is being called
-- Performance improvement - Updated stored procedure [ZGWSecurity].[Get_Account] to return a Dataset of:
+- Performance improvement - Updated stored procedures:
+    [ZGWSecurity].[Get_Account] 
+    [ZGWSecurity].[Get_Account_By_Verification_Token]
+    [ZGWSecurity].[Get_Account_By_Reset_Token] to return a Dataset of:
 		1. Table 0, row 0 - Account Details,
 		2. Table 1 - Refresh Tokens,
 		3. Table 2 - Assigned Roles,
@@ -21,19 +24,6 @@
         Removed Task<DataTable> RefreshTokens();
         Removed Task<DataTable> Roles();
         Updated DAccounts.GetAccount to return a DataSet instead of a DataTable
-        Updated any BAccounts methods to stop using the old old methods to get the Roles, Groups, RefreshTokens
-        NOTE: Security (Derived Roles) was left because eventually it may be needed but it is not used.
-- Performance improvement - Updated stored procedure [ZGWSecurity].[Get_Account_By_Verification_Token] to return a Dataset of:
-		1. Table 0, row 0 - Account Details,
-		2. Table 1 - Refresh Tokens,
-		3. Table 2 - Assigned Roles,
-		4. Table 3 - Assigned Groups,
-		5. Table 4 - Derived Roles
-    In turn:
-        Removed Task<DataTable> Groups();
-        Removed Task<DataTable> RefreshTokens();
-        Removed Task<DataTable> Roles();
-        Updated DAccounts.GetAccountByVerificationToken to return a DataSet instead of a DataRow
         Updated any BAccounts methods to stop using the old old methods to get the Roles, Groups, RefreshTokens
         NOTE: Security (Derived Roles) was left because eventually it may be needed but it is not used.
 

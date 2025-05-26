@@ -53,7 +53,7 @@ public interface IAccount : IDBInteraction
 	/// <summary>
 	/// Retrieves Account information given the reset token
 	/// </summary>
-	Task<DataRow> GetAccountByResetToken();
+	Task<DataSet> GetAccountByResetToken();
 
 	/// <summary>
 	/// Retrieves Account information given the verification token
