@@ -38,10 +38,17 @@ public interface IAccount : IDBInteraction
 	Task Delete();
 
 	/// <summary>
-	/// Retrieves Account information
+	/// Retrieves Account information via stored procedure ZGWSecurity.Get_Account
 	/// </summary>
-	/// <returns>DataRow</returns>
-	Task<DataRow> GetAccount();
+	/// <returns>
+	/// Dataset:
+	/// 	1. Table 0, row 0 - Account Details,
+	/// 	2. Table 1 - Refresh Tokens,
+	/// 	3. Table 2 - Assigned Roles,
+	/// 	4. Table 3 - Assigned Groups,
+	/// 	5. Table 4 - Derived Roles
+	/// </returns>
+	Task<DataSet> GetAccount();
 
 	/// <summary>
 	/// Retrieves Account information given the reset token
@@ -62,12 +69,6 @@ public interface IAccount : IDBInteraction
 	Task<DataTable> GetAccounts();
 
 	/// <summary>
-	/// Returns all roles associated with a given SecurityEntitySeqID.
-	/// </summary>
-	/// <returns>DataTable</returns>
-	Task<DataTable> Groups();
-
-	/// <summary>
 	/// Retrieves menu data for a given account and MenuType
 	/// </summary>
 	/// <param name="account">String</param>
@@ -76,14 +77,6 @@ public interface IAccount : IDBInteraction
 	/// <returns>DataTable</returns>
 	/// <remarks></remarks>
 	Task<DataTable> GetMenu(string account, MenuType menuType, int securityEntitySeqId);
-
-	Task<DataTable> RefreshTokens();
-
-	/// <summary>
-	/// Returns all groups associated with a given SecurityEntitySeqID.
-	/// </summary>
-	/// <returns>DataTable</returns>
-	Task<DataTable> Roles();
 
 	/// <summary>
 	/// Returns all roles either direct association or by association via

@@ -146,11 +146,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
-                DataRow mAccountRow = await m_DAccounts.GetAccount();
-                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = await m_DAccounts.Roles();
-                DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mDerivedRoles = await m_DAccounts.Security();
+                DataSet mAccountInfo = await m_DAccounts.GetAccount();
+                DataRow mAccountRow = mAccountInfo.Tables[(int)AccountTables.AccountDetails].Rows[0];
+                DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
+                DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
+                DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
+                DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
                 mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else
@@ -176,10 +177,11 @@ public class BAccounts : AbstractBusinessLogic
             {
                 mAccount = mDataRow[mColumnName].ToString().Trim();
                 m_DAccounts.Profile.Account = mAccount;
-                DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = await m_DAccounts.Roles();
-                DataTable mAssignedGroups = await m_DAccounts.Groups();
-                DataTable mDerivedRoles = await m_DAccounts.Security();
+                DataSet mAccountInfo = await m_DAccounts.GetAccount();
+                DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
+                DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
+                DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
+                DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
                 mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else
@@ -210,10 +212,11 @@ public class BAccounts : AbstractBusinessLogic
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = await m_DAccounts.Roles();
-            DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mDerivedRoles = await m_DAccounts.Security();
+            DataSet mAccountInfo = await m_DAccounts.GetAccount();
+            DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
+            DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
+            DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
+            DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
             mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
@@ -246,10 +249,11 @@ public class BAccounts : AbstractBusinessLogic
                 throw new BusinessLogicLayerException("Invalid token");
             }
             m_DAccounts.Profile.Account = mAccount;
-            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mAssignedRoles = await m_DAccounts.Roles();
-            DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mDerivedRoles = await m_DAccounts.Security();
+            DataSet mAccountInfo = await m_DAccounts.GetAccount();
+            DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
+            DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
+            DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
+            DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
             mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
         return mRetVal;
@@ -385,11 +389,17 @@ public class BAccounts : AbstractBusinessLogic
             {
                 await m_DAccounts.SaveRoles();
             }
-            DataRow mAccountRow = await m_DAccounts.GetAccount();
-            DataTable mAssignedGroups = await m_DAccounts.Groups();
-            DataTable mAssignedRoles = await m_DAccounts.Roles();
-            DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            DataTable mDerivedRoles = await m_DAccounts.Security();
+            DataSet mAccountInfo = await m_DAccounts.GetAccount();
+            DataRow mAccountRow = mAccountInfo.Tables[(int)AccountTables.AccountDetails].Rows[0];
+            DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
+            DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
+            DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
+            DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
+            // DataRow mAccountRow = await m_DAccounts.GetAccount();
+            // DataTable mAssignedGroups = await m_DAccounts.Groups();
+            // DataTable mAssignedRoles = await m_DAccounts.Roles();
+            // DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
+            // DataTable mDerivedRoles = await m_DAccounts.Security();
             profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }

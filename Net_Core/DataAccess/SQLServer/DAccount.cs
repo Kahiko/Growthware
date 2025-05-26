@@ -41,7 +41,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
         set { m_SecurityEntitySeqID = value; }
     }
 
-    async Task<DataRow> IAccount.GetAccount()
+    async Task<DataSet> IAccount.GetAccount()
     {
         String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
         SqlParameter[] mParameters = [
@@ -49,7 +49,7 @@ public class DAccounts : AbstractDBInteraction, IAccount
             GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
             GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
         ];
-        return await base.GetDataRowAsync(mStoredProcedure, mParameters);
+        return await base.GetDataSetAsync(mStoredProcedure, mParameters);
     }
 
     async Task<DataRow> IAccount.GetAccountByRefreshToken()
@@ -122,18 +122,6 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetVal;
     }
 
-    async Task<DataTable> IAccount.RefreshTokens()
-    {
-        string mCommandText = "SELECT RT.[RefreshTokenId], RT.[AccountSeqId], RT.[Token], RT.[Expires], RT.[Created], RT.[CreatedByIp], RT.[Revoked], RT.[RevokedByIp], RT.[ReplacedByToken], RT.[ReasonRevoked] ";
-        mCommandText += "FROM [ZGWSecurity].[RefreshTokens] RT ";
-        mCommandText += "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
-        mCommandText += "ORDER BY [Created] ASC;";
-        SqlParameter[] mParameters = [
-            new("@P_Account", m_Profile.Account),
-        ];
-        return await base.GetDataTableAsync(mCommandText, mParameters, true);
-    }
-
     async Task<bool> IAccount.ResetTokenExists(string resetToken)
     {
         bool mRetVal = false;
@@ -155,17 +143,6 @@ public class DAccounts : AbstractDBInteraction, IAccount
         return mRetVal;
     }
 
-    async Task<DataTable> IAccount.Roles()
-    {
-        checkValid();
-        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Roles]";
-        SqlParameter[] mParameters = [
-            new("@P_Account", this.Cleanup(m_Profile.Account)),
-            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
-        ];
-        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
-    }
-
     async Task<DataTable> IAccount.GetMenu(string account, MenuType menuType, int securityEntitySeqId)
     {
         String mStoredProcedure = "[ZGWSecurity].[Get_Menu_Data]";
@@ -173,17 +150,6 @@ public class DAccounts : AbstractDBInteraction, IAccount
             new("@P_SecurityEntitySeqId", securityEntitySeqId),
             new("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
             new("@P_Account", this.Cleanup(account))
-        ];
-        return await base.GetDataTableAsync(mStoredProcedure, mParameters);
-    }
-
-    async Task<DataTable> IAccount.Groups()
-    {
-        checkValid();
-        String mStoredProcedure = "[ZGWSecurity].[Get_Account_Groups]";
-        SqlParameter[] mParameters = [
-            new("@P_Account", this.Cleanup(m_Profile.Account)),
-            new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID)
         ];
         return await base.GetDataTableAsync(mStoredProcedure, mParameters);
     }
