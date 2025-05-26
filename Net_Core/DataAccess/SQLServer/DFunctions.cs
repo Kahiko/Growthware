@@ -58,20 +58,20 @@ public class DFunctions : AbstractDBInteraction, IFunction
             bool mHasAssingedRoles = false;
             bool mHasGroups = false;
             mFunctions.TableName = "Functions";
-            if (mDSFunctions.Tables["AssignedRoles"].Rows.Count > 0) mHasAssingedRoles = true;
-            if (mDSFunctions.Tables["Groups"].Rows.Count > 0) mHasGroups = true;
+            if (mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_ROLES].Rows.Count > 0) mHasAssingedRoles = true;
+            if (mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_GROUPS].Rows.Count > 0) mHasGroups = true;
             mDSFunctions.Tables.Add(mFunctions);
 
-            DataRelation mRelation = new DataRelation("DerivedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["DerivedRoles"].Columns["Function_Seq_ID"]);
+            DataRelation mRelation = new DataRelation(FunctionSecurityTableNames.DERIVED_ROLES, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["DerivedRoles"].Columns["Function_Seq_ID"]);
             mDSFunctions.Relations.Add(mRelation);
             if (mHasAssingedRoles)
             {
-                mRelation = new DataRelation("AssignedRoles", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["AssignedRoles"].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_ROLES, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["AssignedRoles"].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
             }
             if (mHasGroups)
             {
-                mRelation = new DataRelation("Groups", mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["Groups"].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_GROUPS, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["Groups"].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
             }
 
