@@ -27,7 +27,7 @@ EXEC  ZGWSecurity.Get_Account
 --	[ZGWSecurity].[Get_Account_Groups]
 --	[ZGWSecurity].[Get_Account_Security]
 -- =============================================
-CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account] 
+CREATE PROCEDURE [ZGWSecurity].[Get_Account] 
 	 @P_Is_System_Admin BIT
 	,@P_Account VARCHAR(128)
 	,@P_SecurityEntitySeqId INT
