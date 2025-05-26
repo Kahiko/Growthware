@@ -7,17 +7,17 @@ GO
 
 /*
 Usage:
-	DECLARE 
-		@P_Is_System_Admin bit = 1,
-		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
-		@P_Debug INT = 1
+DECLARE 
+	@P_Is_System_Admin bit = 1,
+	@P_Account VARCHAR(128) = 'Developer',
+	@P_SecurityEntitySeqId INT = 1,
+	@P_Debug INT = 1
 
-	EXEC  ZGWSecurity.Get_Account
-		@P_Is_System_Admin,
-		@P_Account,
-		@P_SecurityEntitySeqId,
-		@P_Debug
+EXEC  ZGWSecurity.Get_Account
+	@P_Is_System_Admin,
+	@P_Account,
+	@P_SecurityEntitySeqId,
+	@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
