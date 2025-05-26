@@ -2,6 +2,8 @@
 USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
+
+/****** Start: [ZGWSecurity].[Get_Account] ******/
 SET QUOTED_IDENTIFIER ON;
 GO
 
@@ -251,6 +253,7 @@ ELSE
 -- END IF
 RETURN 0
 GO
+/****** End: [ZGWSecurity].[Get_Account] ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
