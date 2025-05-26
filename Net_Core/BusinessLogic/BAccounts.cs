@@ -146,12 +146,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
-                DataSet mAccountInfo = await m_DAccounts.GetAccount();
-                DataRow mAccountRow = mAccountInfo.Tables[(int)AccountTables.AccountDetails].Rows[0];
-                DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
-                DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
-                DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
-                DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
+                DataSet mAccountData = await m_DAccounts.GetAccount();
+                DataRow mAccountRow = mAccountData.Tables[(int)AccountTables.AccountDetails].Rows[0];
+                DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
+                DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
+                DataTable mAssignedGroups = mAccountData.Tables[(int)AccountTables.AssignedGroups];
+                DataTable mDerivedRoles = mAccountData.Tables[(int)AccountTables.DerivedRoles];
                 mRetVal = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
             }
             else
@@ -378,12 +378,12 @@ public class BAccounts : AbstractBusinessLogic
             {
                 await m_DAccounts.SaveRoles();
             }
-            DataSet mAccountInfo = await m_DAccounts.GetAccount();
-            DataRow mAccountRow = mAccountInfo.Tables[(int)AccountTables.AccountDetails].Rows[0];
-            DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
-            DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
-            DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
-            DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
+            DataSet mAccountData = await m_DAccounts.GetAccount();
+            DataRow mAccountRow = mAccountData.Tables[(int)AccountTables.AccountDetails].Rows[0];
+            DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
+            DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
+            DataTable mAssignedGroups = mAccountData.Tables[(int)AccountTables.AssignedGroups];
+            DataTable mDerivedRoles = mAccountData.Tables[(int)AccountTables.DerivedRoles];
             profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }
