@@ -50,9 +50,9 @@ public class DFunctions : AbstractDBInteraction, IFunction
             string mStoredProcedure = "[ZGWSecurity].[Get_Function]";
             DataTable mFunctions = await base.GetDataTableAsync(mStoredProcedure, mParameters);
             mDSFunctions = await this.getSecurity();
-            mDSFunctions.Tables[0].TableName = "DerivedRoles";
-            mDSFunctions.Tables[1].TableName = "AssignedRoles";
-            mDSFunctions.Tables[2].TableName = "Groups";
+            mDSFunctions.Tables[(int)FunctionSecurityTables.DerivedRoles].TableName = FunctionSecurityTableNames.DERIVED_ROLES;
+            mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedRoles].TableName = FunctionSecurityTableNames.ASSIGNED_ROLES;
+            mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedGroups].TableName = FunctionSecurityTableNames.ASSIGNED_GROUPS;
 
 
             bool mHasAssingedRoles = false;

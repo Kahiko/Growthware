@@ -9,7 +9,9 @@
 
 ### Improvements
 - Added the logging service to the base-search component - base-search now uses LoggingService.errorHandler
+
 - Removed the CentralManagement check in the Business Logic Layer - this should be done in the Web.Support when the business logic is being called
+
 - Performance improvement - Updated stored procedures:
     [ZGWSecurity].[Get_Account] 
     [ZGWSecurity].[Get_Account_By_Verification_Token]
@@ -27,6 +29,8 @@
         Updated DAccounts.GetAccount to return a DataSet instead of a DataTable
         Updated any BAccounts methods to stop using the old old methods to get the Roles, Groups, RefreshTokens
         NOTE: Security (Derived Roles) was left because eventually it may be needed but it is not used.
+
+- Added FunctionSecurityTables and FunctionSecurityTableNames to minimize use of indicies and strings
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure

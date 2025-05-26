@@ -126,8 +126,8 @@ public class BFunctions : AbstractBusinessLogic
                 mDSFunctions = await m_DFunctions.GetFunctions();
                 bool mHasAssignedRoles = false;
                 bool mHasGroups = false;
-                if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssignedRoles = true;
-                if (mDSFunctions.Tables[2].Rows.Count > 0) mHasGroups = true;
+                if (mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedRoles].Rows.Count > 0) mHasAssignedRoles = true;
+                if (mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedGroups].Rows.Count > 0) mHasGroups = true;
                 DataRow[] mGroups = null;
                 DataRow[] mAssignedRoles = null;
                 DataRow[] mDerivedRoles = null;
@@ -136,9 +136,9 @@ public class BFunctions : AbstractBusinessLogic
                 {
                     mDerivedRoles = item.GetChildRows("DerivedRoles");
                     mAssignedRoles = null;
-                    if (mHasAssignedRoles) mAssignedRoles = item.GetChildRows("AssignedRoles");
+                    if (mHasAssignedRoles) mAssignedRoles = item.GetChildRows(FunctionSecurityTableNames.ASSIGNED_ROLES);
                     mGroups = null;
-                    if (mHasGroups) mGroups = item.GetChildRows("Groups");
+                    if (mHasGroups) mGroups = item.GetChildRows(FunctionSecurityTableNames.ASSIGNED_GROUPS);
                     MFunctionProfile mProfile = new MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups);
                     mRetVal.Add(mProfile);
                 }
