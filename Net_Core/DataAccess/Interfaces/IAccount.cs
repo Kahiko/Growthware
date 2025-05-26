@@ -64,7 +64,7 @@ public interface IAccount : IDBInteraction
 	/// Retrieves Account information given the JWT
 	/// </summary>
 	/// <returns>DataRow</returns>
-	Task<DataRow> GetAccountByRefreshToken();
+	Task<DataSet> GetAccountByRefreshToken();
 
 	Task<DataTable> GetAccounts();
 

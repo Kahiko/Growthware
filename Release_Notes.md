@@ -13,7 +13,8 @@
 - Performance improvement - Updated stored procedures:
     [ZGWSecurity].[Get_Account] 
     [ZGWSecurity].[Get_Account_By_Verification_Token]
-    [ZGWSecurity].[Get_Account_By_Reset_Token] to return a Dataset of:
+    [ZGWSecurity].[Get_Account_By_Reset_Token]
+    [ZGWSecurity].[Get_Account_By_Refresh_Token] to return a Dataset of:
 		1. Table 0, row 0 - Account Details,
 		2. Table 1 - Refresh Tokens,
 		3. Table 2 - Assigned Roles,

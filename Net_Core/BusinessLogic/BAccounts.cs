@@ -167,27 +167,24 @@ public class BAccounts : AbstractBusinessLogic
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline())
         {
-            string mAccount = string.Empty;
             string mColumnName = "ACCT";
-            m_DAccounts.Profile = new MAccountProfile();
-            m_DAccounts.Profile.Token = token;
-            DataRow mDataRow = await m_DAccounts.GetAccountByRefreshToken();
-            // we will need the "Account" in order to get the correct roles and groups
-            if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
+            m_DAccounts.Profile = new MAccountProfile
             {
-                mAccount = mDataRow[mColumnName].ToString().Trim();
-                m_DAccounts.Profile.Account = mAccount;
-                DataSet mAccountInfo = await m_DAccounts.GetAccount();
-                DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
-                DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
-                DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
-                DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
+                Token = token
+            };
+            DataSet mAccountData = await m_DAccounts.GetAccountByRefreshToken();
+            if (mAccountData.Tables.Count > 0 && mAccountData.Tables[0].Rows.Count > 0)
+            {
+                DataRow mDataRow = mAccountData.Tables[0].Rows[0];
+                m_DAccounts.Profile.Account = mDataRow[mColumnName].ToString().Trim();
+                DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
+                DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
+                DataTable mAssignedGroups = mAccountData.Tables[(int)AccountTables.AssignedGroups];
+                DataTable mDerivedRoles = mAccountData.Tables[(int)AccountTables.DerivedRoles];
                 mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
+                return mRetVal;
             }
-            else
-            {
-                throw new BusinessLogicLayerException("token does not exist, unable to get account");
-            }
+            throw new BusinessLogicLayerException("token does not exist, unable to get account");
         }
         return mRetVal;
     }
