@@ -58,7 +58,7 @@ public interface IAccount : IDBInteraction
 	/// <summary>
 	/// Retrieves Account information given the verification token
 	/// </summary>
-	Task<DataRow> GetAccountByVerificationToken();
+	Task<DataSet> GetAccountByVerificationToken();
 
 	/// <summary>
 	/// Retrieves Account information given the JWT

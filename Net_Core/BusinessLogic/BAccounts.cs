@@ -232,29 +232,24 @@ public class BAccounts : AbstractBusinessLogic
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline())
         {
-            string mAccount = string.Empty;
             string mColumnName = "ACCT";
             m_DAccounts.Profile = new MAccountProfile
             {
                 VerificationToken = token
             };
-            DataRow mDataRow = await m_DAccounts.GetAccountByVerificationToken();
-            // we will need the "Account" in order to get the correct roles and groups
-            if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
+            DataSet mAccountData = await m_DAccounts.GetAccountByVerificationToken();
+            if (mAccountData.Tables.Count > 0 && mAccountData.Tables[0].Rows.Count > 0)
             {
-                mAccount = mDataRow[mColumnName].ToString().Trim();
+                DataRow mDataRow = mAccountData.Tables[0].Rows[0];
+                m_DAccounts.Profile.Account = mDataRow[mColumnName].ToString().Trim();
+                DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
+                DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
+                DataTable mAssignedGroups = mAccountData.Tables[(int)AccountTables.AssignedGroups];
+                DataTable mDerivedRoles = mAccountData.Tables[(int)AccountTables.DerivedRoles];
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
+                return mRetVal;
             }
-            else
-            {
-                throw new BusinessLogicLayerException("Invalid token");
-            }
-            m_DAccounts.Profile.Account = mAccount;
-            DataSet mAccountInfo = await m_DAccounts.GetAccount();
-            DataTable mRefreshTokens = mAccountInfo.Tables[(int)AccountTables.RefreshTokens];
-            DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
-            DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
-            DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
-            mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
+            throw new BusinessLogicLayerException("Invalid token");
         }
         return mRetVal;
     }
@@ -395,11 +390,6 @@ public class BAccounts : AbstractBusinessLogic
             DataTable mAssignedRoles = mAccountInfo.Tables[(int)AccountTables.AssignedRoles];
             DataTable mAssignedGroups = mAccountInfo.Tables[(int)AccountTables.AssignedGroups];
             DataTable mDerivedRoles = mAccountInfo.Tables[(int)AccountTables.DerivedRoles];
-            // DataRow mAccountRow = await m_DAccounts.GetAccount();
-            // DataTable mAssignedGroups = await m_DAccounts.Groups();
-            // DataTable mAssignedRoles = await m_DAccounts.Roles();
-            // DataTable mRefreshTokens = await m_DAccounts.RefreshTokens();
-            // DataTable mDerivedRoles = await m_DAccounts.Security();
             profile = new MAccountProfile(mAccountRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mDerivedRoles);
         }
     }
