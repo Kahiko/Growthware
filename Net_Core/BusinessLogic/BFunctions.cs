@@ -134,7 +134,7 @@ public class BFunctions : AbstractBusinessLogic
 
                 foreach (DataRow item in mDSFunctions.Tables["Functions"].Rows)
                 {
-                    mDerivedRoles = item.GetChildRows("DerivedRoles");
+                    mDerivedRoles = item.GetChildRows(FunctionSecurityTableNames.DERIVED_ROLES);
                     mAssignedRoles = null;
                     if (mHasAssignedRoles) mAssignedRoles = item.GetChildRows(FunctionSecurityTableNames.ASSIGNED_ROLES);
                     mGroups = null;
