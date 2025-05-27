@@ -124,7 +124,6 @@ public class BRoles : AbstractBusinessLogic
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         MRole mRetVal = new();
-        // m_DRoles.Profile = profile;
         if (DatabaseIsOnline()) mRetVal = new(await m_DRoles.ProfileData(profile.Id));
         return mRetVal;
     }
