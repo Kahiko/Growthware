@@ -83,16 +83,20 @@ public abstract class AbstractGroupController : ControllerBase
             // Get the group profile populated with the parameter values
             MGroupProfile mProfileToSave = new(groupProfile)
             {
-                SecurityEntityID = mSecurityEntityId
+                SecurityEntityId = mSecurityEntityId
             };
             // Get a commaseparated string of roles
-            string mRoles = string.Join(",", groupProfile.RolesInGroup);
+            string mRoles = string.Empty;
+            if (groupProfile.RolesInGroup != null)
+            {
+                mRoles = string.Join(",", groupProfile.RolesInGroup);
+            }
             // Get a MGroupRoles object
             MGroupRoles mGroupRoles = new MGroupRoles(mRoles, mSecurityEntityId);
             if (int.Parse(HttpContext.Session.GetString("EditId")) == groupProfile.Id)
             {
                 // Check if this is an add or an update
-                if (groupProfile.Id > -1) 
+                if (groupProfile.Id > -1)
                 {
                     // Check if the requesting account has the correct permissions for an update/edit
                     if (mSecurityInfo.MayEdit)
@@ -102,13 +106,13 @@ public abstract class AbstractGroupController : ControllerBase
                         mProfileToSave.UpdatedDate = DateTime.Now;
                         mGroupRoles.UpdatedBy = mProfileToSave.UpdatedBy;
                         mGroupRoles.UpdatedDate = mProfileToSave.UpdatedDate;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
-                } 
-                else 
+                }
+                else
                 {
                     // Check if the requesting account has the correct permissions for an add
                     if (mSecurityInfo.MayAdd)
@@ -119,7 +123,7 @@ public abstract class AbstractGroupController : ControllerBase
                         mGroupRoles.AddedBy = mProfileToSave.AddedBy;
                         mGroupRoles.AddedDate = mProfileToSave.AddedDate;
                     }
-                    else 
+                    else
                     {
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
