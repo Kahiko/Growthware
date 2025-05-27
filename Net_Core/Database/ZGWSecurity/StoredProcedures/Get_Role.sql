@@ -1,15 +1,14 @@
-
 /*
 Usage:
-	DECLARE 
-		@P_RoleSeqId AS INT = -1,
-		@P_SecurityEntitySeqId AS INT = 1,
-		@P_Debug INT = 1
+DECLARE 
+	@P_RoleSeqId AS INT = -1,
+	@P_SecurityEntitySeqId AS INT = 6,
+	@P_Debug INT = 1
 
-	exec ZGWSecurity.Get_Role
-		@P_RoleSeqId,
-		@P_SecurityEntitySeqId,
-		@P_Debug
+EXEC [ZGWSecurity].[Get_Role]
+	@P_RoleSeqId,
+	@P_SecurityEntitySeqId,
+	@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -19,6 +18,11 @@ Usage:
 -- Note:
 --	RoleSeqId of -1 returns all roles.
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 05/27/2025
+-- Description:	Fixed returning too much information needed to add the BEGIN/END keywords it worked bu
+--	no need in returning too much information if it's not needed.
+-- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Role]
 	@P_RoleSeqId INT,
 	@P_SecurityEntitySeqId INT,
@@ -27,43 +31,44 @@ AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Start ZGWSecurity.Get_Role and SELECT an existing row from the table.'
 	IF @P_RoleSeqId > -1 -- SELECT an existing row from the table.
-		SELECT
-	ZGWSecurity.Roles.[RoleSeqId] AS ROLE_SEQ_ID,
-	ZGWSecurity.Roles.[Name],
-	ZGWSecurity.Roles.[Description],
-	ZGWSecurity.Roles.[Is_System],
-	ZGWSecurity.Roles.[Is_System_Only],
-	ZGWSecurity.Roles.[Added_By],
-	ZGWSecurity.Roles.[Added_Date],
-	ZGWSecurity.Roles.[Updated_By],
-	ZGWSecurity.Roles.[Updated_Date]
-FROM
-	ZGWSecurity.Roles
-WHERE
-			RoleSeqId = @P_RoleSeqId
+		BEGIN
+			SELECT
+				[Roles].[RoleSeqId] AS [ROLE_SEQ_ID],
+				[Roles].[Name],
+				[Roles].[Description],
+				[Roles].[Is_System],
+				[Roles].[Is_System_Only],
+				[Roles].[Added_By],
+				[Roles].[Added_Date],
+				[Roles].[Updated_By],
+				[Roles].[Updated_Date]
+			FROM
+				[ZGWSecurity].[Roles] AS [Roles]
+			WHERE
+				[Roles].RoleSeqId = @P_RoleSeqId
+		END
 	ELSE -- GET ALL ROLES FOR A GIVEN Security Entity
-		IF @P_Debug = 1 PRINT 'GET ALL ROLES FOR A GIVEN Security Entity.'
-		SELECT
-	ZGWSecurity.Roles.[RoleSeqId] AS ROLE_SEQ_ID,
-	ZGWSecurity.Roles.[Name],
-	ZGWSecurity.Roles.[Description],
-	ZGWSecurity.Roles.[Is_System],
-	ZGWSecurity.Roles.[Is_System_Only],
-	ZGWSecurity.Roles.[Added_By],
-	ZGWSecurity.Roles.[Added_Date],
-	ZGWSecurity.Roles.[Updated_By],
-	ZGWSecurity.Roles.[Updated_Date]
-FROM
-	ZGWSecurity.Roles,
-	ZGWSecurity.Roles_Security_Entities
-WHERE
-			ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-	AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-ORDER BY
-			ZGWSecurity.Roles.[Name]
+		BEGIN
+			IF @P_Debug = 1 PRINT 'GET ALL ROLES FOR A GIVEN Security Entity.'
+			SELECT
+				[Roles].[RoleSeqId] AS ROLE_SEQ_ID,
+				[Roles].[Name],
+				[Roles].[Description],
+				[Roles].[Is_System],
+				[Roles].[Is_System_Only],
+				[Roles].[Added_By],
+				[Roles].[Added_Date],
+				[Roles].[Updated_By],
+				[Roles].[Updated_Date]
+			FROM
+				[ZGWSecurity].[Roles] AS [Roles]
+				INNER JOIN [ZGWSecurity].[Roles_Security_Entities] AS [RSE] ON
+					[RSE].[SecurityEntitySeqId] = @P_SecurityEntitySeqId
+					AND [Roles].[RoleSeqId] = [RSE].[RoleSeqId]
+			ORDER BY
+				[Roles].[Name]
+		END
 	-- END IF		
 	IF @P_Debug = 1 PRINT 'End ZGWSecurity.Get_Role'
 RETURN 0
-
 GO
-
