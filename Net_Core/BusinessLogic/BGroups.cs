@@ -97,9 +97,9 @@ public class BGroups : AbstractBusinessLogic
     /// <returns>DataTable.</returns>
     public async Task<DataTable> GetGroupsBySecurityEntity(int securityEntityId)
     {
-        MGroupProfile myProfile = new();
-        m_DGroups.Profile = myProfile;
-        return await m_DGroups.GroupsBySecurityEntity();
+        MGroupProfile mProfile = new();
+        m_DGroups.Profile = mProfile;
+        return await m_DGroups.GroupsBySecurityEntity(securityEntityId);
     }
 
     /// <summary>
@@ -107,12 +107,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="groupId">The group ID.</param>
     /// <returns>MGroupProfile.</returns>
-    public async Task<MGroupProfile> GetProfile(int groupId)
+    public async Task<MGroupProfile> GetProfile(int groupId, int securityEntityId)
     {
         MGroupProfile retProfile = new MGroupProfile();
         retProfile.Id = groupId;
         m_DGroups.Profile = retProfile;
-        retProfile = new MGroupProfile(await m_DGroups.ProfileData());
+        retProfile = new MGroupProfile(await m_DGroups.ProfileData(securityEntityId));
         return retProfile;
     }
 

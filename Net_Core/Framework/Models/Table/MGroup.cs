@@ -12,13 +12,13 @@ namespace GrowthWare.Framework.Models;
 public class MGroupProfile : AAddedUpdated
 {
 
-#region Member Fields
+    #region Member Fields
     private string m_Description = string.Empty;
     private int m_GroupSeqId = -1;
-    private int m_SecurityEntityID = 1;
-#endregion
+    private int m_SecurityEntityId = 1;
+    #endregion
 
-#region Public Properties
+    #region Public Properties
     /// <summary>
     /// Gets or sets the description.
     /// </summary>
@@ -33,11 +33,11 @@ public class MGroupProfile : AAddedUpdated
     public override string ForeignKeyName => "NOT USED";
 
     [DBIgnoreProperty]
-    public int GroupSeqId {get{ return m_GroupSeqId; } set{ m_GroupSeqId = value; } }
+    public int GroupSeqId { get { return m_GroupSeqId; } set { m_GroupSeqId = value; } }
 
     [DBPrimaryKey]
     [DBColumnName("GroupSeqId")]
-    public int Id { get{ return m_GroupSeqId; } set{ m_GroupSeqId = value; } }
+    public int Id { get { return m_GroupSeqId; } set { m_GroupSeqId = value; } }
 
     [DBIgnoreProperty]
     public override bool IsForeignKeyNumeric => false;
@@ -49,17 +49,17 @@ public class MGroupProfile : AAddedUpdated
     /// </summary>
     /// <value>The security entity ID.</value>
     [DBIgnoreProperty]
-    public int SecurityEntityID
+    public int SecurityEntityId
     {
-        get { return m_SecurityEntityID; }
-        set { m_SecurityEntityID = value; }
+        get { return m_SecurityEntityId; }
+        set { m_SecurityEntityId = value; }
     }
 
     [DBIgnoreProperty]
     public override string TableName => "[ZGWSecurity].[Groups]";
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Will return a message profile with the default value's
     /// </summary>
@@ -86,7 +86,7 @@ public class MGroupProfile : AAddedUpdated
         Description = uIGroupProfile.Description;
         Id = uIGroupProfile.Id;
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Initializes the specified DataRow.

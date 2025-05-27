@@ -9,11 +9,6 @@ public interface IGroups : IDBInteraction
 {
 
     /// <summary>
-    /// Sets or gets the SecurityEntitySeqID
-    /// </summary>
-    int SecurityEntitySeqId { get; set; }
-
-    /// <summary>
     /// GroupProfile
     /// </summary>
     MGroupProfile Profile { get; set; }
@@ -39,13 +34,13 @@ public interface IGroups : IDBInteraction
     /// Get's all of the groups for a given Security Entity
     /// </summary>
     /// <returns>DataTable</returns>
-    Task<DataTable> GroupsBySecurityEntity();
+    Task<DataTable> GroupsBySecurityEntity(int securityEntityId);
 
     /// <summary>
     /// Returns a data row necessary to populate MGroupProfile
     /// </summary>
     /// <returns>DataRow</returns>
-    Task<DataRow> ProfileData();
+    Task<DataRow> ProfileData(int securityEntityId);
 
     /// <summary>
     /// Deletes a group in a given Security Entity

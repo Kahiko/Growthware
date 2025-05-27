@@ -11,6 +11,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Helpers;
 
 namespace GrowthWare.Web.Support.Utilities;
+
 public static class GroupUtility
 {
     private static BGroups m_BusinessLogic = null;
@@ -25,6 +26,8 @@ public static class GroupUtility
     public static async Task<UIGroupProfile> Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
         BGroups mBusinessLogic = await getBusinessLogic();
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        profile.SecurityEntityId = mCurrentSecurityEntity.Id;
         // Save the profile
         int mGroupSeqId = await mBusinessLogic.Save(profile);
         // set the groupRoles id's
@@ -66,27 +69,28 @@ public static class GroupUtility
          * with an Account will be changed.
          */
         MGroupProfile mGroupProfile = new MGroupProfile();
-        if(groupSeqId != -1)
+        if (groupSeqId != -1)
         {
             BGroups mBusinessLogic = await getBusinessLogic();
+            MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
             // Get the group profile from the data store
-            mGroupProfile = await mBusinessLogic.GetProfile(groupSeqId);
+            mGroupProfile = await mBusinessLogic.GetProfile(groupSeqId, mCurrentSecurityEntity.Id);
         }
         // Populate mRetVal with the group profile
-        UIGroupProfile mRetVal = new (mGroupProfile);
+        UIGroupProfile mRetVal = new(mGroupProfile);
         // Get a Group Roles object
-        MGroupRoles mGroupRoles = new (groupSeqId, securityEntityId);
+        MGroupRoles mGroupRoles = new(groupSeqId, securityEntityId);
         // Populate mRetVal with the roles associated with the group if a groupSeqId is provided
-        if(groupSeqId != -1)
+        if (groupSeqId != -1)
         {
-            mRetVal.RolesInGroup = await GetSelectedRoles(mGroupRoles);    
+            mRetVal.RolesInGroup = await GetSelectedRoles(mGroupRoles);
         }
         // Populate mRetVal with the roles not associated with the group
         ArrayList mRolesForSecurityEntity = await RoleUtility.GetRolesArrayListBySecurityEntity(securityEntityId);
         List<string> mRolesNotInGroup = new List<string>();
         foreach (string role in mRolesForSecurityEntity)
         {
-            if(groupSeqId == -1 || !mRetVal.RolesInGroup.Any(s => s == role)) 
+            if (groupSeqId == -1 || !mRetVal.RolesInGroup.Any(s => s == role))
             {
                 mRolesNotInGroup.Add(role);
             }
@@ -106,7 +110,7 @@ public static class GroupUtility
     public static async Task Delete(MGroupProfile profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in VB) or empty!");
-        if(profile.Id != -1) 
+        if (profile.Id != -1)
         {
             bool success = false;
             BGroups mBusinessLogic = await getBusinessLogic();
@@ -119,10 +123,11 @@ public static class GroupUtility
     /// </summary>
     /// <param name="groupSeqId">The ID of the group.</param>
     /// <returns>The group profile for the given group sequence ID.</returns>
-    public static async Task<MGroupProfile> GetGroupProfile(int groupSeqId) 
+    public static async Task<MGroupProfile> GetGroupProfile(int groupSeqId)
     {
         BGroups mBusinessLogic = await getBusinessLogic();
-        MGroupProfile mRetVal = await mBusinessLogic.GetProfile(groupSeqId);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MGroupProfile mRetVal = await mBusinessLogic.GetProfile(groupSeqId, mCurrentSecurityEntity.Id);
         return mRetVal;
     }
 
@@ -131,9 +136,9 @@ public static class GroupUtility
     /// </summary>
     /// <param name="groupRoles">The MGroupRoles object from which to retrieve the selected roles.</param>
     /// <returns>An array of strings representing the selected roles.</returns>
-    private static async Task<string[]> GetSelectedRoles(MGroupRoles groupRoles) 
+    private static async Task<string[]> GetSelectedRoles(MGroupRoles groupRoles)
     {
-        string[] mRetVal = new string[]{};
+        string[] mRetVal = new string[] { };
         BGroups mBusinessLogic = await getBusinessLogic();
         mRetVal = await mBusinessLogic.GetSelectedRoles(groupRoles);
         return mRetVal;
@@ -164,7 +169,7 @@ public static class GroupUtility
     {
         String mCacheName = securityEntityId.ToString() + "_Groups";
         DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
-        if(mRetVal == null)
+        if (mRetVal == null)
         {
             BGroups mBusinessLogic = await getBusinessLogic();
             mRetVal = await mBusinessLogic.GetGroupsBySecurityEntity(securityEntityId);
@@ -172,14 +177,14 @@ public static class GroupUtility
         }
         return mRetVal;
     }
-    
+
     /// <summary>
     /// Returns the business logic object used to access the database.
     /// </summary>
     /// <returns></returns>
     private static async Task<BGroups> getBusinessLogic()
     {
-        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        if (m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
             m_BusinessLogic = new(await SecurityEntityUtility.CurrentProfile());
         }
