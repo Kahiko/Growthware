@@ -326,17 +326,18 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = null;
         BAccounts mBusinessLogic = null;
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         if (forceDb)
         {
             mBusinessLogic = await BusinessLogic();
-            mRetVal = await mBusinessLogic.GetProfile(account);
+            mRetVal = await mBusinessLogic.GetProfile(account, mCurrentSecurityEntity.Id);
             return mRetVal;
         }
         mRetVal = await CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mBusinessLogic = await BusinessLogic();
-            mRetVal = await mBusinessLogic.GetProfile(account);
+            mRetVal = await mBusinessLogic.GetProfile(account, mCurrentSecurityEntity.Id);
         }
         return mRetVal;
     }
@@ -538,7 +539,7 @@ public static class AccountUtility
             // as well.
             string mVerificationToken = await mJwtUtility.GenerateVerificationToken();
             mProfileToSave.VerificationToken = mVerificationToken;
-            await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
+            await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups, mTargetSecurityEntity.Id);
             mProfileToSave = await GetAccount(mProfileToSave.Account, true);
             mProfileToSave.VerificationToken = mVerificationToken;
         }
@@ -689,10 +690,10 @@ public static class AccountUtility
         {
             return accountProfile;
         }
-        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         BAccounts mBusinessLogic = await BusinessLogic();
-        await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
-        MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account);
+        await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mCurrentSecurityEntity.Id);
+        MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account, mCurrentSecurityEntity.Id);
         MAccountProfile mCurrentAccountProfile = await CurrentProfile();
         if ((accountProfile.Id == mCurrentAccountProfile.Id) || (mCurrentAccountProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {

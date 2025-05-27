@@ -111,7 +111,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = new(mRequestingProfile.Id);
         if (account != "new") // Populate from the DB
         {
-            mAccountProfile = await AccountUtility.GetAccount(account);
+            mAccountProfile = await AccountUtility.GetAccount(account, true);
             if (!mSecurityInfo.MayEdit)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

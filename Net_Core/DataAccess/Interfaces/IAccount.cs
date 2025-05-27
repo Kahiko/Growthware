@@ -48,7 +48,7 @@ public interface IAccount : IDBInteraction
 	/// 	4. Table 3 - Assigned Groups,
 	/// 	5. Table 4 - Derived Roles
 	/// </returns>
-	Task<DataSet> GetAccount();
+	Task<DataSet> GetAccount(int securityEntitySeqId);
 
 	/// <summary>
 	/// Retrieves Account information given the reset token

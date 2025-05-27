@@ -41,12 +41,12 @@ public class DAccounts : AbstractDBInteraction, IAccount
         set { m_SecurityEntitySeqID = value; }
     }
 
-    async Task<DataSet> IAccount.GetAccount()
+    async Task<DataSet> IAccount.GetAccount(int securityEntitySeqId)
     {
         String mStoredProcedure = "[ZGWSecurity].[Get_Account]";
         SqlParameter[] mParameters = [
             GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
-            GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
+            GetSqlParameter("@P_SecurityEntitySeqId", securityEntitySeqId, ParameterDirection.Input),
             GetSqlParameter("@P_Account", this.Cleanup(m_Profile.Account), ParameterDirection.Input)
         ];
         return await base.GetDataSetAsync(mStoredProcedure, mParameters);

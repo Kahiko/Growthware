@@ -137,7 +137,7 @@ public class BAccounts : AbstractBusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public async Task<MAccountProfile> GetProfile(string account)
+    public async Task<MAccountProfile> GetProfile(string account, int securityEntitySeqId)
     {
         MAccountProfile mRetVal = null;
         if (DatabaseIsOnline())
@@ -146,7 +146,7 @@ public class BAccounts : AbstractBusinessLogic
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
-                DataSet mAccountData = await m_DAccounts.GetAccount();
+                DataSet mAccountData = await m_DAccounts.GetAccount(securityEntitySeqId);
                 DataRow mAccountRow = mAccountData.Tables[(int)AccountTables.AccountDetails].Rows[0];
                 DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
                 DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
@@ -360,7 +360,7 @@ public class BAccounts : AbstractBusinessLogic
     /// mMAccountProfile = mBill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
     /// </code>
     /// </example>
-    public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
+    public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, int securityEntitySeqId)
     {
         m_DAccounts.Profile = profile ?? throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
         if (DatabaseIsOnline())
@@ -378,7 +378,7 @@ public class BAccounts : AbstractBusinessLogic
             {
                 await m_DAccounts.SaveRoles();
             }
-            DataSet mAccountData = await m_DAccounts.GetAccount();
+            DataSet mAccountData = await m_DAccounts.GetAccount(securityEntitySeqId);
             DataRow mAccountRow = mAccountData.Tables[(int)AccountTables.AccountDetails].Rows[0];
             DataTable mRefreshTokens = mAccountData.Tables[(int)AccountTables.RefreshTokens];
             DataTable mAssignedRoles = mAccountData.Tables[(int)AccountTables.AssignedRoles];
