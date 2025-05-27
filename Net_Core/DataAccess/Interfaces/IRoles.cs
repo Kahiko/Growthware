@@ -44,7 +44,7 @@ public interface IRoles : IDBInteraction
     /// <summary>
     /// Saves this instance.
     /// </summary>
-    Task<int> Save();
+    Task<int> Save(MRole profile);
 
     /// <summary>
     /// Deletes the role.

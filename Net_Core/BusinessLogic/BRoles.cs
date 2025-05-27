@@ -100,7 +100,7 @@ public class BRoles : AbstractBusinessLogic
         int mRetVal = -1;
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = await m_DRoles.Save();
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.Save(profile);
         return mRetVal;
     }
 

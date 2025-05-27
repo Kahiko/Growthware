@@ -47,9 +47,9 @@ public class DRoles : AbstractDBInteraction, IRoles
         await base.ExecuteNonQueryAsync(mStoreProc, mParameters);
     }
 
-    async Task<int> IRoles.Save()
+    async Task<int> IRoles.Save(MRole profile)
     {
-        SqlParameter[] mParameters = getInsertUpdateParameters();
+        SqlParameter[] mParameters = getInsertUpdateParameters(profile);
         string myStoreProcedure = "[ZGWSecurity].[Set_Role]";
         await base.ExecuteNonQueryAsync(myStoreProcedure, mParameters);
         int mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters));
@@ -146,20 +146,20 @@ public class DRoles : AbstractDBInteraction, IRoles
         return mRetVal;
     }
 
-    private SqlParameter[] getInsertUpdateParameters()
+    private SqlParameter[] getInsertUpdateParameters(MRole profile)
     {
-        SqlParameter[] myParameters =
+        SqlParameter[] mParameters =
         {
-            new("@P_RoleSeqId", m_Profile.Id),
-            new("@P_Name", m_Profile.Name),
-            new("@P_Description", m_Profile.Description),
-            new("@P_Is_System", m_Profile.IsSystem),
-            new("@P_Is_System_Only", m_Profile.IsSystemOnly),
-            new("@P_SecurityEntitySeqId", m_SecurityEntityID),
-            new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile, m_Profile.Id)),
-            GetSqlParameter("@P_Primary_Key", m_Profile.Id, ParameterDirection.Output)
+            new("@P_RoleSeqId", profile.Id),
+            new("@P_Name", profile.Name),
+            new("@P_Description", profile.Description),
+            new("@P_Is_System", profile.IsSystem),
+            new("@P_Is_System_Only", profile.IsSystemOnly),
+            new("@P_SecurityEntitySeqId", profile.SecurityEntityID),
+            new("@P_Added_Updated_By", GetAddedUpdatedBy(profile, profile.Id)),
+            GetSqlParameter("@P_Primary_Key", profile.Id, ParameterDirection.Output)
         };
-        return myParameters;
+        return mParameters;
     }
 
 }
