@@ -79,13 +79,10 @@ public class BClientChoices : AbstractBusinessLogic
     public BClientChoices(MSecurityEntity securityEntityProfile, bool centralManagement)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if (m_DClientChoices == null)
+        this.m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices", securityEntityProfile.ConnectionString);
+        if (this.m_DClientChoices == null)
         {
-            this.m_DClientChoices = (IClientChoices)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DClientChoices", securityEntityProfile.ConnectionString);
-            if (this.m_DClientChoices == null)
-            {
-                throw new InvalidOperationException("Failed to create an instance of DClientChoices.");
-            }
+            throw new InvalidOperationException("Failed to create an instance of DClientChoices.");
         }
         m_DClientChoices.ConnectionString = securityEntityProfile.ConnectionString;
     }
