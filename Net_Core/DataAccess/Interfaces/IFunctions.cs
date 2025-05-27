@@ -48,7 +48,7 @@ public interface IFunction : IDBInteraction
     /// </summary>
     /// <returns>DataSet</returns>
     /// <remarks>Does not caculate security for accounts.</remarks>
-    Task<DataSet> GetFunctions();
+    Task<DataSet> GetFunctions(int securityEntitySeqId);
 
     /// <summary>
     /// Returns a DataTable of function types

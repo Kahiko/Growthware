@@ -122,8 +122,7 @@ public class BFunctions : AbstractBusinessLogic
             try
             {
                 m_DFunctions.Profile = new MFunctionProfile();
-                m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
-                mDSFunctions = await m_DFunctions.GetFunctions();
+                mDSFunctions = await m_DFunctions.GetFunctions(securityEntitySeqId);
                 bool mHasAssignedRoles = false;
                 bool mHasGroups = false;
                 if (mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedRoles].Rows.Count > 0) mHasAssignedRoles = true;

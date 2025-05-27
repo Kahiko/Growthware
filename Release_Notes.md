@@ -31,6 +31,11 @@
         NOTE: Security (Derived Roles) was left because eventually it may be needed but it is not used.
 
 - Added FunctionSecurityTables and FunctionSecurityTableNames to minimize use of indicies and strings
+- Performance improvement - Updated stored procedure [ZGWSecurity].[Get_Function] to return a DataSet 
+that includes the security tables instead of a single DataTable when the functionSeqId is -1.
+    In turn:
+        Updated DFunctions.GetFunction to return a DataSet instead of a DataTable and added a new parameter (int securityEntitySeqId)
+        Update BFunctions to pass the securityEntitySeqId to DFunctions.GetFunction
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure

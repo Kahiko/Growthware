@@ -38,40 +38,39 @@ public class DFunctions : AbstractDBInteraction, IFunction
         return await base.GetDataRowAsync(mStoreProcedure, mParameters);
     }
 
-    async Task<DataSet> IFunction.GetFunctions()
+    async Task<DataSet> IFunction.GetFunctions(int securityEntitySeqId)
     {
         DataSet mDSFunctions = null;
         checkValid();
         SqlParameter[] mParameters = [
-            new("@P_FunctionSeqId", m_Profile.Id)
+              new("@P_FunctionSeqId", m_Profile.Id)
+            , new("@P_SecurityEntitySeqId", securityEntitySeqId)
         ];
         try
         {
             string mStoredProcedure = "[ZGWSecurity].[Get_Function]";
-            DataTable mFunctions = await base.GetDataTableAsync(mStoredProcedure, mParameters);
-            mDSFunctions = await this.getSecurity();
+            mDSFunctions = await this.GetDataSetAsync(mStoredProcedure, mParameters);
             mDSFunctions.Tables[(int)FunctionSecurityTables.DerivedRoles].TableName = FunctionSecurityTableNames.DERIVED_ROLES;
             mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedRoles].TableName = FunctionSecurityTableNames.ASSIGNED_ROLES;
             mDSFunctions.Tables[(int)FunctionSecurityTables.AssignedGroups].TableName = FunctionSecurityTableNames.ASSIGNED_GROUPS;
+            mDSFunctions.Tables[(int)FunctionSecurityTables.Functions].TableName = FunctionSecurityTableNames.FUNCTIONS;
 
 
             bool mHasAssingedRoles = false;
             bool mHasGroups = false;
-            mFunctions.TableName = "Functions";
             if (mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_ROLES].Rows.Count > 0) mHasAssingedRoles = true;
             if (mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_GROUPS].Rows.Count > 0) mHasGroups = true;
-            mDSFunctions.Tables.Add(mFunctions);
 
-            DataRelation mRelation = new DataRelation(FunctionSecurityTableNames.DERIVED_ROLES, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["DerivedRoles"].Columns["Function_Seq_ID"]);
+            DataRelation mRelation = new DataRelation(FunctionSecurityTableNames.DERIVED_ROLES, mDSFunctions.Tables[FunctionSecurityTableNames.FUNCTIONS].Columns["Function_Seq_ID"], mDSFunctions.Tables[FunctionSecurityTableNames.DERIVED_ROLES].Columns["Function_Seq_ID"]);
             mDSFunctions.Relations.Add(mRelation);
             if (mHasAssingedRoles)
             {
-                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_ROLES, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["AssignedRoles"].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_ROLES, mDSFunctions.Tables[FunctionSecurityTableNames.FUNCTIONS].Columns["Function_Seq_ID"], mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_GROUPS].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
             }
             if (mHasGroups)
             {
-                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_GROUPS, mDSFunctions.Tables["Functions"].Columns["Function_Seq_ID"], mDSFunctions.Tables["Groups"].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_GROUPS, mDSFunctions.Tables[FunctionSecurityTableNames.FUNCTIONS].Columns["Function_Seq_ID"], mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_GROUPS].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
             }
 

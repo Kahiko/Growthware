@@ -414,88 +414,206 @@ GO
 Usage:
 
 DECLARE 
-	@P_Token NVARCHAR(MAX) = '',
-	@P_Debug INT = 1
+	 @P_FunctionSeqId INT = 1
+	,@P_Debug INT = 1
 
-EXEC [ZGWSecurity].[Get_Account_By_Refresh_Token]
-	@P_Account,
-	@P_Debug
+EXEC [ZGWSecurity].[Get_Function]
+	 @P_FunctionSeqId
+	,@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
--- Create date: 11/11/2022
--- Description:	Selects a single account given the Token
+-- Create date: 08/12/2011
+-- Description:	Selects function given
+--	the FunctionSeqId. When FunctionSeqId = -1
+--	all rows in the table are retruned.
+-- =============================================
+CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Function] 
+	 @P_FunctionSeqId INT
+	,@P_Debug INT = 0
+AS
+SET NOCOUNT ON;
+IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function'
+
+IF @P_FunctionSeqId <> - 1
+	BEGIN
+		-- SELECT an existing row from the table.
+		IF @P_Debug = 1 PRINT 'Selecting single record'
+
+		SELECT FunctionSeqId AS FUNCTION_SEQ_ID
+			,[Name]
+			,[Description]
+			,FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
+			,[Source]
+			,[Controller]
+			,[Resolve]
+			,Enable_View_State
+			,Enable_Notifications
+			,Redirect_On_Timeout
+			,Is_Nav
+			,Link_Behavior
+			,No_UI
+			,Navigation_Types_NVP_DetailSeqId AS NAVIGATION_NVP_SEQ_DET_ID
+			,Meta_Key_Words
+			,[Action]
+			,ParentSeqId AS PARENT_FUNCTION_SEQ_ID
+			,Notes
+			,Sort_Order
+			,Added_By
+			,Added_Date
+			,Updated_By
+			,Updated_Date
+		FROM ZGWSecurity.Functions WITH (NOLOCK)
+		WHERE FunctionSeqId = @P_FunctionSeqId
+		ORDER BY [Name] ASC
+	END
+ELSE
+	BEGIN
+		IF @P_Debug = 1
+			PRINT 'Selecting all records'
+
+		SELECT FunctionSeqId AS FUNCTION_SEQ_ID
+			,[Name]
+			,[Description]
+			,FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
+			,[Source]
+			,[Controller]
+			,[Resolve]
+			,Enable_View_State
+			,Enable_Notifications
+			,Redirect_On_Timeout
+			,Is_Nav
+			,Link_Behavior
+			,No_UI
+			,Navigation_Types_NVP_DetailSeqId AS NAVIGATION_NVP_SEQ_DET_ID
+			,Meta_Key_Words
+			,[Action]
+			,ParentSeqId AS PARENT_FUNCTION_SEQ_ID
+			,Notes
+			,Sort_Order
+			,Added_By
+			,Added_Date
+			,Updated_By
+			,Updated_Date
+		FROM ZGWSecurity.Functions WITH (NOLOCK)
+		ORDER BY [Name] ASC
+	END
+-- END IF
+IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function'
+
+RETURN 0
+GO
+
+/****** End: [ZGWSecurity].[Get_Account_By_Refresh_Token] ******/
+
+/****** Start: [ZGWSecurity].[Get_Function] ******/
+SET QUOTED_IDENTIFIER ON;
+GO
+/*
+Usage:
+
+DECLARE 
+	 @P_FunctionSeqId INT = 1
+	,@P_SecurityEntitySeqId INT = 1
+	,@P_Debug INT = 1
+
+EXEC [ZGWSecurity].[Get_Function]
+	 @P_FunctionSeqId
+	,@P_SecurityEntitySeqId
+	,@P_Debug
+*/
 -- =============================================
 -- Author:		Michael Regan
--- Create date: 11/11/2022
--- Description:	Now returns multiple tables given the RefreshToken the data tables are from:
---					[ZGWSecurity].[RefreshTokens]
---					[ZGWSecurity].[Get_Account_Roles]
---					[ZGWSecurity].[Get_Account_Groups]
---					[ZGWSecurity].[Get_Account_Security]
+-- Create date: 08/12/2011
+-- Description:	Selects function given
+--	the FunctionSeqId. When FunctionSeqId = -1
+--	all rows in the table are retruned.
 -- =============================================
-CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Refresh_Token]
-	@P_Token NVARCHAR(MAX),
-	@P_Debug INT = 0
+-- Author:		Michael Regan
+-- Create date: 05/26/2025
+-- Description:	Now returns all of the needed data when getting "all" functions.
+--	When FunctionSeqId = -1.
+-- =============================================
+
+CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Function] 
+	 @P_FunctionSeqId INT
+	,@P_SecurityEntitySeqId INT
+	,@P_Debug INT = 0
 AS
-BEGIN
-	SET NOCOUNT ON
-	DECLARE @V_Account VARCHAR(128)
-		, @V_Is_System_Admin bit
-		, @V_SecurityEntitySeqId INT;
+SET NOCOUNT ON;
+IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function'
 
-	SELECT TOP(1)
-		  @V_Account = [ACCTS].[Account] 
-		, @V_Is_System_Admin = [ACCTS].[Is_System_Admin]
-		, @V_SecurityEntitySeqId = [ACCT_CHOICES].[SecurityEntityId]
-	FROM 
-		[ZGWSecurity].[Accounts] [ACCTS]
-		INNER JOIN [ZGWSecurity].[RefreshTokens] [RT] ON
-			[RT].[Token] = @P_Token
-			AND [ACCTS].[AccountSeqId] = [RT].[AccountSeqId]
-		LEFT JOIN [ZGWCoreWeb].[Account_Choices] [ACCT_CHOICES] ON
-			[ACCTS].[Account] = [ACCT_CHOICES].[Account];
+IF @P_FunctionSeqId <> - 1
+	BEGIN
+		-- SELECT an existing row from the table.
+		IF @P_Debug = 1 PRINT 'Selecting single record'
 
-	IF @P_Debug = 1
-		BEGIN
-			PRINT '@V_Account IS: ' + CONVERT(NVARCHAR(MAX), @V_Account);
-			PRINT '@V_Is_System_Admin IS: ' + CONVERT(NVARCHAR(MAX), @V_Is_System_Admin);
-			PRINT '@V_SecurityEntitySeqId IS: ' + CONVERT(NVARCHAR(MAX), @V_SecurityEntitySeqId);
-		END
-	--END IF
-	-- [ZGWSecurity].[Accounts] (Reduces code duplication)
-	EXEC [ZGWSecurity].[Get_Account]
-		@V_Is_System_Admin,
-		@V_Account,
-		@V_SecurityEntitySeqId,
-		@P_Debug
-    -- [ZGWSecurity].[RefreshTokens]
-	SELECT 
-		  RT.[RefreshTokenId]
-		, RT.[AccountSeqId]
-		, RT.[Token]
-		, RT.[Expires]
-		, RT.[Created]
-		, RT.[CreatedByIp]
-		, RT.[Revoked]
-		, RT.[RevokedByIp]
-		, RT.[ReplacedByToken]
-		, RT.[ReasonRevoked]
-    FROM 
-		[ZGWSecurity].[RefreshTokens] RT
-        INNER JOIN [ZGWSecurity].[Accounts] ACCT 
-			ON ACCT.[Account] = @V_Account AND RT.AccountSeqId = ACCT.[AccountSeqId]
-    ORDER BY [Created] ASC;
-	-- [ZGWSecurity].[Get_Account_Roles]
-	EXEC [ZGWSecurity].[Get_Account_Roles] @V_Account, @V_SecurityEntitySeqId
-	-- [ZGWSecurity].[Get_Account_Groups]
-	EXEC [ZGWSecurity].[Get_Account_Groups] @V_Account, @V_SecurityEntitySeqId
-	-- [ZGWSecurity].[Get_Account_Security]
-	EXEC [ZGWSecurity].[Get_Account_Security] @V_Account, @V_SecurityEntitySeqId
-	RETURN 0;
-END;
+		SELECT 
+			 [Functions].[FunctionSeqId] AS [FUNCTION_SEQ_ID]
+			,[Functions].[Name]
+			,[Functions].[Description]
+			,[Functions].[FunctionTypeSeqId] AS [FUNCTION_TYPE_SEQ_ID]
+			,[Functions].[Source]
+			,[Functions].[Controller]
+			,[Functions].[Resolve]
+			,[Functions].[Enable_View_State]
+			,[Functions].[Enable_Notifications]
+			,[Functions].[Redirect_On_Timeout]
+			,[Functions].[Is_Nav]
+			,[Functions].[Link_Behavior]
+			,[Functions].[No_UI]
+			,[Functions].[Navigation_Types_NVP_DetailSeqId] AS [NAVIGATION_NVP_SEQ_DET_ID]
+			,[Functions].[Meta_Key_Words]
+			,[Functions].[Action]
+			,[Functions].[ParentSeqId] AS [PARENT_FUNCTION_SEQ_ID]
+			,[Functions].[Notes]
+			,[Functions].[Sort_Order]
+			,[Functions].[Added_By]
+			,[Functions].[Added_Date]
+			,[Functions].[Updated_By]
+			,[Functions].[Updated_Date]
+		FROM [ZGWSecurity].[Functions] AS [Functions] WITH (NOLOCK)
+		WHERE [Functions].[FunctionSeqId] = @P_FunctionSeqId
+		ORDER BY [Functions].[Name] ASC
+	END
+ELSE
+	BEGIN
+		IF @P_Debug = 1 PRINT 'Selecting all records'
+
+		EXEC [ZGWSecurity].[Get_Function_Security] @P_SecurityEntitySeqId, @P_Debug;
+		SELECT 
+			 [Functions].[FunctionSeqId] AS [FUNCTION_SEQ_ID]
+			,[Functions].[Name]
+			,[Functions].[Description]
+			,[Functions].[FunctionTypeSeqId] AS [FUNCTION_TYPE_SEQ_ID]
+			,[Functions].[Source]
+			,[Functions].[Controller]
+			,[Functions].[Resolve]
+			,[Functions].[Enable_View_State]
+			,[Functions].[Enable_Notifications]
+			,[Functions].[Redirect_On_Timeout]
+			,[Functions].[Is_Nav]
+			,[Functions].[Link_Behavior]
+			,[Functions].[No_UI]
+			,[Functions].[Navigation_Types_NVP_DetailSeqId] AS [NAVIGATION_NVP_SEQ_DET_ID]
+			,[Functions].[Meta_Key_Words]
+			,[Functions].[Action]
+			,[Functions].[ParentSeqId] AS [PARENT_FUNCTION_SEQ_ID]
+			,[Functions].[Notes]
+			,[Functions].[Sort_Order]
+			,[Functions].[Added_By]
+			,[Functions].[Added_Date]
+			,[Functions].[Updated_By]
+			,[Functions].[Updated_Date]
+		FROM [ZGWSecurity].[Functions] AS [Functions] WITH (NOLOCK)
+		ORDER BY [Functions].[Name] ASC;
+	END
+-- END IF
+IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function'
+
+RETURN 0
 GO
-/****** End: [ZGWSecurity].[Get_Account_By_Refresh_Token] ******/
+/****** End: [ZGWSecurity].[Get_Function] ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
