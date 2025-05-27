@@ -61,5 +61,5 @@ public interface IRoles : IDBInteraction
     /// Gets the roles by BU.
     /// </summary>
     /// <returns>DataTable.</returns>
-    Task<DataTable> RolesBySecurityEntity();
+    Task<DataTable> RolesBySecurityEntity(int securityEntitySeqId);
 }

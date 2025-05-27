@@ -132,12 +132,11 @@ public class BRoles : AbstractBusinessLogic
     /// <summary>
     /// Gets the roles by BU.
     /// </summary>
-    /// <param name="SecurityEntityID">The security entity ID.</param>
+    /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>DataTable.</returns>
-    public async Task<DataTable> GetRolesBySecurityEntity(int SecurityEntityID)
+    public async Task<DataTable> GetRolesBySecurityEntity(int securityEntitySeqId)
     {
-        m_DRoles.SecurityEntitySeqID = SecurityEntityID;
-        return await m_DRoles.RolesBySecurityEntity();
+        return await m_DRoles.RolesBySecurityEntity(securityEntitySeqId);
     }
 
     /// <summary>
