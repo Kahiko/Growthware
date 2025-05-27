@@ -58,14 +58,16 @@ public class DRoles : AbstractDBInteraction, IRoles
 
     async Task<DataTable> IRoles.RolesBySecurityEntity(int securityEntitySeqId)
     {
+        // a roleSeqId of -1 will return all rows for the given securityEntitySeqId
         SqlParameter[] myParameters = [new("@P_RoleSeqId", -1), new("@P_SecurityEntitySeqId", securityEntitySeqId)];
         String myStoreProc = "[ZGWSecurity].[Get_Role]";
         return await base.GetDataTableAsync(myStoreProc, myParameters);
     }
 
-    async Task<DataRow> IRoles.ProfileData()
+    async Task<DataRow> IRoles.ProfileData(int roleSeqId)
     {
-        SqlParameter[] myParameters = [new("@P_RoleSeqId", m_Profile.Id), new("@P_SecurityEntitySeqId", -1)];
+        // a roleSeqId <> -1 will return a single row for the given roleSeqId and the securityEntitySeqId is ignored
+        SqlParameter[] myParameters = [new("@P_RoleSeqId", roleSeqId), new("@P_SecurityEntitySeqId", -1)];
         String myStoreProc = "[ZGWSecurity].[Get_Role]";
         return await base.GetDataRowAsync(myStoreProc, myParameters);
     }

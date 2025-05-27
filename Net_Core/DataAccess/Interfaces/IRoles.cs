@@ -55,7 +55,7 @@ public interface IRoles : IDBInteraction
     /// Gets the profile data.
     /// </summary>
     /// <returns>DataRow.</returns>
-    Task<DataRow> ProfileData();
+    Task<DataRow> ProfileData(int roleSeqId);
 
     /// <summary>
     /// Gets the roles by BU.
