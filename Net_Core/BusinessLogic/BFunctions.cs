@@ -197,6 +197,13 @@ public class BFunctions : AbstractBusinessLogic
 
     }
 
+    /// <summary>
+    /// Copies the function security from one "Security Entity" to another.
+    /// </summary>
+    /// <param name="source">int - securityEntitySeqId</param>
+    /// <param name="target">int - securityEntitySeqId</param>
+    /// <param name="added_Updated_By">int - accountSeqId</param>
+    /// <returns>Task</returns>
     public async Task CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
         if (DatabaseIsOnline()) await m_DFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
@@ -211,6 +218,10 @@ public class BFunctions : AbstractBusinessLogic
         if (DatabaseIsOnline()) await m_DFunctions.Delete(functionSeqId);
     }
 
+    /// <summary>
+    /// Gets the menu types.
+    /// </summary>
+    /// <returns>DataTable</returns>
     public async Task<DataTable> MenuTypes()
     {
         return await m_DFunctions.MenuTypes();
