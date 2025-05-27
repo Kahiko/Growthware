@@ -34,7 +34,7 @@ public interface IGroups : IDBInteraction
     /// Get's all of the groups for a given Security Entity
     /// </summary>
     /// <returns>DataTable</returns>
-    Task<DataTable> GroupsBySecurityEntity(int securityEntityId);
+    Task<DataTable> GroupsBySecurityEntity();
 
     /// <summary>
     /// Returns a data row necessary to populate MGroupProfile

@@ -53,7 +53,7 @@ public class DGroups : AbstractDBInteraction, IGroups
     /// Get's all of the groups for a given Security Entity
     /// </summary>
     /// <returns>DataTable</returns>
-    public async Task<DataTable> GroupsBySecurityEntity(int securityEntityId)
+    public async Task<DataTable> GroupsBySecurityEntity()
     {
         string mStoreProc = "ZGWSecurity.Get_Group";
         SqlParameter[] mParameters = [

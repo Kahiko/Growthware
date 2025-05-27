@@ -97,9 +97,12 @@ public class BGroups : AbstractBusinessLogic
     /// <returns>DataTable.</returns>
     public async Task<DataTable> GetGroupsBySecurityEntity(int securityEntityId)
     {
-        MGroupProfile mProfile = new();
+        MGroupProfile mProfile = new()
+        {
+            SecurityEntityId = securityEntityId
+        };
         m_DGroups.Profile = mProfile;
-        return await m_DGroups.GroupsBySecurityEntity(securityEntityId);
+        return await m_DGroups.GroupsBySecurityEntity();
     }
 
     /// <summary>
