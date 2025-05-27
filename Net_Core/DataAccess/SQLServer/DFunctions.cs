@@ -24,7 +24,6 @@ public class DFunctions : AbstractDBInteraction, IFunction
 
     #region Member Fields
     private MFunctionProfile m_Profile = null;
-    private int m_SecurityEntitySeqId = -2;
     #endregion
 
     #region Public Properties
@@ -101,25 +100,12 @@ public class DFunctions : AbstractDBInteraction, IFunction
             m_Profile = value;
         }
     }
-
-    int IFunction.SecurityEntitySeqId
-    {
-        get
-        {
-            return m_SecurityEntitySeqId;
-        }
-        set
-        {
-            m_SecurityEntitySeqId = value;
-        }
-    }
     #endregion
 
     #region Constructors
-    public DFunctions(string connectionString, int securityEntitySeqId) : base()
+    public DFunctions(string connectionString) : base()
     {
         this.ConnectionString = connectionString;
-        this.m_SecurityEntitySeqId = securityEntitySeqId;
     }
     #endregion
 
@@ -233,16 +219,5 @@ public class DFunctions : AbstractDBInteraction, IFunction
         {
             throw new InvalidOperationException("The Profile property must set before using any methods from this class.");
         }
-        if (m_SecurityEntitySeqId == 0)
-        {
-            throw new InvalidOperationException("The SecurityEntitySeqId property must set before using any methods from this class.");
-        }
-    }
-
-    private async Task<DataSet> getSecurity()
-    {
-        string mStoreProcedure = "[ZGWSecurity].[Get_Function_Security]";
-        SqlParameter[] mParameters = [new("@P_SecurityEntitySeqId", m_SecurityEntitySeqId)];
-        return await base.GetDataSetAsync(mStoreProcedure, mParameters);
     }
 }

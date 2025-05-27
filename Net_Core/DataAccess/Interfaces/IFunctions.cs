@@ -21,11 +21,6 @@ public interface IFunction : IDBInteraction
     MFunctionProfile Profile { get; set; }
 
     /// <summary>
-    /// Used by all methods and must be set to send parameters to the data store
-    /// </summary>
-    int SecurityEntitySeqId { get; set; }
-
-    /// <summary>
     /// Copies the function security from the source to the target deleteing the target in the process
     /// </summary>
     /// <param name="source"></param>

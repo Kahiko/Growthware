@@ -80,13 +80,10 @@ public class BFunctions : AbstractBusinessLogic
     public BFunctions(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if (m_DFunctions == null)
+        this.m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions", securityEntityProfile.ConnectionString);
+        if (this.m_DFunctions == null)
         {
-            this.m_DFunctions = (IFunction)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DFunctions == null)
-            {
-                throw new InvalidOperationException("Failed to create an instance of DFunctions.");
-            }
+            throw new InvalidOperationException("Failed to create an instance of DFunctions.");
         }
     }
     #endregion
