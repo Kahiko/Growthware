@@ -40,9 +40,9 @@ public class DRoles : AbstractDBInteraction, IRoles
         set { m_Profile = value; }
     }
 
-    async Task IRoles.DeleteRole()
+    async Task IRoles.DeleteRole(string roleName, int securityEntitySeqId)
     {
-        SqlParameter[] mParameters = [new("@P_Name", m_Profile.Name), new("@P_SecurityEntitySeqId", m_SecurityEntityID)];
+        SqlParameter[] mParameters = [new("@P_Name", roleName), new("@P_SecurityEntitySeqId", securityEntitySeqId)];
         String mStoreProc = "[ZGWSecurity].[Delete_Role]";
         await base.ExecuteNonQueryAsync(mStoreProc, mParameters);
     }

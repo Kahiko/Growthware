@@ -49,7 +49,7 @@ public interface IRoles : IDBInteraction
     /// <summary>
     /// Deletes the role.
     /// </summary>
-    Task DeleteRole();
+    Task DeleteRole(string roleName, int securityEntitySeqId);
 
     /// <summary>
     /// Gets the profile data.
