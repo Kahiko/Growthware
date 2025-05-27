@@ -86,7 +86,7 @@ public class DRoles : AbstractDBInteraction, IRoles
         return await base.GetDataTableAsync(myStoreProcedure, myParameters);
     }
 
-    async Task<bool> IRoles.UpdateAllAccountsForRole(int roleSeqID, int SecurityEntityID, string[] accounts, int accountSeqID)
+    async Task<bool> IRoles.UpdateAllAccountsForRole(int roleSeqId, int securityEntitySeqId, string[] accounts, int accountSeqId)
     {
         bool mRetVal = false;
         SqlConnection mSqlConnection = null;
@@ -102,9 +102,9 @@ public class DRoles : AbstractDBInteraction, IRoles
             mSqlCommand.CommandType = CommandType.StoredProcedure;
             mSqlCommand.Transaction = mSqlTransaction;
 
-            SqlParameter mSqlParameter = new("@P_ROLE_SEQ_ID", roleSeqID);
+            SqlParameter mSqlParameter = new("@P_ROLE_SEQ_ID", roleSeqId);
             mSqlCommand.Parameters.Add(mSqlParameter);
-            mSqlParameter = new("@P_SecurityEntitySeqId", SecurityEntityID);
+            mSqlParameter = new("@P_SecurityEntitySeqId", securityEntitySeqId);
             mSqlCommand.Parameters.Add(mSqlParameter);
             await mSqlCommand.ExecuteNonQueryAsync();
 
@@ -113,13 +113,13 @@ public class DRoles : AbstractDBInteraction, IRoles
             {
                 mAccount = account_loopVariable;
                 mSqlCommand.Parameters.Clear();
-                mSqlParameter = new("@P_RoleSeqId", roleSeqID);
+                mSqlParameter = new("@P_RoleSeqId", roleSeqId);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new("@P_SecurityEntitySeqId", SecurityEntityID);
+                mSqlParameter = new("@P_SecurityEntitySeqId", securityEntitySeqId);
                 mSqlCommand.Parameters.Add(mSqlParameter);
                 mSqlParameter = new("@P_Account", mAccount);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new("@P_Added_Updated_By", accountSeqID);
+                mSqlParameter = new("@P_Added_Updated_By", accountSeqId);
                 mSqlCommand.Parameters.Add(mSqlParameter);
                 await mSqlCommand.ExecuteNonQueryAsync();
             }
