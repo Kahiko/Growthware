@@ -65,7 +65,7 @@ public class DFunctions : AbstractDBInteraction, IFunction
             mDSFunctions.Relations.Add(mRelation);
             if (mHasAssingedRoles)
             {
-                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_ROLES, mDSFunctions.Tables[FunctionSecurityTableNames.FUNCTIONS].Columns["Function_Seq_ID"], mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_GROUPS].Columns["Function_Seq_ID"]);
+                mRelation = new DataRelation(FunctionSecurityTableNames.ASSIGNED_ROLES, mDSFunctions.Tables[FunctionSecurityTableNames.FUNCTIONS].Columns["Function_Seq_ID"], mDSFunctions.Tables[FunctionSecurityTableNames.ASSIGNED_ROLES].Columns["Function_Seq_ID"]);
                 mDSFunctions.Relations.Add(mRelation);
             }
             if (mHasGroups)
