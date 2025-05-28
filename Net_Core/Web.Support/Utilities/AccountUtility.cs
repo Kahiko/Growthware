@@ -161,15 +161,9 @@ public static class AccountUtility
         await Save(mRetVal, true, false, false);
         RemoveInMemoryInformation(mRetVal.Account);
         await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
-        // TODO: Need to find a more efficient way to do this
-        // Get the account again to get the correct derived roles
-        MAccountProfile mCorrectSecurity = await GetAccount(mAccount, true);
-        // Update the Token and RefreshTokens to match what was just created
-        mCorrectSecurity.Token = mRetVal.Token;
-        mCorrectSecurity.RefreshTokens = mRetVal.RefreshTokens;
         // Update the cache or session which in turn will update the "CurrentProfile" property.
-        addOrUpdateCacheOrSession(mCorrectSecurity.Account, mCorrectSecurity);
-        return mCorrectSecurity;
+        addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
+        return mRetVal;
     }
 
     /// <summary>

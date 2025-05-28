@@ -30,7 +30,7 @@ EXEC  [ZGWSecurity].[Get_Account]
 -- Author:		Michael Regan
 -- Create date: 05/25/2025
 -- Description:	Now returns multiple tables when requesting a 
--- single acccount from:
+-- single acccount from and selecting SecurityEntitySeqId from the [ZGWSecurity].[Account_Choices] table:
 --	[ZGWSecurity].[RefreshTokens]
 --	[ZGWSecurity].[Get_Account_Roles]
 --	[ZGWSecurity].[Get_Account_Groups]
@@ -201,32 +201,31 @@ IF LEN(RTRIM(LTRIM(@P_Account))) = 0
 ELSE
 	BEGIN
 		IF @P_Debug = 1 PRINT 'Selecting single account'
-
+		DECLARE @V_SecurityEntitySeqId INT = (SELECT [SecurityEntityId] FROM [ZGWCoreWeb].[Account_Choices] WITH (NOLOCK) WHERE [Account] = @P_Account);
 		-- SELECT an existing row from the table.
 		SELECT 
-			 AccountSeqId AS ACCT_SEQ_ID
-			,Account AS ACCT
-			,Email
-			,Enable_Notifications
-			,Is_System_Admin
-			,StatusSeqId AS STATUS_SEQ_ID
-			,Password_Last_Set
-			,[Password] AS PWD
-			,Failed_Attempts
-			,First_Name
-			,Last_Login
-			,Last_Name
-			,Location
-			,Middle_Name
-			,Preferred_Name
-			,Time_Zone
-			,Added_By
-			,Added_Date
-			,Updated_By
-			,Updated_Date
+			 [AccountSeqId] AS [ACCT_SEQ_ID]
+			,[Account] AS [ACCT]
+			,[Email]
+			,[Enable_Notifications]
+			,[Is_System_Admin]
+			,[StatusSeqId] AS [STATUS_SEQ_ID]
+			,[Password_Last_Set]
+			,[Password] AS [PWD]
+			,[Failed_Attempts]
+			,[First_Name]
+			,[Last_Login]
+			,[Last_Name]
+			,[Location]
+			,[Middle_Name]
+			,[Preferred_Name]
+			,[Time_Zone]
+			,[Added_By]
+			,[Added_Date]
+			,[Updated_By]
+			,[Updated_Date]
 		FROM [ZGWSecurity].[Accounts] WITH (NOLOCK)
 		WHERE [Account] = @P_Account
-        -- [ZGWSecurity].[RefreshTokens]
 		SELECT 
 			  RT.[RefreshTokenId]
 			, RT.[AccountSeqId]
@@ -244,11 +243,11 @@ ELSE
 				ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId]
         ORDER BY [Created] ASC;
 		-- [ZGWSecurity].[Get_Account_Roles]
-		EXEC [ZGWSecurity].[Get_Account_Roles] @P_Account, @P_SecurityEntitySeqId
+		EXEC [ZGWSecurity].[Get_Account_Roles] @P_Account, @V_SecurityEntitySeqId
 		-- [ZGWSecurity].[Get_Account_Groups]
-		EXEC [ZGWSecurity].[Get_Account_Groups] @P_Account, @P_SecurityEntitySeqId
+		EXEC [ZGWSecurity].[Get_Account_Groups] @P_Account, @V_SecurityEntitySeqId
 		-- [ZGWSecurity].[Get_Account_Security]
-		EXEC [ZGWSecurity].[Get_Account_Security] @P_Account, @P_SecurityEntitySeqId
+		EXEC [ZGWSecurity].[Get_Account_Security] @P_Account, @V_SecurityEntitySeqId
 	END
 -- END IF
 RETURN 0
