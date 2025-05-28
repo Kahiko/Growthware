@@ -53,10 +53,10 @@ export class ArcLayoutComponent implements OnInit {
 
 
 	ngOnInit(): void {
-		console.log('', this._AccountSvc.authenticationResponse());
+		// console.log('', this._AccountSvc.authenticationResponse());
 		this.greeting = '';
 		if (this._AccountSvc.authenticationResponse().account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
-			this.greeting = 'Hello, ' + this._AccountSvc.authenticationResponse().account;
+			this.greeting = 'Hello, ' + this._AccountSvc.authenticationResponse().preferredName;
 		}
 	}
 
