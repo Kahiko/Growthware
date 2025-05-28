@@ -160,10 +160,16 @@ public static class AccountUtility
         mRetVal.LastLogOn = DateTime.Now;
         await Save(mRetVal, true, false, false);
         RemoveInMemoryInformation(mRetVal.Account);
-        // Update the cache or session which in turn will update the "CurrentProfile" property.
-        addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
         await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
-        return mRetVal;
+        // TODO: Need to find a more efficient way to do this
+        // Get the account again to get the correct derived roles
+        MAccountProfile mCorrectSecurity = await GetAccount(mAccount, true);
+        // Update the Token and RefreshTokens to match what was just created
+        mCorrectSecurity.Token = mRetVal.Token;
+        mCorrectSecurity.RefreshTokens = mRetVal.RefreshTokens;
+        // Update the cache or session which in turn will update the "CurrentProfile" property.
+        addOrUpdateCacheOrSession(mCorrectSecurity.Account, mCorrectSecurity);
+        return mCorrectSecurity;
     }
 
     /// <summary>
