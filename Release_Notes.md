@@ -61,6 +61,7 @@ that includes the security tables instead of a single DataTable when the functio
 - Fixed SaveClientChoices not updating the session correctly
 - Framework.DataHelper\GetJsonStringFromTable not properly dealing with double quotes in the data
 - Web.Support.BaseControllers.AbstractFunctionController\Save Fixed groups/roles not saving correctly
+- Fixed when BAccounts.Save would not save groups correctly when a security entity was other than 1
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

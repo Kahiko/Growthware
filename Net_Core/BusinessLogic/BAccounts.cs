@@ -363,6 +363,7 @@ public class BAccounts : AbstractBusinessLogic
     public async Task Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, int securityEntitySeqId)
     {
         m_DAccounts.Profile = profile ?? throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!");
+        m_DAccounts.SecurityEntitySeqId = securityEntitySeqId;
         if (DatabaseIsOnline())
         {
             profile.Id = await m_DAccounts.Save();
