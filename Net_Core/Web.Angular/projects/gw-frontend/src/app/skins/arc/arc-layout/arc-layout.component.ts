@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
@@ -22,24 +22,18 @@ import { sideNavTextAnimation } from '../animations/side-nav';
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        CommonModule,
-        RouterOutlet,
-        // Feature
-        ArcFooterComponent,
-        ArcHeaderComponent,
-        // Angular Material Modules
-        MatButtonModule,
-        MatDividerModule,
-        // MatIconModule,
-        MatListModule,
-        // MatMenuModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        // Library Modules
-        HierarchicalVerticalComponent,
-        VerticalComponent,
-        LoaderComponent,
-    ]
+    RouterOutlet,
+    ArcFooterComponent,
+    ArcHeaderComponent,
+    MatButtonModule,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    HierarchicalVerticalComponent,
+    VerticalComponent,
+    LoaderComponent
+]
 })
 export class ArcLayoutComponent {
 

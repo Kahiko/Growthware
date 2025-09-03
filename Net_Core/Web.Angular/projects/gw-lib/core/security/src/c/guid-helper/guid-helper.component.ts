@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -11,11 +11,10 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 @Component({
     selector: 'gw-core-guid-helper',
     imports: [
-        CommonModule,
-        FormsModule,
-        MatButtonModule,
-        MatTabsModule
-    ],
+    FormsModule,
+    MatButtonModule,
+    MatTabsModule
+],
     templateUrl: './guid-helper.component.html',
     styleUrls: ['./guid-helper.component.scss']
 })

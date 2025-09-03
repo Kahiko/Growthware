@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -19,17 +19,13 @@ import { DevOpsHeaderComponent } from '../dev-ops-header/dev-ops-header.componen
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        CommonModule,
-        RouterOutlet,
-        // Angular Material
-        MatSidenavModule,
-        // Skin Components
-        DevOpsFooterComponent,
-        DevOpsHeaderComponent,
-        // Library Standalone
-        LoaderComponent,
-        VerticalComponent,
-    ]
+    RouterOutlet,
+    MatSidenavModule,
+    DevOpsFooterComponent,
+    DevOpsHeaderComponent,
+    LoaderComponent,
+    VerticalComponent
+]
 })
 export class DevOpsLayoutComponent {
 

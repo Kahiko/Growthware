@@ -1,5 +1,5 @@
 import { Component, computed, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatDividerModule } from '@angular/material/divider';
@@ -21,20 +21,16 @@ import { BlueArrowFooterComponent } from '../blue-arrow-footer/blue-arrow-footer
     styleUrls: ['./blue-arrow-layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        CommonModule,
-        RouterOutlet,
-        // Angular Material
-        MatDividerModule,
-        MatListModule,
-        MatSidenavModule,
-        // Library Standalone Menu Components
-        HorizontalComponent,
-        HierarchicalVerticalComponent,
-        LoaderComponent,
-        VerticalComponent,
-        // Features
-        BlueArrowFooterComponent,
-    ]
+    RouterOutlet,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    HorizontalComponent,
+    HierarchicalVerticalComponent,
+    LoaderComponent,
+    VerticalComponent,
+    BlueArrowFooterComponent
+]
 })
 export class BlueArrowLayoutComponent {
 

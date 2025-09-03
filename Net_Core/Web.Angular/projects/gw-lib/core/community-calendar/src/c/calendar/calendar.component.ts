@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,15 +17,12 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
 @Component({
     selector: 'gw-core-calendar',
     imports: [
-        CommonModule,
-        FormsModule,
-        // Angular Material
-        MatButtonModule,
-        MatIconModule,
-        MatRadioModule,
-        // Feature
-        DayOfWeekComponent
-    ],
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule,
+    DayOfWeekComponent
+],
     templateUrl: './calendar.component.html',
     styleUrls: ['./calendar.component.scss']
 })

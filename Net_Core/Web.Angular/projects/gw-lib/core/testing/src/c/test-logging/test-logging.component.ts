@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -18,18 +18,16 @@ import { ILogOptions, LogDestination, LogLevel, LogOptions, LoggingService } fro
 @Component({
     selector: 'gw-core-test-logging',
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        // Angular Material
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatSelectModule,
-        MatTabsModule,
-    ],
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSelectModule,
+    MatTabsModule
+],
     templateUrl: './test-logging.component.html',
     styleUrl: './test-logging.component.scss'
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, input, OnInit } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -9,10 +9,8 @@ import { LoggingService } from '@growthware/core/logging';
 @Component({
     selector: 'gw-core-snake-list',
     imports: [
-        CommonModule,
-        // Angular Material
-        MatIconModule,
-    ],
+    MatIconModule
+],
     templateUrl: './snake-list.component.html',
     styleUrls: ['./snake-list.component.scss']
 })

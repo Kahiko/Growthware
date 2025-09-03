@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,17 +21,14 @@ import { INvpChildProfile, NvpChildProfile } from '../../name-value-pair-child-p
 @Component({
     selector: 'gw-core-name-value-pair-child-detail',
     imports: [
-        // Angular
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        // Angular Material
-        MatButtonModule,
-        MatFormFieldModule,
-        MatGridListModule,
-        MatSelectModule,
-        MatTabsModule,
-    ],
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatSelectModule,
+    MatTabsModule
+],
     templateUrl: './name-value-pair-child-detail.component.html',
     styleUrls: ['./name-value-pair-child-detail.component.scss']
 })

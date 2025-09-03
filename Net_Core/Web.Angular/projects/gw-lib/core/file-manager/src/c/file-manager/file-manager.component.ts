@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ElementRef, inject, input, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,19 +21,16 @@ import { UploadComponent } from '../upload/upload.component';
 @Component({
     selector: 'gw-core-file-manager',
     imports: [
-        CommonModule,
-        // Angular Material
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        // Library
-        DirectoryTreeComponent,
-        TableFileListComponent,
-        FileListComponent,
-        UploadComponent
-    ],
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    DirectoryTreeComponent,
+    TableFileListComponent,
+    FileListComponent,
+    UploadComponent
+],
     templateUrl: './file-manager.component.html',
     styleUrls: ['./file-manager.component.scss']
 })

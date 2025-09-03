@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatDividerModule } from '@angular/material/divider';
@@ -20,21 +20,16 @@ import { DashboardHeaderComponent } from '../dashboard-header/dashboard-header.c
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        CommonModule,
-        RouterOutlet,
-        // Angular Material
-        MatDividerModule,
-        MatListModule,
-        MatSidenavModule,
-        // Library Modules
-        LoaderComponent,
-        // Library Standalone
-        VerticalComponent,
-        HierarchicalVerticalComponent,
-        // Skin
-        DashboardFooterComponent,
-        DashboardHeaderComponent,
-    ]
+    RouterOutlet,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    LoaderComponent,
+    VerticalComponent,
+    HierarchicalVerticalComponent,
+    DashboardFooterComponent,
+    DashboardHeaderComponent
+]
 })
 export class DashboardLayoutComponent {
 

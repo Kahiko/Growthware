@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 // Library
@@ -18,17 +18,14 @@ import { ProfessionalLayoutComponent } from './skins/professional/professional-l
 @Component({
     selector: 'gw-frontend-root',
     imports: [
-        CommonModule,
-        // Library
-        ToasterComponent,
-        // Application Modules (UI Skins)
-        ArcLayoutComponent,
-        DashboardLayoutComponent,
-        DefaultLayoutComponent,
-        BlueArrowLayoutComponent,
-        DevOpsLayoutComponent,
-        ProfessionalLayoutComponent
-    ],
+    ToasterComponent,
+    ArcLayoutComponent,
+    DashboardLayoutComponent,
+    DefaultLayoutComponent,
+    BlueArrowLayoutComponent,
+    DevOpsLayoutComponent,
+    ProfessionalLayoutComponent
+],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

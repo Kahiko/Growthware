@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -19,19 +19,17 @@ import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
 @Component({
     selector: 'gw-core-test-modal',
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        // Angular Material
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatTabsModule,
-    ],
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatTabsModule
+],
     templateUrl: './test-modal.component.html',
     styleUrl: './test-modal.component.scss'
 })

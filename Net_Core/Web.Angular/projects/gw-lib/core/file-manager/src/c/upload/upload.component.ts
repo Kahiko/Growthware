@@ -1,5 +1,5 @@
 import { Component, computed, effect, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -15,12 +15,10 @@ import { FileManagerService } from '../../file-manager.service';
 @Component({
     selector: 'gw-core-upload',
     imports: [
-        CommonModule,
-        // Angular Material
-        MatButtonModule,
-        MatIconModule,
-        MatProgressBarModule,
-    ],
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule
+],
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
