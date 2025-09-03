@@ -19,21 +19,20 @@ import { GroupService } from '../../group.service';
 import { IGroupProfile, GroupProfile } from '../../group-profile.model';
 
 @Component({
-	selector: 'gw-core-group-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		PickListComponent,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatLineModule,
-		MatIconModule,
-		MatInputModule,
-		MatTabsModule
-	],
-	templateUrl: './group-details.component.html',
-	styleUrls: ['./group-details.component.scss']
+    selector: 'gw-core-group-details',
+    imports: [
+        FormsModule,
+        PickListComponent,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatLineModule,
+        MatIconModule,
+        MatInputModule,
+        MatTabsModule
+    ],
+    templateUrl: './group-details.component.html',
+    styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit {
 	private _GroupProfile: IGroupProfile = new GroupProfile();

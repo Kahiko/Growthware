@@ -17,24 +17,23 @@ import { ModalService, ModalOptions, ModalSize, WindowSize } from '@growthware/c
 import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
 
 @Component({
-  selector: 'gw-core-test-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    // Angular Material
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatTabsModule,
-  ],
-  templateUrl: './test-modal.component.html',
-  styleUrl: './test-modal.component.scss'
+    selector: 'gw-core-test-modal',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatTabsModule,
+    ],
+    templateUrl: './test-modal.component.html',
+    styleUrl: './test-modal.component.scss'
 })
 export class TestModalComponent implements OnInit {
 

@@ -14,10 +14,10 @@ export interface IBaseDetailComponent extends BaseDetailComponent {
 }
 
 @Component({
-	selector: 'gw-core-base-search',
-	template: '',
-	styles: [
-	]
+    selector: 'gw-core-base-search',
+    template: '',
+    styles: [],
+    standalone: false
 })
 export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDestroy {
 	protected _Subscription: Subscription = new Subscription();

@@ -19,22 +19,21 @@ import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpChildProfile, NvpChildProfile } from '../../name-value-pair-child-profile.model';
 
 @Component({
-  selector: 'gw-core-name-value-pair-child-detail',
-  standalone: true,
-  imports: [
-    // Angular
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    // Angular Material
-    MatButtonModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatSelectModule,
-    MatTabsModule,
-  ],
-  templateUrl: './name-value-pair-child-detail.component.html',
-  styleUrls: ['./name-value-pair-child-detail.component.scss']
+    selector: 'gw-core-name-value-pair-child-detail',
+    imports: [
+        // Angular
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatSelectModule,
+        MatTabsModule,
+    ],
+    templateUrl: './name-value-pair-child-detail.component.html',
+    styleUrls: ['./name-value-pair-child-detail.component.scss']
 })
 export class NameValuePairChildDetailComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

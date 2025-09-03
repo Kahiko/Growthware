@@ -6,13 +6,12 @@ import { ToastService } from '../../toast.service';
 import { IToastMessage } from '../../toast-message.model';
 
 @Component({
-	selector: 'gw-core-toast',
-	standalone: true,
-	imports: [
-		CommonModule
-	],
-	templateUrl: './toast.component.html',
-	styleUrls: ['./toast.component.scss']
+    selector: 'gw-core-toast',
+    imports: [
+        CommonModule
+    ],
+    templateUrl: './toast.component.html',
+    styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {
 	private _ToastSvc = inject(ToastService);

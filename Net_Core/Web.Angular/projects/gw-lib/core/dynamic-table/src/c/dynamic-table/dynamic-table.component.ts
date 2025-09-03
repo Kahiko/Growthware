@@ -31,18 +31,17 @@ import { DynamicTableBtnMethods } from '../../dynamic-table-btn-methods.model';
 import { DynamicTableService } from '../../../public-api';
 
 @Component({
-	selector: 'gw-core-dynamic-table',
-	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		// Angular Material
-		MatButtonModule,
-		// Features
-		PagerComponent
-	],
-	templateUrl: './dynamic-table.component.html',
-	styleUrls: ['./dynamic-table.component.scss'],
+    selector: 'gw-core-dynamic-table',
+    imports: [
+        CommonModule,
+        FormsModule,
+        // Angular Material
+        MatButtonModule,
+        // Features
+        PagerComponent
+    ],
+    templateUrl: './dynamic-table.component.html',
+    styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnDestroy, OnInit {
 	private _RowClickCount = 0;

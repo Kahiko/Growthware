@@ -16,23 +16,22 @@ import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthwa
 import { ILogOptions, LogDestination, LogLevel, LogOptions, LoggingService } from '@growthware/core/logging';
 
 @Component({
-	selector: 'gw-core-test-logging',
-	standalone: true,
-	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		// Angular Material
-		MatButtonModule,
-		MatCheckboxModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatInputModule,
-		MatListModule,
-		MatSelectModule,
-		MatTabsModule,
-	],
-	templateUrl: './test-logging.component.html',
-	styleUrl: './test-logging.component.scss'
+    selector: 'gw-core-test-logging',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatSelectModule,
+        MatTabsModule,
+    ],
+    templateUrl: './test-logging.component.html',
+    styleUrl: './test-logging.component.scss'
 })
 export class TestLoggingComponent implements OnDestroy, OnInit {
 

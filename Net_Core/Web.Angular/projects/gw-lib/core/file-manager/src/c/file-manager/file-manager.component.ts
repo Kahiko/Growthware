@@ -19,24 +19,23 @@ import { TableFileListComponent } from '../table-file-list/table-file-list.compo
 import { UploadComponent } from '../upload/upload.component';
 
 @Component({
-	selector: 'gw-core-file-manager',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Angular Material
-		MatButtonModule,
-		MatIconModule,
-		MatMenuModule,
-		MatSidenavModule,
-		MatToolbarModule,
-		// Library
-		DirectoryTreeComponent,
-		TableFileListComponent,
-		FileListComponent,
-		UploadComponent
-	],
-	templateUrl: './file-manager.component.html',
-	styleUrls: ['./file-manager.component.scss']
+    selector: 'gw-core-file-manager',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        // Library
+        DirectoryTreeComponent,
+        TableFileListComponent,
+        FileListComponent,
+        UploadComponent
+    ],
+    templateUrl: './file-manager.component.html',
+    styleUrls: ['./file-manager.component.scss']
 })
 export class FileManagerComponent implements OnInit {
 	private _FileManagerSvc = inject(FileManagerService);

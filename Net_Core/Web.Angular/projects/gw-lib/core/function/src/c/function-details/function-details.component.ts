@@ -33,27 +33,26 @@ import { IFunctionProfile, FunctionProfile } from '../../function-profile.model'
 import { IFunctionMenuOrder } from '../../function-menu-order.model';
 
 @Component({
-	selector: 'gw-core-function-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		ListComponent,
-		PickListComponent,
-		MatButtonModule,
-		MatCheckboxModule,
-		MatFormFieldModule,
-		MatGridListModule,
-		MatIconModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule,
-		CdkDropList,
-		CdkDrag,
-		CdkDragPlaceholder
-	],
-	templateUrl: './function-details.component.html',
-	styleUrls: ['./function-details.component.scss']
+    selector: 'gw-core-function-details',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ListComponent,
+        PickListComponent,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule,
+        CdkDropList,
+        CdkDrag,
+        CdkDragPlaceholder
+    ],
+    templateUrl: './function-details.component.html',
+    styleUrls: ['./function-details.component.scss']
 })
 export class FunctionDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

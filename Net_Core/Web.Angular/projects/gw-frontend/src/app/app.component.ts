@@ -16,22 +16,21 @@ import { DevOpsLayoutComponent } from './skins/dev-ops/dev-ops-layout/dev-ops-la
 import { ProfessionalLayoutComponent } from './skins/professional/professional-layout/professional-layout.component';
 
 @Component({
-	selector: 'gw-frontend-root',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Library
-		ToasterComponent,
-		// Application Modules (UI Skins)
-		ArcLayoutComponent,
-		DashboardLayoutComponent,
-		DefaultLayoutComponent,
-		BlueArrowLayoutComponent,
-		DevOpsLayoutComponent,
-		ProfessionalLayoutComponent
-	],
-	templateUrl: './app.component.html',
-	styleUrl: './app.component.scss'
+    selector: 'gw-frontend-root',
+    imports: [
+        CommonModule,
+        // Library
+        ToasterComponent,
+        // Application Modules (UI Skins)
+        ArcLayoutComponent,
+        DashboardLayoutComponent,
+        DefaultLayoutComponent,
+        BlueArrowLayoutComponent,
+        DevOpsLayoutComponent,
+        ProfessionalLayoutComponent
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
 	skin = signal<string>('default');

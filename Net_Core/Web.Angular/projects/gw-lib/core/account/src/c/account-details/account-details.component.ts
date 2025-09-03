@@ -26,25 +26,24 @@ import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';
 
 @Component({
-  selector: 'gw-core-account-details',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTabsModule,
-    PickListComponent,
-    SnakeListComponent
-  ],
-  templateUrl: './account-details.component.html',
-  styleUrls: ['./account-details.component.scss']
+    selector: 'gw-core-account-details',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule,
+        PickListComponent,
+        SnakeListComponent
+    ],
+    templateUrl: './account-details.component.html',
+    styleUrls: ['./account-details.component.scss']
 })
 export class AccountDetailsComponent implements OnInit {
   private _AccountProfile!: IAccountProfile;

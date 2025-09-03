@@ -35,24 +35,22 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 import { FileManagerService } from '../../file-manager.service';
 
 @Component({
-	selector: 'gw-core-table-file-list',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-
-		MatButtonModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatInputModule,
-		MatMenuModule,
-		MatMenuTrigger,
-		MatSortModule,
-		MatTableModule,
-		MatPaginatorModule
-	],
-	templateUrl: './table-file-list.component.html',
-	styleUrl: './table-file-list.component.scss'
+    selector: 'gw-core-table-file-list',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatMenuTrigger,
+        MatSortModule,
+        MatTableModule,
+        MatPaginatorModule
+    ],
+    templateUrl: './table-file-list.component.html',
+    styleUrl: './table-file-list.component.scss'
 })
 export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _Action = '';

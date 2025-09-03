@@ -13,20 +13,19 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-	selector: 'gw-core-time-picker',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		// Angular Material
-		MatButtonModule,
-		MatDatepickerModule,
-		MatFormFieldModule,
-		MatGridListModule,
-		MatInputModule,
-	],
-	templateUrl: './time-picker.component.html',
-	styleUrl: './time-picker.component.scss'
+    selector: 'gw-core-time-picker',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatInputModule,
+    ],
+    templateUrl: './time-picker.component.html',
+    styleUrl: './time-picker.component.scss'
 })
 export class TimePickerComponent implements OnDestroy, OnInit {
 

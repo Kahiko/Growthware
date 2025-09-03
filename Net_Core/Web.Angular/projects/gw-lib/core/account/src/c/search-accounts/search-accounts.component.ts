@@ -9,13 +9,12 @@ import { AccountDetailsComponent } from '../account-details/account-details.comp
 import { AccountService } from '../../account.service';
 
 @Component({
-	selector: 'gw-core-search-accounts',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-accounts.component.html',
-	styleUrls: ['./search-accounts.component.scss']
+    selector: 'gw-core-search-accounts',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-accounts.component.html',
+    styleUrls: ['./search-accounts.component.scss']
 })
 export class SearchAccountsComponent extends BaseSearchComponent {
 

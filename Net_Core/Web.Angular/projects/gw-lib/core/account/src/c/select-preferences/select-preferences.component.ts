@@ -32,21 +32,19 @@ interface IColorSchemeColumns {
 }
 
 @Component({
-	selector: 'gw-core-select-preferences',
-	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-
-		MatButtonModule,
-		MatIconModule,
-		MatRadioModule,
-		MatSelectModule,
-		MatTabsModule,
-	],
-	templateUrl: './select-preferences.component.html',
-	styleUrls: ['./select-preferences.component.scss']
+    selector: 'gw-core-select-preferences',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatTabsModule,
+    ],
+    templateUrl: './select-preferences.component.html',
+    styleUrls: ['./select-preferences.component.scss']
 })
 export class SelectPreferencesComponent implements OnInit {
 

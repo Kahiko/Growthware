@@ -6,13 +6,12 @@ import { HorizontalComponent } from '@growthware/core/navigation';
 
 
 @Component({
-	selector: 'gw-frontend-professional-header',
-	standalone: true,
-	templateUrl: './professional-header.component.html',
-	styleUrls: ['./professional-header.component.scss'],
-	imports: [
-		HorizontalComponent,
-	],
+    selector: 'gw-frontend-professional-header',
+    templateUrl: './professional-header.component.html',
+    styleUrls: ['./professional-header.component.scss'],
+    imports: [
+        HorizontalComponent,
+    ]
 })
 export class ProfessionalHeaderComponent {
 

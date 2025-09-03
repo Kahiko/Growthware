@@ -16,26 +16,25 @@ import { LoaderComponent } from '@growthware/core/loader';
 import { BlueArrowFooterComponent } from '../blue-arrow-footer/blue-arrow-footer.component';
 
 @Component({
-	selector: 'gw-frontend-blue-arrow-layout',
-	standalone: true,
-	templateUrl: './blue-arrow-layout.component.html',
-	styleUrls: ['./blue-arrow-layout.component.scss'],
-	encapsulation: ViewEncapsulation.None,
-	imports: [
-		CommonModule,
-		RouterOutlet,
-		// Angular Material
-		MatDividerModule,
-		MatListModule,
-		MatSidenavModule,
-		// Library Standalone Menu Components
-		HorizontalComponent,
-		HierarchicalVerticalComponent,
-		LoaderComponent,
-		VerticalComponent,
-		// Features
-		BlueArrowFooterComponent,
-	],
+    selector: 'gw-frontend-blue-arrow-layout',
+    templateUrl: './blue-arrow-layout.component.html',
+    styleUrls: ['./blue-arrow-layout.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        // Angular Material
+        MatDividerModule,
+        MatListModule,
+        MatSidenavModule,
+        // Library Standalone Menu Components
+        HorizontalComponent,
+        HierarchicalVerticalComponent,
+        LoaderComponent,
+        VerticalComponent,
+        // Features
+        BlueArrowFooterComponent,
+    ]
 })
 export class BlueArrowLayoutComponent {
 

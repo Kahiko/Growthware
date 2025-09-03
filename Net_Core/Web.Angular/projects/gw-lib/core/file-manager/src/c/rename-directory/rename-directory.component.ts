@@ -9,11 +9,10 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { FileManagerService } from '../../file-manager.service';
 
 @Component({
-	selector: 'gw-core-rename-directory',
-	standalone: true,
-	imports: [MatButtonModule, ReactiveFormsModule],
-	templateUrl: './rename-directory.component.html',
-	styleUrls: ['./rename-directory.component.scss'],
+    selector: 'gw-core-rename-directory',
+    imports: [MatButtonModule, ReactiveFormsModule],
+    templateUrl: './rename-directory.component.html',
+    styleUrls: ['./rename-directory.component.scss']
 })
 export class RenameDirectoryComponent implements OnInit {
 	private _Action: string = '';

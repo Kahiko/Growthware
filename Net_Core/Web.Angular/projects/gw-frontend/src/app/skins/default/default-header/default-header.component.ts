@@ -15,20 +15,19 @@ import { ConfigurationService } from '@growthware/core/configuration';
 import { HorizontalComponent } from '@growthware/core/navigation';
 
 @Component({
-	selector: 'gw-frontend-default-header',
-	standalone: true,
-	templateUrl: './default-header.component.html',
-	styleUrls: ['./default-header.component.scss'],
-	imports: [
-		RouterLink,
-		// Library Standalone
-		HorizontalComponent,
-		// Angular Material
-		MatButtonModule,
-		MatIconModule,
-		MatMenuModule,
-		MatToolbarModule,
-	]
+    selector: 'gw-frontend-default-header',
+    templateUrl: './default-header.component.html',
+    styleUrls: ['./default-header.component.scss'],
+    imports: [
+        RouterLink,
+        // Library Standalone
+        HorizontalComponent,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatToolbarModule,
+    ]
 })
 export class DefaultHeaderComponent {
 

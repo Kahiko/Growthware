@@ -10,15 +10,14 @@ import { SysAdminService } from '../../sys-admin.service';
 import { ILineCount, LineCount } from '../../line-count.model';
 
 @Component({
-	selector: 'gw-core-line-count',
-	standalone: true,
-	imports: [
-		FormsModule,
-		MatButtonModule,
-		MatTabsModule
-	],
-	templateUrl: './line-count.component.html',
-	styleUrls: ['./line-count.component.scss']
+    selector: 'gw-core-line-count',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatTabsModule
+    ],
+    templateUrl: './line-count.component.html',
+    styleUrls: ['./line-count.component.scss']
 })
 export class LineCountComponent implements OnInit {
 

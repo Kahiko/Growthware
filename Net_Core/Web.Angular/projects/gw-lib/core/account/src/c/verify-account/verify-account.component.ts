@@ -6,11 +6,10 @@ import { GWCommon } from '@growthware/common/services';
 import { AccountService } from '../../account.service';
 
 @Component({
-	selector: 'gw-core-verify-account',
-	standalone: true,
-	imports: [],
-	templateUrl: './verify-account.component.html',
-	styleUrl: './verify-account.component.scss'
+    selector: 'gw-core-verify-account',
+    imports: [],
+    templateUrl: './verify-account.component.html',
+    styleUrl: './verify-account.component.scss'
 })
 export class VerifyAccountComponent {
 

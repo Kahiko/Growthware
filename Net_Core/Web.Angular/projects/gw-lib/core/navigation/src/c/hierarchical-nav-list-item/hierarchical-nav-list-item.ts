@@ -10,26 +10,23 @@ import { INavLink } from '../../nav-link.model';
 import { NavigationService } from '../../navigation.service';
 
 @Component({
-	selector: 'gw-core-vertical-list-item',
-	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		// Angular Material
-		MatIconModule,
-		MatListModule
-	],
-	templateUrl: './hierarchical-nav-list-item.html',
-	styleUrls: ['./hierarchical-nav-list-item.scss'],
-	animations: [
-		trigger('indicatorRotate', [
-			state('collapsed', style({ transform: 'rotate(0deg)' })),
-			state('expanded', style({ transform: 'rotate(90deg)' })),
-			transition('expanded <=> collapsed',
-				animate('225ms cubic-bezier(0.4,0.0,0.2,1)')
-			)
-		])
-	]
+    selector: 'gw-core-vertical-list-item',
+    imports: [
+        CommonModule,
+        RouterModule,
+        // Angular Material
+        MatIconModule,
+        MatListModule
+    ],
+    templateUrl: './hierarchical-nav-list-item.html',
+    styleUrls: ['./hierarchical-nav-list-item.scss'],
+    animations: [
+        trigger('indicatorRotate', [
+            state('collapsed', style({ transform: 'rotate(0deg)' })),
+            state('expanded', style({ transform: 'rotate(90deg)' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)'))
+        ])
+    ]
 })
 export class HierarchicalNavListItemComponent {
 	private _NavigationSvc = inject(NavigationService);

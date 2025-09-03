@@ -10,16 +10,15 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
 import { MenuTypes } from '../../menu-types.enum';
 
 @Component({
-	selector: 'gw-core-horizontal',
-	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		MatIconModule,
-		MatListModule
-	],
-	templateUrl: './horizontal.component.html',
-	styleUrls: ['./horizontal.component.scss']
+    selector: 'gw-core-horizontal',
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatIconModule,
+        MatListModule
+    ],
+    templateUrl: './horizontal.component.html',
+    styleUrls: ['./horizontal.component.scss']
 })
 export class HorizontalComponent extends NavigationComponentBase {
 	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;

@@ -10,13 +10,12 @@ import { SecurityEntityDetailsComponent } from '../security-entity-details/secur
 import { SecurityEntityService } from '../../security-entity.service';
 
 @Component({
-	selector: 'gw-core-search-security-entities',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-security-entities.component.html',
-	styleUrls: ['./search-security-entities.component.scss']
+    selector: 'gw-core-search-security-entities',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-security-entities.component.html',
+    styleUrls: ['./search-security-entities.component.scss']
 })
 export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 

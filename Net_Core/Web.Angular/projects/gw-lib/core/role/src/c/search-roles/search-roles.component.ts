@@ -9,13 +9,12 @@ import { RoleDetailsComponent } from '../role-details/role-details.component';
 import { RoleService } from '../../role.service';
 
 @Component({
-	selector: 'gw-core-search-roles',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-roles.component.html',
-	styleUrls: ['./search-roles.component.scss']
+    selector: 'gw-core-search-roles',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-roles.component.html',
+    styleUrls: ['./search-roles.component.scss']
 })
 export class SearchRolesComponent extends BaseSearchComponent {
 

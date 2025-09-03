@@ -20,21 +20,20 @@ import { FeedbackService } from '../../feedback.service';
 import { GWCommon } from '@growthware/common/services';
 
 @Component({
-	selector: 'gw-core-feedback-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatTabsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatDatepickerModule,
-		MatNativeDateModule,
-		MatSelectModule
-	],
-	templateUrl: './feedback-details.component.html',
-	styleUrl: './feedback-details.component.scss'
+    selector: 'gw-core-feedback-details',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSelectModule
+    ],
+    templateUrl: './feedback-details.component.html',
+    styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 	private _AccountSvc: AccountService = inject(AccountService);

@@ -21,11 +21,10 @@ import { MenuTypes } from '../../menu-types.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-	selector: 'gw-core-navigation-base',
-	standalone: true,
-	imports: [],
-	template: '',
-	styles: []
+    selector: 'gw-core-navigation-base',
+    imports: [],
+    template: '',
+    styles: []
 })
 export abstract class NavigationComponentBase implements OnInit {
 

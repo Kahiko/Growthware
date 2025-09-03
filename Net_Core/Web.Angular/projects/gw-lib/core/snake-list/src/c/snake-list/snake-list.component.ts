@@ -7,15 +7,14 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 
 @Component({
-	selector: 'gw-core-snake-list',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Angular Material
-		MatIconModule,
-	],
-	templateUrl: './snake-list.component.html',
-	styleUrls: ['./snake-list.component.scss']
+    selector: 'gw-core-snake-list',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatIconModule,
+    ],
+    templateUrl: './snake-list.component.html',
+    styleUrls: ['./snake-list.component.scss']
 })
 export class SnakeListComponent implements OnInit {
 

@@ -6,10 +6,10 @@ import { SearchService, ISearchCriteriaNVP } from '@growthware/core/search';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 
 @Component({
-	selector: 'gw-core-base-search',
-	template: '',
-	styles: [
-	]
+    selector: 'gw-core-base-search',
+    template: '',
+    styles: [],
+    standalone: false
 })
 export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
 

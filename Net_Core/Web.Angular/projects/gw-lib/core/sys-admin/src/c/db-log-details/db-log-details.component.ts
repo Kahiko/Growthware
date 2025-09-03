@@ -15,21 +15,19 @@ import { SysAdminService } from '../../sys-admin.service';
 import { SelectedRow } from '../../selected-row.model';
 
 @Component({
-  selector: 'gw-core-db-log-details',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatTabsModule
-  ],
-  templateUrl: './db-log-details.component.html',
-  styleUrl: './db-log-details.component.scss'
+    selector: 'gw-core-db-log-details',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatTabsModule
+    ],
+    templateUrl: './db-log-details.component.html',
+    styleUrl: './db-log-details.component.scss'
 })
 export class DBLogDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

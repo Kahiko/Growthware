@@ -9,13 +9,12 @@ import { MessageDetailsComponent } from '../message-details/message-details.comp
 import { MessageService } from '../../message.service';
 
 @Component({
-	selector: 'gw-core-search-messages',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-messages.component.html',
-	styleUrls: ['./search-messages.component.scss']
+    selector: 'gw-core-search-messages',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-messages.component.html',
+    styleUrls: ['./search-messages.component.scss']
 })
 export class SearchMessagesComponent extends BaseSearchComponent {
 

@@ -14,19 +14,16 @@ import { DBInformation, IDBInformation } from '../../db-information.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-	selector: 'gw-core-edit-db-information',
-	standalone: true,
-	imports: [
-		FormsModule,
-
-		MatButtonModule,
-		MatSelectModule,
-		MatTabsModule,
-
-		ReactiveFormsModule
-	],
-	templateUrl: './edit-db-information.component.html',
-	styleUrl: './edit-db-information.component.scss'
+    selector: 'gw-core-edit-db-information',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatTabsModule,
+        ReactiveFormsModule
+    ],
+    templateUrl: './edit-db-information.component.html',
+    styleUrl: './edit-db-information.component.scss'
 })
 export class EditDbInformationComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 	private _Profile: IDBInformation = new DBInformation();

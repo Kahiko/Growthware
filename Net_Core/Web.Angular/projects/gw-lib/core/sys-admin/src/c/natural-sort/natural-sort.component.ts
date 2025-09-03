@@ -12,15 +12,14 @@ import { SysAdminService } from '../../sys-admin.service';
 
 
 @Component({
-	selector: 'gw-core-natural-sort',
-	standalone: true,
-	imports: [
-		MatSelectModule,
-		MatFormFieldModule,
-		MatTableModule
-	],
-	templateUrl: './natural-sort.component.html',
-	styleUrls: ['./natural-sort.component.scss']
+    selector: 'gw-core-natural-sort',
+    imports: [
+        MatSelectModule,
+        MatFormFieldModule,
+        MatTableModule
+    ],
+    templateUrl: './natural-sort.component.html',
+    styleUrls: ['./natural-sort.component.scss']
 })
 export class NaturalSortComponent implements OnInit {
 

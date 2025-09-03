@@ -16,20 +16,19 @@ import { SecurityEntityService } from '@growthware/core/security-entities';
 import { FunctionService } from '../../function.service';
 
 @Component({
-	selector: 'gw-core-copy-function-security',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule
-	],
-	templateUrl: './copy-function-security.component.html',
-	styleUrls: ['./copy-function-security.component.scss']
+    selector: 'gw-core-copy-function-security',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule
+    ],
+    templateUrl: './copy-function-security.component.html',
+    styleUrls: ['./copy-function-security.component.scss']
 })
 export class CopyFunctionSecurityComponent implements OnInit {
 

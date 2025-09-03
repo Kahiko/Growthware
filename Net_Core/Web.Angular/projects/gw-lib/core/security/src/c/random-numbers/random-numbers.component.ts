@@ -10,15 +10,14 @@ import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { SecurityService } from '../../security.service';
 
 @Component({
-	selector: 'gw-core-random-numbers',
-	standalone: true,
-	imports: [
-		FormsModule,
-		MatButtonModule,
-		MatTabsModule
-	],
-	templateUrl: './random-numbers.component.html',
-	styleUrls: ['./random-numbers.component.scss']
+    selector: 'gw-core-random-numbers',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatTabsModule
+    ],
+    templateUrl: './random-numbers.component.html',
+    styleUrls: ['./random-numbers.component.scss']
 })
 export class RandomNumbersComponent {
 

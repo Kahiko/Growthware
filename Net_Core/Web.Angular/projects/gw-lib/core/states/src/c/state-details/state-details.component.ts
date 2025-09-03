@@ -18,20 +18,19 @@ import { IStateProfile, StateProfile } from '../../state-profile.model';
 import { StatesService } from '../../states.service';
 
 @Component({
-	selector: 'gw-core-state-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatCheckboxModule,
-		MatIconModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule
-	],
-	templateUrl: './state-details.component.html',
-	styleUrls: ['./state-details.component.scss']
+    selector: 'gw-core-state-details',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule
+    ],
+    templateUrl: './state-details.component.html',
+    styleUrls: ['./state-details.component.scss']
 })
 export class StateDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

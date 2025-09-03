@@ -9,7 +9,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
 	selector: 'gw-core-test-logging',
-	standalone: true,
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,

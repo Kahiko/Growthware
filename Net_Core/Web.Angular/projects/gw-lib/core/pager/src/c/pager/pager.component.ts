@@ -5,13 +5,12 @@ import { GWCommon } from '@growthware/common/services';
 import { SearchService, SearchCriteria } from '@growthware/core/search';
 
 @Component({
-	selector: 'gw-core-pager',
-	standalone: true,
-	imports: [
-		FormsModule
-	],
-	templateUrl: './pager.component.html',
-	styleUrls: ['./pager.component.scss'],
+    selector: 'gw-core-pager',
+    imports: [
+        FormsModule
+    ],
+    templateUrl: './pager.component.html',
+    styleUrls: ['./pager.component.scss']
 })
 export class PagerComponent {
 	private _SearchCriteria: SearchCriteria = new SearchCriteria([''], [''], 1, '', 1);

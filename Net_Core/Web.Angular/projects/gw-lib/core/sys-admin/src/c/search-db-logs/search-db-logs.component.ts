@@ -15,16 +15,14 @@ import { DBLogDetailsComponent } from '../db-log-details/db-log-details.componen
 import { SysAdminService } from '../../sys-admin.service';
 
 @Component({
-  selector: 'gw-core-search-db-logs',
-  standalone: true,
-  imports: [
-    DynamicTableComponent,
-
-    MatButtonModule,
-    MatIconModule
-  ],
-  templateUrl: './search-db-logs.component.html',
-  styleUrl: './search-db-logs.component.scss'
+    selector: 'gw-core-search-db-logs',
+    imports: [
+        DynamicTableComponent,
+        MatButtonModule,
+        MatIconModule
+    ],
+    templateUrl: './search-db-logs.component.html',
+    styleUrl: './search-db-logs.component.scss'
 })
 export class SearchDBLogsComponent extends BaseSearchComponent {
 

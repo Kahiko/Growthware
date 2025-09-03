@@ -13,17 +13,16 @@ import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 import { FileManagerService } from '../../file-manager.service';
 
 @Component({
-	selector: 'gw-core-upload',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Angular Material
-		MatButtonModule,
-		MatIconModule,
-		MatProgressBarModule,
-	],
-	templateUrl: './upload.component.html',
-	styleUrls: ['./upload.component.scss']
+    selector: 'gw-core-upload',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule,
+        MatProgressBarModule,
+    ],
+    templateUrl: './upload.component.html',
+    styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
 	private _Action: string = '';

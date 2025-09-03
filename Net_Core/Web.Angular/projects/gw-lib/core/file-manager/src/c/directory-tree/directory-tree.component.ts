@@ -20,19 +20,17 @@ import { RenameDirectoryComponent } from '../rename-directory/rename-directory.c
 
 
 @Component({
-	selector: 'gw-core-directory-tree',
-	standalone: true,
-	imports: [
-		CommonModule,
-
-		MatButtonModule,
-		MatIconModule,
-		MatMenuModule,
-		MatTreeModule,
-		ScrollingModule,
-	],
-	templateUrl: './directory-tree.component.html',
-	styleUrls: ['./directory-tree.component.scss']
+    selector: 'gw-core-directory-tree',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatTreeModule,
+        ScrollingModule,
+    ],
+    templateUrl: './directory-tree.component.html',
+    styleUrls: ['./directory-tree.component.scss']
 })
 export class DirectoryTreeComponent implements OnDestroy, OnInit {
 

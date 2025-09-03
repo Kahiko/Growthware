@@ -9,17 +9,15 @@ import { SecurityService } from '../../security.service';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 
 @Component({
-	selector: 'gw-core-guid-helper',
-	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-
-		MatButtonModule,
-		MatTabsModule
-	],
-	templateUrl: './guid-helper.component.html',
-	styleUrls: ['./guid-helper.component.scss']
+    selector: 'gw-core-guid-helper',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatTabsModule
+    ],
+    templateUrl: './guid-helper.component.html',
+    styleUrls: ['./guid-helper.component.scss']
 })
 export class GuidHelperComponent {
 
