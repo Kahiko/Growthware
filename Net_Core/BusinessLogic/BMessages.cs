@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -31,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BMessages : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IMessages m_DMessages;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BMessages() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -79,23 +80,23 @@ public class BMessages : AbstractBusinessLogic
     public BMessages(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DMessages == null || ConfigSettings.CentralManagement)
+        if (m_DMessages == null)
         {
             this.m_DMessages = (IMessages)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DMessages", securityEntityProfile.ConnectionString);
-            if (this.m_DMessages == null) 
+            if (this.m_DMessages == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DMessages.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Gets all messages for the requested security entity (securityEntitySeqId).
     /// </summary>
     /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>Collection{MMessage}.</returns>
-    public Collection<MMessage> GetMessages(int securityEntitySeqId)
+    public async Task<Collection<MMessage>> GetMessages(int securityEntitySeqId)
     {
         Collection<MMessage> mRetList = new Collection<MMessage>();
         DataTable mDataTable = null;
@@ -111,7 +112,7 @@ public class BMessages : AbstractBusinessLogic
                   * does not exist in the database.  There is a bigger problem if the securityEntitySeqId
                   * is not valid.
                   */
-                mDataTable = m_DMessages.Messages();
+                mDataTable = await m_DMessages.Messages();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     mRetList.Add(new MMessage(item));
@@ -138,10 +139,10 @@ public class BMessages : AbstractBusinessLogic
     /// <param name="messageSeqId">int of the desired message profile object</param>
     /// <returns>DataRow</returns>
     /// <remarks></remarks>
-    public DataRow GetMessage(int messageSeqId)
+    public async Task<DataRow> GetMessage(int messageSeqId)
     {
         DataRow mRetVal = null;
-        if (DatabaseIsOnline()) mRetVal = m_DMessages.Message(messageSeqId);
+        if (DatabaseIsOnline()) mRetVal = await m_DMessages.Message(messageSeqId);
         return mRetVal;
     }
 
@@ -150,14 +151,14 @@ public class BMessages : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The message profile.</param>
     /// <returns>System.Int32.</returns>
-    public int Save(MMessage profile)
+    public async Task<int> Save(MMessage profile)
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         int mRetVal = -1;
         if (DatabaseIsOnline())
         {
             m_DMessages.Profile = profile;
-            mRetVal = m_DMessages.Save();
+            mRetVal = await m_DMessages.Save();
         }
         return mRetVal;
     }

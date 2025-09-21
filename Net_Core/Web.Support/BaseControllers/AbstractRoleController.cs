@@ -27,7 +27,7 @@ public abstract class AbstractRoleController : ControllerBase
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleSeqId)
             {
                 UIRole mProfile = await RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
-                if(mSecurityInfo.MayDelete && !mProfile.IsSystemOnly)
+                if (mSecurityInfo.MayDelete && !mProfile.IsSystemOnly)
                 {
                     await RoleUtility.DeleteRole(roleSeqId, mSecurityEntity.Id);
                     return Ok(true);
@@ -74,26 +74,26 @@ public abstract class AbstractRoleController : ControllerBase
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleProfile.Id)
             {
-                if (roleProfile.Id > -1) 
+                if (roleProfile.Id > -1)
                 {
                     if (mSecurityInfo.MayEdit)
                     {
                         mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                         mProfileToSave.UpdatedDate = DateTime.Now;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
-                } 
-                else 
+                }
+                else
                 {
                     if (mSecurityInfo.MayAdd)
                     {
                         mProfileToSave.AddedBy = mRequestingProfile.Id;
                         mProfileToSave.AddedDate = DateTime.Now;
                     }
-                    else 
+                    else
                     {
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
@@ -112,12 +112,13 @@ public abstract class AbstractRoleController : ControllerBase
     {
         String mRetVal = string.Empty;
         string mColumns = "[RoleSeqId], [Name], [Description], [Is_System], [Is_System_Only], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
-        if(searchCriteria.sortColumns.Length > 0)
+        if (searchCriteria.sortColumns.Length > 0)
         {
             MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+            string mConstantWhereClause = $"SecurityEntitySeqId = {mSecurityEntity.Id.ToString()}";
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
-            string mWhereClause = mOrderByAndWhere.Item2 + " AND SecurityEntitySeqId = " + mSecurityEntity.Id.ToString();
+            string mWhereClause = mOrderByAndWhere.Item2;
             MSearchCriteria mSearchCriteria = new()
             {
                 Columns = mColumns,
@@ -127,8 +128,8 @@ public abstract class AbstractRoleController : ControllerBase
                 TableOrView = "[ZGWSecurity].[vwSearchRoles]",
                 WhereClause = mWhereClause
             };
-            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria);
+            mRetVal = await SearchUtility.GetSearchResults(mSearchCriteria, mConstantWhereClause);
         }
-        return mRetVal;        
+        return mRetVal;
     }
 }

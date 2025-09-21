@@ -175,7 +175,7 @@ public static class MessageUtility
         if (mMessageCollection == null)
         {
             BMessages mBusinessLogic = await getBusinessLogic();
-            mMessageCollection = mBusinessLogic.GetMessages(mSecurityEntityId);
+            mMessageCollection = await mBusinessLogic.GetMessages(mSecurityEntityId);
             CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;
@@ -208,7 +208,7 @@ public static class MessageUtility
     {
         BMessages mBusinessLogic = await getBusinessLogic();
         int mRetVal = -1;
-        mRetVal = mBusinessLogic.Save(profile);
+        mRetVal = await mBusinessLogic.Save(profile);
         await RemoveCachedMessagesCollection();
         return mRetVal;
     }

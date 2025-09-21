@@ -32,11 +32,11 @@ namespace GrowthWare.BusinessLogic;
 public class BRoles : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IRoles m_DRoles;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BRoles() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -80,16 +80,16 @@ public class BRoles : AbstractBusinessLogic
     public BRoles(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DRoles == null || ConfigSettings.CentralManagement)
+        if (m_DRoles == null)
         {
             this.m_DRoles = (IRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DRoles == null) 
+            if (this.m_DRoles == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DRoles.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Saves the specified profile.
@@ -100,7 +100,7 @@ public class BRoles : AbstractBusinessLogic
         int mRetVal = -1;
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = await m_DRoles.Save();
+        if (DatabaseIsOnline()) mRetVal = await m_DRoles.Save(profile);
         return mRetVal;
     }
 
@@ -113,7 +113,7 @@ public class BRoles : AbstractBusinessLogic
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) await m_DRoles.DeleteRole();
+        if (DatabaseIsOnline()) await m_DRoles.DeleteRole(profile.Name, profile.SecurityEntityID);
     }
 
     /// <summary>
@@ -124,20 +124,18 @@ public class BRoles : AbstractBusinessLogic
     {
         if (profile == null) throw new ArgumentNullException(nameof(profile), "profile cannot be a null reference (Nothing in Visual Basic)!!");
         MRole mRetVal = new();
-        m_DRoles.Profile = profile;
-        if (DatabaseIsOnline()) mRetVal = new(await m_DRoles.ProfileData());
+        if (DatabaseIsOnline()) mRetVal = new(await m_DRoles.ProfileData(profile.Id));
         return mRetVal;
     }
 
     /// <summary>
     /// Gets the roles by BU.
     /// </summary>
-    /// <param name="SecurityEntityID">The security entity ID.</param>
+    /// <param name="securityEntitySeqId">The security entity ID.</param>
     /// <returns>DataTable.</returns>
-    public async Task<DataTable> GetRolesBySecurityEntity(int SecurityEntityID)
+    public async Task<DataTable> GetRolesBySecurityEntity(int securityEntitySeqId)
     {
-        m_DRoles.SecurityEntitySeqID = SecurityEntityID;
-        return await m_DRoles.RolesBySecurityEntity();
+        return await m_DRoles.RolesBySecurityEntity(securityEntitySeqId);
     }
 
     /// <summary>

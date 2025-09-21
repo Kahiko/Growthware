@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, effect, OnInit, Type, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, OnInit, Type, ViewChild } from '@angular/core';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@growthware/core/dynamic-table';
 import { SearchService, ISearchCriteriaNVP } from '@growthware/core/search';
+import { LoggingService } from '@growthware/core/logging';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthware/core/modal';
 
 @Component({
@@ -20,6 +21,7 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
 
 	protected _TheService!: BaseService;
 	protected _DynamicTableSvc!: DynamicTableService;
+	protected _LoggingSvc: LoggingService = inject(LoggingService);
 	protected _ModalSvc!: ModalService;
 	protected _SearchSvc!: SearchService;
 
@@ -35,7 +37,7 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnInit {
 				this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
 					this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
 				}).catch((error) => {
-					console.log(error);
+					this._LoggingSvc.errorHandler(error, 'BaseSearchComponent', 'constructor.effect');
 				});
 			}
 		});

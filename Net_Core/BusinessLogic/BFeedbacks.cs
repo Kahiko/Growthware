@@ -9,11 +9,11 @@ namespace GrowthWare.BusinessLogic;
 public class BFeedbacks : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IFeedbacks m_DataAccess;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BFeedbacks() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -57,16 +57,16 @@ public class BFeedbacks : AbstractBusinessLogic
     public BFeedbacks(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DataAccess == null || ConfigSettings.CentralManagement)
+        if (m_DataAccess == null)
         {
             this.m_DataAccess = (IFeedbacks)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFeedbacks", securityEntityProfile.ConnectionString);
-            if (this.m_DataAccess == null) 
+            if (this.m_DataAccess == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DFeedbacks.");
             }
         }
     }
-#endregion
+    #endregion
 
     public async Task<UIFeedback> GetFeedback(int feedbackId)
     {

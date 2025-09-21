@@ -31,11 +31,11 @@ namespace GrowthWare.BusinessLogic;
 public class BGroups : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private IGroups m_DGroups;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Private BGroups() to ensure only new instances with passed parameters is used.
     /// </summary>
@@ -79,27 +79,29 @@ public class BGroups : AbstractBusinessLogic
     public BGroups(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DGroups == null || ConfigSettings.CentralManagement)
+        if (m_DGroups == null)
         {
             this.m_DGroups = (IGroups)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups", securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DGroups == null) 
+            if (this.m_DGroups == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DGroups.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Gets the groups by security entity.
     /// </summary>
-    /// <param name="SecurityEntityID">The security entity ID.</param>
+    /// <param name="securityEntityId">The security entity ID.</param>
     /// <returns>DataTable.</returns>
-    public async Task<DataTable> GetGroupsBySecurityEntity(int SecurityEntityID)
+    public async Task<DataTable> GetGroupsBySecurityEntity(int securityEntityId)
     {
-        MGroupProfile myProfile = new MGroupProfile();
-        myProfile.SecurityEntityID = SecurityEntityID;
-        m_DGroups.Profile = myProfile;
+        MGroupProfile mProfile = new()
+        {
+            SecurityEntityId = securityEntityId
+        };
+        m_DGroups.Profile = mProfile;
         return await m_DGroups.GroupsBySecurityEntity();
     }
 
@@ -108,12 +110,12 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="groupId">The group ID.</param>
     /// <returns>MGroupProfile.</returns>
-    public async Task<MGroupProfile> GetProfile(int groupId)
+    public async Task<MGroupProfile> GetProfile(int groupId, int securityEntityId)
     {
         MGroupProfile retProfile = new MGroupProfile();
         retProfile.Id = groupId;
         m_DGroups.Profile = retProfile;
-        retProfile = new MGroupProfile(await m_DGroups.ProfileData());
+        retProfile = new MGroupProfile(await m_DGroups.ProfileData(securityEntityId));
         return retProfile;
     }
 

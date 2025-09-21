@@ -1,12 +1,13 @@
 /*
 Usage:
-	DECLARE 
-		@P_ResetToken NVARCHAR(MAX) = '',
-		@P_Debug INT = 1
 
-	exec  ZGWSecurity.Get_Account_By_Reset_Token
-		@P_ResetToken,
-		@P_Debug
+DECLARE 
+	@P_ResetToken NVARCHAR(MAX) = '',
+	@P_Debug INT = 1
+
+EXEC ZGWSecurity.Get_Account_By_Reset_Token
+	@P_ResetToken,
+	@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -15,45 +16,77 @@ Usage:
 -- =============================================
 -- Author:			Michael Regan
 -- Modified date: 	05/21/2024
--- Description:		Changed ACCT.[Account] to [ACCT] = ACCT.[Account] and
---					ACCT.[AccountSeqId] to [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
+-- Description:		Changed ACCT.[Account] to [ACCT] = ACCT.[Account]
 -- 					to match the C# code
 -- =============================================
-CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
+-- Author:			Michael Regan
+-- Modified date: 	05/26/2025
+-- Description:		
+-- =============================================
+-- Author:			Michael Regan
+-- Modified date: 	05/26/2025
+-- Description:		Now returns multiple tables given the ResetToken the data tables are from:
+--						[ZGWSecurity].[RefreshTokens]
+--						[ZGWSecurity].[Get_Account_Roles]
+--						[ZGWSecurity].[Get_Account_Groups]
+--						[ZGWSecurity].[Get_Account_Security]
+-- =============================================
+CREATE PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
 	@P_ResetToken NVARCHAR(MAX),
 	@P_Debug INT = 0
 AS
 BEGIN
-	SET NOCOUNT ON
-	SELECT TOP (1) 
-		 [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
-		,[ACCT] = ACCT.[Account]
-		,ACCT.[Email]
-		,ACCT.[Enable_Notifications]
-		,ACCT.[Is_System_Admin]
-		,ACCT.[StatusSeqId]
-		,ACCT.[Password_Last_Set]
-		,ACCT.[Password]
-		,ACCT.[ResetToken]
-		,ACCT.[ResetTokenExpires]
-		,ACCT.[Failed_Attempts]
-		,ACCT.[First_Name]
-		,ACCT.[Last_Login]
-		,ACCT.[Last_Name]
-		,ACCT.[Location]
-		,ACCT.[Middle_Name]
-		,ACCT.[Preferred_Name]
-		,ACCT.[Time_Zone]
-		,ACCT.[VerificationToken]
-		,ACCT.[Added_By]
-		,ACCT.[Added_Date]
-		,ACCT.[Updated_By]
-		,ACCT.[Updated_Date]
-	FROM [ZGWSecurity].[Accounts] ACCT
--- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
-    WHERE
-        ACCT.[ResetToken] = @P_ResetToken
-        AND ResetTokenExpires > GETDATE();
-	RETURN 0
+	SET NOCOUNT ON;
+	DECLARE @V_Account VARCHAR(128)
+		, @V_Is_System_Admin bit
+		, @V_SecurityEntitySeqId INT;
+
+	SELECT
+		  @V_Account = [ACCTS].[Account] 
+		, @V_Is_System_Admin = [ACCTS].[Is_System_Admin]
+		, @V_SecurityEntitySeqId = [ACCT_CHOICES].[SecurityEntityId]
+	FROM [ZGWSecurity].[Accounts] AS [ACCTS] LEFT JOIN
+		[ZGWCoreWeb].[Account_Choices] [ACCT_CHOICES] ON
+			[ACCTS].[Account] = [ACCT_CHOICES].[Account]
+	WHERE 1=1
+		AND [ACCTS].[ResetToken] = @P_ResetToken
+		AND [ACCTS].[ResetTokenExpires] > GETUTCDATE();
+	IF @P_Debug = 1
+		BEGIN
+			PRINT '@V_Account IS: ' + CONVERT(NVARCHAR(MAX), @V_Account);
+			PRINT '@V_Is_System_Admin IS: ' + CONVERT(NVARCHAR(MAX), @V_Is_System_Admin);
+			PRINT '@V_SecurityEntitySeqId IS: ' + CONVERT(NVARCHAR(MAX), @V_SecurityEntitySeqId);
+		END
+	--END IF
+	-- [ZGWSecurity].[Accounts]
+	EXEC [ZGWSecurity].[Get_Account]
+		@V_Is_System_Admin,
+		@V_Account,
+		@V_SecurityEntitySeqId,
+		@P_Debug
+    -- [ZGWSecurity].[RefreshTokens]
+	SELECT 
+		  RT.[RefreshTokenId]
+		, RT.[AccountSeqId]
+		, RT.[Token]
+		, RT.[Expires]
+		, RT.[Created]
+		, RT.[CreatedByIp]
+		, RT.[Revoked]
+		, RT.[RevokedByIp]
+		, RT.[ReplacedByToken]
+		, RT.[ReasonRevoked]
+    FROM 
+		[ZGWSecurity].[RefreshTokens] RT
+        INNER JOIN [ZGWSecurity].[Accounts] ACCT 
+			ON ACCT.[Account] = @V_Account AND RT.AccountSeqId = ACCT.[AccountSeqId]
+    ORDER BY [Created] ASC;
+	-- [ZGWSecurity].[Get_Account_Roles]
+	EXEC [ZGWSecurity].[Get_Account_Roles] @V_Account, @V_SecurityEntitySeqId
+	-- [ZGWSecurity].[Get_Account_Groups]
+	EXEC [ZGWSecurity].[Get_Account_Groups] @V_Account, @V_SecurityEntitySeqId
+	-- [ZGWSecurity].[Get_Account_Security]
+	EXEC [ZGWSecurity].[Get_Account_Security] @V_Account, @V_SecurityEntitySeqId
+	RETURN 0;
 END
 GO
