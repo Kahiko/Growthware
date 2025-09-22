@@ -70,6 +70,12 @@ that includes the security tables instead of a single DataTable when the functio
 - Web.Support.BaseControllers.AbstractFunctionController\Save Fixed groups/roles not saving correctly
 - Fixed when BAccounts.Save would not save groups correctly when a security entity was other than 1
 
+
+
+
+## Net_Core feature/logger (2025-09-22)
+- Updated the logger to add [XXX]: to the beginning of text messages
+
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes
 - AbstractDatabaseFunctions
