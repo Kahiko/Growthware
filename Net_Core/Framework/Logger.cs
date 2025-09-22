@@ -231,7 +231,7 @@ public class Logger : IDisposable
     {
         if (message.GetType() == typeof(string))
         {
-            message += "[Debug]: ";
+            message = "[Debug]: " + message;
         }
         Log(message, LogPriority.Debug);
     }
@@ -244,7 +244,7 @@ public class Logger : IDisposable
     {
         if (message.GetType() == typeof(string))
         {
-            message += "[Info]: ";
+            message = "[Info]: " + message;
         }
         Log(message, LogPriority.Info);
     }
@@ -257,7 +257,7 @@ public class Logger : IDisposable
     {
         if (message.GetType() == typeof(string))
         {
-            message += "[Warn]: ";
+            message = "[Warn]: " + message;
         }
         Log(message, LogPriority.Warn);
     }
@@ -270,7 +270,7 @@ public class Logger : IDisposable
     {
         if (message.GetType() == typeof(string))
         {
-            message += "[Error]: ";
+            message = "[Error]: " + message;
         }
         Log(message, LogPriority.Error);
     }
@@ -283,7 +283,7 @@ public class Logger : IDisposable
     {
         if (message.GetType() == typeof(string))
         {
-            message += "[Fatal]: ";
+            message = "[Fatal]: " + message;
         }
         Log(message, LogPriority.Fatal);
     }
