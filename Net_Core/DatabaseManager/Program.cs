@@ -4,6 +4,8 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Collections.Generic;
+using NLog.Fluent;
+using System.Collections.Specialized;
 
 namespace GrowthWare.DatabaseManager
 {
@@ -11,6 +13,7 @@ namespace GrowthWare.DatabaseManager
     {
         private static Boolean m_CreatedDatabase = false;
         private static Version m_DesiredVersion = null;
+        private static Logger m_Logger = Logger.Instance();
 
         /// <summary>
         /// Retrieves the value of the specified command line argument.
@@ -49,6 +52,7 @@ namespace GrowthWare.DatabaseManager
                 showHelp();
                 return;
             }
+            string mMsg = string.Empty;
             m_DesiredVersion = new Version(getArgument(args, "--Version"));
             string mAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
             DataTable mAvailbleFiles = null;
@@ -69,24 +73,36 @@ namespace GrowthWare.DatabaseManager
             {
                 if (mDatabaseManager.Exists())
                 {
-                    Console.WriteLine(String.Format("The '{0}' database exists.", mDatabaseManager.DatabaseName));
+                    mMsg = String.Format("The '{0}' database exists.", mDatabaseManager.DatabaseName);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                 }
                 else
                 {
                     m_CreatedDatabase = true;
-                    Console.WriteLine(String.Format("Attempting to create the '{0}' database.", mDatabaseManager.DatabaseName));
+                    mMsg = String.Format("Attempting to create the '{0}' database.", mDatabaseManager.DatabaseName);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                     mDatabaseManager.Create();
-                    Console.WriteLine(String.Format("The '{0}' database has been created.", mDatabaseManager.DatabaseName));
+                    mMsg = String.Format("The '{0}' database has been created.", mDatabaseManager.DatabaseName);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                 }
-                Console.WriteLine("Starting upgrade/downgrade process.");
+                mMsg = "Starting upgrade/downgrade process.";
+                Console.WriteLine(mMsg);
+                m_Logger.Info(mMsg);
                 Version mCurrentVersion = mDatabaseManager.GetVersion();
                 string mUpOrDown = "Upgrade";
                 bool mIsUpgrade = true;
                 if (m_DesiredVersion == mCurrentVersion)
                 {
-                    Console.WriteLine("Database version matches requested version no work done.");
+                    mMsg = "Database version matches requested version no work done.";
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                     mWatch.Stop();
-                    Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+                    mMsg = string.Format("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                     return;
                 }
                 if (m_DesiredVersion < mCurrentVersion)
@@ -103,7 +119,9 @@ namespace GrowthWare.DatabaseManager
                 {
                     mAvailbleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "DESC");
                 }
-                Console.WriteLine(String.Format("Attempting to {0} the database.", mUpOrDown));
+                mMsg = String.Format("Attempting to {0} the database.", mUpOrDown);
+                Console.WriteLine(mMsg);
+                m_Logger.Info(mMsg);
                 string mVersionString = string.Empty;
                 foreach (DataRow mDataRow in mAvailbleFiles.Rows)
                 {
@@ -112,7 +130,7 @@ namespace GrowthWare.DatabaseManager
                     mAvailbleVersions.Add(mVersion);
                 }
                 mDatabaseManager.ProcessScriptFiles(mIsUpgrade, mCurrentVersion, m_DesiredVersion, mAvailbleVersions);
-                if(m_CreatedDatabase) 
+                if (m_CreatedDatabase)
                 {
                     mDatabaseManager.UpdateLogPath();
                 }
@@ -122,17 +140,25 @@ namespace GrowthWare.DatabaseManager
                 if (mDatabaseManager.Exists())
                 {
                     mDatabaseManager.Delete();
-                    Console.WriteLine(String.Format("The '{0}' database has been deleted.", mDatabaseManager.DatabaseName));
+                    mMsg = String.Format("The '{0}' database has been deleted.", mDatabaseManager.DatabaseName);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                 }
                 else
                 {
-                    Console.WriteLine(String.Format("The '{0}' database does not exist, nothing to delete.", mDatabaseManager.DatabaseName));
+                    mMsg = String.Format("The '{0}' database does not exist, nothing to delete.", mDatabaseManager.DatabaseName);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                     mWatch.Stop();
-                    Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+                    mMsg = string.Format("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+                    Console.WriteLine(mMsg);
+                    m_Logger.Info(mMsg);
                 }
             }
             mWatch.Stop();
-            Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+            mMsg = string.Format("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
+            Console.WriteLine(mMsg);
+            m_Logger.Info(mMsg);
         }
 
         /// <summary>
