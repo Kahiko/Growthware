@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GrowthWare.DataAccess.Oracle;
@@ -41,127 +42,136 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         string mSeedFileLocation = this.ExecuteScalar(mFileLocationQuery).ToString().Replace("system01.dbf", "", StringComparison.OrdinalIgnoreCase).TrimEnd(Path.DirectorySeparatorChar);
         mSeedFileLocation = mSeedFileLocation.Replace(@"\", @"/");
         mSeedFileLocation = mSeedFileLocation.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        
         // Construct the datafile path
         string mDataPath = $@"{mSeedFileLocation}\{ConfigSettings.DataAccessLayerDatabaseName}";
         string mDataFile = $@"{mDataPath}\{mDatabaseName}_users01.dbf";
-        string mUpper = mDatabaseName.ToUpper();
-        string mLower = mDatabaseName.ToLower();
-        // Create the pluggable database
-        mCommandText = $@"CREATE PLUGGABLE DATABASE {mDatabaseName}
-  ADMIN USER {mLower} IDENTIFIED BY ""{mDatabasePassword}""
-  ROLES = (dba)
-  DEFAULT TABLESPACE {mUpper}_USERS
-    DATAFILE '{mDataFile}' SIZE 250M AUTOEXTEND ON
-  FILE_NAME_CONVERT = ('{mSeedFileLocation + Path.DirectorySeparatorChar}',
-                       '{mDataPath + Path.DirectorySeparatorChar}')
-  STORAGE (MAXSIZE 1G)
-  PATH_PREFIX = '{mDataPath + Path.DirectorySeparatorChar}'";
+        string mDatabaseNameUpper = mDatabaseName.ToUpper();
+        string mDatabaseNameLower = mDatabaseName.ToLower();
+        
         try
         {
+            // 1. Create a common user in the CDB with SYSDBA
+            string commonUser = $"c##{mDatabaseNameLower}";
+            mCommandText = $@"
+                DECLARE
+                    user_exists NUMBER;
+                    user_count NUMBER;
+                BEGIN
+                    -- Check if the user exists in any container (case-insensitive)
+                    SELECT COUNT(*) INTO user_count 
+                    FROM dba_users 
+                    WHERE UPPER(username) = UPPER('{commonUser}');
+                    
+                    -- If user exists, drop it first
+                    IF user_count > 0 THEN
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP USER {commonUser} CASCADE';
+                            DBMS_OUTPUT.PUT_LINE('Dropped existing user {commonUser}');
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                DBMS_OUTPUT.PUT_LINE('Error dropping user: ' || SQLERRM);
+                                RAISE;
+                        END;
+                    END IF;
+                    
+                    -- Create the user
+                    EXECUTE IMMEDIATE 'CREATE USER {commonUser} IDENTIFIED BY ""{mDatabasePassword}"" CONTAINER=ALL';
+                    EXECUTE IMMEDIATE 'GRANT SYSDBA TO {commonUser} CONTAINER=ALL';
+                    DBMS_OUTPUT.PUT_LINE('Created common user {commonUser}');
+                END;";
+
             this.ExecuteNonQuery(mCommandText);
+            this.m_Logger.Info($"Created/verified common user {commonUser}");
+
+            // 2. Create the pluggable database
+            mCommandText = $@"
+                DECLARE
+                    pdb_exists NUMBER;
+                BEGIN
+                    SELECT COUNT(*) INTO pdb_exists 
+                    FROM v$pdbs 
+                    WHERE name = '{mDatabaseName}';
+                    
+                    IF pdb_exists = 0 THEN
+                        EXECUTE IMMEDIATE '
+                            CREATE PLUGGABLE DATABASE {mDatabaseName}
+                            ADMIN USER {mDatabaseNameLower} IDENTIFIED BY ""{mDatabasePassword}""
+                            ROLES = (dba)
+                            DEFAULT TABLESPACE {mDatabaseNameUpper}_USERS
+                            DATAFILE ''{mDataFile}'' SIZE 250M AUTOEXTEND ON
+                            FILE_NAME_CONVERT = (''{mSeedFileLocation}'', ''{mDataPath}'')
+                            STORAGE (MAXSIZE 1G)
+                            PATH_PREFIX = ''{mDataPath}''';
+                        DBMS_OUTPUT.PUT_LINE('Created PDB {mDatabaseName}');
+                    ELSE
+                        DBMS_OUTPUT.PUT_LINE('PDB {mDatabaseName} already exists');
+                    END IF;
+                END;";
+                
+            this.ExecuteNonQuery(mCommandText);
+            this.m_Logger.Info($"Created/verified PDB {mDatabaseName}");
             // Open the pluggable database
-            string mOpenPdbQuery = $"ALTER PLUGGABLE DATABASE {mUpper} OPEN READ WRITE";
-            this.ExecuteNonQuery(mOpenPdbQuery);
+            mCommandText = $"ALTER PLUGGABLE DATABASE {mDatabaseName} OPEN READ WRITE";
+            this.ExecuteNonQuery(mCommandText);
+            this.m_Logger.Info($"Opened pluggable database {mDatabaseName}");
+            string[] sysCommands = {
+                "ALTER profile \"DEFAULT\" limit password_life_time unlimited",
+                "ALTER SYSTEM SET processes=300 SCOPE=spfile",
+                "ALTER SYSTEM SET sessions=335 SCOPE=spfile",
+                "ALTER SYSTEM SET transactions=400 SCOPE=spfile",
+                "ALTER SYSTEM SET open_cursors=300 SCOPE=both",
+                "ALTER SYSTEM SET cursor_sharing='FORCE' SCOPE=both"
+            };
+
+            foreach (var cmd in sysCommands)
+            {
+                try
+                {
+                    this.ExecuteNonQuery(cmd);
+                    // this.m_Logger.Debug($"Executed: {cmd}");
+                }
+                catch (Exception ex)
+                {
+                    this.m_Logger.Warn($"Could not execute '{cmd}': {ex.Message}");
+                }
+            }            
+
+            // Switch to the pluggable database
+            this.ConnectionString = ConfigSettings.ConnectionString;
+            string mScriptDirectory = this.GetScriptPath("Upgrade");
+            // Define the DDL scirpt
+            string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
+
+            // Define the DML scirpt
+            string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
+            using (OracleConnection mOracleConnection = new(this.ConnectionString))
+            {
+                mOracleConnection.Open();
+                // Boolean mSuccess = this.ExecuteScriptFile(mCreationFile, mOracleConnection);
+                Boolean mSuccess = this.replace_N_Run(mCreationFile, mOracleConnection);
+                if (!mSuccess)
+                {
+                    string mError = "Database '{0}' database was created but could not excute file name {1}.";
+                    mError = String.Format(mError, this.DatabaseName, mCreationFile);
+                    this.m_Logger.Error(mError);
+                    throw new Exception(mError);
+                }
+                // mSuccess = this.ExecuteScriptFile(mInsertFile, mOracleConnection);
+                mSuccess = this.replace_N_Run(mInsertFile, mOracleConnection);
+                if (!mSuccess)
+                {
+                    string mError = "Was not able to insert the data in into '{0}'.";
+                    mError = String.Format(mError, mCreationFile);
+                    throw new Exception(mError);
+                }
+            }
+
         }
-        catch (OracleException ex)
+        catch (Exception ex)
         {
-            Logger.Instance().Error(ex);
+            this.m_Logger.Error($"Error during database creation: {ex.Message}");
             throw;
-        }
-        this.ConnectionString = ConfigSettings.ConnectionString;
-        string mScriptDirectory = this.GetScriptPath("Upgrade");
-        // Define the DDL scirpt
-        string mCreationFile = mScriptDirectory + "Version_0.0.0.0.sql";
-
-        // Define the DML scirpt
-        string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
-        using (OracleConnection mOracleConnection = new(this.ConnectionString))
-        {
-            mOracleConnection.Open();
-            // Boolean mSuccess = this.ExecuteScriptFile(mCreationFile, mOracleConnection);
-            Boolean mSuccess = this.replace_N_Run(mCreationFile, mOracleConnection);
-            if (!mSuccess)
-            {
-                string mError = "Was not able to create the '{0}' database file name {1}.";
-                mError = String.Format(mError, this.DatabaseName, mCreationFile);
-                throw new Exception(mError);
-            }
-            // mSuccess = this.ExecuteScriptFile(mInsertFile, mOracleConnection);
-            mSuccess = this.replace_N_Run(mInsertFile, mOracleConnection);
-            if (!mSuccess)
-            {
-                string mError = "Was not able to insert the data in into '{0}'.";
-                mError = String.Format(mError, mCreationFile);
-                throw new Exception(mError);
-            }
-
-            // // Update all of the just added security entites to the configured data access layer information
-            // using OracleCommand mOracleCommand = new(mCommandText, mOracleConnection);
-            // mOracleCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
-            // using (OracleDataAdapter mOracleDataAdapter = new OracleDataAdapter(mOracleCommand))
-            // {
-            //     DataSet mDataSet = new DataSet();
-            //     mOracleDataAdapter.Fill(mDataSet);
-            //     if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
-            //     {
-            //         DataTable mDataTable = mDataSet.Tables[0];
-            //         if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
-            //         {
-            //             foreach(DataRow mRow in mDataTable.Rows)
-            //             {
-            //                 // Encrypt the connection string
-            //                 CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-            //                 mCommandText = @"
-            //                 UPDATE [ZGWSecurity].[Security_Entities] SET 
-            //                     [DAL] = N'{0}'
-            //                     , [DAL_Name] = N'{1}'
-            //                     , [DAL_Name_Space] = N'{2}'
-            //                     , [DAL_String] = N'{3}'
-            //                 WHERE [SecurityEntitySeqId] = {4};";
-            //                 mCommandText = String.Format(
-            //                     mCommandText,
-            //                     "SQLServer",
-            //                     ConfigSettings.DataAccessLayerAssemblyName,
-            //                     ConfigSettings.DataAccessLayerNamespace,
-            //                     mEncryptedConnectionString,
-            //                     mRow["SecurityEntitySeqId"].ToString()
-            //                 );
-            //                 mOracleCommand.CommandText = mCommandText;
-            //                 mOracleCommand.ExecuteNonQuery();
-            //             }
-            //         }
-            //     }
-            // }
-
-            // mOracleCommand.CommandText = @"SELECT [AccountSeqId] FROM [ZGWSecurity].[Accounts];";
-            // using (OracleDataAdapter mOracleDataAdapter = new OracleDataAdapter(mOracleCommand))
-            // {
-            //     DataSet mDataSet = new DataSet();
-            //     mOracleDataAdapter.Fill(mDataSet);
-            //     if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
-            //     {
-            //         DataTable mDataTable = mDataSet.Tables[0];
-            //         if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
-            //         {
-            //             foreach(DataRow mRow in mDataTable.Rows)
-            //             {
-            //                 // Encrypt the password
-            //                 CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-            //                 mCommandText = @"
-            //                 UPDATE [ZGWSecurity].[Accounts] SET 
-            //                     [Password] = '{0}'
-            //                 WHERE [AccountSeqId] = {1};";
-            //                 mCommandText = String.Format(
-            //                     mCommandText,
-            //                     mEncryptedPassword,
-            //                     mRow["AccountSeqId"].ToString()
-            //                 );
-            //                 mOracleCommand.CommandText = mCommandText;
-            //                 mOracleCommand.ExecuteNonQuery();
-            //             }
-            //         }
-            //     }
-            // }
         }
     }
 
@@ -175,7 +185,7 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         mVersionOneFile = mCurrentDirectory + "Version_1.0.0.0.sql";
         mVersionOneFile = mVersionOneFile.Replace(@"\", @"/");
         mVersionOneFile = mVersionOneFile.Replace(@"/", Path.DirectorySeparatorChar.ToString());
-        string mError = "Was not able to create the database using {0}";
+        string mError = "Was not able to delete the database using {0}";
         mError = String.Format(mError, mVersionOneFile);
         string mVersionOneText = File.ReadAllText(mVersionOneFile);
         using (OracleConnection mOracleConnection = new(this.ConnectionString))
@@ -215,63 +225,191 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         return this.ExecuteScriptFile(scriptWithPath, mSqlConnection);
     }
 
-    private bool ExecuteScriptFile(string scriptWithPath, OracleConnection oracleConnection)
+    public bool ExecuteScriptFile(string scriptWithPath, OracleConnection oracleConnection)
     {
-        this.IsValid();
-        try
+        ArgumentNullException.ThrowIfNull(oracleConnection);
+        if (string.IsNullOrWhiteSpace(scriptWithPath) || !File.Exists(scriptWithPath))
         {
-            string mAllText = File.ReadAllText(scriptWithPath);
-            // split script on forward slash
-            mAllText = removeCRLF(mAllText);
-            IEnumerable<string> mCommands = mAllText.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            if (oracleConnection.State == ConnectionState.Closed)
+            throw new FileNotFoundException("Script file not found", scriptWithPath);
+        }
+
+        string mScriptContent = File.ReadAllText(scriptWithPath);
+        string[] mForwardSlashCommands = splitIntoForwardSlashCommands(mScriptContent);
+
+        this.m_Logger.Debug($"Parsing script file: {scriptWithPath}");
+        this.m_Logger.Debug($"Number of forward slash commands found: {mForwardSlashCommands.Length}");
+        if (oracleConnection.State != ConnectionState.Open)
+        {
+            oracleConnection.Open();
+        }
+        
+        using (var oracleCommand = oracleConnection.CreateCommand())
+        {
+            foreach (string command in mForwardSlashCommands)
             {
-                oracleConnection.Open();
-            }
-            foreach (string item in mCommands)
-            {
-                string mCommandText = item.Replace(";", "").Trim();
-                if (!string.IsNullOrEmpty(mCommandText) && !string.IsNullOrWhiteSpace(mCommandText) && !mCommandText.Trim().StartsWith("--"))
+                if (string.IsNullOrWhiteSpace(command)) continue;
+
+                string mProcessedCommand = processCommandText(command.Trim());
+                if (string.IsNullOrWhiteSpace(mProcessedCommand)) continue;
+
+                try
                 {
-                    try
+                    // Handle transaction control statements first
+                    if (mProcessedCommand.TrimStart().StartsWith("COMMIT", StringComparison.OrdinalIgnoreCase) ||
+                        mProcessedCommand.TrimStart().StartsWith("ROLLBACK", StringComparison.OrdinalIgnoreCase))
                     {
-                        using OracleCommand mOracleCommand = new(mCommandText, oracleConnection);
-                        mOracleCommand.CommandType = CommandType.Text;
-                        mOracleCommand.ExecuteNonQuery();
+                        // Remove trailing semicolon if present
+                        mProcessedCommand = mProcessedCommand.TrimEnd();
+                        if (mProcessedCommand.EndsWith(";"))
+                        {
+                            mProcessedCommand = mProcessedCommand.Substring(0, mProcessedCommand.Length - 1).Trim();
+                        }
+                        
+                        // Execute the transaction control statement directly
+                        oracleCommand.CommandText = mProcessedCommand;
+                        oracleCommand.ExecuteNonQuery();
+                        continue; // Skip the rest of the loop
                     }
-                    catch (OracleException ex)
+
+                    // Only wrap if it's a standalone DDL statement (not already in a BEGIN/END block)
+                    if ((mProcessedCommand.TrimStart().StartsWith("CREATE ", StringComparison.OrdinalIgnoreCase) ||
+                         mProcessedCommand.TrimStart().StartsWith("ALTER ", StringComparison.OrdinalIgnoreCase) ||
+                         mProcessedCommand.TrimStart().StartsWith("DROP ", StringComparison.OrdinalIgnoreCase) ||
+                         mProcessedCommand.TrimStart().StartsWith("GRANT ", StringComparison.OrdinalIgnoreCase)) &&
+                        !mProcessedCommand.TrimStart().StartsWith("BEGIN", StringComparison.OrdinalIgnoreCase) &&
+                        !mProcessedCommand.TrimStart().StartsWith("DECLARE", StringComparison.OrdinalIgnoreCase) &&
+                        !mProcessedCommand.TrimStart().StartsWith("EXECUTE ", StringComparison.OrdinalIgnoreCase))
                     {
-                        string spError = mCommandText.Length > 100 ? mCommandText.Substring(0, 100) + " ...\n..." : mCommandText;
-                        string mMsg = string.Format("Please check the Oracle script.\nFile: {0} \nError: {1} \nSQL Command: \n{3}", scriptWithPath, ex.Message, spError, mCommandText);
-                        Console.WriteLine(mMsg);
-                        Logger.Instance().Error(mMsg);
-                        return false;
+                        // For CREATE OR REPLACE PROCEDURE, don't wrap in EXECUTE IMMEDIATE
+                        if (mProcessedCommand.TrimStart().StartsWith("CREATE OR REPLACE PROCEDURE", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Just remove trailing semicolon if present and use as is
+                            mProcessedCommand = mProcessedCommand.TrimEnd();
+                            if (mProcessedCommand.EndsWith(";"))
+                            {
+                                mProcessedCommand = mProcessedCommand.Substring(0, mProcessedCommand.Length - 1);
+                            }
+                        }
+                        else
+                        {
+                            // For other DDL and GRANT, use EXECUTE IMMEDIATE with proper escaping
+                            mProcessedCommand = mProcessedCommand.TrimEnd();
+                            if (mProcessedCommand.EndsWith(";"))
+                            {
+                                mProcessedCommand = mProcessedCommand.Substring(0, mProcessedCommand.Length - 1);
+                            }
+                            string singleLineCommand = System.Text.RegularExpressions.Regex.Replace(
+                                mProcessedCommand, 
+                                @"\s+", 
+                                " "
+                            ).Trim();
+                            string escapedCommand = singleLineCommand.Replace("'", "''");
+                            mProcessedCommand = $"BEGIN EXECUTE IMMEDIATE '{escapedCommand}'; END;";
+                        }
                     }
+
+                    // this.m_Logger.Debug($"Executing command: {mProcessedCommand}");
+                    oracleCommand.CommandText = mProcessedCommand;
+                    oracleCommand.CommandTimeout = 300; // 5 minutes
+                    oracleCommand.ExecuteNonQuery();
+                }
+                catch (OracleException ex)
+                {
+                    this.m_Logger.Error("Connection String: " + oracleConnection.ConnectionString);
+                    this.m_Logger.Error("scriptWithPath: " + scriptWithPath);
+                    this.m_Logger.Error($"Executing command: {mProcessedCommand}");
+                    this.m_Logger.Error($"Oracle Error: {ex.Message}");
+                    this.m_Logger.Error($"Error Code: {ex.Number}");
+                    this.m_Logger.Error(" --- Stack Trace ---");
+                    this.m_Logger.Error(ex.StackTrace);
+                    throw new Exception($"Error executing command: {mProcessedCommand}", ex);
                 }
             }
-            return true;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return false;
-        }
+        return true;
     }
 
     /// <summary>
-    /// Removes the CRLF and Trims the returned string
+    /// Splits the given script content into individual commands by splitting on forward slashes
+    /// that are on their own line.
     /// </summary>
-    /// <param name="mAllText"></param>
-    /// <returns></returns>
-    private static string removeCRLF(string theText)
+    /// <param name="scriptContent">The script content to split.</param>
+    /// <returns>An array of string containing the individual commands.</returns>
+    private static string[] splitIntoForwardSlashCommands(string scriptContent)
     {
-        string mRetVal = theText;
-        mRetVal = mRetVal.Replace("\r\n", " ");
-        mRetVal = mRetVal.Replace("\n", " ");
-        mRetVal = mRetVal.Replace("\r", " ");
-        mRetVal = mRetVal.Replace("\t", " ");
-        mRetVal = mRetVal.Trim();
-        return mRetVal;
+        // Normalize line endings and remove BOM
+        scriptContent = scriptContent.Replace("\r\n", "\n")
+                                    .Replace("\r", "\n")
+                                    .TrimStart('\uFEFF');
+        
+        // Split on forward slashes that are on their own line
+        return scriptContent.Split(new[] { "\n/", "\r\n/" }, StringSplitOptions.RemoveEmptyEntries);
+    }
+
+    /// <summary>
+    /// Processes the given command text by skipping empty lines, line comments and block comments.
+    /// </summary>
+    /// <param name="commandText">The command text to process.</param>
+    /// <returns>The processed command text.</returns>
+    private static string processCommandText(string commandText)
+    {
+        var mStringBuilder = new StringBuilder();
+        bool mIsInBlockComment = false;
+        
+        string[] mLines = commandText.Split('\n');
+        
+        foreach (string line in mLines)
+        {
+            string mTrimmedLine = line.Trim();
+
+            // Skip empty lines
+            if (string.IsNullOrWhiteSpace(mTrimmedLine))
+            { 
+                continue;
+            }
+                
+            // Handle block comments
+            if (mIsInBlockComment)
+            {
+                int mEndComment = mTrimmedLine.IndexOf("*/");
+                if (mEndComment >= 0)
+                {
+                    mIsInBlockComment = false;
+                    // Add any content after the comment ends
+                    string mRemaining = mTrimmedLine.Substring(mEndComment + 2).Trim();
+                    if (!string.IsNullOrEmpty(mRemaining))
+                    {
+                        mStringBuilder.AppendLine(mRemaining);
+                    }
+                }
+                continue;
+            }
+            
+            // Check for start of block comment
+            int mStartComment = mTrimmedLine.IndexOf("/*");
+            if (mStartComment >= 0)
+            {
+                mIsInBlockComment = true;
+                // Add any content before the comment starts
+                string mBeforeComment = mTrimmedLine.Substring(0, mStartComment).Trim();
+                if (!string.IsNullOrEmpty(mBeforeComment))
+                {
+                    mStringBuilder.AppendLine(mBeforeComment);
+                }
+                continue;
+            }
+
+            // Skip line comments
+            if (mTrimmedLine.StartsWith("--") || mTrimmedLine.StartsWith("//"))
+            { 
+                continue;
+            }
+            
+            // Add the line to the result
+            mStringBuilder.AppendLine(mTrimmedLine);
+        }
+        
+        return mStringBuilder.ToString().Trim();
     }
 
     public bool Exists()
@@ -431,8 +569,9 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         bool mSuccess = false;
         // Replace 'YourDatabaseName' with the given database name
         string mAllText = File.ReadAllText(scriptFile);
-        mAllText = mAllText.Replace("YourDatabaseName", DatabaseName.ToUpper());
+        mAllText = mAllText.Replace("YourDatabaseName", this.DatabaseName);
         mAllText = mAllText.Replace("YourPasswordHere", this.getPassword());
+        mAllText = mAllText.Replace("YourUpperDatabaseName_users", this.DatabaseName.ToUpper() + "_users");
         File.WriteAllText(scriptFile, mAllText);
         try
         {
@@ -441,12 +580,13 @@ public class DDatabaseManager : AbstractDBInteraction, IDatabaseManager
         }
         catch (System.Exception)
         {
-            // We do not want to throw anything that will be done by caller
+            throw;
         }
         finally
         {
             // Replace the given database name with 'YourDatabaseName'
-            mAllText = mAllText.Replace(DatabaseName.ToUpper(), "YourDatabaseName");
+            mAllText = mAllText.Replace(this.DatabaseName.ToUpper() + "_users", "YourUpperDatabaseName_users");
+            mAllText = mAllText.Replace(this.DatabaseName, "YourDatabaseName");
             mAllText = mAllText.Replace(this.getPassword(), "YourPasswordHere");
             File.WriteAllText(scriptFile, mAllText);
         }
