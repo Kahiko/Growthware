@@ -50,7 +50,7 @@
 
     "Development_DAL_Oracle_Assembly_Name": "GrowthWare.DataAccess",
     "Development_DAL_Oracle_Database_Name": "GrowthWare",
-    "Development_DAL_Oracle_ConnectionString": "Data Source=localhost:1521/GROWTHWARE;User Id=growthware;Password=realyitsMe",
+    "Development_DAL_Oracle_ConnectionString": "Data Source=localhost:1521/GrowthWare;User Id=growthware;Password=realyitsMe",
     "Development_DAL_Oracle_Container_ConnectionString": "Data Source=localhost:1521/XE;User Id=sys;Password=realyitsMe;DBA Privilege=SYSDBA",
     "Development_DAL_Oracle_Name_Space": "GrowthWare.DataAccess.Oracle",
 
