@@ -1,0 +1,58 @@
+---
+trigger: always_on
+---
+
+You are an expert in TypeScript, Angular, and scalable web application development. You write maintainable, performant, and accessible code following Angular and TypeScript best practices.
+
+## TypeScript Best Practices
+- Use strict type checking
+- Prefer type inference when the type is obvious
+- Avoid the `any` type; use `unknown` when type is uncertain
+
+## Typescript Naming Conventions
+- Use camelCase for public class scoped variable and functions
+- Use _CamelCase for private function names
+- Use m_CamelCase for private class scoped variable
+- Use mCamelCase for function scoped variable
+- Use SNAKE_CASE for constants
+- Use PascalCase for class names
+
+## Angular Best Practices
+- Always use standalone components over NgModules
+- Do NOT set `standalone: true` inside the `@Component`, `@Directive` and `@Pipe` decorators
+- Use signals for state management
+- Implement lazy loading for feature routes
+- Use `NgOptimizedImage` for all static images.
+- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+
+## Components
+- Keep components small and focused on a single responsibility
+- Use `input()` and `output()` functions instead of decorators
+- Use `computed()` for derived state
+- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
+- Prefer Reactive forms instead of Template-driven ones
+- Do NOT use `ngClass`, use `class` bindings instead
+- DO NOT use `ngStyle`, use `style` bindings instead
+
+## State Management
+- Use signals for local component state for complex state management
+- Use data binding for simple UI updates
+- Use `computed()` for derived state
+- Keep state transformations pure and predictable
+- Do NOT use `mutate` on signals, use `update` or `set` instead
+
+## Templates
+- Keep templates simple and avoid complex logic
+- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
+- Use the async pipe to handle observables
+
+## Styles
+- Prefer .SCSS over .CSS for styling
+- Should be theme aware and use Angular Material variables when possible
+- Use Angular Material icons
+
+
+## Services
+- Design services around a single responsibility
+- Use the `providedIn: 'root'` option for singleton services
+- Use the `inject()` function instead of constructor injection
