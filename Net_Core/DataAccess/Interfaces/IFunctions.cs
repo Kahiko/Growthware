@@ -21,11 +21,6 @@ public interface IFunction : IDBInteraction
     MFunctionProfile Profile { get; set; }
 
     /// <summary>
-    /// Used by all methods and must be set to send parameters to the data store
-    /// </summary>
-    int SecurityEntitySeqId { get; set; }
-
-    /// <summary>
     /// Copies the function security from the source to the target deleteing the target in the process
     /// </summary>
     /// <param name="source"></param>
@@ -48,7 +43,7 @@ public interface IFunction : IDBInteraction
     /// </summary>
     /// <returns>DataSet</returns>
     /// <remarks>Does not caculate security for accounts.</remarks>
-    Task<DataSet> GetFunctions();
+    Task<DataSet> GetFunctions(int securityEntitySeqId);
 
     /// <summary>
     /// Returns a DataTable of function types
@@ -71,12 +66,12 @@ public interface IFunction : IDBInteraction
     /// <summary>
     /// Save groups by passing a string or comma seporated groups to the database.
     /// </summary>
-    Task SaveGroups(PermissionType permission);
+    Task SaveGroups(PermissionType permission, int securityEntitySeqId);
 
     /// <summary>
     /// Save roles by passing a string or comma seporated roles to the database.
     /// </summary>
-    Task SaveRoles(PermissionType permission);
+    Task SaveRoles(PermissionType permission, int securityEntitySeqId);
 
     /// <summary>
     /// Updates the menu order.

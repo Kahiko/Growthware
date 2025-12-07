@@ -30,15 +30,15 @@ namespace GrowthWare.BusinessLogic;
 public class BSearch : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private ISearch m_DSearch;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     private BSearch() { }
 
     private string m_DB_ClassName = "DSearch";
-#endregion
+    #endregion
 
     /// <summary>
     /// Parameters are need to pass along to the factory for correct connection to the desired datastore.
@@ -75,10 +75,10 @@ public class BSearch : AbstractBusinessLogic
     public BSearch(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_DSearch == null || ConfigSettings.CentralManagement)
+        if (m_DSearch == null)
         {
             this.m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName, securityEntityProfile.ConnectionString, securityEntityProfile.Id);
-            if (this.m_DSearch == null) 
+            if (this.m_DSearch == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DSecurityEntities.");
             }

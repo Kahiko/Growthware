@@ -229,6 +229,10 @@ public class Logger : IDisposable
     /// <param name="message">The message.</param>
     public void Debug(object message)
     {
+        if (message.GetType() == typeof(string))
+        {
+            message = "[Debug]: " + message;
+        }
         Log(message, LogPriority.Debug);
     }
 
@@ -238,6 +242,10 @@ public class Logger : IDisposable
     /// <param name="message">The message.</param>
     public void Info(object message)
     {
+        if (message.GetType() == typeof(string))
+        {
+            message = "[Info]: " + message;
+        }
         Log(message, LogPriority.Info);
     }
 
@@ -247,6 +255,10 @@ public class Logger : IDisposable
     /// <param name="message">The message.</param>
     public void Warn(object message)
     {
+        if (message.GetType() == typeof(string))
+        {
+            message = "[Warn]: " + message;
+        }
         Log(message, LogPriority.Warn);
     }
 
@@ -256,6 +268,10 @@ public class Logger : IDisposable
     /// <param name="message">The message.</param>
     public void Error(object message)
     {
+        if (message.GetType() == typeof(string))
+        {
+            message = "[Error]: " + message;
+        }
         Log(message, LogPriority.Error);
     }
 
@@ -265,6 +281,10 @@ public class Logger : IDisposable
     /// <param name="message">The message.</param>
     public void Fatal(object message)
     {
+        if (message.GetType() == typeof(string))
+        {
+            message = "[Fatal]: " + message;
+        }
         Log(message, LogPriority.Fatal);
     }
 

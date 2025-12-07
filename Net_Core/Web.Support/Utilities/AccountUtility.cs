@@ -12,6 +12,7 @@ using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Web.Support.Jwt;
 
 namespace GrowthWare.Web.Support.Utilities;
+
 public static class AccountUtility
 {
     private static string s_CachedName = "CachedAnonymous";
@@ -33,14 +34,16 @@ public static class AccountUtility
     /// <param name="value"></param>
     private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "useDefault")
     {
-        string mSessionName = s_SessionName;
-        if (sessionName != "useDefault") { mSessionName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionHelper.AddToSession(mSessionName, value);
+            SessionHelper.AddToSession(mSessionOrCacheName, value);
             return;
         }
-        m_CacheHelper.AddToCache(s_CachedName, value);
+        mSessionOrCacheName = s_CachedName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
+        m_CacheHelper.AddToCache(mSessionOrCacheName, value);
     }
 
     /// <summary>
@@ -51,14 +54,16 @@ public static class AccountUtility
     /// <returns></returns>
     private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "useDefault")
     {
-        string mSessionName = s_SessionName;
-        if (sessionName != "useDefault") { mSessionName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            var mRetVal = SessionHelper.GetFromSession<T>(mSessionName);
+            var mRetVal = SessionHelper.GetFromSession<T>(mSessionOrCacheName);
             return mRetVal;
         }
-        return m_CacheHelper.GetFromCache<T>(s_CachedName);
+        mSessionOrCacheName = s_CachedName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
+        return m_CacheHelper.GetFromCache<T>(mSessionOrCacheName);
     }
 
     /// <summary>
@@ -68,14 +73,17 @@ public static class AccountUtility
     /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
     private static void removeFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
-        string mSessionName = s_SessionName;
-        if (sessionName != "useDefault") { mSessionName = sessionName; }
+        string mSessionOrCacheName = s_SessionName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionHelper.RemoveFromSession(mSessionName);
+            SessionHelper.RemoveFromSession(mSessionOrCacheName);
             return;
         }
-        m_CacheHelper.RemoveFromCache(s_CachedName);
+        mSessionOrCacheName = s_CachedName;
+        if (!sessionName.Equals("useDefault", StringComparison.InvariantCultureIgnoreCase)) { mSessionOrCacheName = sessionName; }
+        // if (sessionName != "useDefault") { mSessionOrCacheName = s_CachedName; }
+        m_CacheHelper.RemoveFromCache(mSessionOrCacheName);
     }
 
     /// <summary>
@@ -152,9 +160,9 @@ public static class AccountUtility
         mRetVal.LastLogOn = DateTime.Now;
         await Save(mRetVal, true, false, false);
         RemoveInMemoryInformation(mRetVal.Account);
+        await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         // Update the cache or session which in turn will update the "CurrentProfile" property.
         addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
-        await ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
     }
 
@@ -171,11 +179,11 @@ public static class AccountUtility
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out string mCurrentPassword, mSecurityEntity.EncryptionType);
         bool mPasswordVerifed = changePassword.OldPassword == mCurrentPassword;
         bool mCheckOldPassword = mAccountProfile.Status != (int)SystemStatus.ChangePassword;
-        if(!mCheckOldPassword)
+        if (!mCheckOldPassword)
         {
             mPasswordVerifed = true;
         }
-        if(mPasswordVerifed)
+        if (mPasswordVerifed)
         {
             await setChangePasswordProperties(changePassword, mAccountProfile, mSecurityEntity, ipAddress);
             try
@@ -187,8 +195,8 @@ public static class AccountUtility
             {
                 mMessageProfile = await MessageUtility.GetProfile("UnSuccessChangePassword");
             }
-        } 
-        else 
+        }
+        else
         {
             mMessageProfile = await MessageUtility.GetProfile("PasswordNotMatched");
         }
@@ -202,11 +210,11 @@ public static class AccountUtility
     public static async Task<MAccountProfile> CurrentProfile()
     {
         /*
-            *  1.) Attempt to get account from session
-            *  2.) Attempt to get account from cache if the return value is null
-            *  3.) If the return value is null the get the Anonymous account from the DB
-            *      and add it to cache.
-            */
+         *  1.) Attempt to get account from session
+         *  2.) Attempt to get account from cache if the return value is null
+         *  3.) If the return value is null the get the Anonymous account from the DB
+         *      and add it to cache.
+         */
         MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(ConfigSettings.Anonymous);
         if (mRetVal == null)
         {
@@ -246,7 +254,8 @@ public static class AccountUtility
             return mRetVal;
         }
         BAccounts mBusinessLogic = await BusinessLogic();
-        DataTable mDataTable = await mBusinessLogic.GetMenu(account, menuType);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        DataTable mDataTable = await mBusinessLogic.GetMenu(account, menuType, mCurrentSecurityEntity.Id);
         if (mDataTable != null)
         {
             mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
@@ -275,7 +284,8 @@ public static class AccountUtility
         mRetVal = new List<MMenuTree>();
         BAccounts mBusinessLogic = await BusinessLogic();
         DataTable mDataTable = null;
-        mDataTable = await mBusinessLogic.GetMenu(account, menuType);
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        mDataTable = await mBusinessLogic.GetMenu(account, menuType, mCurrentSecurityEntity.Id);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
         {
             mRetVal = MMenuTree.GetFlatList(mDataTable);
@@ -316,17 +326,18 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = null;
         BAccounts mBusinessLogic = null;
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         if (forceDb)
         {
             mBusinessLogic = await BusinessLogic();
-            mRetVal = await mBusinessLogic.GetProfile(account);
+            mRetVal = await mBusinessLogic.GetProfile(account, mCurrentSecurityEntity.Id);
             return mRetVal;
         }
         mRetVal = await CurrentProfile();
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mBusinessLogic = await BusinessLogic();
-            mRetVal = await mBusinessLogic.GetProfile(account);
+            mRetVal = await mBusinessLogic.GetProfile(account, mCurrentSecurityEntity.Id);
         }
         return mRetVal;
     }
@@ -369,7 +380,7 @@ public static class AccountUtility
     /// <returns></returns>
     private static async Task<BAccounts> BusinessLogic()
     {
-        if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+        if (m_BAccounts == null || ConfigSettings.CentralManagement == true)
         {
             m_BAccounts = new(await SecurityEntityUtility.CurrentProfile());
         }
@@ -475,33 +486,33 @@ public static class AccountUtility
     {
         // Get the security entity via the URL or use the default
         MSecurityEntity mTargetSecurityEntity = await SecurityEntityUtility.CurrentProfile();
-        if(ConfigSettings.SecurityEntityFromUrl)
+        if (ConfigSettings.SecurityEntityFromUrl)
         {
             mTargetSecurityEntity = await SecurityEntityUtility.GetProfileByUrl(origin);
         }
         // Need to get the roles so need to get the Registration_Information
         MRegistrationInformation mRegistrationInformation = await SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
-        if(mRegistrationInformation == null) 
+        if (mRegistrationInformation == null)
         {
             m_Logger.Fatal("Unable to get registration information");
             throw new WebSupportException("Unable to get registration information");
         }
         // Validate (ensure email is not in use as an account)
         MAccountProfile mProfileToSave = await GetAccount(accountProfile.Email, true);
-        if(String.IsNullOrWhiteSpace(mProfileToSave.Account)) 
+        if (String.IsNullOrWhiteSpace(mProfileToSave.Account))
         {
             mProfileToSave = new MAccountProfile(accountProfile)
             {
                 Account = accountProfile.Email
             };
-            if (mRegistrationInformation != null) 
+            if (mRegistrationInformation != null)
             {
                 // Populate the roles/groups via the security entity associated 
                 // (Uses the [ZGWSecurity].[Registration_Roles] table)
                 mProfileToSave.SetGroups(mRegistrationInformation.Groups);
                 mProfileToSave.SetRoles(mRegistrationInformation.Roles);
             }
-            else 
+            else
             {
                 mProfileToSave.SetRoles(ConfigSettings.RegistrationDefaultRoles);
                 mProfileToSave.SetGroups(ConfigSettings.RegistrationDefaultGroups);
@@ -528,11 +539,11 @@ public static class AccountUtility
             // as well.
             string mVerificationToken = await mJwtUtility.GenerateVerificationToken();
             mProfileToSave.VerificationToken = mVerificationToken;
-            await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
+            await mBusinessLogic.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups, mTargetSecurityEntity.Id);
             mProfileToSave = await GetAccount(mProfileToSave.Account, true);
             mProfileToSave.VerificationToken = mVerificationToken;
         }
-        else 
+        else
         {
             mProfileToSave = null;
         }
@@ -621,8 +632,8 @@ public static class AccountUtility
     private static void removeOldRefreshTokens(MAccountProfile accountProfile)
     {
         // TODO - look at this are we sure we need to keep refresh tokens in the db for this long?
-        accountProfile.RefreshTokens.RemoveAll(x => 
-            !x.IsActive && 
+        accountProfile.RefreshTokens.RemoveAll(x =>
+            !x.IsActive &&
             x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
         );
     }
@@ -635,9 +646,9 @@ public static class AccountUtility
     private static void removeReplacedByNewTokens(MAccountProfile accountProfile)
     {
         MRefreshToken mByNewToken = accountProfile.RefreshTokens.Where(x => x.ReasonRevoked == "Replaced by new token").OrderByDescending(x => x.Created).FirstOrDefault();
-        if(mByNewToken != null)
+        if (mByNewToken != null)
         {
-            accountProfile.RefreshTokens.RemoveAll(x => 
+            accountProfile.RefreshTokens.RemoveAll(x =>
                 x.ReasonRevoked == "Replaced by new token"
             );
             accountProfile.RefreshTokens.Add(mByNewToken);
@@ -679,10 +690,10 @@ public static class AccountUtility
         {
             return accountProfile;
         }
-        MSecurityEntity mSecurityEntity = await SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mCurrentSecurityEntity = await SecurityEntityUtility.CurrentProfile();
         BAccounts mBusinessLogic = await BusinessLogic();
-        await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
-        MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account);
+        await mBusinessLogic.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mCurrentSecurityEntity.Id);
+        MAccountProfile mAccountProfile = await mBusinessLogic.GetProfile(accountProfile.Account, mCurrentSecurityEntity.Id);
         MAccountProfile mCurrentAccountProfile = await CurrentProfile();
         if ((accountProfile.Id == mCurrentAccountProfile.Id) || (mCurrentAccountProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {
@@ -728,7 +739,7 @@ public static class AccountUtility
         RemoveInMemoryInformation(mAccountProfile.Account);
         addOrUpdateCacheOrSession(mAccountProfile.Account, mAccountProfile);
     }
-    
+
     /// <summary>
     /// Verifies an account by checking if the provided verification token exists in the database and matches the email address.
     /// </summary>
@@ -741,7 +752,7 @@ public static class AccountUtility
         if (verificationToken == null) throw new ArgumentNullException(nameof(verificationToken), "verificationToken cannot be a null reference (Nothing in VB)!");
         MAccountProfile mRetVal = null;
         MAccountProfile mAccountProfile = await getProfileByVerificationToken(verificationToken);
-        if(mAccountProfile != null && !String.IsNullOrWhiteSpace(mAccountProfile.Email) && mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
+        if (mAccountProfile != null && !String.IsNullOrWhiteSpace(mAccountProfile.Email) && mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
         {
             mRetVal = mAccountProfile;
         }
@@ -752,10 +763,11 @@ public static class AccountUtility
             string mMsg = string.Format("Attempted to verify token for account: {0} and verification token: '{1}'", email, verificationToken);
             m_Logger.Error(mMsg);
             mMsg = "The verification token {0}!";
-            if(mAccountProfile == null)
+            if (mAccountProfile == null)
             {
                 mMsg = string.Format(mMsg, "was not found in the database!");
-            } else if(!String.IsNullOrWhiteSpace(mAccountProfile.Email) && !mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
+            }
+            else if (!String.IsNullOrWhiteSpace(mAccountProfile.Email) && !mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
             {
                 mMsg = string.Format(mMsg, "email addresses did not match for the found token!");
             }

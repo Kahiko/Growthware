@@ -13,24 +13,24 @@ namespace GrowthWare.BusinessLogic;
 public class BLogger : AbstractBusinessLogic
 {
 
-#region Member Fields
+    #region Member Fields
     private ILogging m_Logging;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     public BLogger(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-        if(m_Logging == null || ConfigSettings.CentralManagement)
+        if (m_Logging == null)
         {
             this.m_Logging = (ILogging)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DLogging", securityEntityProfile.ConnectionString);
-            if (this.m_Logging == null) 
+            if (this.m_Logging == null)
             {
                 throw new InvalidOperationException("Failed to create an instance of DLogging.");
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Asynchronously retrieves log records for export.
@@ -47,7 +47,7 @@ public class BLogger : AbstractBusinessLogic
             }
         }
     }
-    
+
     /// <summary>
     /// Retrieves the logging profile for a given log sequence ID.
     /// </summary>

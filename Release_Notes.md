@@ -9,6 +9,34 @@
 - Upgraded Angular from 18 to 19
 
 ### Improvements
+- Added the logging service to the base-search component - base-search now uses LoggingService.errorHandler
+
+- Removed the CentralManagement check in the Business Logic Layer - this should be done in the Web.Support when the business logic is being called
+
+- Performance improvement - Updated stored procedures:
+    [ZGWSecurity].[Get_Account] 
+    [ZGWSecurity].[Get_Account_By_Verification_Token]
+    [ZGWSecurity].[Get_Account_By_Reset_Token]
+    [ZGWSecurity].[Get_Account_By_Refresh_Token] to return a Dataset of:
+		1. Table 0, row 0 - Account Details,
+		2. Table 1 - Refresh Tokens,
+		3. Table 2 - Assigned Roles,
+		4. Table 3 - Assigned Groups,
+		5. Table 4 - Derived Roles
+    In turn:
+        Removed Task<DataTable> Groups();
+        Removed Task<DataTable> RefreshTokens();
+        Removed Task<DataTable> Roles();
+        Updated DAccounts.GetAccount to return a DataSet instead of a DataTable
+        Updated any BAccounts methods to stop using the old old methods to get the Roles, Groups, RefreshTokens
+        NOTE: Security (Derived Roles) was left because eventually it may be needed but it is not used.
+
+- Added FunctionSecurityTables and FunctionSecurityTableNames to minimize use of indicies and strings
+- Performance improvement - Updated stored procedure [ZGWSecurity].[Get_Function] to return a DataSet 
+that includes the security tables instead of a single DataTable when the functionSeqId is -1.
+    In turn:
+        Updated DFunctions.GetFunction to return a DataSet instead of a DataTable and added a new parameter (int securityEntitySeqId)
+        Update BFunctions to pass the securityEntitySeqId to DFunctions.GetFunction
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
@@ -30,7 +58,16 @@
     - DataAccess.SQLServer\DAccounts.ResetTokenExists
     - DataAccess.SQLServer\DAccounts.Delete
     - DataAccess.SQLServer\DMessages.Message
-    - The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
+- Fixed SaveClientChoices not updating the session correctly
+- Framework.DataHelper\GetJsonStringFromTable not properly dealing with double quotes in the data
+- Web.Support.BaseControllers.AbstractFunctionController\Save Fixed groups/roles not saving correctly
+- Fixed when BAccounts.Save would not save groups correctly when a security entity was other than 1
+
+
+
+
+## Net_Core feature/logger (2025-09-22)
+- Updated the logger to add [XXX]: to the beginning of text messages
 
 ## Net_Core Version 6.0.0.0 (2025-05-16)
 ### Deprecated Classes

@@ -112,11 +112,11 @@ public static class DataHelper
                 {
                     if (j < dataTable.Columns.Count - 1)
                     {
-                        mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString() + "\",");
+                        mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString().Replace("\"", "\\\"") + "\",");
                     }
                     else if (j == dataTable.Columns.Count - 1)
                     {
-                        mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString() + "\"");
+                        mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString().Replace("\"", "\\\"") + "\"");
                     }
                 }
                 if (i == dataTable.Rows.Count - 1)

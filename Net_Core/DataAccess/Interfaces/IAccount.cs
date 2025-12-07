@@ -38,51 +38,45 @@ public interface IAccount : IDBInteraction
 	Task Delete();
 
 	/// <summary>
-	/// Retrieves Account information
+	/// Retrieves Account information via stored procedure ZGWSecurity.Get_Account
 	/// </summary>
-	/// <returns>DataRow</returns>
-	Task<DataRow> GetAccount();
+	/// <returns>
+	/// Dataset:
+	/// 	1. Table 0, row 0 - Account Details,
+	/// 	2. Table 1 - Refresh Tokens,
+	/// 	3. Table 2 - Assigned Roles,
+	/// 	4. Table 3 - Assigned Groups,
+	/// 	5. Table 4 - Derived Roles
+	/// </returns>
+	Task<DataSet> GetAccount(int securityEntitySeqId);
 
 	/// <summary>
 	/// Retrieves Account information given the reset token
 	/// </summary>
-	Task<DataRow> GetAccountByResetToken();
+	Task<DataSet> GetAccountByResetToken();
 
 	/// <summary>
 	/// Retrieves Account information given the verification token
 	/// </summary>
-	Task<DataRow> GetAccountByVerificationToken();
+	Task<DataSet> GetAccountByVerificationToken();
 
 	/// <summary>
 	/// Retrieves Account information given the JWT
 	/// </summary>
 	/// <returns>DataRow</returns>
-	Task<DataRow> GetAccountByRefreshToken();
+	Task<DataSet> GetAccountByRefreshToken();
 
 	Task<DataTable> GetAccounts();
-
-	/// <summary>
-	/// Returns all roles associated with a given SecurityEntitySeqID.
-	/// </summary>
-	/// <returns>DataTable</returns>
-	Task<DataTable> Groups();
 
 	/// <summary>
 	/// Retrieves menu data for a given account and MenuType
 	/// </summary>
 	/// <param name="account">String</param>
 	/// <param name="menuType">MenuType</param>
+	/// <param name="securityEntitySeqId">int</param>
 	/// <returns>DataTable</returns>
 	/// <remarks></remarks>
-	Task<DataTable> GetMenu(string account, MenuType menuType);
-
-	Task<DataTable> RefreshTokens();
-
-	/// <summary>
-	/// Returns all groups associated with a given SecurityEntitySeqID.
-	/// </summary>
-	/// <returns>DataTable</returns>
-	Task<DataTable> Roles();
+	Task<DataTable> GetMenu(string account, MenuType menuType, int securityEntitySeqId);
 
 	/// <summary>
 	/// Returns all roles either direct association or by association via
