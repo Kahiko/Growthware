@@ -37,6 +37,7 @@ that includes the security tables instead of a single DataTable when the functio
     In turn:
         Updated DFunctions.GetFunction to return a DataSet instead of a DataTable and added a new parameter (int securityEntitySeqId)
         Update BFunctions to pass the securityEntitySeqId to DFunctions.GetFunction
+- Added import/export and the ERD for security
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
