@@ -5,8 +5,7 @@
 - AbstractBaseModel
 
 ### New Features
-- Upgraded Angular from 19 to 20
-- Upgraded Angular from 18 to 19
+- Upgraded Angular 18 => 19 => 20
 
 ### Improvements
 - Added the logging service to the base-search component - base-search now uses LoggingService.errorHandler
