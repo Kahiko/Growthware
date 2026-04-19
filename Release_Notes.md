@@ -1,5 +1,5 @@
 # Release Notes
-## Net_Core Version 6.0.1.0 (YYYY-MM-DD)
+## Net_Core Version 6.0.1.0 (2026-04-19)
 ### Deprecated Classes
 - AbstractDatabaseFunctions
 - AbstractBaseModel
