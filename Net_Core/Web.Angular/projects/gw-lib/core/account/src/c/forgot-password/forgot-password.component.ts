@@ -13,18 +13,16 @@ import { AccountService } from '../../account.service';
 import { LoginComponent } from '../login/login.component';
 
 @Component({
-  selector: 'gw-core-forgot-password',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
-  templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.scss'
+    selector: 'gw-core-forgot-password',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule
+    ],
+    templateUrl: './forgot-password.component.html',
+    styleUrl: './forgot-password.component.scss'
 })
 export class ForgotPasswordComponent implements AfterViewInit, OnInit {
 

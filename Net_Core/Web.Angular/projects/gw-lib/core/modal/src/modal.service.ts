@@ -1,15 +1,16 @@
 import {
-	ApplicationRef,
-	Component,
-	ComponentRef,
-	createComponent,
-	Inject,
-	Injectable,
-	EmbeddedViewRef,
-	TemplateRef,
-	Type
+  ApplicationRef,
+  Component,
+  ComponentRef,
+  createComponent,
+  Inject,
+  Injectable,
+  EmbeddedViewRef,
+  TemplateRef,
+  Type,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';

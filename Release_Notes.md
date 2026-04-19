@@ -1,4 +1,5 @@
 # Release Notes
+## Net_Core Version 6.0.1.0 (2026-04-19)
 ## Net_Core Version x.x.x.x (yyyy-mm-dd)
 
 ### New Features
@@ -12,7 +13,7 @@
 - AbstractBaseModel
 
 ### New Features
-
+- Upgraded Angular 18 => 19 => 20
 
 ### Improvements
 - Added the logging service to the base-search component - base-search now uses LoggingService.errorHandler
@@ -43,10 +44,10 @@ that includes the security tables instead of a single DataTable when the functio
     In turn:
         Updated DFunctions.GetFunction to return a DataSet instead of a DataTable and added a new parameter (int securityEntitySeqId)
         Update BFunctions to pass the securityEntitySeqId to DFunctions.GetFunction
+- Added import/export and the ERD for security
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
-- The Dynamic table causes the error - NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection of size 10.  The cause should be around line 121 where the tracy by is the entire row "track row;".  At this point I don't have a solution due to the nature of the dynamic table and the fact the names of the columns being returned are not consistent.  This should not present it self as a problem to the client because of the amount of data being returned, but I don't want to loose track of the issue.
 - Manage Name/Value Pairs is not updating the search results after saving
 - Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
 - Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
@@ -69,9 +70,6 @@ that includes the security tables instead of a single DataTable when the functio
 - Framework.DataHelper\GetJsonStringFromTable not properly dealing with double quotes in the data
 - Web.Support.BaseControllers.AbstractFunctionController\Save Fixed groups/roles not saving correctly
 - Fixed when BAccounts.Save would not save groups correctly when a security entity was other than 1
-
-
-
 
 ## Net_Core feature/logger (2025-09-22)
 - Updated the logger to add [XXX]: to the beginning of text messages

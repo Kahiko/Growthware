@@ -9,15 +9,14 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
 import { MenuTypes } from '../../menu-types.enum';
 
 @Component({
-	selector: 'gw-core-vertical',
-	standalone: true,
-	imports: [
-		CommonModule,
-		MatIconModule,
-		MatListModule
-	],
-	templateUrl: './vertical.component.html',
-	styleUrls: ['./vertical.component.scss']
+    selector: 'gw-core-vertical',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatListModule
+    ],
+    templateUrl: './vertical.component.html',
+    styleUrls: ['./vertical.component.scss']
 })
 export class VerticalComponent extends NavigationComponentBase {
 	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;

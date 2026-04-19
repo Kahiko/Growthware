@@ -8,16 +8,15 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LoggingService } from '../../logging.service';
 
 @Component({
-	selector: 'gw-core-set-log-level',
-	standalone: true,
-	imports: [
-		FormsModule,
-		MatButtonModule,
-		MatSelectModule,
-		MatTabsModule
-	],
-	templateUrl: './set-log-level.component.html',
-	styleUrls: ['./set-log-level.component.scss']
+    selector: 'gw-core-set-log-level',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatTabsModule
+    ],
+    templateUrl: './set-log-level.component.html',
+    styleUrls: ['./set-log-level.component.scss']
 })
 export class SetLogLevelComponent implements OnInit {
   

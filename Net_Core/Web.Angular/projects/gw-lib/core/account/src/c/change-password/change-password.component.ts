@@ -12,17 +12,16 @@ import { GWCommon } from '@growthware/common/services';
 import { AccountService } from '../../account.service';
 
 @Component({
-	selector: 'gw-core-change-password',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTabsModule
-	],
-	templateUrl: './change-password.component.html',
-	styleUrls: ['./change-password.component.scss']
+    selector: 'gw-core-change-password',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTabsModule
+    ],
+    templateUrl: './change-password.component.html',
+    styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit {
 

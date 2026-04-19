@@ -1,22 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
-	selector: 'gw-core-workflow-details',
-	standalone: true,
-	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		// Angular Material
-		MatIconModule,
-		MatTabsModule,
-	],
-	templateUrl: './workflow-details.component.html',
-	styleUrls: ['./workflow-details.component.scss']
+    selector: 'gw-core-workflow-details',
+    imports: [
+    ReactiveFormsModule,
+    MatIconModule,
+    MatTabsModule
+],
+    templateUrl: './workflow-details.component.html',
+    styleUrls: ['./workflow-details.component.scss']
 })
 export class WorkflowDetailsComponent implements OnInit {
 

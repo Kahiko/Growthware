@@ -5,14 +5,13 @@ import { ToastService } from '../../toast.service';
 import { ToastComponent } from '../toast/toast.component';
 
 @Component({
-	selector: 'gw-core-toaster',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ToastComponent
-	],
-	templateUrl: './toaster.component.html',
-	styleUrls: ['./toaster.component.scss'],
+    selector: 'gw-core-toaster',
+    imports: [
+        FormsModule,
+        ToastComponent
+    ],
+    templateUrl: './toaster.component.html',
+    styleUrls: ['./toaster.component.scss']
 })
 export class ToasterComponent {
 	private _ToastSvc = inject(ToastService);

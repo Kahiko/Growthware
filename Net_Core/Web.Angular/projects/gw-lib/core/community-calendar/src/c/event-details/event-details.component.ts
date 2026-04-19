@@ -23,29 +23,28 @@ import { TimePickerComponent } from '../time-picker/time-picker.component';
 import { INameValuePair, NameValuePair } from '@growthware/common/interfaces';
 
 @Component({
-  selector: 'gw-core-event-details',
-  standalone: true,
-  providers: [
-    provideNativeDateAdapter(),
-  ],
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    // Angular Material
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTabsModule,
-    // Feature
-    TimePickerComponent,
-  ],
-  templateUrl: './event-details.component.html',
-  styleUrl: './event-details.component.scss'
+    selector: 'gw-core-event-details',
+    providers: [
+        provideNativeDateAdapter(),
+    ],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule,
+        // Feature
+        TimePickerComponent,
+    ],
+    templateUrl: './event-details.component.html',
+    styleUrl: './event-details.component.scss'
 })
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

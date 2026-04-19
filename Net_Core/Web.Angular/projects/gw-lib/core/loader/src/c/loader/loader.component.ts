@@ -7,13 +7,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderService } from '../../loader.service';
 
 @Component({
-	selector: 'gw-core-loader',
-	standalone: true,
-	imports: [
-		MatProgressSpinnerModule
-	],
-	templateUrl: './loader.component.html',
-	styleUrls: ['./loader.component.scss']
+    selector: 'gw-core-loader',
+    imports: [
+        MatProgressSpinnerModule
+    ],
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements AfterViewInit, OnDestroy {
 	private _Subscriptions: Subscription = new Subscription();

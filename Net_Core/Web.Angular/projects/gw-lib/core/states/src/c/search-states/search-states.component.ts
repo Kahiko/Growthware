@@ -9,13 +9,12 @@ import { StateDetailsComponent } from '../state-details/state-details.component'
 import { StatesService } from '../../states.service';
 
 @Component({
-	selector: 'gw-core-search-states',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-states.component.html',
-	styleUrls: ['./search-states.component.scss']
+    selector: 'gw-core-search-states',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-states.component.html',
+    styleUrls: ['./search-states.component.scss']
 })
 export class SearchStatesComponent extends BaseSearchComponent {
 

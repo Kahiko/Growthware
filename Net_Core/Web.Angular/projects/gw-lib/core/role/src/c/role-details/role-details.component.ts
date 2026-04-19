@@ -18,20 +18,19 @@ import { RoleService } from '../../role.service';
 import { IRoleProfile, RoleProfile } from '../../role-profile.model';
 
 @Component({
-	selector: 'gw-core-role-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		PickListComponent,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatCheckboxModule,
-		MatIconModule,
-		MatInputModule,
-		MatTabsModule
-	],
-	templateUrl: './role-details.component.html',
-	styleUrls: ['./role-details.component.scss']
+    selector: 'gw-core-role-details',
+    imports: [
+        FormsModule,
+        PickListComponent,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatInputModule,
+        MatTabsModule
+    ],
+    templateUrl: './role-details.component.html',
+    styleUrls: ['./role-details.component.scss']
 })
 export class RoleDetailsComponent implements OnInit {
 

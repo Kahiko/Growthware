@@ -12,17 +12,16 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { GWCommon } from '@growthware/common/services';
 
 @Component({
-	selector: 'gw-core-encrypt-decrypt',
-	standalone: true,
-	imports: [
-		FormsModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatSelectModule,
-		MatTabsModule
-	],
-	templateUrl: './encrypt-decrypt.component.html',
-	styleUrls: ['./encrypt-decrypt.component.scss']
+    selector: 'gw-core-encrypt-decrypt',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatTabsModule
+    ],
+    templateUrl: './encrypt-decrypt.component.html',
+    styleUrls: ['./encrypt-decrypt.component.scss']
 })
 export class EncryptDecryptComponent {
 

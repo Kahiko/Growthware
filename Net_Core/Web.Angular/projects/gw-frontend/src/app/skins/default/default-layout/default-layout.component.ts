@@ -1,5 +1,5 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 // Library
 import { sideNavTextAnimation } from '../animations/side-nav';
 // Angular Material
@@ -17,31 +17,23 @@ import { DefaultHeaderComponent } from '../default-header/default-header.compone
 import { RouterModule } from '@angular/router';
 
 @Component({
-	selector: 'gw-frontend-default-layout',
-	standalone: true,
-	templateUrl: './default-layout.component.html',
-	styleUrls: ['./default-layout.component.scss'],
-	animations: [sideNavTextAnimation],
-	encapsulation: ViewEncapsulation.None,
-	imports: [
-		CommonModule,
-		RouterModule,
-
-		DefaultFooterComponent,
-		DefaultHeaderComponent,
-
-		// Angular Material
-		MatButtonModule,
-		MatDividerModule,
-		MatListModule,
-		MatSidenavModule,
-
-		// Library
-		LoaderComponent,
-		VerticalComponent,
-		HierarchicalVerticalComponent,
-
-	],
+    selector: 'gw-frontend-default-layout',
+    templateUrl: './default-layout.component.html',
+    styleUrls: ['./default-layout.component.scss'],
+    animations: [sideNavTextAnimation],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+    RouterModule,
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    MatButtonModule,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    LoaderComponent,
+    VerticalComponent,
+    HierarchicalVerticalComponent
+]
 })
 export class DefaultLayoutComponent {
 	private _NavigationSvc = inject(NavigationService);

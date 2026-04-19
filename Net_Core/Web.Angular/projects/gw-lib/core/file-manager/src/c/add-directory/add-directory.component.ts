@@ -9,11 +9,10 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { FileManagerService } from '../../file-manager.service';
 
 @Component({
-	selector: 'gw-core-add-directory',
-	standalone: true,
-	imports: [MatButtonModule, ReactiveFormsModule],
-	templateUrl: './add-directory.component.html',
-	styleUrls: ['./add-directory.component.scss']
+    selector: 'gw-core-add-directory',
+    imports: [MatButtonModule, ReactiveFormsModule],
+    templateUrl: './add-directory.component.html',
+    styleUrls: ['./add-directory.component.scss']
 })
 export class AddDirectoryComponent implements OnInit {
 	private _Action: string = '';

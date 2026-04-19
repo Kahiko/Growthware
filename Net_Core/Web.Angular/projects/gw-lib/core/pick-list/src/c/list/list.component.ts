@@ -7,16 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 
 @Component({
-	selector: 'gw-core-list',
-	standalone: true,
-	imports: [
-		CommonModule,
-
-		MatButtonModule,
-		MatIconModule,
-	],
-	templateUrl: './list.component.html',
-	styleUrls: ['./list.component.scss']
+    selector: 'gw-core-list',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+    ],
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
 

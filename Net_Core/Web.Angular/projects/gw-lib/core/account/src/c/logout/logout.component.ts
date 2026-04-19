@@ -4,11 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../account.service';
 
 @Component({
-	selector: 'gw-core-logout',
-	standalone: true,
-	imports: [],
-	templateUrl: './logout.component.html',
-	styleUrls: ['./logout.component.scss']
+    selector: 'gw-core-logout',
+    imports: [],
+    templateUrl: './logout.component.html',
+    styleUrls: ['./logout.component.scss']
 })
 export class LogoutComponent implements OnInit {
 

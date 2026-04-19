@@ -9,13 +9,12 @@ import { GroupDetailsComponent } from '../group-details/group-details.component'
 import { GroupService } from '../../group.service';
 
 @Component({
-	selector: 'gw-core-search-groups',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './search-groups.component.html',
-	styleUrls: ['./search-groups.component.scss']
+    selector: 'gw-core-search-groups',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './search-groups.component.html',
+    styleUrls: ['./search-groups.component.scss']
 })
 export class SearchGroupsComponent extends BaseSearchComponent {
 

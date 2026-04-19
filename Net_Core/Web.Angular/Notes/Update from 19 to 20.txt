@@ -1,0 +1,12 @@
+node --version
+    v22.14.0
+npm --version
+    11.1.0
+
+npm uninstall angular-eslint --save
+npm install angular-eslint --save
+npm install typescript-eslint@8.42.0
+ng update @angular/core@20 @angular/cli@20 --allow-dirty
+ng update @angular/material@20 --allow-dirty
+npm install typescript@5.9.2 --save
+

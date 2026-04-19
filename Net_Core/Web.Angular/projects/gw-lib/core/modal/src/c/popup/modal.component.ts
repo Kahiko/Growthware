@@ -11,17 +11,16 @@ import { IWindowSize, WindowSize } from '../../window-size.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'gw-core-modal',
-  standalone: true,
-  imports: [
-    CdkDrag,
-    CdkDragHandle,
-    CommonModule,
-    MatButtonModule,
-    MatIconModule
-  ],
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+    selector: 'gw-core-modal',
+    imports: [
+        CdkDrag,
+        CdkDragHandle,
+        CommonModule,
+        MatButtonModule,
+        MatIconModule
+    ],
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnDestroy {
 

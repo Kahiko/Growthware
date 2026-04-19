@@ -11,24 +11,23 @@ import { ProfessionalFooterComponent } from '../professional-footer/professional
 import { ProfessionalHeaderComponent } from '../professional-header/professional-header.component';
 
 @Component({
-	selector: 'gw-frontend-professional-layout',
-	standalone: true,
-	templateUrl: './professional-layout.component.html',
-	styleUrls: ['./professional-layout.component.scss'],
-	encapsulation: ViewEncapsulation.None,
-	imports: [
-		RouterOutlet,
-		// Angular Material
-		MatListModule,
-		MatSidenavModule,
-		// Library Standalone
-		LoaderComponent,
-		HierarchicalVerticalComponent,
-		VerticalComponent,
-		// Skin Compontents
-		ProfessionalFooterComponent,
-		ProfessionalHeaderComponent,
-	],
+    selector: 'gw-frontend-professional-layout',
+    templateUrl: './professional-layout.component.html',
+    styleUrls: ['./professional-layout.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        RouterOutlet,
+        // Angular Material
+        MatListModule,
+        MatSidenavModule,
+        // Library Standalone
+        LoaderComponent,
+        HierarchicalVerticalComponent,
+        VerticalComponent,
+        // Skin Compontents
+        ProfessionalFooterComponent,
+        ProfessionalHeaderComponent,
+    ]
 })
 export class ProfessionalLayoutComponent {
 

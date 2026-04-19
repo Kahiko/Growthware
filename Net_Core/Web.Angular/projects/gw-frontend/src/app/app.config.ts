@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -37,6 +37,9 @@ export const appConfig: ApplicationConfig = {
 			ErrorInterceptor,
 			JwtInterceptor
 		])),
-		{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [ActivatedRoute, AccountService, ConfigurationService, DynamicTableService, NavigationService] },
+		provideAppInitializer(() => {
+        const initializerFn = (appInitializer)(inject(ActivatedRoute), inject(AccountService), inject(ConfigurationService), inject(DynamicTableService), inject(NavigationService));
+        return initializerFn();
+      }),
 	]
 };

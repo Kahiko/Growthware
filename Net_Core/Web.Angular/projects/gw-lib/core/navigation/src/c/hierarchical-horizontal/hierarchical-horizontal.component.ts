@@ -6,12 +6,11 @@ import { MenuTypes } from '../../menu-types.enum';
 import { NavigationComponentBase } from '../navigation-component-base/navigation-component-base.component';
 
 @Component({
-	selector: 'gw-core-hierarchical-horizontal',
-	standalone: true,
-	imports: [],
-	templateUrl: './hierarchical-horizontal.component.html',
-	styleUrls: ['./hierarchical-horizontal.component.scss'],
-	encapsulation: ViewEncapsulation.ShadowDom,
+    selector: 'gw-core-hierarchical-horizontal',
+    imports: [],
+    templateUrl: './hierarchical-horizontal.component.html',
+    styleUrls: ['./hierarchical-horizontal.component.scss'],
+    encapsulation: ViewEncapsulation.ShadowDom
 })
 export class HierarchicalHorizontalComponent extends NavigationComponentBase {
 	@ViewChild('firstLevel', { static: false }) override firstLevel: ElementRef<HTMLUListElement> = {} as ElementRef<HTMLUListElement>;

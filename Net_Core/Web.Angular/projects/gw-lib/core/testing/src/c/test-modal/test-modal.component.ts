@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -17,12 +17,9 @@ import { ModalService, ModalOptions, ModalSize, WindowSize } from '@growthware/c
 import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
 
 @Component({
-  selector: 'gw-core-test-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'gw-core-test-modal',
+    imports: [
     ReactiveFormsModule,
-    // Angular Material
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
@@ -31,10 +28,10 @@ import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
     MatListModule,
     MatRadioModule,
     MatSelectModule,
-    MatTabsModule,
-  ],
-  templateUrl: './test-modal.component.html',
-  styleUrl: './test-modal.component.scss'
+    MatTabsModule
+],
+    templateUrl: './test-modal.component.html',
+    styleUrl: './test-modal.component.scss'
 })
 export class TestModalComponent implements OnInit {
 

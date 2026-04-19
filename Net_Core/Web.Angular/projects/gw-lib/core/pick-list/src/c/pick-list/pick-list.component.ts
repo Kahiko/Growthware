@@ -15,16 +15,15 @@ import { Observable, Subscription } from 'rxjs';
  * TODO: Look into if this can be done directly using InputSignal
  */
 @Component({
-	selector: 'gw-core-pick-list',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Angular Material
-		MatButtonModule,
-		MatIconModule
-	],
-	templateUrl: './pick-list.component.html',
-	styleUrls: ['./pick-list.component.scss']
+    selector: 'gw-core-pick-list',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule
+    ],
+    templateUrl: './pick-list.component.html',
+    styleUrls: ['./pick-list.component.scss']
 })
 export class PickListComponent implements OnDestroy, OnInit {
 	// Properties Signals

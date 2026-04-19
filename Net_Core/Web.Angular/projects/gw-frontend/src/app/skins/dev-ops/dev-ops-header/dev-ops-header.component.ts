@@ -14,20 +14,17 @@ import { ConfigurationService } from '@growthware/core/configuration';
 import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
 
 @Component({
-	selector: 'gw-frontend-dev-ops-header',
-	standalone: true,
-	templateUrl: './dev-ops-header.component.html',
-	styleUrls: ['./dev-ops-header.component.scss'],
-	imports: [
-		RouterLink,
-
-		// Angular Material
-		MatButtonModule,
-		MatIconModule,
-		MatMenuModule,
-
-		HierarchicalHorizontalComponent,
-	],
+    selector: 'gw-frontend-dev-ops-header',
+    templateUrl: './dev-ops-header.component.html',
+    styleUrls: ['./dev-ops-header.component.scss'],
+    imports: [
+        RouterLink,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        HierarchicalHorizontalComponent,
+    ]
 })
 export class DevOpsHeaderComponent {
 

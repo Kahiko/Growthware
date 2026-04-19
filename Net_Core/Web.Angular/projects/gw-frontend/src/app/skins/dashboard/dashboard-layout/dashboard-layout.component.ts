@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,28 +14,22 @@ import { DashboardFooterComponent } from '../dashboard-footer/dashboard-footer.c
 import { DashboardHeaderComponent } from '../dashboard-header/dashboard-header.component';
 
 @Component({
-	selector: 'gw-frontend-dashboard-layout',
-	standalone: true,
-	templateUrl: './dashboard-layout.component.html',
-	styleUrls: ['./dashboard-layout.component.scss'],
-	animations: [sideNavTextAnimation],
-	encapsulation: ViewEncapsulation.None,
-	imports: [
-		CommonModule,
-		RouterOutlet,
-		// Angular Material
-		MatDividerModule,
-		MatListModule,
-		MatSidenavModule,
-		// Library Modules
-		LoaderComponent,
-		// Library Standalone
-		VerticalComponent,
-		HierarchicalVerticalComponent,
-		// Skin
-		DashboardFooterComponent,
-		DashboardHeaderComponent,
-	],
+    selector: 'gw-frontend-dashboard-layout',
+    templateUrl: './dashboard-layout.component.html',
+    styleUrls: ['./dashboard-layout.component.scss'],
+    animations: [sideNavTextAnimation],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+    RouterOutlet,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    LoaderComponent,
+    VerticalComponent,
+    HierarchicalVerticalComponent,
+    DashboardFooterComponent,
+    DashboardHeaderComponent
+]
 })
 export class DashboardLayoutComponent {
 

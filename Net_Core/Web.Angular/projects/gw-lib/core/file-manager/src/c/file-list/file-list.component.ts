@@ -34,24 +34,23 @@ import { FileManagerService } from '../../file-manager.service';
 import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 
 @Component({
-	selector: 'gw-core-file-list',
-	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		// Angular Material
-		MatButtonModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatInputModule,
-		MatLabel,
-		MatMenuModule,
-		MatMenuTrigger,
-		MatSelectModule,
-	],
-	templateUrl: './file-list.component.html',
-	styleUrls: ['./file-list.component.scss']
+    selector: 'gw-core-file-list',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatLabel,
+        MatMenuModule,
+        MatMenuTrigger,
+        MatSelectModule,
+    ],
+    templateUrl: './file-list.component.html',
+    styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnDestroy, OnInit {
 	private _FileManagerSvc = inject(FileManagerService);

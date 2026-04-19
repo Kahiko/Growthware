@@ -24,21 +24,20 @@ import { IRegistrationInformation, registrationInformation } from '../../registr
 import { IValidSecurityEntities } from '../../valid-security-entities.model';
 
 @Component({
-	selector: 'gw-core-security-entity-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule,
-		MatTooltipModule
-	],
-	templateUrl: './security-entity-details.component.html',
-	styleUrls: ['./security-entity-details.component.scss']
+    selector: 'gw-core-security-entity-details',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule,
+        MatTooltipModule
+    ],
+    templateUrl: './security-entity-details.component.html',
+    styleUrls: ['./security-entity-details.component.scss']
 })
 export class SecurityEntityDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 

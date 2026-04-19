@@ -9,13 +9,12 @@ import { FunctionDetailsComponent } from '../function-details/function-details.c
 import { FunctionService } from '../../function.service';
 
 @Component({
-	selector: 'gw-core-searchfunctions',
-	standalone: true,
-	imports: [
-		DynamicTableComponent
-	],
-	templateUrl: './searchfunctions.component.html',
-	styleUrls: ['./searchfunctions.component.scss']
+    selector: 'gw-core-searchfunctions',
+    imports: [
+        DynamicTableComponent
+    ],
+    templateUrl: './searchfunctions.component.html',
+    styleUrls: ['./searchfunctions.component.scss']
 })
 export class SearchfunctionsComponent extends BaseSearchComponent {
 

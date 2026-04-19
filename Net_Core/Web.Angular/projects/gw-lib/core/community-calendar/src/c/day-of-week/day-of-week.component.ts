@@ -19,20 +19,17 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
 import { CalendarEvent, ICalendarEvent } from '../../interfaces/calendar-event.model';
 
 @Component({
-	selector: 'gw-core-day-of-week',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Feature
-		EventDetailsComponent,
-		// Angular Material
-		MatButtonModule,
-		MatIconModule,
-		MatToolbarModule,
-		MatTooltipModule,
-	],
-	templateUrl: './day-of-week.component.html',
-	styleUrls: ['./day-of-week.component.scss']
+    selector: 'gw-core-day-of-week',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatButtonModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './day-of-week.component.html',
+    styleUrls: ['./day-of-week.component.scss']
 })
 export class DayOfWeekComponent {
 	private _Action: string = '';

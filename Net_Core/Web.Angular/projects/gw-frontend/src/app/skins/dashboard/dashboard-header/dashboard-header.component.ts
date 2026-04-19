@@ -13,18 +13,16 @@ import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 import { ConfigurationService } from '@growthware/core/configuration';
 
 @Component({
-	selector: 'gw-frontend-dashboard-header',
-	standalone: true,
-	templateUrl: './dashboard-header.component.html',
-	styleUrls: ['./dashboard-header.component.scss'],
-	imports: [
-		RouterLink,
-
-		MatButtonModule,
-		MatIconModule,
-		MatMenuModule,
-		MatToolbarModule,
-	],
+    selector: 'gw-frontend-dashboard-header',
+    templateUrl: './dashboard-header.component.html',
+    styleUrls: ['./dashboard-header.component.scss'],
+    imports: [
+        RouterLink,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatToolbarModule,
+    ]
 })
 export class DashboardHeaderComponent {
 

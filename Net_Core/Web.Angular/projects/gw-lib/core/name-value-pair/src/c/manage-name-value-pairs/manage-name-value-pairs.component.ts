@@ -13,17 +13,16 @@ import { NameValuePairParentDetailComponent } from '../name-value-pair-parent-de
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-	selector: 'gw-core-manage-name-value-pairs',
-	standalone: true,
-	imports: [
-		CommonModule,
-		// Angular Material
-		MatButtonModule,
-		// Library
-		DynamicTableComponent,
-	],
-	templateUrl: './manage-name-value-pairs.component.html',
-	styleUrls: ['./manage-name-value-pairs.component.scss']
+    selector: 'gw-core-manage-name-value-pairs',
+    imports: [
+        CommonModule,
+        // Angular Material
+        MatButtonModule,
+        // Library
+        DynamicTableComponent,
+    ],
+    templateUrl: './manage-name-value-pairs.component.html',
+    styleUrls: ['./manage-name-value-pairs.component.scss']
 })
 export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {
 

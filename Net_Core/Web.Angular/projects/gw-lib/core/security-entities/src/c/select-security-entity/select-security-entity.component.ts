@@ -14,16 +14,15 @@ import { SecurityEntityService } from '../../security-entity.service';
 import { IValidSecurityEntities } from '../../valid-security-entities.model';
 
 @Component({
-	selector: 'gw-core-select-security-entity',
-	standalone: true,
-	imports: [
-		MatButtonModule,
-		MatFormFieldModule,
-		MatIconModule,
-		MatSelectModule
-	],
-	templateUrl: './select-security-entity.component.html',
-	styleUrls: ['./select-security-entity.component.scss']
+    selector: 'gw-core-select-security-entity',
+    imports: [
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatSelectModule
+    ],
+    templateUrl: './select-security-entity.component.html',
+    styleUrls: ['./select-security-entity.component.scss']
 })
 export class SelectSecurityEntityComponent implements OnInit {
 

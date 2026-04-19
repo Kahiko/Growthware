@@ -15,17 +15,16 @@ import { AccountService } from '../../account.service';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 
 @Component({
-	selector: 'gw-core-login',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatInputModule
-	],
-	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.scss']
+    selector: 'gw-core-login',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule
+    ],
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _Subscription: Subscription = new Subscription();

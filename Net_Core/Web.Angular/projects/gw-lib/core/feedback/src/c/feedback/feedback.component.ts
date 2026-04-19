@@ -20,19 +20,18 @@ interface ISelectedableAction {
 
 }
 @Component({
-	selector: 'gw-core-feedback',
-	standalone: true,
-	imports: [
-		ReactiveFormsModule,
-		// Angular Material
-		MatButtonModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule,
-	],
-	templateUrl: './feedback.component.html',
-	styleUrl: './feedback.component.scss'
+    selector: 'gw-core-feedback',
+    imports: [
+        ReactiveFormsModule,
+        // Angular Material
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTabsModule,
+    ],
+    templateUrl: './feedback.component.html',
+    styleUrl: './feedback.component.scss'
 })
 export class FeedbackComponent implements OnInit {
 	private _AccountSvc: AccountService = inject(AccountService);

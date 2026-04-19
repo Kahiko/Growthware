@@ -13,17 +13,16 @@ import { MessageService } from '../../message.service';
 import { IMessageProfile, MessageProfile } from '../../message-profile.model';
 
 @Component({
-	selector: 'gw-core-message-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTabsModule
-	],
-	templateUrl: './message-details.component.html',
-	styleUrls: ['./message-details.component.scss']
+    selector: 'gw-core-message-details',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTabsModule
+    ],
+    templateUrl: './message-details.component.html',
+    styleUrls: ['./message-details.component.scss']
 })
 export class MessageDetailsComponent implements OnInit {
 	@ViewChild('helpTags') private _HelpTags!: TemplateRef<unknown>;
