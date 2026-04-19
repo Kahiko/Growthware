@@ -1,5 +1,4 @@
 # Release Notes
-## Net_Core Version 6.0.1.0 (2026-04-19)
 ## Net_Core Version x.x.x.x (yyyy-mm-dd)
 
 ### New Features
@@ -7,7 +6,8 @@
 
 ### Improvements
 - Added removeProperty to the Oracle Database Manager to remove a property
-## Net_Core Version 6.0.1.0 (YYYY-MM-DD)
+
+## Net_Core Version 6.0.1.0 (2026-04-19)
 ### Deprecated Classes
 - AbstractDatabaseFunctions
 - AbstractBaseModel
