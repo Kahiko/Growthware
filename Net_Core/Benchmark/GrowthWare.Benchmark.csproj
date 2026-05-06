@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="BenchmarkDotNet" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" />
+    <PackageReference Include="System.Data.SqlClient" />
     <ProjectReference Include="..\BusinessLogic\GrowthWare.BusinessLogic.csproj" />
     <ProjectReference Include="..\Framework\GrowthWare.Framework.csproj" />
     <ProjectReference Include="..\Web.Api\GrowthWare.Web.Api.csproj" />

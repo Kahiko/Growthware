@@ -1,4 +1,28 @@
 # Release Notes
+## Net_Core Version 7.0.0.x (2026-??-??)
+### Deprecated Classes
+- AbstractDatabaseFunctions
+- AbstractBaseModel
+
+### New Features
+- ???
+
+### Improvements
+- Implemented Central Package Management (CPM) for streamlined NuGet package versioning across all projects
+
+### Known Bugs
+- There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
+- Manage Name/Value Pairs is not updating the search results after saving
+- Need to have a behavior message on the "Edit Role" page indicating the effect of the "System ONLY" property
+- Recieving error message when PWA Chrome starts: Could not read source map for chrome-error://chromewebdata/: Unexpected 503 response from chrome-error://chromewebdata/neterror.rollup.js.map: Unsupported protocol "chrome-error:"
+- BAccounts is being created in two utilities (JwtUtility and AccountUtility) and should only be created in AccountUtility (AccountUtility is referenced in JwtUtility)
+- GroupUtility is translating the return data and by design this is supposed to be done in the business logic layer
+- When editting a role the members are not being always being populated
+- Caching is not implemented correctly in the Message Utility
+
+### Bug Fixes
+- ??
+
 ## Net_Core Version 6.0.1.0 (2026-04-19)
 ### Deprecated Classes
 - AbstractDatabaseFunctions
