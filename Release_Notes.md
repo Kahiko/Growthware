@@ -5,7 +5,7 @@
 - AbstractBaseModel
 
 ### New Features
-- ???
+- Upgraded to .Net Core 10
 
 ### Improvements
 - Implemented Central Package Management (CPM) for streamlined NuGet package versioning across all projects
