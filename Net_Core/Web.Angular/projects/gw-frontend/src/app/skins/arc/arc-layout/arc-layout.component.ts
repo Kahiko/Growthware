@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, inject, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
@@ -24,26 +24,19 @@ import { sideNavTextAnimation } from '../animations/side-nav';
 	animations: [sideNavTextAnimation],
 	encapsulation: ViewEncapsulation.None,
 	imports: [
-		CommonModule,
-		RouterOutlet,
-		// Feature
-		ArcFooterComponent,
-		ArcHeaderComponent,
-
-		// Angular Material Modules
-		MatButtonModule,
-		MatDividerModule,
-		// MatIconModule,
-		MatListModule,
-		// MatMenuModule,
-		MatSidenavModule,
-		MatToolbarModule,
-		// Library Modules
-		HorizontalComponent,
-		HierarchicalVerticalComponent,
-		VerticalComponent,
-		LoaderComponent,
-	],
+    RouterOutlet,
+    ArcFooterComponent,
+    ArcHeaderComponent,
+    MatButtonModule,
+    MatDividerModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    HorizontalComponent,
+    HierarchicalVerticalComponent,
+    VerticalComponent,
+    LoaderComponent
+],
 })
 export class ArcLayoutComponent {
 	private _AccountSvc = inject(AccountService);

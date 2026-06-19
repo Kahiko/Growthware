@@ -5,7 +5,8 @@
 - AbstractBaseModel
 
 ### New Features
-- Upgraded to .Net Core 10
+- Upgraded .Net Core 9 > 10
+- Upgraded Angular 20.2.1 > 21.2.17
 
 ### Improvements
 - Implemented Central Package Management (CPM) for streamlined NuGet package versioning across all projects
