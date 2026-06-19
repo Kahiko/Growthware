@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.Messages;
@@ -9,11 +14,6 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
