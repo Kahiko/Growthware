@@ -1,4 +1,4 @@
-import { Component, computed, effect } from '@angular/core';
+import { Component, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 // Library
 import { AccountService } from '@growthware/core/account';
@@ -11,6 +11,7 @@ import { NavigationService } from '@growthware/core/navigation';
 	standalone: true,
 	templateUrl: './arc-header.component.html',
 	styleUrls: ['./arc-header.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: []
 })
 export class ArcHeaderComponent {

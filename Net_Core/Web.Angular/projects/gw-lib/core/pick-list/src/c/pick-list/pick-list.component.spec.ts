@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PickListComponent } from './pick-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('PickListComponent', () => {
 	let component: PickListComponent;
@@ -13,7 +13,7 @@ describe('PickListComponent', () => {
 		await TestBed.configureTestingModule({
     imports: [PickListComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     
 		fixture = TestBed.createComponent(PickListComponent);

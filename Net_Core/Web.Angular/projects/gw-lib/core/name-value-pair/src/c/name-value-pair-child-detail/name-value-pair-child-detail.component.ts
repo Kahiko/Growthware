@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -30,6 +30,7 @@ import { INvpChildProfile, NvpChildProfile } from '../../name-value-pair-child-p
     MatTabsModule
 ],
     templateUrl: './name-value-pair-child-detail.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./name-value-pair-child-detail.component.scss']
 })
 export class NameValuePairChildDetailComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

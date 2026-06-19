@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -44,6 +44,7 @@ import { INameValuePair, NameValuePair } from '@growthware/common/interfaces';
         TimePickerComponent,
     ],
     templateUrl: './event-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './event-details.component.scss'
 })
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

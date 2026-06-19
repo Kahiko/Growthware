@@ -1,4 +1,4 @@
-import { Component, computed, ViewEncapsulation } from '@angular/core';
+import { Component, computed, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
 // Angular Material
@@ -20,6 +20,7 @@ import { BlueArrowFooterComponent } from '../blue-arrow-footer/blue-arrow-footer
     templateUrl: './blue-arrow-layout.component.html',
     styleUrls: ['./blue-arrow-layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     RouterOutlet,
     MatDividerModule,

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 // Angular Material
@@ -18,6 +18,7 @@ import { MenuTypes } from '../../menu-types.enum';
         MatListModule
     ],
     templateUrl: './horizontal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./horizontal.component.scss']
 })
 export class HorizontalComponent extends NavigationComponentBase {

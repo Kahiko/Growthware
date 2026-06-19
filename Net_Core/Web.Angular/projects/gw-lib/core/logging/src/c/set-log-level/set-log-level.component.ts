@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { LoggingService } from '../../logging.service';
         MatTabsModule
     ],
     templateUrl: './set-log-level.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./set-log-level.component.scss']
 })
 export class SetLogLevelComponent implements OnInit {

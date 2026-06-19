@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatListModule } from '@angular/material/list';
@@ -15,6 +15,7 @@ import { ProfessionalHeaderComponent } from '../professional-header/professional
     templateUrl: './professional-layout.component.html',
     styleUrls: ['./professional-layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterOutlet,
         // Angular Material

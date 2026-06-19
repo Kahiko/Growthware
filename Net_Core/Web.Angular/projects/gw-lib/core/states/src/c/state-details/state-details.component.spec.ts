@@ -4,7 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StateDetailsComponent } from './state-details.component';
 import { StatesService } from '../../states.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 class MockStatesService {
 	modalReason = '';
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,7 +28,7 @@ describe('StateDetailsComponent', () => {
         NoopAnimationsModule],
     providers: [
         { provide: 'StatesService', useValue: dependencies.StatesService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
     ]
 }).compileComponents();

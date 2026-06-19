@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 // Library
@@ -16,6 +16,7 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
     ],
     templateUrl: './hierarchical-vertical.component.html',
     styleUrls: ['./hierarchical-vertical.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     encapsulation: ViewEncapsulation.ShadowDom
 })
 export class HierarchicalVerticalComponent extends NavigationComponentBase {

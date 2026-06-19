@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -22,6 +22,7 @@ import { LoginComponent } from '../login/login.component';
         MatInputModule
     ],
     templateUrl: './forgot-password.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './forgot-password.component.scss'
 })
 export class ForgotPasswordComponent implements AfterViewInit, OnInit {

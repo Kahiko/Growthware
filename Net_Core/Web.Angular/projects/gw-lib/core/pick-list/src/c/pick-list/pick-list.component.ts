@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnDestroy, OnInit, effect } from '@angular/core';
+import { Component, input, output, OnDestroy, OnInit, effect, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +23,7 @@ import { Observable, Subscription } from 'rxjs';
         MatIconModule
     ],
     templateUrl: './pick-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./pick-list.component.scss']
 })
 export class PickListComponent implements OnDestroy, OnInit {

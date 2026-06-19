@@ -1,6 +1,6 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,7 @@ import { GWCommon } from '@growthware/common/services';
         MatTabsModule
     ],
     templateUrl: './encrypt-decrypt.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./encrypt-decrypt.component.scss']
 })
 export class EncryptDecryptComponent {

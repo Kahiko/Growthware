@@ -1,4 +1,4 @@
-import { Component, input, output, OnInit, inject, effect } from '@angular/core';
+import { Component, input, output, OnInit, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
         MatIconModule,
     ],
     templateUrl: './list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {

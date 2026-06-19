@@ -1,12 +1,13 @@
 import {
-	Component,
-	ElementRef,
-	effect,
-	HostBinding,
-	inject,
-	input,
-	OnInit,
-	signal
+  Component,
+  ElementRef,
+  effect,
+  HostBinding,
+  inject,
+  input,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
 // Library
@@ -24,6 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     selector: 'gw-core-navigation-base',
     imports: [],
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: []
 })
 export abstract class NavigationComponentBase implements OnInit {

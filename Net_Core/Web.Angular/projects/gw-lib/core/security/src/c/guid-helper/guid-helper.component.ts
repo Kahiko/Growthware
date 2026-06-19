@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 // Angular Material
@@ -16,6 +16,7 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
     MatTabsModule
 ],
     templateUrl: './guid-helper.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./guid-helper.component.scss']
 })
 export class GuidHelperComponent {

@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HierarchicalHorizontalComponent } from './hierarchical-horizontal.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('HierarchicalHorizontalComponent', () => {
 	let component: HierarchicalHorizontalComponent;
@@ -13,7 +13,7 @@ describe('HierarchicalHorizontalComponent', () => {
 		await TestBed.configureTestingModule({
     imports: [HierarchicalHorizontalComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     
 		fixture = TestBed.createComponent(HierarchicalHorizontalComponent);

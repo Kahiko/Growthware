@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,7 @@ import { FileManagerService } from '../../file-manager.service';
     selector: 'gw-core-add-directory',
     imports: [MatButtonModule, ReactiveFormsModule],
     templateUrl: './add-directory.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./add-directory.component.scss']
 })
 export class AddDirectoryComponent implements OnInit {

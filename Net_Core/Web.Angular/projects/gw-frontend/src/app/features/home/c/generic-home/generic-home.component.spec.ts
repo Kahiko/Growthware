@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GenericHomeComponent } from './generic-home.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 class FakeConfigurationService {
 	private _ApplicationNameSubject = new BehaviorSubject<string>('Test');
@@ -24,7 +24,7 @@ describe('GenericHomeComponent', () => {
     imports: [],
     providers: [
         { provide: 'ConfigurationService', useClass: FakeConfigurationService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 }).compileComponents();

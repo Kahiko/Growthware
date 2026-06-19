@@ -1,13 +1,13 @@
 @for (item of menuData(); track item.id; let i = $index, mLast = $last) {
   @if (!mLast) {
     <div style="display: inline-block; border-right: 1px solid;">
-      <a (click)="onItemSelected(item)" data-title="{{ item.description }}" style="cursor: grab; padding-left: 10px;" [ngStyle]="{'color': fontColor}">
+      <a (click)="onItemSelected(item)" attr.data-title="{{ item.description }}" style="cursor: grab; padding-left: 10px;" [ngStyle]="{'color': fontColor}">
         {{item.label}}
       </a>  
     </div>        
   } @else {
     <div style="display: inline-block;">
-      <a (click)="onItemSelected(item)" data-title="{{ item.description }}" style="cursor: grab;; padding-left: 10px;">
+      <a (click)="onItemSelected(item)" attr.data-title="{{ item.description }}" style="cursor: grab;; padding-left: 10px;">
         {{item.label}}
       </a>  
     </div>

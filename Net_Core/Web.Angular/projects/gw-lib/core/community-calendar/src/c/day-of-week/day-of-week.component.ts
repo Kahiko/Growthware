@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Angular Material
@@ -29,6 +29,7 @@ import { CalendarEvent, ICalendarEvent } from '../../interfaces/calendar-event.m
         MatTooltipModule,
     ],
     templateUrl: './day-of-week.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./day-of-week.component.scss']
 })
 export class DayOfWeekComponent {

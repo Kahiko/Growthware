@@ -1,4 +1,4 @@
-import { Component, computed, HostBinding, inject, input } from '@angular/core';
+import { Component, computed, HostBinding, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router, RouterModule } from '@angular/router';
@@ -20,6 +20,7 @@ import { NavigationService } from '../../navigation.service';
     ],
     templateUrl: './hierarchical-nav-list-item.html',
     styleUrls: ['./hierarchical-nav-list-item.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [
         trigger('indicatorRotate', [
             state('collapsed', style({ transform: 'rotate(0deg)' })),

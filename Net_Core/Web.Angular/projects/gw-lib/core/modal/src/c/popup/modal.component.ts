@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material cdk
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
         MatIconModule
     ],
     templateUrl: './modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnDestroy {

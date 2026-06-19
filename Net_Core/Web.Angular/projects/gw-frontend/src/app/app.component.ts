@@ -1,5 +1,5 @@
 
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
@@ -27,6 +27,7 @@ import { ProfessionalLayoutComponent } from './skins/professional/professional-l
     ProfessionalLayoutComponent
 ],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.scss'
 })
 export class AppComponent {

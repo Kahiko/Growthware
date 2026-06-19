@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ import { HorizontalComponent } from '@growthware/core/navigation';
     selector: 'gw-frontend-default-header',
     templateUrl: './default-header.component.html',
     styleUrls: ['./default-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterLink,
         // Library Standalone

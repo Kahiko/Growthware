@@ -1,11 +1,12 @@
 import {
-	AfterViewInit,
-	Component,
-	effect,
-	OnDestroy,
-	OnInit,
-	TemplateRef,
-	ViewChild
+  AfterViewInit,
+  Component,
+  effect,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
 	FormBuilder,
@@ -50,6 +51,7 @@ import { FileManagerService } from '../../file-manager.service';
         MatPaginatorModule
     ],
     templateUrl: './table-file-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './table-file-list.component.scss'
 })
 export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit {

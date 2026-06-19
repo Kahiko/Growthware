@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 // Library
 import { sideNavTextAnimation } from '../animations/side-nav';
@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
     styleUrls: ['./default-layout.component.scss'],
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     RouterModule,
     DefaultFooterComponent,

@@ -5,7 +5,7 @@
     [ngStyle]="{'padding-left': (depth() * 12).toString() + 'px'}"
     (click)="onItemSelected(item())" 
     [ngClass]="{'expanded': expanded}" 
-    data-title="{{ item().description }}">
+    attr.data-title="{{ item().description }}">
   <div style="display: flex;">
     <span>
       <mat-icon class="routeIcon">{{item().icon}}</mat-icon>
@@ -37,7 +37,7 @@
     class="drawer-nav-list__list-item" 
     [ngStyle]="{'padding-left': (depth() * 12) + 'px'}"
     (click)="onItemSelected(item())" 
-    data-title="{{ item().description }}">
+    attr.data-title="{{ item().description }}">
   <div style="display: flex;">
     <span>
       <mat-icon class="routeIcon">{{item().icon}}</mat-icon>

@@ -1,4 +1,4 @@
-import { Component, input, OnDestroy, OnInit, output } from '@angular/core';
+import { Component, input, OnDestroy, OnInit, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { DatePipe } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
         MatInputModule,
     ],
     templateUrl: './time-picker.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './time-picker.component.scss'
 })
 export class TimePickerComponent implements OnDestroy, OnInit {

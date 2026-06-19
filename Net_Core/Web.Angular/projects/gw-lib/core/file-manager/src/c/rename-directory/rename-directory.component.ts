@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,7 @@ import { FileManagerService } from '../../file-manager.service';
     selector: 'gw-core-rename-directory',
     imports: [MatButtonModule, ReactiveFormsModule],
     templateUrl: './rename-directory.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./rename-directory.component.scss']
 })
 export class RenameDirectoryComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Feature
 import { EventType } from '../../event-type.enum';
@@ -11,6 +11,7 @@ import { IToastMessage } from '../../toast-message.model';
         CommonModule
     ],
     templateUrl: './toast.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -21,6 +21,7 @@ import { AccountService } from '../../account.service';
         MatTabsModule
     ],
     templateUrl: './change-password.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit {

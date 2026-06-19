@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Library
@@ -17,6 +17,7 @@ export interface IBaseDetailComponent extends BaseDetailComponent {
     selector: 'gw-core-base-search',
     template: '',
     styles: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDestroy {

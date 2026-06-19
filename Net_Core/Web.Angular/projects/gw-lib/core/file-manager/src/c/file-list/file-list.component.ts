@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import {
-	Component,
-	computed,
-	TemplateRef,
-	inject,
-	input,
-	OnDestroy,
-	OnInit,
-	ViewChild
+  Component,
+  computed,
+  TemplateRef,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -50,6 +51,7 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
         MatSelectModule,
     ],
     templateUrl: './file-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnDestroy, OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -30,6 +30,7 @@ import { StatesService } from '../../states.service';
         MatTabsModule
     ],
     templateUrl: './state-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./state-details.component.scss']
 })
 export class StateDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

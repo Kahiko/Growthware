@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -32,6 +32,7 @@ import { IGroupProfile, GroupProfile } from '../../group-profile.model';
         MatTabsModule
     ],
     templateUrl: './group-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit {

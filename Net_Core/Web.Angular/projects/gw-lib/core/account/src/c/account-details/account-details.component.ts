@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -43,6 +43,7 @@ import { AccountService } from '../../account.service';
         SnakeListComponent
     ],
     templateUrl: './account-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./account-details.component.scss']
 })
 export class AccountDetailsComponent implements OnInit {

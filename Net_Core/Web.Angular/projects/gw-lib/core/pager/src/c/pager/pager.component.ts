@@ -1,4 +1,4 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, input, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Library
 import { GWCommon } from '@growthware/common/services';
@@ -10,6 +10,7 @@ import { SearchService, SearchCriteria } from '@growthware/core/search';
         FormsModule
     ],
     templateUrl: './pager.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./pager.component.scss']
 })
 export class PagerComponent {

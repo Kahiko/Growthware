@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, inject, OnInit, Type, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, OnInit, Type, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 // Library
 import { BaseService } from '@growthware/core/base/services';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@growthware/core/dynamic-table';
@@ -10,6 +10,7 @@ import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthwa
     selector: 'gw-core-base-search',
     template: '',
     styles: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export abstract class BaseSearchComponent implements AfterViewInit, OnInit {

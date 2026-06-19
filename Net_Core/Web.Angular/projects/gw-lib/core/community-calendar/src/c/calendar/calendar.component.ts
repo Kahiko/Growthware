@@ -1,5 +1,5 @@
 
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -24,6 +24,7 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
     DayOfWeekComponent
 ],
     templateUrl: './calendar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {

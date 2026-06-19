@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 // Application
 import { routes } from './app.routes';
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
 				},
 			}),
 		),
-		provideHttpClient(withInterceptors([
+		provideHttpClient(withXhr(), withInterceptors([
 			LoaderInterceptor,
 			ErrorInterceptor,
 			JwtInterceptor

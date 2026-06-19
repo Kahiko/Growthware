@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -52,6 +52,7 @@ import { IFunctionMenuOrder } from '../../function-menu-order.model';
         CdkDragPlaceholder
     ],
     templateUrl: './function-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./function-details.component.scss']
 })
 export class FunctionDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

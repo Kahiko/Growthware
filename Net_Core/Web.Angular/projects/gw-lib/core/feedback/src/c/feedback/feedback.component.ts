@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +31,7 @@ interface ISelectedableAction {
         MatTabsModule,
     ],
     templateUrl: './feedback.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './feedback.component.scss'
 })
 export class FeedbackComponent implements OnInit {

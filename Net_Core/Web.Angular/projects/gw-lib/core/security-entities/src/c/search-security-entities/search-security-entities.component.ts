@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 // Library
 import { BaseSearchComponent } from '@growthware/core/base/components';
 import { ConfigurationService } from '@growthware/core/configuration';
@@ -15,6 +15,7 @@ import { SecurityEntityService } from '../../security-entity.service';
         DynamicTableComponent
     ],
     templateUrl: './search-security-entities.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./search-security-entities.component.scss']
 })
 export class SearchSecurityEntitiesComponent extends BaseSearchComponent {

@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DirectoryTreeComponent } from './directory-tree.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('DirectoryTreeComponent', () => {
 	let component: DirectoryTreeComponent;
@@ -13,7 +13,7 @@ describe('DirectoryTreeComponent', () => {
 		await TestBed.configureTestingModule({
     imports: [DirectoryTreeComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     
 		fixture = TestBed.createComponent(DirectoryTreeComponent);

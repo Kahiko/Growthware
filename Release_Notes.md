@@ -6,7 +6,7 @@
 
 ### New Features
 - Upgraded .Net Core 9 > 10
-- Upgraded Angular 20.2.1 > 21.2.17
+- Upgraded Angular 20.2.1 > 21.2.17 > 22.0.2
 
 ### Improvements
 - Implemented Central Package Management (CPM) for streamlined NuGet package versioning across all projects

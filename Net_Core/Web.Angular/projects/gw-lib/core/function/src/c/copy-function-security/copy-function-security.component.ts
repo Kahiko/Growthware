@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -28,6 +28,7 @@ import { FunctionService } from '../../function.service';
         MatTabsModule
     ],
     templateUrl: './copy-function-security.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./copy-function-security.component.scss']
 })
 export class CopyFunctionSecurityComponent implements OnInit {

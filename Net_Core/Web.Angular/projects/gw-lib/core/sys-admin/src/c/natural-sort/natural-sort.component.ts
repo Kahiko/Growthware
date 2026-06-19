@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +19,7 @@ import { SysAdminService } from '../../sys-admin.service';
         MatTableModule
     ],
     templateUrl: './natural-sort.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./natural-sort.component.scss']
 })
 export class NaturalSortComponent implements OnInit {

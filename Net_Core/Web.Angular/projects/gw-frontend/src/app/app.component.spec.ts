@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AuthenticationResponse, IAccountInformation, IAuthenticationResponse } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
 import { ConfigurationService } from '@growthware/core/configuration';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ClientChoices, IClientChoices } from '@growthware/core/clientchoices';
 
 class MockAccountService {
@@ -146,7 +146,7 @@ describe('AppComponent', () => {
 				{ provide: 'AccountService', useValue: _Dependencies.accountSvcMock },
 				{ provide: ConfigurationService, useValue: _Dependencies.configurationSvcMock },
 				{ provide: SecurityEntityService, useValue: _Dependencies.securityEntitySvcMock },
-				provideHttpClient(withInterceptorsFromDi()),
+				provideHttpClient(withXhr(), withInterceptorsFromDi()),
 				provideHttpClientTesting(),
 			]
 		}).compileComponents();

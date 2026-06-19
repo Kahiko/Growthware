@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { MenuTypes } from '../../menu-types.enum';
         MatListModule
     ],
     templateUrl: './vertical.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./vertical.component.scss']
 })
 export class VerticalComponent extends NavigationComponentBase {

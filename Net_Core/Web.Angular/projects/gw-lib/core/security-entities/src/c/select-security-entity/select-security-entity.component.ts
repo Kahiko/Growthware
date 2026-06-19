@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -22,6 +22,7 @@ import { IValidSecurityEntities } from '../../valid-security-entities.model';
         MatSelectModule
     ],
     templateUrl: './select-security-entity.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./select-security-entity.component.scss']
 })
 export class SelectSecurityEntityComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild, signal, effect } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Library
 import { DynamicTableBtnMethods, DynamicTableComponent } from '@growthware/core/dynamic-table';
@@ -22,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
         DynamicTableComponent,
     ],
     templateUrl: './manage-name-value-pairs.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./manage-name-value-pairs.component.scss']
 })
 export class ManageNameValuePairsComponent implements AfterViewInit, OnInit {

@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router } from '@angular/router';
 // Angular Material
@@ -20,6 +20,7 @@ import { FileManagerService } from '../../file-manager.service';
     MatProgressBarModule
 ],
     templateUrl: './upload.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {

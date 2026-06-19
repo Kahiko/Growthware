@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,7 @@ import { SysAdminService } from '../../sys-admin.service';
         MatIconModule
     ],
     templateUrl: './search-db-logs.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './search-db-logs.component.scss'
 })
 export class SearchDBLogsComponent extends BaseSearchComponent {

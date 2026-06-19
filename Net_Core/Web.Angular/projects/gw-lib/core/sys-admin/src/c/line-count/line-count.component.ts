@@ -1,6 +1,6 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -17,6 +17,7 @@ import { ILineCount, LineCount } from '../../line-count.model';
         MatTabsModule
     ],
     templateUrl: './line-count.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./line-count.component.scss']
 })
 export class LineCountComponent implements OnInit {

@@ -1,5 +1,5 @@
 
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
 // Library
@@ -12,6 +12,7 @@ import { LoggingService } from '@growthware/core/logging';
     MatIconModule
 ],
     templateUrl: './snake-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./snake-list.component.scss']
 })
 export class SnakeListComponent implements OnInit {

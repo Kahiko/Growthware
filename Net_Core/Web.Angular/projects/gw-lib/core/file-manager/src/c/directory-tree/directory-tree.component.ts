@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Router } from '@angular/router';
 // Library
@@ -30,6 +30,7 @@ import { RenameDirectoryComponent } from '../rename-directory/rename-directory.c
         ScrollingModule,
     ],
     templateUrl: './directory-tree.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./directory-tree.component.scss']
 })
 export class DirectoryTreeComponent implements OnDestroy, OnInit {

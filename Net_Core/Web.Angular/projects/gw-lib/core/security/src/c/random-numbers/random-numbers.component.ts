@@ -1,6 +1,6 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -17,6 +17,7 @@ import { SecurityService } from '../../security.service';
         MatTabsModule
     ],
     templateUrl: './random-numbers.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./random-numbers.component.scss']
 })
 export class RandomNumbersComponent {

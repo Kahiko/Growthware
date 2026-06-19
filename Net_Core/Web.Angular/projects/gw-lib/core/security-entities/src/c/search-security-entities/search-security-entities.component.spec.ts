@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SearchSecurityEntitiesComponent } from './search-security-entities.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SearchSecurityEntitiesComponent', () => {
 	let component: SearchSecurityEntitiesComponent;
@@ -14,7 +14,7 @@ describe('SearchSecurityEntitiesComponent', () => {
     declarations: [],
     imports: [SearchSecurityEntitiesComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     
 		fixture = TestBed.createComponent(SearchSecurityEntitiesComponent);

@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SearchAccountsComponent } from './search-accounts.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SearchAccountsComponent', () => {
 	let component: SearchAccountsComponent;
@@ -13,7 +13,7 @@ describe('SearchAccountsComponent', () => {
 		await TestBed.configureTestingModule({
     imports: [SearchAccountsComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     
 		fixture = TestBed.createComponent(SearchAccountsComponent);

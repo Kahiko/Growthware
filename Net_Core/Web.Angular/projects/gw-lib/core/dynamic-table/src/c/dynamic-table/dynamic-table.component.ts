@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-	Component,
-	computed,
-	effect,
-	input,
-	OnDestroy,
-	OnInit,
-	TemplateRef,
-	ViewChild
+  Component,
+  computed,
+  effect,
+  input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -41,6 +42,7 @@ import { DynamicTableService } from '../../../public-api';
         PagerComponent
     ],
     templateUrl: './dynamic-table.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnDestroy, OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,7 @@ import { SelectedRow } from '../../selected-row.model';
         MatTabsModule
     ],
     templateUrl: './db-log-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './db-log-details.component.scss'
 })
 export class DBLogDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

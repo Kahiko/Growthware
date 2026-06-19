@@ -4,7 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // Feature
 import { NavLink } from '../../nav-link.model';
 import { HierarchicalNavListItemComponent } from './hierarchical-nav-list-item';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('HierarchicalNavListItemComponent', () => {
 	let component: HierarchicalNavListItemComponent;
@@ -15,7 +15,7 @@ describe('HierarchicalNavListItemComponent', () => {
     declarations: [],
     imports: [HierarchicalNavListItemComponent,
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
 		
 		fixture = TestBed.createComponent(HierarchicalNavListItemComponent);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 // Library
 import { BaseSearchComponent } from '@growthware/core/base/components';
 import { DynamicTableService, DynamicTableComponent } from '@growthware/core/dynamic-table';
@@ -14,6 +14,7 @@ import { RoleService } from '../../role.service';
         DynamicTableComponent
     ],
     templateUrl: './search-roles.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./search-roles.component.scss']
 })
 export class SearchRolesComponent extends BaseSearchComponent {

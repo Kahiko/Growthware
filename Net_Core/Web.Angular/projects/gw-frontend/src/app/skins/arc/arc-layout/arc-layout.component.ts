@@ -1,5 +1,5 @@
 
-import { Component, effect, inject, ViewEncapsulation } from '@angular/core';
+import { Component, effect, inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +23,7 @@ import { sideNavTextAnimation } from '../animations/side-nav';
 	styleUrls: ['./arc-layout.component.scss'],
 	animations: [sideNavTextAnimation],
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
     RouterOutlet,
     ArcFooterComponent,

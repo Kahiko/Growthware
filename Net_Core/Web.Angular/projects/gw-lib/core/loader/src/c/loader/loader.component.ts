@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -12,6 +12,7 @@ import { LoaderService } from '../../loader.service';
         MatProgressSpinnerModule
     ],
     templateUrl: './loader.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements AfterViewInit, OnDestroy {

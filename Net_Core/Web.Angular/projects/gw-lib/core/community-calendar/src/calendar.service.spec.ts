@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CalendarService } from './calendar.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('CalendarService', () => {
 	let service: CalendarService;
@@ -14,7 +14,7 @@ describe('CalendarService', () => {
     declarations: [],
     imports: [RouterTestingModule.withRoutes([]),
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
 		service = TestBed.inject(CalendarService);
 	});

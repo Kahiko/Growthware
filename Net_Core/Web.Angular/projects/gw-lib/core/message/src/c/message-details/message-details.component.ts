@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -22,6 +22,7 @@ import { IMessageProfile, MessageProfile } from '../../message-profile.model';
         MatTabsModule
     ],
     templateUrl: './message-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./message-details.component.scss']
 })
 export class MessageDetailsComponent implements OnInit {

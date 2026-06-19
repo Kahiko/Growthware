@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +17,7 @@ import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
     selector: 'gw-frontend-dev-ops-header',
     templateUrl: './dev-ops-header.component.html',
     styleUrls: ['./dev-ops-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterLink,
         // Angular Material

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +33,7 @@ import { GWCommon } from '@growthware/common/services';
         MatSelectModule
     ],
     templateUrl: './feedback-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

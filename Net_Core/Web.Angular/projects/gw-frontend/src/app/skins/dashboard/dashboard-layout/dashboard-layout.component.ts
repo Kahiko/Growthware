@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
 // Angular Material
@@ -19,6 +19,7 @@ import { DashboardHeaderComponent } from '../dashboard-header/dashboard-header.c
     styleUrls: ['./dashboard-layout.component.scss'],
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     RouterOutlet,
     MatDividerModule,

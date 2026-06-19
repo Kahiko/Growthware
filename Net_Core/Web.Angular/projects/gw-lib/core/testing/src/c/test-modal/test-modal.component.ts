@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
@@ -31,6 +31,7 @@ import { ICallbackButton, CallbackButton } from '@growthware/common/interfaces';
     MatTabsModule
 ],
     templateUrl: './test-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './test-modal.component.scss'
 })
 export class TestModalComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 // Library
 // Feature
@@ -10,6 +10,7 @@ import { NavigationComponentBase } from '../navigation-component-base/navigation
     imports: [],
     templateUrl: './hierarchical-horizontal.component.html',
     styleUrls: ['./hierarchical-horizontal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     encapsulation: ViewEncapsulation.ShadowDom
 })
 export class HierarchicalHorizontalComponent extends NavigationComponentBase {

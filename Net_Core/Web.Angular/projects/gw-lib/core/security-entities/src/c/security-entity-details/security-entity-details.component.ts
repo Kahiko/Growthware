@@ -1,5 +1,5 @@
 
-import { Component, computed, OnInit } from '@angular/core';
+import { Component, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -37,6 +37,7 @@ import { IValidSecurityEntities } from '../../valid-security-entities.model';
         MatTooltipModule
     ],
     templateUrl: './security-entity-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./security-entity-details.component.scss']
 })
 export class SecurityEntityDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

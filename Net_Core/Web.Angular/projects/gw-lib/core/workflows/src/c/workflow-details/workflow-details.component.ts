@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule
 ],
     templateUrl: './workflow-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./workflow-details.component.scss']
 })
 export class WorkflowDetailsComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -30,6 +30,7 @@ import { IRoleProfile, RoleProfile } from '../../role-profile.model';
         MatTabsModule
     ],
     templateUrl: './role-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./role-details.component.scss']
 })
 export class RoleDetailsComponent implements OnInit {

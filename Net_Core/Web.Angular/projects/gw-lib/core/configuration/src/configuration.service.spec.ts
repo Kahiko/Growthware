@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ConfigurationService } from './configuration.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ConfigurationService', () => {
 	let service: ConfigurationService;
@@ -14,7 +14,7 @@ describe('ConfigurationService', () => {
     declarations: [],
     imports: [RouterTestingModule.withRoutes([]),
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
 		service = TestBed.inject(ConfigurationService);
 	});

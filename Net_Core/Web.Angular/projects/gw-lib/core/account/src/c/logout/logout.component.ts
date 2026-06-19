@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 // Feature
 import { AccountService } from '../../account.service';
@@ -7,6 +7,7 @@ import { AccountService } from '../../account.service';
     selector: 'gw-core-logout',
     imports: [],
     templateUrl: './logout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./logout.component.scss']
 })
 export class LogoutComponent implements OnInit {

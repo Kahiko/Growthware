@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
@@ -29,6 +29,7 @@ import { ILogOptions, LogDestination, LogLevel, LogOptions, LoggingService } fro
     MatTabsModule
 ],
     templateUrl: './test-logging.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './test-logging.component.scss'
 })
 export class TestLoggingComponent implements OnDestroy, OnInit {

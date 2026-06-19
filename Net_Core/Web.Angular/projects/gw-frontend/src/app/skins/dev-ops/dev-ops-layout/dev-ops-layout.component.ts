@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
 // Angular Material
@@ -18,6 +18,7 @@ import { DevOpsHeaderComponent } from '../dev-ops-header/dev-ops-header.componen
     styleUrls: ['./dev-ops-layout.component.scss'],
     animations: [sideNavTextAnimation],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     RouterOutlet,
     MatSidenavModule,

@@ -4,7 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { DynamicTableService } from './dynamic-table.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('DynamicTableService', () => {
 	let service: DynamicTableService;
@@ -14,7 +14,7 @@ describe('DynamicTableService', () => {
     declarations: [],
     imports: [RouterTestingModule.withRoutes([]),
         NoopAnimationsModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
 		service = TestBed.inject(DynamicTableService);
 	});

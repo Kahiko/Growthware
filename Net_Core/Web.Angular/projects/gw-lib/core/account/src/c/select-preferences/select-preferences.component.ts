@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
@@ -44,6 +44,7 @@ interface IColorSchemeColumns {
         MatTabsModule,
     ],
     templateUrl: './select-preferences.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./select-preferences.component.scss']
 })
 export class SelectPreferencesComponent implements OnInit {

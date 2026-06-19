@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +23,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         ReactiveFormsModule
     ],
     templateUrl: './edit-db-information.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './edit-db-information.component.scss'
 })
 export class EditDbInformationComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {

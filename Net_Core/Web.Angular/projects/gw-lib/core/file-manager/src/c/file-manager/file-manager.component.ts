@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, inject, input, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, OnInit, signal, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 // Angular Material
@@ -32,6 +32,7 @@ import { UploadComponent } from '../upload/upload.component';
     UploadComponent
 ],
     templateUrl: './file-manager.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./file-manager.component.scss']
 })
 export class FileManagerComponent implements OnInit {

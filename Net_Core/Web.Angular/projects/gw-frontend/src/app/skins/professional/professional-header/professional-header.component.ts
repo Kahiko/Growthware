@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 // Library
 import { AccountService } from '@growthware/core/account';
 import { ConfigurationService } from '@growthware/core/configuration';
@@ -9,6 +9,7 @@ import { HorizontalComponent } from '@growthware/core/navigation';
     selector: 'gw-frontend-professional-header',
     templateUrl: './professional-header.component.html',
     styleUrls: ['./professional-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         HorizontalComponent,
     ]
