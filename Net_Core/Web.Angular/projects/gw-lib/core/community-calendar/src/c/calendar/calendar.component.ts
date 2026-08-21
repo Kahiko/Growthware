@@ -15,17 +15,17 @@ import { IMonth, Month } from '../../interfaces/month.model';
 import { NamesOfDays } from '../../interfaces/names-of-days.enum';
 
 @Component({
-    selector: 'gw-core-calendar',
-    imports: [
+  selector: 'gw-core-calendar',
+  imports: [
     FormsModule,
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
     DayOfWeekComponent
-],
-    templateUrl: './calendar.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./calendar.component.scss']
+  ],
+  templateUrl: './calendar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
   private _Action: string = '';
