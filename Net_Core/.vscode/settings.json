@@ -9,4 +9,5 @@
     "Web.Angular",
   ],
   "html.format.enable": false,
+  "chat.agentHost.computerUse.enabled": false,
 }
