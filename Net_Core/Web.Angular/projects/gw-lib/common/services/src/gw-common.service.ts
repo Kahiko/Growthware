@@ -8,6 +8,21 @@ import { CallbackMethod, IMenuData, INavItem, ITotalRecords } from '@growthware/
 })
 export class GWCommon {
 
+  private _months: Array<{ number: number; text: string; abbreviation: string }> = [
+    {'number':  1 , 'text': 'January'		, 'abbreviation': 'Jan.'	},
+    {'number':  2 , 'text': 'February'	, 'abbreviation': 'Feb.'	},
+    {'number':  3 , 'text': 'March'		  , 'abbreviation': 'Mar.'	},
+    {'number':  4 , 'text': 'April'		  , 'abbreviation': 'Apr.'	},
+    {'number':  5 , 'text': 'May'			  , 'abbreviation': 'May'	  },
+    {'number':  6 , 'text': 'June'		  , 'abbreviation': 'Jun.'	},
+    {'number':  7 , 'text': 'July'		  , 'abbreviation': 'Jul.'	},
+    {'number':  8 , 'text': 'August'		, 'abbreviation': 'Aug.'	},
+    {'number':  9 , 'text': 'September'	, 'abbreviation': 'Sept.'	},
+    {'number': 10 , 'text': 'October'		, 'abbreviation': 'Oct.'	},
+    {'number': 11 , 'text': 'November'	, 'abbreviation': 'Nov.'	},
+    {'number': 12 , 'text': 'December'	, 'abbreviation': 'Dec.'	}
+  ];
+
   /**
    * Adds or updates an element in an array so long as the elements in the array
    * has an 'id' property.
@@ -123,7 +138,6 @@ export class GWCommon {
     return mURL;
   }
 
-
   /**
    * Returns the base URL without the port.
    *
@@ -133,6 +147,17 @@ export class GWCommon {
     const mCurrentLocation = window.location;
     const mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + '/';
     return mURL;
+  }
+
+  /**
+   * Returns an array of months.
+   *
+   * @readonly
+   * @type {Array<{ number: number; text: string; abbreviation: string }>}
+   * @memberof GWCommon
+   */
+  public get months(): Array<{ number: number; text: string; abbreviation: string }> {
+    return JSON.parse(JSON.stringify(this._months));
   }
 
   public capitalizeFirstLetter(stringToCap: string): string {
@@ -568,7 +593,6 @@ export class GWCommon {
   private static sortBy(key: string | number, reverse: boolean): (a: Record<string, unknown>, b: Record<string, unknown>) => number {
     // Move smaller items towards the front
     // or back of the array depending on if
-    // we want to sort the array in reverse
     // order or not.
     const moveSmaller: number = reverse ? 1 : -1;
 
