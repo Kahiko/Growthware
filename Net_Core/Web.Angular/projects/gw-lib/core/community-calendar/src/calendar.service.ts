@@ -18,20 +18,21 @@ import { ITotalRecords } from '@growthware/common/interfaces';
 export class CalendarService extends BaseService {
 	override addEditModalId: string = 'addEditEvent';
 	override modalReason: string = '';
-	public selectedEvent: ICalendarEvent = {} as ICalendarEvent;
 	override selectedRow: ITotalRecords = { TotalRecords: 0 } as ITotalRecords;
 
-	private _ApiName: string = 'GrowthwareCalendar/';
-	private _ApiDeleteEvent: string = '';
+	private _Api_Name: string = 'GrowthwareCalendar/';
+	private _Api_DeleteEvent: string = '';
 	private _Api_GetEvent: string = '';
 	private _Api_GetEvents: string = '';
 	private _Api_GetEventSecurity: string = '';
 	private _Api_SaveEvent: string = '';
-
-	public calendarData$ = signal<IMonth>(new Month());
 	private _FirstDayOfWeek: NamesOfDays = NamesOfDays.Monday;
-	public get firstDayOfWeek(): NamesOfDays { return this._FirstDayOfWeek; }
 	private _SelectedDate: Date = new Date();
+
+	public selectedEvent: ICalendarEvent = {} as ICalendarEvent;
+	public calendarData$ = signal<IMonth>(new Month());
+
+	public get firstDayOfWeek(): NamesOfDays { return this._FirstDayOfWeek; }
 	public get selectedDate(): Date { return this._SelectedDate; }
 
 	constructor(
@@ -40,11 +41,11 @@ export class CalendarService extends BaseService {
 		private _LoggingSvc: LoggingService,
 	) {
 		super();
-		this._ApiDeleteEvent = this._GWCommon.baseURL + this._ApiName + 'DeleteEvent';
-		this._Api_GetEvent = this._GWCommon.baseURL + this._ApiName + 'GetEvent';
-		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
-		this._Api_GetEventSecurity = this._GWCommon.baseURL + this._ApiName + 'GetEventSecurity';
-		this._Api_SaveEvent = this._GWCommon.baseURL + this._ApiName + 'SaveEvent';
+		this._Api_DeleteEvent = this._GWCommon.baseURL + this._Api_Name + 'DeleteEvent';
+		this._Api_GetEvent = this._GWCommon.baseURL + this._Api_Name + 'GetEvent';
+		this._Api_GetEvents = this._GWCommon.baseURL + this._Api_Name + 'GetEvents';
+		this._Api_GetEventSecurity = this._GWCommon.baseURL + this._Api_Name + 'GetEventSecurity';
+		this._Api_SaveEvent = this._GWCommon.baseURL + this._Api_Name + 'SaveEvent';
 	}
 
 	/**
@@ -68,7 +69,7 @@ export class CalendarService extends BaseService {
 				}),
 				params: mQueryParameter,
 			};
-			this._HttpClient.get<boolean>(this._ApiDeleteEvent, mHttpOptions).subscribe({
+			this._HttpClient.get<boolean>(this._Api_DeleteEvent, mHttpOptions).subscribe({
 				next: (response: boolean) => {
 					if (response) {
 						const mCalendarData = this.calendarData$();

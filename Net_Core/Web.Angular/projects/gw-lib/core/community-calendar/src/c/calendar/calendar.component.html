@@ -4,21 +4,32 @@
       <tr style="text-align: center; width: 100%">
         <td colspan="7">
           <h1 style="text-align: center; width: 100%">{{displayMonth}}&nbsp;{{displayYear}}</h1>
-          <div>
-            <button (click)="decrease()" mat-button class="Form_Button" color="primary">
-              <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">remove</i>
-            </button>
-            <button (click)="currentDate()" mat-button class="Form_Button" color="primary">
-              Today
-            </button>
-            <button (click)="increase()" mat-button class="Form_Button" color="primary">
-              <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">add</i>
-            </button>
-            <mat-radio-group [(ngModel)]="incrementBy">
-              <mat-radio-button value="month">Month</mat-radio-button>
-              <mat-radio-button value="year">Year</mat-radio-button>
-            </mat-radio-group>            
-          </div>
+            <div style="display: flex; justify-content: center;"> <!-- This is a flex container to center the buttons and dropdowns -->
+              <div> <!-- This div contains the "Today" button -->
+                <button mat-list-item (click)="currentDate()" mat-button class="Form_Button" color="primary">Today</button>
+              </div>
+              <div> <!-- This div contains the month dropdown -->
+                <mat-form-field>
+                  <mat-label>Month</mat-label>
+                  <mat-select [(ngModel)]="displayMonth" (ngModelChange)="onMonthChange()">
+                    @for (month of avalibleMonths; track month) {
+                      <mat-option [value]="month.text">{{month.number.toString().padStart(2, " ")}} - {{month.abbreviation}}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div> <!-- This div contains the year buttons -->
+                <mat-action-list>
+                  <button mat-list-item (click)="onChangeYear(-1)" mat-button class="Form_Button" color="primary">
+                    <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">remove</i>
+                  </button>
+                  Year
+                  <button mat-list-item (click)="onChangeYear(1)" mat-button class="Form_Button" color="primary">
+                    <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">add</i>
+                  </button>
+                </mat-action-list>
+              </div>
+            </div>
         </td>
       </tr>
       <tr>

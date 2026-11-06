@@ -7,9 +7,11 @@
 ### New Features
 - Upgraded .Net Core 9 > 10
 - Upgraded Angular 20.2.1 > 21.2.17 > 22.0.2
+- Added get months() to GWCommon (Web.Angular\projects\gw-lib\common\services\src\gw-common.service.ts) to support updates to Community Calender
 
 ### Improvements
 - Implemented Central Package Management (CPM) for streamlined NuGet package versioning across all projects
+- Updated month/year selection in Community Calender changing the month selection into a drop down
 
 ### Known Bugs
 - There is an issue where the refresh token is being revoked when it shouldn't be, causing a logout to occure
