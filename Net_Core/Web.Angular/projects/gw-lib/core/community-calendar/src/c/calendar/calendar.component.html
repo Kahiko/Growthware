@@ -3,10 +3,10 @@
     <thead>
       <tr style="text-align: center; width: 100%">
         <td colspan="7">
-          <h1 style="text-align: center; width: 100%">{{displayMonth}}&nbsp;{{displayYear}}</h1>
             <div style="display: flex; justify-content: center;"> <!-- This is a flex container to center the buttons and dropdowns -->
+              <h1 class="spacer" style="text-align: left;">{{displayMonth}}&nbsp;{{displayYear}}</h1>
               <div> <!-- This div contains the "Today" button -->
-                <button mat-list-item (click)="currentDate()" mat-button class="Form_Button" color="primary">Today</button>
+                <button mat-list-item (click)="currentDate()" mat-button class="Form_Button" color="primary">Go to Today</button>
               </div>
               <div> <!-- This div contains the month dropdown -->
                 <mat-form-field>
